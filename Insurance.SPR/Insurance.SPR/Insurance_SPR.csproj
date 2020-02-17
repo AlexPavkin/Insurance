@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="Insurance_SPR.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Request.cs" />
     <Compile Include="SPR.cs" />
   </ItemGroup>
   <ItemGroup>
