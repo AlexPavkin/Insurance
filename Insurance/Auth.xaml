@@ -1,0 +1,26 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Insurance"
+        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" x:Name="Auth_" x:Class="Insurance.Auth"
+        xmlns:control="clr-namespace:Yamed.Control;assembly=Yamed.Control" 
+        mc:Ignorable="d" control:EnterKeyTraversal.IsEnabled="True"
+        Title="Авторизация" Height="250" Width="450" ResizeMode="NoResize" Topmost="True" Loaded="Auth__Loaded" Background="#FF5F7B8B" Closed="Auth__Closed" ShowInTaskbar="True">
+    <Grid x:Name="Auth1" Background="#FF5F7B8B">
+
+        <Border BorderBrush="#FFD5DADA" BorderThickness="1" HorizontalAlignment="Left" Height="201" Margin="16,10,0,0" VerticalAlignment="Top" Width="413"/>
+
+        <Label Content="Агент -" HorizontalAlignment="Left" Margin="90,66,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.179,0.909" Height="33" FontWeight="Bold" Foreground="White"/>
+        <Label Content="Пароль -" HorizontalAlignment="Left" Margin="78,112,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.179,0.909" Height="33" FontWeight="Bold" Foreground="White"/>
+        <dxe:PasswordBoxEdit PasswordChar="*" x:Name="pass"  HorizontalAlignment="Left" Height="29" Margin="142,111,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="260" PreviewKeyDown="Pass_PreviewKeyDown" TabIndex="2" />
+        <Button Content="Авторизация" HorizontalAlignment="Left" Margin="39,153,0,0" VerticalAlignment="Top" Width="168" Click="Button_Click" Height="44" FontWeight="Bold" TabIndex="3"/>
+
+        <dxe:ComboBoxEdit x:Name="logins" Height="32" AutoComplete="True" ValidateOnTextInput="False" FilterCondition="Contains" IncrementalFiltering="True" ImmediatePopup="True" VerticalAlignment="Top" Margin="142,66,42,0" NullValueButtonPlacement="EditBox" ValueMember="ID" EditValue="ID" ItemsSource="{Binding}" DisplayMember="AGENT" MouseDoubleClick="Logins_MouseDoubleClick" TabIndex="1" />
+        <Button Content="Регистрация" HorizontalAlignment="Left" Margin="232,153,0,0" VerticalAlignment="Top" Width="170" Click="Button_Click_1" Height="44" FontWeight="Bold"/>
+        <Label Content="Пункт выдачи -" HorizontalAlignment="Left" Margin="39,24,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.179,0.909" Height="33" FontWeight="Bold" Foreground="White"/>
+        <dxe:ComboBoxEdit x:Name="prz_vhod" Height="33" AutoComplete="True" ValidateOnTextInput="False" FilterCondition="Contains" IncrementalFiltering="True" ImmediatePopup="True" VerticalAlignment="Top" Margin="142,21,42,0" NullValueButtonPlacement="EditBox" EditValue="PRZ_CODE" ValueMember="PRZ_CODE" ItemsSource="{Binding}" DisplayMember="NameWithCode" EditValueChanged="Prz_vhod_EditValueChanged" TabIndex="0" />
+
+    </Grid>
+</Window>
