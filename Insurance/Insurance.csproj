@@ -152,9 +152,8 @@
     <Reference Include="Insurance_SPR">
       <HintPath>..\Insurance.SPR\Insurance.SPR\bin\Debug\Insurance_SPR.dll</HintPath>
     </Reference>
-    <Reference Include="Ionic.Zip, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Ionic.Zip.dll</HintPath>
+    <Reference Include="Ionic.Zip">
+      <HintPath>..\..\..\..\Downloads\Telegram Desktop\Ionic.Zip.dll</HintPath>
     </Reference>
     <Reference Include="SharpCompress, Version=0.23.0.0, Culture=neutral, PublicKeyToken=afb0a02973931d96, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpCompress.0.23.0\lib\net35\SharpCompress.dll</HintPath>
@@ -183,7 +182,7 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="WindowsFormsIntegration" />
     <Reference Include="xNet">
-      <HintPath>C:\Users\user\Downloads\xNet-master\xNet-master\bin\Debug\xNet.dll</HintPath>
+      <HintPath>..\..\..\..\Downloads\Telegram Desktop\xNet.dll</HintPath>
     </Reference>
     <Reference Include="Yamed.Control, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
