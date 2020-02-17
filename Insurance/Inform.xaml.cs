@@ -31,11 +31,11 @@ namespace Insurance
         public Inform(string call)
         {
             InitializeComponent();
-            WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            WindowState = WindowState.Maximized;
             call_ = call;
             if (call_ == "unload_history" || call_ == "unload_files" || call_ == "person_history")
             {
-                WindowState = WindowState.Maximized;
+                
                 infom_ctrl.Visibility = Visibility.Collapsed;
                 inform_grid1.Visibility = Visibility.Collapsed;
                 inform_grid.VerticalAlignment = VerticalAlignment.Stretch;
