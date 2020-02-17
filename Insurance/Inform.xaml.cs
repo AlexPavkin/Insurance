@@ -71,31 +71,31 @@ namespace Insurance
                 if (call_ == "attache_history")
                 {
                
-                    if (Vars.mes_res == 0)
-                    {
-                        //Adder.Visibility = Visibility.Hidden;
-                        //Premiss_edt.Visibility = Visibility.Hidden;
-                        //dateP.Visibility = Visibility.Hidden;
-                        //Del_file_btn.Visibility = Visibility.Hidden;
-                        //del_btn_hist.Visibility = Visibility.Hidden;
-                        inform_grid.Visibility = Visibility.Visible;
-                        var peopleList =
-                        MyReader.MySelect<INFORMED>(
-                            $@"  SELECT p.FAM,p.IM,p.OT,p.W,p.DR,p.PHONE,p.ENP, pe.DATE_INFORM, pr.PRICHINA_INFORM FROM POL_PERSONS_INFORM pe   
-  LEFT JOIN POL_PERSONS p
-			on p.IDGUID = pe.PERSONGUID
-			LEFT JOIN PRICHINA_INFORMIROVANIYA pr
-			on pr.ID = pe.PRICHINA_INFORM
-			WHERE pe.PERSON_ID IN ({Vars.IDSZ})
-   ORDER BY PE.ID", Properties.Settings.Default.DocExchangeConnectionString);
-                        inform_grid.ItemsSource = peopleList;
-                        inform_grid.GroupBy("FAM");
-                        inform_grid.GroupBy("IM", true);
-                        inform_grid.GroupBy("OT", true);
-                        inform_grid.GroupBy("PRICHINA_INFORM", true);
-                    }
-                    else
-                    {
+  //                  if (Vars.mes_res == 0)
+  //                  {
+  //                      //Adder.Visibility = Visibility.Hidden;
+  //                      //Premiss_edt.Visibility = Visibility.Hidden;
+  //                      //dateP.Visibility = Visibility.Hidden;
+  //                      //Del_file_btn.Visibility = Visibility.Hidden;
+  //                      //del_btn_hist.Visibility = Visibility.Hidden;
+  //                      inform_grid.Visibility = Visibility.Visible;
+  //                      var peopleList =
+  //                      MyReader.MySelect<INFORMED>(
+  //                          $@"  SELECT p.FAM,p.IM,p.OT,p.W,p.DR,p.PHONE,p.ENP, pe.DATE_INFORM, pr.PRICHINA_INFORM FROM POL_PERSONS_INFORM pe   
+  //LEFT JOIN POL_PERSONS p
+		//	on p.IDGUID = pe.PERSONGUID
+		//	LEFT JOIN PRICHINA_INFORMIROVANIYA pr
+		//	on pr.ID = pe.PRICHINA_INFORM
+		//	WHERE pe.PERSON_ID IN ({Vars.IDSZ})
+  // ORDER BY PE.ID", Properties.Settings.Default.DocExchangeConnectionString);
+  //                      inform_grid.ItemsSource = peopleList;
+  //                      inform_grid.GroupBy("FAM");
+  //                      inform_grid.GroupBy("IM", true);
+  //                      inform_grid.GroupBy("OT", true);
+  //                      inform_grid.GroupBy("PRICHINA_INFORM", true);
+  //                  }
+  //                  else
+  //                  {
                         //G_layuot.restore_Layout(Properties.Settings.Default.DocExchangeConnectionString, inform_grid);
                         fio_col = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_fam", Properties.Settings.Default.DocExchangeConnectionString);
                         fam_p3.DataContext = fio_col;
@@ -132,7 +132,7 @@ namespace Insurance
                         //Del_file_btn.Visibility = Visibility.Hidden;
                     //del_file_panel.Visibility = Visibility.Hidden;
                     //del_btn_hist.Visibility = Visibility.Hidden;
-                    }
+                    //}
                 }
                 else if(call_ == "unload_history")
                 {

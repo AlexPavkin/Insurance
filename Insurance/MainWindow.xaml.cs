@@ -8032,36 +8032,36 @@ where vpolis=2 and blank=1 and DBEG is null)", con);
 
         private void Inform_btn_Click(object sender, RoutedEventArgs e)
         {
-            string m = "Добавить информирование ЗЛ?";
-            string t = "Внимание!";
-            int b = 11;
-            Message me = new Message(m, t, b);
-            me.ShowDialog();
-            try
-            {
-                Vars.IDSZ = Funcs.MyIds(pers_grid.GetSelectedRowHandles(), pers_grid);
+            //string m = "Добавить информирование ЗЛ?";
+            //string t = "Внимание!";
+            //int b = 11;
+            //Message me = new Message(m, t, b);
+            //me.ShowDialog();
+            //try
+            //{
+            //    Vars.IDSZ = Funcs.MyIds(pers_grid.GetSelectedRowHandles(), pers_grid);
 
-            }
-            catch
-            {
+            //}
+            //catch
+            //{
 
-                string m1 = "Вы не выбрали ЗЛ для Информирования!";
-                string t1 = "Внимание!";
-                int b1 = 1;
-                Message me1 = new Message(m1, t1, b1);
-                me1.ShowDialog();
-                return;
-            }
+            //    string m1 = "Вы не выбрали ЗЛ для Информирования!";
+            //    string t1 = "Внимание!";
+            //    int b1 = 1;
+            //    Message me1 = new Message(m1, t1, b1);
+            //    me1.ShowDialog();
+            //    return;
+            //}
 
-            if (Vars.IDSZ == "")
-            {
-                string m1 = "Вы не выбрали ЗЛ для Информирования!";
-                string t1 = "Внимание!";
-                int b1 = 1;
-                Message me1 = new Message(m1, t1, b1);
-                me1.ShowDialog();
-                return;
-            }
+            //if (Vars.IDSZ == "")
+            //{
+            //    string m1 = "Вы не выбрали ЗЛ для Информирования!";
+            //    string t1 = "Внимание!";
+            //    int b1 = 1;
+            //    Message me1 = new Message(m1, t1, b1);
+            //    me1.ShowDialog();
+            //    return;
+            //}
             string call = "attache_history";
             Inform inf = new Inform(call);
             inf.ShowDialog();
