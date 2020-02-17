@@ -50,7 +50,7 @@ namespace Insurance
                 }
             }
             
-            Adder.Visibility = Visibility.Collapsed;
+            //Adder.Visibility = Visibility.Collapsed;
             Premiss_edt.Visibility = Visibility.Collapsed;
             dateP.Visibility = Visibility.Collapsed;
             inform_grid.Visibility = Visibility.Collapsed;
@@ -70,71 +70,44 @@ namespace Insurance
             {
                 if (call_ == "attache_history")
                 {
-               
-                    if (Vars.mes_res == 0)
-                    {
-                        //Adder.Visibility = Visibility.Hidden;
-                        //Premiss_edt.Visibility = Visibility.Hidden;
-                        //dateP.Visibility = Visibility.Hidden;
-                        //Del_file_btn.Visibility = Visibility.Hidden;
-                        //del_btn_hist.Visibility = Visibility.Hidden;
-                        inform_grid.Visibility = Visibility.Visible;
-                        var peopleList =
-                        MyReader.MySelect<INFORMED>(
-                            $@"  SELECT p.FAM,p.IM,p.OT,p.W,p.DR,p.PHONE,p.ENP, pe.DATE_INFORM, pr.PRICHINA_INFORM FROM POL_PERSONS_INFORM pe   
-  LEFT JOIN POL_PERSONS p
-			on p.IDGUID = pe.PERSONGUID
-			LEFT JOIN PRICHINA_INFORMIROVANIYA pr
-			on pr.ID = pe.PRICHINA_INFORM
-			WHERE pe.PERSON_ID IN ({Vars.IDSZ})
-   ORDER BY PE.ID", Properties.Settings.Default.DocExchangeConnectionString);
-                        inform_grid.ItemsSource = peopleList;
-                        inform_grid.GroupBy("FAM");
-                        inform_grid.GroupBy("IM", true);
-                        inform_grid.GroupBy("OT", true);
-                        inform_grid.GroupBy("PRICHINA_INFORM", true);
-                    }
-                    else
-                    {
-                        //G_layuot.restore_Layout(Properties.Settings.Default.DocExchangeConnectionString, inform_grid);
-                        fio_col = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_fam", Properties.Settings.Default.DocExchangeConnectionString);
-                        fam_p3.DataContext = fio_col;
-                        im_p3.DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_im", Properties.Settings.Default.DocExchangeConnectionString);
-                        ot_p3.DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_ot", Properties.Settings.Default.DocExchangeConnectionString);
-                        fam_p4.DataContext = fio_col;
-                        im_p4.DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_im", Properties.Settings.Default.DocExchangeConnectionString);
-                        ot_p4.DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_ot", Properties.Settings.Default.DocExchangeConnectionString);
-                        MKB.DataContext = MyReader.MySelect<MKB>(@"SELECT IDDS,DSNAME,NameWithID  FROM M001_KSG", Properties.Settings.Default.DocExchangeConnectionString);
-                        Theme_p3.DataContext = MyReader.MySelect<THEME_INFORM_P3>(@"SELECT ID ,Name  FROM THEME_INFORM_P3", Properties.Settings.Default.DocExchangeConnectionString);
-                        Sposob_p3.DataContext = MyReader.MySelect<SPOSOB_INFORM>(@"SELECT ID ,Name  FROM SPOSOB_INFORM", Properties.Settings.Default.DocExchangeConnectionString);
-                        Result_p3.DataContext = MyReader.MySelect<RESULT_INFORM_P3>(@"SELECT ID ,Name  FROM RESULT_INFORM_P3", Properties.Settings.Default.DocExchangeConnectionString);
-                        Vid_meropr_p3.DataContext = MyReader.MySelect<VID_MEROPR_INFORM_P3>(@"SELECT ID ,Name  FROM VID_MEROPR_INFORM_P3", Properties.Settings.Default.DocExchangeConnectionString);
-                        Tema_yved_p4.DataContext = MyReader.MySelect<THEME_INFORM_P4>(@"SELECT ID ,Name  FROM THEME_INFORM_P4", Properties.Settings.Default.DocExchangeConnectionString);
-                        Sposob_p4.DataContext = MyReader.MySelect<SPOSOB_INFORM>(@"SELECT ID ,Name  FROM SPOSOB_INFORM", Properties.Settings.Default.DocExchangeConnectionString);
-                        Result_p4.DataContext = MyReader.MySelect<SPOSOB_INFORM>(@"SELECT TOP(4) ID ,Name  FROM RESULT_INFORM_P3", Properties.Settings.Default.DocExchangeConnectionString);
+                    fio_col = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_fam", Properties.Settings.Default.DocExchangeConnectionString);
+                    fam_p3.DataContext = fio_col;
+                    im_p3.DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_im", Properties.Settings.Default.DocExchangeConnectionString);
+                    ot_p3.DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_ot", Properties.Settings.Default.DocExchangeConnectionString);
+                    fam_p4.DataContext = fio_col;
+                    im_p4.DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_im", Properties.Settings.Default.DocExchangeConnectionString);
+                    ot_p4.DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_ot", Properties.Settings.Default.DocExchangeConnectionString);
+                    MKB.DataContext = MyReader.MySelect<MKB>(@"SELECT IDDS,DSNAME,NameWithID  FROM M001_KSG", Properties.Settings.Default.DocExchangeConnectionString);
+                    Theme_p3.DataContext = MyReader.MySelect<THEME_INFORM_P3>(@"SELECT ID ,Name  FROM THEME_INFORM_P3", Properties.Settings.Default.DocExchangeConnectionString);
+                    Sposob_p3.DataContext = MyReader.MySelect<SPOSOB_INFORM>(@"SELECT ID ,Name  FROM SPOSOB_INFORM", Properties.Settings.Default.DocExchangeConnectionString);
+                    Result_p3.DataContext = MyReader.MySelect<RESULT_INFORM_P3>(@"SELECT ID ,Name  FROM RESULT_INFORM_P3", Properties.Settings.Default.DocExchangeConnectionString);
+                    Vid_meropr_p3.DataContext = MyReader.MySelect<VID_MEROPR_INFORM_P3>(@"SELECT ID ,Name  FROM VID_MEROPR_INFORM_P3", Properties.Settings.Default.DocExchangeConnectionString);
+                    Tema_yved_p4.DataContext = MyReader.MySelect<THEME_INFORM_P4>(@"SELECT ID ,Name  FROM THEME_INFORM_P4", Properties.Settings.Default.DocExchangeConnectionString);
+                    Sposob_p4.DataContext = MyReader.MySelect<SPOSOB_INFORM>(@"SELECT ID ,Name  FROM SPOSOB_INFORM", Properties.Settings.Default.DocExchangeConnectionString);
+                    Result_p4.DataContext = MyReader.MySelect<SPOSOB_INFORM>(@"SELECT TOP(4) ID ,Name  FROM RESULT_INFORM_P3", Properties.Settings.Default.DocExchangeConnectionString);
 
-                        stack_btns.Visibility = Visibility.Collapsed;
-                        Adder.Visibility = Visibility.Visible;
-                    //Premiss_edt.Visibility = Visibility.Visible;
+
+                    //Adder.Visibility = Visibility.Visible;
+                    // Premiss_edt.Visibility = Visibility.Visible;
                     //dateP.Visibility = Visibility.Visible;
                     Premiss_edt.DataContext = MyReader.MySelect<INFORMIROVAN>(@"SELECT * FROM PRICHINA_INFORMIROVANIYA",
                         Properties.Settings.Default.DocExchangeConnectionString);
 
-                    Premiss_edt.SelectedIndex = 0;
-                    dateP.DateTime = DateTime.Now;
-                  
-                            var peopleList = MyReader.MySelect<People>(SPR.MyReader.load_pers_grid2 + "order by pe.ID DESC",Properties.Settings.Default.DocExchangeConnectionString);
-                        inform_grid.ItemsSource = peopleList;
-                            inform_grid.View.FocusedRowHandle = -1;
-                     
-                     
-                        inform_grid.Visibility = Visibility.Visible;
-                        //Del_file_btn.Visibility = Visibility.Hidden;
-                    //del_file_panel.Visibility = Visibility.Hidden;
-                    //del_btn_hist.Visibility = Visibility.Hidden;
-                    }
+                    //Premiss_edt.SelectedIndex = 0;
+                    //dateP.DateTime = DateTime.Now;
+
+                    var peopleList = MyReader.MySelect<Events>(SPR.MyReader.load_pers_grid + "order by pe.ID DESC", Properties.Settings.Default.DocExchangeConnectionString);
+                    inform_grid.ItemsSource = peopleList;
+                    inform_grid.View.FocusedRowHandle = -1;
+
+
+                    inform_grid.Visibility = Visibility.Visible;
+                    //Del_file_btn.Visibility = Visibility.Hidden;
+                    del_file_panel.Visibility = Visibility.Hidden;
+                    del_btn_hist.Visibility = Visibility.Hidden;
+
                 }
-                else if(call_ == "unload_history")
+                else if (call_ == "unload_history")
                 {
                     Title = "История обмена данными с ТФОМС";
                     //Adder.Visibility = Visibility.Hidden;
@@ -142,7 +115,6 @@ namespace Insurance
                     //dateP.Visibility = Visibility.Hidden;
                     //Del_file_btn.Visibility = Visibility.Hidden;
                     //del_btn_hist.Visibility = Visibility.Hidden;
-                    ViewFilesItem.IsEnabled = true;
                     inform_grid.Visibility = Visibility.Visible;
                     var peopleList =
                     MyReader.MySelect<UNLOAD_HISTORY>(
@@ -154,9 +126,9 @@ namespace Insurance
    ORDER BY uh.ID", Properties.Settings.Default.DocExchangeConnectionString);
                     inform_grid.ItemsSource = peopleList;
                     inform_grid.GroupBy("FAM");
-                    inform_grid.GroupBy("IM",true);
-                    inform_grid.GroupBy("OT",true);
-                
+                    inform_grid.GroupBy("IM", true);
+                    inform_grid.GroupBy("OT", true);
+
 
                 }
                 else if (call_ == "person_history")
@@ -169,7 +141,7 @@ namespace Insurance
                     del_file_panel.Visibility = Visibility.Hidden;
                     inform_grid.Visibility = Visibility.Visible;
                     var peopleList =
-                    MyReader.MySelect<People_history>( $@"  SELECT  pe.ID,pe.DVIZIT,pp.active,pe.TIP_OP,pp.SS ,pp.ENP ,pp.FAM , pp.IM  , pp.OT ,pp.W ,pp.DR , po.FAM as FAM_OLD ,
+                    MyReader.MySelect<People_history>($@"  SELECT  pe.ID,pe.DVIZIT,pp.active,pe.TIP_OP,pp.SS ,pp.ENP ,pp.FAM , pp.IM  , pp.OT ,pp.W ,pp.DR , po.FAM as FAM_OLD ,
   po.IM as IM_OLD  , po.OT as OT_OLD ,po.W as W_OLD,po.DR as DR_OLD ,pp.PHONE ,
 pp.COMMENT, f.NameWithID, op.filename, d.DOCTYPE, d.DOCSER, d.DOCNUM, VPOLIS, SPOLIS, NPOLIS, DBEG, DRECEIVED, DEND, 
 DSTOP,do.DOCTYPE as DOCTYPE_OLD, do.DOCSER as DOCSER_OLD, do.DOCNUM as DOCNUM_OLD,do.DOCDATE as DOCDATE_OLD
@@ -276,11 +248,11 @@ select *from(select
  left join @tt t
  on replace(f.FILENAME,right(filename,4),'')=t.fname", Properties.Settings.Default.DocExchangeConnectionString);
                     inform_grid.ItemsSource = peopleList;
-                    //inform_grid.GroupBy(inform_grid.Columns[0],DevExpress.Data.ColumnSortOrder.Descending);
-                    //inform_grid.GroupBy(inform_grid.Columns[1], true);
-                    //inform_grid.GroupBy(inform_grid.Columns[2], true);
+                    //pers_grid.GroupBy(pers_grid.Columns[0],DevExpress.Data.ColumnSortOrder.Descending);
+                    //pers_grid.GroupBy(pers_grid.Columns[1], true);
+                    //pers_grid.GroupBy(pers_grid.Columns[2], true);
                     inform_grid.GroupBy(inform_grid.Columns[0], DevExpress.Data.ColumnSortOrder.Descending);
-                    inform_grid.GroupBy("FILENAME",true);
+                    inform_grid.GroupBy("FILENAME", true);
                     inform_grid.GroupBy("FDATE", true);
                     inform_grid.Columns["TIP_OP"].Width = 60;
                     inform_grid.Columns["FIO"].Width = 350;
@@ -288,7 +260,7 @@ select *from(select
                 }
                 Cursor = Cursors.Arrow;
             }));
-            
+
         }
 
         private void Informed_Closed(object sender, EventArgs e)
@@ -298,32 +270,35 @@ select *from(select
 
         private void Adder_Click(object sender, RoutedEventArgs e)
         {
-            if (dateP.EditValue == null)
-            {
-                MessageBox.Show("Ошибка! Заполните дату информирования!");
-                return;
-            }
-            else
-            {
+          
+                Vars.IDSZ = Funcs.MyIds(inform_grid1.GetSelectedRowHandles(), inform_grid1);
                 var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
-                SqlConnection con = new SqlConnection(connectionString);
-                Vars.IDZZ = new List<string>();
-                Vars.IDZZ.AddRange(Vars.IDSZ.Split(','));
-                for (int i = 0; i < Vars.IDZZ.Count; i++)
-                {
-                    SqlCommand cmddoc = new SqlCommand(
-                        $@"INSERT INTO POL_PERSONS_INFORM(DATE_INFORM,PRICHINA_INFORM,PERSONGUID,PERSON_ID) VALUES ('{dateP.EditValue}','{Premiss_edt.EditValue}',(SELECT IDGUID FROM POL_PERSONS where ID = {Vars.IDZZ[i]}),{Vars.IDZZ[i]})",
-                        con);
-                    con.Open();
-                    cmddoc.ExecuteNonQuery();
-                    con.Close();
-                }
-                string m = "ЗЛ успешно проинформированы!";
+                var con = new SqlConnection(connectionString);
+                SqlCommand com = new SqlCommand($@"INSERT INTO POL_PERSONS_INFORM (PERSON_ID,PERSONGUID,FAM_P3,IM_P3,OT_P3,Month_P3,Year_P3,Theme_P3,Date_P3,SPOSOB_P3,RESULT_P3,VID_P3,PRIMECH) VALUES ({Vars.IDSZ},NEWID(),'{fam_p3.Text}','{im_p3.Text}','{ot_p3.Text}',{month_p3.EditValue},{Year_p3.EditValue},'{Theme_p3.Text}','{Date_evd_p3.DateTime.ToString("yyyy-MM-dd")}','{Sposob_p3.Text}','{Result_p3.Text}','{Vid_meropr_p3.Text}','{Primech_p3.EditValue}')", con);
+                con.Open();
+                com.ExecuteNonQuery();
+                con.Close();
+                string m = "ЗЛ успешно проинформированы! Приложение 3";
                 string t = "Сообщение!";
                 int b = 1;
                 Message me = new Message(m, t, b);
                 me.ShowDialog();
-            }
+            
+          
+                Vars.IDSZ = Funcs.MyIds(inform_grid.GetSelectedRowHandles(), inform_grid);
+                var connectionString1 = Properties.Settings.Default.DocExchangeConnectionString;
+                var con1 = new SqlConnection(connectionString);
+                SqlCommand com1= new SqlCommand($@"INSERT INTO POL_PERSONS_INFORM (PERSON_ID,PERSONGUID,FAM_P4,IM_P4,OT_P4,Year_P4,Month_1_P4,Month_2_P4,Month_3_P4,Month_4_P4, Theme_P4,Date_P4,SPOSOB_P4,RESULT_P4,SOGLASIE_P4,MKB_P4) VALUES ({Vars.IDSZ},NEWID(),'{fam_p4.Text}','{im_p4.Text}','{ot_p4.Text}',{Year_p4.EditValue},{Month1.Text},{Month2.Text},{Month3.Text},{Month4.Text},'{Tema_yved_p4.Text}','{dateyved_p4.DateTime.ToString("yyyy-MM-dd")}','{Sposob_p4.Text}','{Result_p4.Text}','{Soglasie.EditValue}','{MKB.EditValue.ToString()}')", con);
+                //var ll = MKB_combo.EditValue.ToString();
+                con.Open();
+                com.ExecuteNonQuery();
+                con.Close();
+                string m1 = "ЗЛ успешно проинформированы! Приложение 4";
+                string t1 = "Сообщение!";
+                int b1 = 1;
+                Message me1 = new Message(m1, t1, b1);
+                me.ShowDialog();
+            
         }
         private void Del_file_btn_Click(object sender, RoutedEventArgs e)
         {            
@@ -839,6 +814,23 @@ select *from(select
             inform_grid.Columns["TIP_OP"].Width = 60;
             inform_grid.Columns["FIO"].Width = 350;
             inform_grid.Columns["DR"].Width = 100;
+        }
+
+        private void Adder_Copy1_Click(object sender, RoutedEventArgs e)
+        {
+            Vars.IDSZ = Funcs.MyIds(inform_grid.GetSelectedRowHandles(), inform_grid);
+            var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
+            var con = new SqlConnection(connectionString);
+            SqlCommand com = new SqlCommand($@"delete from POL_PERSONS_INFORM where id = {Vars.IDSZ}", con);
+            //var ll = MKB_combo.EditValue.ToString();
+            con.Open();
+            com.ExecuteNonQuery();
+            con.Close();
+            string m = "Информирование успешно удалено!";
+            string t = "Сообщение!";
+            int b = 1;
+            Message me = new Message(m, t, b);
+            me.ShowDialog();
         }
     }
     

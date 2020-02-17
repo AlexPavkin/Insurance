@@ -81,7 +81,7 @@
         <dxe:ComboBoxEdit x:Name="Premiss_edt" HorizontalAlignment="Left" Height="34" Margin="10,11,0,0" VerticalAlignment="Top" Width="171" NullValueButtonPlacement="EditBox" DisplayMember="PRICHINA_INFORM" ValueMember="ID" ItemsSource="{Binding}"/>
         <dxe:DateEdit x:Name="dateP" NullValueButtonPlacement="EditBox" MaskType="DateTimeAdvancingCaret" Margin="193,11,629,0" Height="34" VerticalAlignment="Top"/>
 
-      <StackPanel Orientation="Vertical">
+        <StackPanel Orientation="Vertical">
             <StackPanel x:Name="del_file_panel" Orientation="Horizontal">
 
                 <Button x:Name="Del_file_btn" Style="{StaticResource myButtonStyle1}" ToolTip="Удаление некорректных файлов выгрузки в ТФОМС" HorizontalAlignment="Left" Height="50" Margin="0,0,0,0" VerticalAlignment="Top"  TabIndex="9" Click="Del_file_btn_Click">
@@ -214,83 +214,106 @@
 
 
             </dxlc:LayoutControl>
-            <Button x:Name="Adder"  HorizontalAlignment="Left" Margin="10,-55,0,0" VerticalAlignment="Top" Width="178" Height="50" Foreground="White" Click="Adder_Click" Style="{StaticResource myButtonStyle1}">
-                <StackPanel x:Name="stack_btns" Orientation="Horizontal" Width="178" >
-                    <!--Margin="5,0"-->
-                    <Image Source="Insurance_icons\Inform.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
-                        <Image.OpacityMask>
-                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                <GradientStop Color="Black" Offset="0"/>
-                                <GradientStop Color="White" Offset="1"/>
-                            </LinearGradientBrush>
-                        </Image.OpacityMask>
 
-                    </Image>
-                    <TextBlock x:Name="btn_load_txt" Text="Проинформировать" VerticalAlignment="Center"  TextAlignment="Center" Margin="0,0" Width="149"  Foreground="White" FontWeight="Bold" FontSize="12"   />
-                </StackPanel>
+            <Button x:Name="Adder_Copy1"  HorizontalAlignment="Left" Margin="199,-55,0,0" VerticalAlignment="Top" Width="197" Height="50" Foreground="White" Click="Adder_Copy1_Click" Style="{StaticResource myButtonStyle1}">
+                <Button x:Name="Adder_Copy2"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="197" Height="40" Foreground="White" Click="Adder_Click" Style="{StaticResource myButtonStyle1}">
+                    <StackPanel x:Name="stack_btns2" Orientation="Horizontal" Width="197" >
+                        <!--Margin="5,0"-->
+                        <Image Source="Insurance_icons/delete_1.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
+                            <Image.OpacityMask>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="Black" Offset="0"/>
+                                    <GradientStop Color="White" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Image.OpacityMask>
+
+                        </Image>
+                        <TextBlock x:Name="btn_load_txt2" Text="Удалить информирование" VerticalAlignment="Center"  TextAlignment="Center" Margin="0,0" Width="160"  Foreground="White" FontWeight="Bold" FontSize="12"   />
+
+                    </StackPanel>
+                </Button>
+            </Button>
+
+            <Button x:Name="Adder"  HorizontalAlignment="Left" Margin="13,-55,0,0" VerticalAlignment="Top" Width="178" Height="50" Foreground="White" Click="Adder_Click" Style="{StaticResource myButtonStyle1}">
+                <Button x:Name="Adder_Copy3"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="178" Height="50" Foreground="White" Click="Adder_Click" Style="{StaticResource myButtonStyle1}">
+                    <StackPanel x:Name="stack_btns3" Orientation="Horizontal" Width="178" >
+                        <!--Margin="5,0"-->
+                        <Image Source="Insurance_icons/Inform.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
+                            <Image.OpacityMask>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="Black" Offset="0"/>
+                                    <GradientStop Color="White" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Image.OpacityMask>
+
+                        </Image>
+                        <TextBlock x:Name="btn_load_txt3" Text="Проинформировать" VerticalAlignment="Center"  TextAlignment="Center" Margin="0,0" Width="149"  Foreground="White" FontWeight="Bold" FontSize="12"   />
+
+                    </StackPanel>
+                </Button>
             </Button>
 
             <dxg:GridControl x:Name="inform_grid" AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True" Margin="10,10,10,0" VerticalAlignment="Top" OpacityMask="#FF9BD8DB"  SelectionMode="Row" MaxHeight="400">
-                <!--dx:DXSerializer.StoreLayoutMode="UI" dx:DXSerializer.SerializationID="inform_grid_inf" AutoGeneratedColumns="inform_grid_AutoGeneratedColumns"--> 
-            <dxg:GridControl.GroupSummary>
-                <dxg:GridSummaryItem SummaryType="Count" />
-            </dxg:GridControl.GroupSummary>
+                <!--dx:DXSerializer.StoreLayoutMode="UI" dx:DXSerializer.SerializationID="inform_grid_inf" AutoGeneratedColumns="inform_grid_AutoGeneratedColumns"-->
+                <dxg:GridControl.GroupSummary>
+                    <dxg:GridSummaryItem SummaryType="Count" />
+                </dxg:GridControl.GroupSummary>
 
-            <dxg:GridControl.TotalSummary>
-                <dxg:GridSummaryItem SummaryType="Count" />
-            </dxg:GridControl.TotalSummary>
-            <dxg:GridControl.View>
-                <dxg:TableView FilterEditorShowOperandTypeIcon="True" WaitIndicatorType="Panel"  ShowTotalSummary="True" ShowCheckBoxSelectorColumn="True"  CheckBoxSelectorColumnWidth="50"
+                <dxg:GridControl.TotalSummary>
+                    <dxg:GridSummaryItem SummaryType="Count" />
+                </dxg:GridControl.TotalSummary>
+                <dxg:GridControl.View>
+                    <dxg:TableView FilterEditorShowOperandTypeIcon="True" WaitIndicatorType="Panel"  ShowTotalSummary="True" ShowCheckBoxSelectorColumn="True"  CheckBoxSelectorColumnWidth="50"
                                RetainSelectionOnClickOutsideCheckBoxSelector="False" ShowAutoFilterRow="True" AllowConditionalFormattingMenu="True" AllowFixedColumnMenu="True" ColumnFilterPopupMode="Excel" 
                                ShowCriteriaInAutoFilterRow="False" EditFormShowMode="Dialog" EditFormPostConfirmation="YesNo" ShowEditFormUpdateCancelButtons="False" ShowEditFormOnEnterKey="False" EditFormColumnCount="1" 
                                EditFormPostMode="Cached" MergedGroupingMode="Always" AllowMergedGrouping="True" Margin="0,0,-2,-2" AutoWidth="False">
 
-                    <dxg:TableView.FormatConditions>
-                        <dxg:FormatCondition Expression="[UNLOAD] = True" FieldName="" ApplyToRow="True">
-                            <dx:Format Background="#FF9BBB59" />
-                        </dxg:FormatCondition>
-                        <dxg:FormatCondition ApplyToRow="True" FieldName="" Expression="[DSTOP] Between(#1900-01-01#, Today())">
-                            <dx:Format Background="#FFFF9B98" />
-                        </dxg:FormatCondition>
-                    </dxg:TableView.FormatConditions>
+                        <dxg:TableView.FormatConditions>
+                            <dxg:FormatCondition Expression="[UNLOAD] = True" FieldName="" ApplyToRow="True">
+                                <dx:Format Background="#FF9BBB59" />
+                            </dxg:FormatCondition>
+                            <dxg:FormatCondition ApplyToRow="True" FieldName="" Expression="[DSTOP] Between(#1900-01-01#, Today())">
+                                <dx:Format Background="#FFFF9B98" />
+                            </dxg:FormatCondition>
+                        </dxg:TableView.FormatConditions>
                         <dxg:TableView.RowCellMenuCustomizations>
-                            <dxb:BarButtonItem Name="ViewFilesItem" IsEnabled="False"  Content="Просмотреть файл(ы)" ItemClick="Files_ItemClick"/>                            
+                            <dxb:BarButtonItem x:Name="ViewFilesItem" IsEnabled="False"  Content="Просмотреть файл(ы)" ItemClick="Files_ItemClick"/>
                         </dxg:TableView.RowCellMenuCustomizations>
                     </dxg:TableView>
 
 
-            </dxg:GridControl.View>
-        </dxg:GridControl>
+                </dxg:GridControl.View>
+            </dxg:GridControl>
 
 
-        <dxg:GridControl x:Name="inform_grid1" AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True" Margin="10,10,10,8" Height="{Binding}" OpacityMask="#FF9BD8DB"  SelectionMode="Row">
-            <dxg:GridControl.GroupSummary>
-                <dxg:GridSummaryItem SummaryType="Count" />
-            </dxg:GridControl.GroupSummary>
+            <dxg:GridControl x:Name="inform_grid1" AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True" Margin="10,10,10,8" Height="{Binding}" OpacityMask="#FF9BD8DB"  SelectionMode="Row">
+                <dxg:GridControl.GroupSummary>
+                    <dxg:GridSummaryItem SummaryType="Count" />
+                </dxg:GridControl.GroupSummary>
 
-            <dxg:GridControl.TotalSummary>
-                <dxg:GridSummaryItem SummaryType="Count" />
-            </dxg:GridControl.TotalSummary>
-            <dxg:GridControl.View>
-                <dxg:TableView FilterEditorShowOperandTypeIcon="True" WaitIndicatorType="Panel"  ShowTotalSummary="True" ShowCheckBoxSelectorColumn="True"  CheckBoxSelectorColumnWidth="50"
+                <dxg:GridControl.TotalSummary>
+                    <dxg:GridSummaryItem SummaryType="Count" />
+                </dxg:GridControl.TotalSummary>
+                <dxg:GridControl.View>
+                    <dxg:TableView FilterEditorShowOperandTypeIcon="True" WaitIndicatorType="Panel"  ShowTotalSummary="True" ShowCheckBoxSelectorColumn="True"  CheckBoxSelectorColumnWidth="50"
                                RetainSelectionOnClickOutsideCheckBoxSelector="False" ShowAutoFilterRow="True" AllowConditionalFormattingMenu="True" AllowFixedColumnMenu="True" ColumnFilterPopupMode="Excel" 
                                ShowCriteriaInAutoFilterRow="False" EditFormShowMode="Dialog" EditFormPostConfirmation="YesNo" ShowEditFormUpdateCancelButtons="False" ShowEditFormOnEnterKey="False" EditFormColumnCount="1" 
                                EditFormPostMode="Cached" MergedGroupingMode="Always" AllowMergedGrouping="True" Margin="0,0,-2,0" AutoWidth="True" MaxHeight="400">
 
-                    <dxg:TableView.FormatConditions>
-                        <dxg:FormatCondition Expression="[UNLOAD] = True" FieldName="" ApplyToRow="True">
-                            <dx:Format Background="#FF9BBB59" />
-                        </dxg:FormatCondition>
-                        <dxg:FormatCondition ApplyToRow="True" FieldName="" Expression="[DSTOP] Between(#1900-01-01#, Today())">
-                            <dx:Format Background="#FFFF9B98" />
-                        </dxg:FormatCondition>
-                    </dxg:TableView.FormatConditions>
-                </dxg:TableView>
+                        <dxg:TableView.FormatConditions>
+                            <dxg:FormatCondition Expression="[UNLOAD] = True" FieldName="" ApplyToRow="True">
+                                <dx:Format Background="#FF9BBB59" />
+                            </dxg:FormatCondition>
+                            <dxg:FormatCondition ApplyToRow="True" FieldName="" Expression="[DSTOP] Between(#1900-01-01#, Today())">
+                                <dx:Format Background="#FFFF9B98" />
+                            </dxg:FormatCondition>
+                        </dxg:TableView.FormatConditions>
+                    </dxg:TableView>
 
 
-            </dxg:GridControl.View>
-        </dxg:GridControl>
-      </StackPanel>
+                </dxg:GridControl.View>
+            </dxg:GridControl>
+        </StackPanel>
 
     </Grid>
 </Window>
