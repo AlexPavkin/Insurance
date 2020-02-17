@@ -1,4 +1,4 @@
-﻿<Window x:Name="w_main" x:Class="Insurance.MainWindow" mc:Ignorable="d" control:EnterKeyTraversal.IsEnabled="True"  Height="948.4" Width="1666.987" Background="#FF0063FF" Activated="w_main_Activated" Loaded="w_main_Loaded" Closed="W_main_Closed" 
+﻿<Window x:Name="w_main" x:Class="Insurance.MainWindow" mc:Ignorable="d"  Height="948.4" Width="1666.987" Background="#FF0063FF" Activated="w_main_Activated" Loaded="w_main_Loaded" Closed="W_main_Closed" 
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 

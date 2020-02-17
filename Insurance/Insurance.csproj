@@ -248,6 +248,9 @@
       <DependentUpon>Message.xaml</DependentUpon>
     </Compile>
     <Compile Include="InsMethods.cs" />
+    <Compile Include="Poisk_Vladik.xaml.cs">
+      <DependentUpon>Poisk_Vladik.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ReportsPreview.xaml.cs">
       <DependentUpon>ReportsPreview.xaml</DependentUpon>
     </Compile>
@@ -359,6 +362,10 @@
     <Page Include="Message.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Poisk_Vladik.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="ReportsPreview.xaml">
       <SubType>Designer</SubType>
