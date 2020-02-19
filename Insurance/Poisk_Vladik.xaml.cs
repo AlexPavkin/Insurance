@@ -26,14 +26,15 @@ namespace Insurance
             InitializeComponent();
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
             fam.Focus();
-         
+
 
         }
         List<string> Type_docZ = new List<string>();
+        Dictionary<string, string> Month = new Dictionary<string, string>();
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-         
-            var req = new HttpRequest();
+            
+        var req = new HttpRequest();
             var Cookies = new CookieDictionary();
 
             req.Cookies = Cookies;
@@ -41,18 +42,18 @@ namespace Insurance
             req[HttpHeader.Accept] = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9";
             req[HttpHeader.AcceptLanguage] = "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7";
             var G1 = req.Get("http://192.168.10.13/index.php").ToString();
-            var sid = Request.Pars(G1,"sid\" value=\"", "\"");
+            var sid = Request.Pars(G1, "sid\" value=\"", "\"");
 
             req.AllowAutoRedirect = true;
             req.Cookies = Cookies;
             req[HttpHeader.Accept] = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9";
             req[HttpHeader.AcceptLanguage] = "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7";
             req.UserAgent = Http.ChromeUserAgent();
-            var Resp = req.Post("http://192.168.10.13/handler.php", "login=25016&prz=&passw=964687&b1=&hidden=auth_form&sid="+sid, "application/x-www-form-urlencoded").ToString();
+            var Resp = req.Post("http://192.168.10.13/handler.php", "login=25016&prz=&passw=964687&b1=&hidden=auth_form&sid=" + sid, "application/x-www-form-urlencoded").ToString();
             if (Resp.Contains("Выход"))
-            {  
-                //ПОИСК ПО ФИО И ДР
-                if (SerPolis.Text!=""&& NomPolis.Text!= ""&& fam.Text == "" && im.Text == "" && ot.Text == "" && dr.Text == "" && ENP.Text == "" && SNILS.Text == "")
+            {
+                //ПОИСК ПО Серии и номеру полиса
+                if (SerPolis.Text != "" && NomPolis.Text != "" && fam.Text == "" && im.Text == "" && ot.Text == "" && dr.Text == "" && ENP.Text == "" && SNILSF.Text == "")
                 {
 
                     req.AllowAutoRedirect = true;
@@ -86,7 +87,7 @@ namespace Insurance
                     DR_TFOMS.Text = DR;
                     VIDPOLIS_TFOMS.Text = VP;
                     SNILS_TFOMS.Text = SNILS;
-                    POLIS_TFOMS.Text = NPOLIS;
+                    POLIS_TFOMS.Text = NPOLIS.Trim();
                     ENP_TFOMS.Text = ENP;
                     MR_TFOMS.Text = MR;
                     POLIKLIN_TFOMS.Text = POL_NAME;
@@ -96,7 +97,7 @@ namespace Insurance
                     PRZ_TFOMS.Text = PRZ_NAM;
                     DATE_START_TFOMS.Text = DBEG;
 
-                    if (DEND != "..")
+                    if (DEND != ".. ")
                     {
                         DATE_END_TFOMS.Text = DEND;
                     }
@@ -105,7 +106,7 @@ namespace Insurance
                         DATE_END_TFOMS.Text = "";
                     }
 
-                    if (DSTOP != "..")
+                    if (DSTOP != ".. ")
                     {
                         DATE_NULL_TFOMS.Text = DSTOP;
                     }
@@ -114,7 +115,7 @@ namespace Insurance
                         DATE_NULL_TFOMS.Text = "";
                     }
 
-                    if (RSTOP != "..")
+                    if (RSTOP != ".. ")
                     {
                         PRICIHIA_NULL_TFOMS.Text = RSTOP;
                     }
@@ -123,7 +124,7 @@ namespace Insurance
                         PRICIHIA_NULL_TFOMS.Text = "";
                     }
 
-                    if (DS != "..")
+                    if (DS != ".. ")
                     {
                         DATE_DEAD_TFOMS.Text = DS;
                     }
@@ -132,14 +133,86 @@ namespace Insurance
                         DATE_DEAD_TFOMS.Text = "";
                     }
 
-                    if (DS!="" && DS!="..")
+                    if (DS != "" && DS != ".. ")
                     {
                         DATE_DEAD_TFOMS.Background = Brushes.Red;
                     }
+                    string load_pers_grid = $@" SELECT top(1) pp.SROKDOVERENOSTI,pp.ID,pp.ACTIVE,op.przcod,pe.UNLOAD,ENP ,FAM , IM  , OT ,W ,DR ,MO,oks.CAPTION as C_OKSM,r.NameWithID , pp.COMMENT,pe.DVIZIT, pp.DATEVIDACHI, pp.PRIZNAKVIDACHI,
+            SS  ,VPOLIS,SPOLIS ,NPOLIS,DBEG ,DEND ,DSTOP ,BLANK ,DRECEIVED,f.NameWithId as MO_NameWithId,op.filename,pp.phone,p.AGENT, pp.CYCLE,(select pr.namewithid  from POL_PERSONS_INFORM pin
+left join PRICHINA_INFORMIROVANIYA pr
+on pin.PRICHINA_INFORM=pr.ID
+where PERSON_ID=pp.ID and pin.id=(select max(id) from POL_PERSONS_INFORM where PERSON_ID=pp.ID)) as inform, st.namewithkod as STOP_REASON, pe.id as EVENT_ID
+              FROM [dbo].[POL_PERSONS] pp left join 
+            pol_events pe on pp.event_guid=pe.idguid
+         	LEFT JOIN POL_PRZ_AGENTS p
+			on p.ID = pe.AGENT
+		    left join pol_polises ps
+            on pp.EVENT_GUID=ps.EVENT_GUID
+            left join pol_oplist op
+            on pp.EVENT_GUID=op.EVENT_GUID
+            left join r001 r
+            on pe.tip_op=r.kod
+            left join f003 f
+            on pp.MO=f.mcod
+            left join SPR_STOP st
+            on ps.STOP_REASON=st.kod
+			left join SPR_79_OKSM oks
+			on pp.C_OKSM=oks.A3
+			where pp.FAM = '{FAM}'
+			and pp.IM = '{IM}'
+			and pp.OT = '{OT}'
+			and pp.DR = '{DR}'
+			order by pe.ID DESC";
+                 var List =  MyReader.MySelect<Events>(load_pers_grid, Properties.Settings.Default.DocExchangeConnectionString);
+                    if (List.Count != 0)
+                    {
+                        FAM_B.Text = List[0].FAM;
+                        IM_B.Text = List[0].IM;
+                        OT_B.Text = List[0].OT;
+                        DR_B.EditValue = List[0].DR;
+                        if (List[0].VPOLIS == 1)
+                        {
+                            VIDPOLISA_B.Text = "Полис ОМС старого образца";
+                        }
+                        else if (List[0].VPOLIS == 2)
+                        {
+                            VIDPOLISA_B.Text = "Временное свидетельство, подтверждающее оформление полиса обязательного медицинского страхования";
+                        }
+                        else if (List[0].VPOLIS == 3)
+                        {
+                            VIDPOLISA_B.Text = "Полис ОМС единого образца";
+                        }
+                        SNILS_B.Text = List[0].SS;
+                        POLIS_B.Text = List[0].SPOLIS.Trim() + " " + NPOLIS.Trim();
+                        ENP_B.Text = List[0].ENP;
+                        MR_B.Text = MR;
+                        ENP_B.Text = List[0].ENP;
+                        POLIK_B.Text = POLIKLIN_TFOMS.Text;
+                        DATE_P_B.Text = DATE_PRIKREP_TFOMS.Text;
+                        SPOSOB_B.Text = SPOSOB.Replace("<td>", "").Trim();
+                        //SMO_B.Text = List[0].;
+                        PRZ_B.Text = List[0].PRZCOD;
+                        DATE_BEG_B.EditValue = List[0].DBEG;
+                        D_END_B.EditValue = List[0].DEND;
+                        D_NULL_B.EditValue = List[0].DSTOP;
+                        PRICH_B.Text = List[0].STOP_REASON;
+
+                    }
+                    else
+                    {
+                        string m = "В нашей базе не найден данный ЗЛ!";
+                        string t = "Ошибка!";
+                        int b = 1;
+                        Message me = new Message(m, t, b);
+                        me.ShowDialog();
+
+                        return;
+
+                    }
 
                 }
-                //ПОИСК ПО СЕРИИ И НОМЕРУ
-                else if (SerPolis.Text == "" && NomPolis.Text == "" && fam.Text == "" && im.Text == "" && ot.Text == "" && dr.Text == "" && ENP.Text != "" && SNILS.Text == "")
+                //ПОИСК ПО ЕНП
+                else if (SerPolis.Text == "" && NomPolis.Text == "" && fam.Text == "" && im.Text == "" && ot.Text == "" && dr.Text == "" && this.ENP.Text != "" && SNILSF.Text == "")
                 {
 
                     req.AllowAutoRedirect = true;
@@ -147,7 +220,7 @@ namespace Insurance
                     req[HttpHeader.Accept] = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9";
                     req[HttpHeader.AcceptLanguage] = "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7";
                     req.UserAgent = Http.ChromeUserAgent();
-                    var ResponsePolis = req.Post("http://192.168.10.13/handler.php", $@"plnum={ENP_TFOMS.Text}&hidden=enponly&b1=&sid=" + sid, "application/x-www-form-urlencoded").ToString();
+                    var ResponsePolis = req.Post("http://192.168.10.13/handler.php", $@"plnum={this.ENP.Text}&hidden=enponly&b1=&sid=" + sid, "application/x-www-form-urlencoded").ToString();
                     var FAM = Request.Pars(ResponsePolis, "FAM1\">", "<");
                     var IM = Request.Pars(ResponsePolis, "IM1\">", "<");
                     var OT = Request.Pars(ResponsePolis, "OT1\">", "<");
@@ -173,7 +246,7 @@ namespace Insurance
                     DR_TFOMS.Text = DR;
                     VIDPOLIS_TFOMS.Text = VP;
                     SNILS_TFOMS.Text = SNILS;
-                    POLIS_TFOMS.Text = NPOLIS;
+                    POLIS_TFOMS.Text = NPOLIS.Trim();
                     ENP_TFOMS.Text = ENP;
                     MR_TFOMS.Text = MR;
                     POLIKLIN_TFOMS.Text = POL_NAME;
@@ -183,7 +256,7 @@ namespace Insurance
                     PRZ_TFOMS.Text = PRZ_NAM;
                     DATE_START_TFOMS.Text = DBEG;
 
-                    if (DEND != "..")
+                    if (DEND != ".. ")
                     {
                         DATE_END_TFOMS.Text = DEND;
                     }
@@ -192,7 +265,7 @@ namespace Insurance
                         DATE_END_TFOMS.Text = "";
                     }
 
-                    if (DSTOP != "..")
+                    if (DSTOP != ".. ")
                     {
                         DATE_NULL_TFOMS.Text = DSTOP;
                     }
@@ -201,7 +274,7 @@ namespace Insurance
                         DATE_NULL_TFOMS.Text = "";
                     }
 
-                    if (RSTOP != "..")
+                    if (RSTOP != ".. ")
                     {
                         PRICIHIA_NULL_TFOMS.Text = RSTOP;
                     }
@@ -210,7 +283,7 @@ namespace Insurance
                         PRICIHIA_NULL_TFOMS.Text = "";
                     }
 
-                    if (DS != "..")
+                    if (DS != ".. ")
                     {
                         DATE_DEAD_TFOMS.Text = DS;
                     }
@@ -219,14 +292,87 @@ namespace Insurance
                         DATE_DEAD_TFOMS.Text = "";
                     }
 
-                    if (DS != "" && DS != "..")
+                    if (DS != "" && DS != ".. ")
                     {
                         DATE_DEAD_TFOMS.Background = Brushes.Red;
                     }
+                    string load_pers_grid = $@" SELECT top(1) pp.SROKDOVERENOSTI,pp.ID,pp.ACTIVE,op.przcod,pe.UNLOAD,ENP ,FAM , IM  , OT ,W ,DR ,MO,oks.CAPTION as C_OKSM,r.NameWithID , pp.COMMENT,pe.DVIZIT, pp.DATEVIDACHI, pp.PRIZNAKVIDACHI,
+            SS  ,VPOLIS,SPOLIS ,NPOLIS,DBEG ,DEND ,DSTOP ,BLANK ,DRECEIVED,f.NameWithId as MO_NameWithId,op.filename,pp.phone,p.AGENT, pp.CYCLE,(select pr.namewithid  from POL_PERSONS_INFORM pin
+left join PRICHINA_INFORMIROVANIYA pr
+on pin.PRICHINA_INFORM=pr.ID
+where PERSON_ID=pp.ID and pin.id=(select max(id) from POL_PERSONS_INFORM where PERSON_ID=pp.ID)) as inform, st.namewithkod as STOP_REASON, pe.id as EVENT_ID
+              FROM [dbo].[POL_PERSONS] pp left join 
+            pol_events pe on pp.event_guid=pe.idguid
+         	LEFT JOIN POL_PRZ_AGENTS p
+			on p.ID = pe.AGENT
+		    left join pol_polises ps
+            on pp.EVENT_GUID=ps.EVENT_GUID
+            left join pol_oplist op
+            on pp.EVENT_GUID=op.EVENT_GUID
+            left join r001 r
+            on pe.tip_op=r.kod
+            left join f003 f
+            on pp.MO=f.mcod
+            left join SPR_STOP st
+            on ps.STOP_REASON=st.kod
+			left join SPR_79_OKSM oks
+			on pp.C_OKSM=oks.A3
+			where pp.FAM = '{FAM}'
+			and pp.IM = '{IM}'
+			and pp.OT = '{OT}'
+			and pp.DR = '{DR}'
+			order by pe.ID DESC";
+                    var List = MyReader.MySelect<Events>(load_pers_grid, Properties.Settings.Default.DocExchangeConnectionString);
+                    if (List.Count != 0)
+                    {
+                        FAM_B.Text = List[0].FAM;
+                        IM_B.Text = List[0].IM;
+                        OT_B.Text = List[0].OT;
+                        DR_B.EditValue = List[0].DR;
+                        if (List[0].VPOLIS == 1)
+                        {
+                            VIDPOLISA_B.Text = "Полис ОМС старого образца";
+                        }
+                        else if (List[0].VPOLIS == 2)
+                        {
+                            VIDPOLISA_B.Text = "Временное свидетельство, подтверждающее оформление полиса обязательного медицинского страхования";
+                        }
+                        else if (List[0].VPOLIS == 3)
+                        {
+                            VIDPOLISA_B.Text = "Полис ОМС единого образца";
+                        }
+                        SNILS_B.Text = List[0].SS;
+                        POLIS_B.Text = List[0].SPOLIS.Trim() + " " + NPOLIS.Trim();
+                        ENP_B.Text = List[0].ENP;
+                        MR_B.Text = MR;
+                        ENP_B.Text = List[0].ENP;
+                        POLIK_B.Text = POLIKLIN_TFOMS.Text;
+                        DATE_P_B.Text = DATE_PRIKREP_TFOMS.Text;
+                        SPOSOB_B.Text = SPOSOB.Replace("<td>", "").Trim();
+                        //SMO_B.Text = List[0].;
+                        PRZ_B.Text = List[0].PRZCOD;
+                        DATE_BEG_B.EditValue = List[0].DBEG;
+                        D_END_B.EditValue = List[0].DEND;
+                        D_NULL_B.EditValue = List[0].DSTOP;
+                        PRICH_B.Text = List[0].STOP_REASON;
+
+                    }
+                    else
+                    {
+                        string m = "В нашей базе не найден данный ЗЛ!";
+                        string t = "Ошибка!";
+                        int b = 1;
+                        Message me = new Message(m, t, b);
+                        me.ShowDialog();
+
+                        return;
+
+                    }
+
 
                 }
-                //ПОИСК ПО ENP
-                else if (SerPolis.Text == "" && NomPolis.Text == "" && fam.Text == "" && im.Text == ""  && dr.Text == "" && ENP.Text != "" && SNILS.Text == "")
+                //ПОИСК ПО номеру временного свидетельства
+                else if (SerPolis.Text == "" && NomPolis.Text != "" && fam.Text == "" && im.Text == "" && dr.Text == "" && ENP.Text == "" && SNILSF.Text == "")
                 {
 
                     req.AllowAutoRedirect = true;
@@ -234,7 +380,7 @@ namespace Insurance
                     req[HttpHeader.Accept] = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9";
                     req[HttpHeader.AcceptLanguage] = "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7";
                     req.UserAgent = Http.ChromeUserAgent();
-                    var ResponsePolis = req.Post("http://192.168.10.13/handler.php", $@"plnum={ENP_TFOMS.Text}&hidden=enponly&b1=&sid=" + sid, "application/x-www-form-urlencoded").ToString();
+                    var ResponsePolis = req.Post("http://192.168.10.13/handler.php", $@"plnum={ENP_TFOMS.Text}&hidden=svid&b1=&sid=" + sid, "application/x-www-form-urlencoded").ToString();
                     var FAM = Request.Pars(ResponsePolis, "FAM1\">", "<");
                     var IM = Request.Pars(ResponsePolis, "IM1\">", "<");
                     var OT = Request.Pars(ResponsePolis, "OT1\">", "<");
@@ -260,7 +406,7 @@ namespace Insurance
                     DR_TFOMS.Text = DR;
                     VIDPOLIS_TFOMS.Text = VP;
                     SNILS_TFOMS.Text = SNILS;
-                    POLIS_TFOMS.Text = NPOLIS;
+                    POLIS_TFOMS.Text = NPOLIS.Trim();
                     ENP_TFOMS.Text = ENP;
                     MR_TFOMS.Text = MR;
                     POLIKLIN_TFOMS.Text = POL_NAME;
@@ -279,7 +425,7 @@ namespace Insurance
                         DATE_END_TFOMS.Text = "";
                     }
 
-                    if (DSTOP != "..")
+                    if (DSTOP != ".. ")
                     {
                         DATE_NULL_TFOMS.Text = DSTOP;
                     }
@@ -288,7 +434,7 @@ namespace Insurance
                         DATE_NULL_TFOMS.Text = "";
                     }
 
-                    if (RSTOP != "..")
+                    if (RSTOP != ".. ")
                     {
                         PRICIHIA_NULL_TFOMS.Text = RSTOP;
                     }
@@ -297,7 +443,7 @@ namespace Insurance
                         PRICIHIA_NULL_TFOMS.Text = "";
                     }
 
-                    if (DS != "..")
+                    if (DS != ".. ")
                     {
                         DATE_DEAD_TFOMS.Text = DS;
                     }
@@ -306,22 +452,101 @@ namespace Insurance
                         DATE_DEAD_TFOMS.Text = "";
                     }
 
-                    if (DS != "" && DS != "..")
+                    if (DS != "" && DS != ".. ")
                     {
                         DATE_DEAD_TFOMS.Background = Brushes.Red;
                     }
+                    string load_pers_grid = $@" SELECT top(1) pp.SROKDOVERENOSTI,pp.ID,pp.ACTIVE,op.przcod,pe.UNLOAD,ENP ,FAM , IM  , OT ,W ,DR ,MO,oks.CAPTION as C_OKSM,r.NameWithID , pp.COMMENT,pe.DVIZIT, pp.DATEVIDACHI, pp.PRIZNAKVIDACHI,
+            SS  ,VPOLIS,SPOLIS ,NPOLIS,DBEG ,DEND ,DSTOP ,BLANK ,DRECEIVED,f.NameWithId as MO_NameWithId,op.filename,pp.phone,p.AGENT, pp.CYCLE,(select pr.namewithid  from POL_PERSONS_INFORM pin
+left join PRICHINA_INFORMIROVANIYA pr
+on pin.PRICHINA_INFORM=pr.ID
+where PERSON_ID=pp.ID and pin.id=(select max(id) from POL_PERSONS_INFORM where PERSON_ID=pp.ID)) as inform, st.namewithkod as STOP_REASON, pe.id as EVENT_ID
+              FROM [dbo].[POL_PERSONS] pp left join 
+            pol_events pe on pp.event_guid=pe.idguid
+         	LEFT JOIN POL_PRZ_AGENTS p
+			on p.ID = pe.AGENT
+		    left join pol_polises ps
+            on pp.EVENT_GUID=ps.EVENT_GUID
+            left join pol_oplist op
+            on pp.EVENT_GUID=op.EVENT_GUID
+            left join r001 r
+            on pe.tip_op=r.kod
+            left join f003 f
+            on pp.MO=f.mcod
+            left join SPR_STOP st
+            on ps.STOP_REASON=st.kod
+			left join SPR_79_OKSM oks
+			on pp.C_OKSM=oks.A3
+			where pp.FAM = '{FAM}'
+			and pp.IM = '{IM}'
+			and pp.OT = '{OT}'
+			and pp.DR = '{DR}'
+			order by pe.ID DESC";
+                    var List = MyReader.MySelect<Events>(load_pers_grid, Properties.Settings.Default.DocExchangeConnectionString);
+                    if (List.Count != 0)
+                    {
+                        FAM_B.Text = List[0].FAM;
+                        IM_B.Text = List[0].IM;
+                        OT_B.Text = List[0].OT;
+                        DR_B.EditValue = List[0].DR;
+                        if (List[0].VPOLIS == 1)
+                        {
+                            VIDPOLISA_B.Text = "Полис ОМС старого образца";
+                        }
+                        else if (List[0].VPOLIS == 2)
+                        {
+                            VIDPOLISA_B.Text = "Временное свидетельство, подтверждающее оформление полиса обязательного медицинского страхования";
+                        }
+                        else if (List[0].VPOLIS == 3)
+                        {
+                            VIDPOLISA_B.Text = "Полис ОМС единого образца";
+                        }
+                        SNILS_B.Text = List[0].SS;
+                        POLIS_B.Text = List[0].SPOLIS.Trim() + " " + NPOLIS.Trim();
+                        ENP_B.Text = List[0].ENP;
+                        MR_B.Text = MR;
+                        ENP_B.Text = List[0].ENP;
+                        POLIK_B.Text = POLIKLIN_TFOMS.Text;
+                        DATE_P_B.Text = DATE_PRIKREP_TFOMS.Text;
+                        SPOSOB_B.Text = SPOSOB.Replace("<td>", "").Trim();
+                        //SMO_B.Text = List[0].;
+                        PRZ_B.Text = List[0].PRZCOD;
+                        DATE_BEG_B.EditValue = List[0].DBEG;
+                        D_END_B.EditValue = List[0].DEND;
+                        D_NULL_B.EditValue = List[0].DSTOP;
+                        PRICH_B.Text = List[0].STOP_REASON;
+
+                    }
+                    else
+                    {
+                        string m = "В нашей базе не найден данный ЗЛ!";
+                        string t = "Ошибка!";
+                        int b = 1;
+                        Message me = new Message(m, t, b);
+                        me.ShowDialog();
+
+                        return;
+
+                    }
+
 
                 }
-                //ПОИСК ПО Фамилиии и Документу удостоверяющего личность
-                else if (SerPolis.Text == "" && NomPolis.Text == "" && fam.Text == "" && im.Text == "" && ot.Text == "" && dr.Text == "" && ENP.Text == "" && SNILS.Text == "" && Type_doc.Text !="" && SerPolis_Passport.Text !="" && NomPolis_Passport.Text !="")
+                //ПОИСК ПО Полным персональным данным
+                else if (SerPolis.Text == "" && NomPolis.Text == "" && fam.Text != "" && im.Text != "" && dr.Text != "" && ENP.Text == "" && SNILSF.Text == "" && Type_doc.Text == "" && SerPolis_Passport.Text == "" && NomPolis_Passport.Text == "")
                 {
+                    var drr = dr.DateTime.ToLongDateString().Split(' ');
+                    if (drr[0].Length == 1)
+                    {
+                        drr[0] = "0" + drr[0];
+                    }
 
+                    var Per2 = Month[drr[1]];
                     req.AllowAutoRedirect = true;
                     req.Cookies = Cookies;
                     req[HttpHeader.Accept] = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9";
                     req[HttpHeader.AcceptLanguage] = "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7";
                     req.UserAgent = Http.ChromeUserAgent();
-                    var ResponsePolis = req.Post("http://192.168.10.13/handler.php", $@"f1=%D0%9C%D0%A3%D0%A5%D0%90%D0%9C%D0%95%D0%A2%D0%93%D0%90%D0%9B%D0%98%D0%9C%D0%9E%D0%92&im1=%D0%92%D0%90%D0%A1%D0%98%D0%9B%D0%98%D0%99&ot1=%D0%9C%D0%95%D0%9D%D0%90%D0%A4%D0%90%D0%97%D0%95%D0%9B%D0%9E%D0%92%D0%98%D0%A7&dd=08&mm=%D0%9D%D0%BE%D1%8F%D0%B1%D1%80%D1%8C&yy=1977&hidden=personal&b1=&sid=" + sid, "application/x-www-form-urlencoded").ToString();
+                    var ResponsePolis = req.Post("http://192.168.10.13/handler.php", $@"f1={Uri.EscapeUriString(fam.Text)}&im1={Uri.EscapeUriString(im.Text)}&ot1={Uri.EscapeUriString(ot.Text)}&dd={drr[0]}&mm={Uri.EscapeUriString(Per2)}&yy={drr[2]}&hidden=personal&b1=&sid=" + sid, "application/x-www-form-urlencoded").ToString();
                     var FAM = Request.Pars(ResponsePolis, "FAM1\">", "<");
                     var IM = Request.Pars(ResponsePolis, "IM1\">", "<");
                     var OT = Request.Pars(ResponsePolis, "OT1\">", "<");
@@ -347,7 +572,7 @@ namespace Insurance
                     DR_TFOMS.Text = DR;
                     VIDPOLIS_TFOMS.Text = VP;
                     SNILS_TFOMS.Text = SNILS;
-                    POLIS_TFOMS.Text = NPOLIS;
+                    POLIS_TFOMS.Text = NPOLIS.Trim();
                     ENP_TFOMS.Text = ENP;
                     MR_TFOMS.Text = MR;
                     POLIKLIN_TFOMS.Text = POL_NAME;
@@ -357,7 +582,8 @@ namespace Insurance
                     PRZ_TFOMS.Text = PRZ_NAM;
                     DATE_START_TFOMS.Text = DBEG;
 
-                    if (DEND != "..")
+
+                    if (DEND != ".. ")
                     {
                         DATE_END_TFOMS.Text = DEND;
                     }
@@ -366,7 +592,7 @@ namespace Insurance
                         DATE_END_TFOMS.Text = "";
                     }
 
-                    if (DSTOP != "..")
+                    if (DSTOP != ".. ")
                     {
                         DATE_NULL_TFOMS.Text = DSTOP;
                     }
@@ -375,7 +601,7 @@ namespace Insurance
                         DATE_NULL_TFOMS.Text = "";
                     }
 
-                    if (RSTOP != "..")
+                    if (RSTOP != ".. ")
                     {
                         PRICIHIA_NULL_TFOMS.Text = RSTOP;
                     }
@@ -384,7 +610,7 @@ namespace Insurance
                         PRICIHIA_NULL_TFOMS.Text = "";
                     }
 
-                    if (DS != "..")
+                    if (DS != ".. ")
                     {
                         DATE_DEAD_TFOMS.Text = DS;
                     }
@@ -393,108 +619,587 @@ namespace Insurance
                         DATE_DEAD_TFOMS.Text = "";
                     }
 
-                    if (DS != "" && DS != "..")
+                    if (DS != "" && DS != ".. ")
                     {
                         DATE_DEAD_TFOMS.Background = Brushes.Red;
                     }
+                    string load_pers_grid = $@" SELECT top(1) pp.SROKDOVERENOSTI,pp.ID,pp.ACTIVE,op.przcod,pe.UNLOAD,ENP ,FAM , IM  , OT ,W ,DR ,MO,oks.CAPTION as C_OKSM,r.NameWithID , pp.COMMENT,pe.DVIZIT, pp.DATEVIDACHI, pp.PRIZNAKVIDACHI,
+            SS  ,VPOLIS,SPOLIS ,NPOLIS,DBEG ,DEND ,DSTOP ,BLANK ,DRECEIVED,f.NameWithId as MO_NameWithId,op.filename,pp.phone,p.AGENT, pp.CYCLE,(select pr.namewithid  from POL_PERSONS_INFORM pin
+left join PRICHINA_INFORMIROVANIYA pr
+on pin.PRICHINA_INFORM=pr.ID
+where PERSON_ID=pp.ID and pin.id=(select max(id) from POL_PERSONS_INFORM where PERSON_ID=pp.ID)) as inform, st.namewithkod as STOP_REASON, pe.id as EVENT_ID
+              FROM [dbo].[POL_PERSONS] pp left join 
+            pol_events pe on pp.event_guid=pe.idguid
+         	LEFT JOIN POL_PRZ_AGENTS p
+			on p.ID = pe.AGENT
+		    left join pol_polises ps
+            on pp.EVENT_GUID=ps.EVENT_GUID
+            left join pol_oplist op
+            on pp.EVENT_GUID=op.EVENT_GUID
+            left join r001 r
+            on pe.tip_op=r.kod
+            left join f003 f
+            on pp.MO=f.mcod
+            left join SPR_STOP st
+            on ps.STOP_REASON=st.kod
+			left join SPR_79_OKSM oks
+			on pp.C_OKSM=oks.A3
+			where pp.FAM = '{FAM}'
+			and pp.IM = '{IM}'
+			and pp.OT = '{OT}'
+			and pp.DR = '{DR}'
+			order by pe.ID DESC";
+                    var List = MyReader.MySelect<Events>(load_pers_grid, Properties.Settings.Default.DocExchangeConnectionString);
+                    if (List.Count != 0)
+                    {
+                        FAM_B.Text = List[0].FAM;
+                        IM_B.Text = List[0].IM;
+                        OT_B.Text = List[0].OT;
+                        DR_B.EditValue = List[0].DR;
+                        if (List[0].VPOLIS == 1)
+                        {
+                            VIDPOLISA_B.Text = "Полис ОМС старого образца";
+                        }
+                        else if (List[0].VPOLIS == 2)
+                        {
+                            VIDPOLISA_B.Text = "Временное свидетельство, подтверждающее оформление полиса обязательного медицинского страхования";
+                        }
+                        else if (List[0].VPOLIS == 3)
+                        {
+                            VIDPOLISA_B.Text = "Полис ОМС единого образца";
+                        }
+                        SNILS_B.Text = List[0].SS;
+                        POLIS_B.Text = List[0].SPOLIS.Trim() + " " + NPOLIS.Trim();
+                        ENP_B.Text = List[0].ENP;
+                        MR_B.Text = MR;
+                        ENP_B.Text = List[0].ENP;
+                        POLIK_B.Text = POLIKLIN_TFOMS.Text;
+                        DATE_P_B.Text = DATE_PRIKREP_TFOMS.Text;
+                        SPOSOB_B.Text = SPOSOB.Replace("<td>", "").Trim();
+                        //SMO_B.Text = List[0].;
+                        PRZ_B.Text = List[0].PRZCOD;
+                        DATE_BEG_B.EditValue = List[0].DBEG;
+                        D_END_B.EditValue = List[0].DEND;
+                        D_NULL_B.EditValue = List[0].DSTOP;
+                        PRICH_B.Text = List[0].STOP_REASON;
+
+                    }
+                    else
+                    {
+                        string m = "В нашей базе не найден данный ЗЛ!";
+                        string t = "Ошибка!";
+                        int b = 1;
+                        Message me = new Message(m, t, b);
+                        me.ShowDialog();
+
+                        return;
+
+                    }
+
 
                 }
-                // Поиск 
-                else if (fam.Text == "")
+                // Поиск по фамилии и номеру (серии) документа
+                else if (SerPolis.Text == "" && NomPolis.Text == "" && fam.Text != "" && im.Text == "" && dr.Text == "" && ENP.Text == "" && SNILSF.Text == "" && Type_doc.Text != "" && SerPolis_Passport.Text != "" && NomPolis_Passport.Text != "")
                 {
+
                     req.AllowAutoRedirect = true;
                     req.Cookies = Cookies;
                     req[HttpHeader.Accept] = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9";
                     req[HttpHeader.AcceptLanguage] = "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7";
                     req.UserAgent = Http.ChromeUserAgent();
-                    var ResponsePolis = req.Post("http://192.168.10.13/handler.php", $@"f1=%D0%9C%D0%A3%D0%A5%D0%90%D0%9C%D0%95%D0%A2%D0%93%D0%90%D0%9B%D0%98%D0%9C%D0%9E%D0%92&im1=%D0%92%D0%90%D0%A1%D0%98%D0%9B%D0%98%D0%99&ot1=%D0%9C%D0%95%D0%9D%D0%90%D0%A4%D0%90%D0%97%D0%95%D0%9B%D0%9E%D0%92%D0%98%D0%A7&dd=08&mm=%D0%9D%D0%BE%D1%8F%D0%B1%D1%80%D1%8C&yy=1977&hidden=personal&b1=&sid=" + sid, "application/x-www-form-urlencoded").ToString();
-                    if (ResponsePolis.Contains("html"))
+                    var ResponsePolis = req.Post("http://192.168.10.13/handler.php", $@"f1={Uri.EscapeUriString(fam.Text)}&tp1={Uri.EscapeUriString(Type_doc.Text)}&ser={SerPolis_Passport.Text}&num={NomPolis_Passport.Text}&hidden=doc&b1=&sid=" + sid, "application/x-www-form-urlencoded").ToString();
+                    var FAM = Request.Pars(ResponsePolis, "FAM1\">", "<");
+                    var IM = Request.Pars(ResponsePolis, "IM1\">", "<");
+                    var OT = Request.Pars(ResponsePolis, "OT1\">", "<");
+                    var DR = Request.Pars(ResponsePolis, "DR1\">", "<");
+                    var VP = Request.Pars(ResponsePolis, "VP1\">", "<");
+                    var SNILS = Request.Pars(ResponsePolis, "SNILS1\">", "<");
+                    var NPOLIS = Request.Pars(ResponsePolis, "NPOLIS1\">", "<");
+                    var ENP = Request.Pars(ResponsePolis, "ENP1\">", "<");
+                    var MR = Request.Pars(ResponsePolis, "MR1\">", "<");
+                    var POL_NAME = Request.Pars(ResponsePolis, "POL_NAME1\">", "<");
+                    var SPOSOB = Request.Pars(ResponsePolis, "Способ прикрепления: </span></td>", "</td>");
+                    var Data_prikrep = Request.Pars(ResponsePolis, "DAtt1\">", "<");
+                    var SMO_NAM = Request.Pars(ResponsePolis, "SMO_NAM1\">", "<");
+                    var PRZ_NAM = Request.Pars(ResponsePolis, "PRZ_NAME1\">", "<");
+                    var DBEG = Request.Pars(ResponsePolis, "DBEG1\">", "<");
+                    var DEND = Request.Pars(ResponsePolis, "DEND1\">", "<");
+                    var DSTOP = Request.Pars(ResponsePolis, "DSTOP1\">", "<");
+                    var RSTOP = Request.Pars(ResponsePolis, "RSTOP1\">", "<");
+                    var DS = Request.Pars(ResponsePolis, "DS1\">", "<");
+                    FAM_TFOMS.Text = FAM;
+                    IM_TFOMS.Text = IM;
+                    OT_TFOMS.Text = OT;
+                    DR_TFOMS.Text = DR;
+                    VIDPOLIS_TFOMS.Text = VP;
+                    SNILS_TFOMS.Text = SNILS;
+                    POLIS_TFOMS.Text = NPOLIS.Trim();
+                    ENP_TFOMS.Text = ENP;
+                    MR_TFOMS.Text = MR;
+                    POLIKLIN_TFOMS.Text = POL_NAME;
+                    DATE_PRIKREP_TFOMS.Text = Data_prikrep;
+                    SPOSOB_TFOMS.Text = SPOSOB.Replace("<td>", "").Trim();
+                    SMO_TFOMS.Text = SMO_NAM;
+                    PRZ_TFOMS.Text = PRZ_NAM;
+                    DATE_START_TFOMS.Text = DBEG;
+
+                    if (DEND != ".. ")
                     {
-                        var FAM = Request.Pars(ResponsePolis, "FAM1\">", "<");
-                        var IM = Request.Pars(ResponsePolis, "IM1\">", "<");
-                        var OT = Request.Pars(ResponsePolis, "OT1\">", "<");
-                        var DR = Request.Pars(ResponsePolis, "DR1\">", "<");
-                        var VP = Request.Pars(ResponsePolis, "VP1\">", "<");
-                        var SNILS = Request.Pars(ResponsePolis, "SNILS1\">", "<");
-                        var NPOLIS = Request.Pars(ResponsePolis, "NPOLIS1\">", "<");
-                        var ENP = Request.Pars(ResponsePolis, "ENP1\">", "<");
-                        var MR = Request.Pars(ResponsePolis, "MR1\">", "<");
-                        var POL_NAME = Request.Pars(ResponsePolis, "POL_NAME1\">", "<");
-                        var SPOSOB = Request.Pars(ResponsePolis, "Способ прикрепления: </span></td>", "</td>");
-                        var Data_prikrep = Request.Pars(ResponsePolis, "DAtt1\">", "<");
-                        var SMO_NAM = Request.Pars(ResponsePolis, "SMO_NAM1\">", "<");
-                        var PRZ_NAM = Request.Pars(ResponsePolis, "PRZ_NAME1\">", "<");
-                        var DBEG = Request.Pars(ResponsePolis, "DBEG1\">", "<");
-                        var DEND = Request.Pars(ResponsePolis, "DEND1\">", "<");
-                        var DSTOP = Request.Pars(ResponsePolis, "DSTOP1\">", "<");
-                        var RSTOP = Request.Pars(ResponsePolis, "RSTOP1\">", "<");
-                        var DS = Request.Pars(ResponsePolis, "DS1\">", "<");
-                        FAM_TFOMS.Text = FAM;
-                        IM_TFOMS.Text = IM;
-                        OT_TFOMS.Text = OT;
-                        DR_TFOMS.Text = DR;
-                        VIDPOLIS_TFOMS.Text = VP;
-                        SNILS_TFOMS.Text = SNILS;
-                        POLIS_TFOMS.Text = NPOLIS;
-                        ENP_TFOMS.Text = ENP;
-                        MR_TFOMS.Text = MR;
-                        POLIKLIN_TFOMS.Text = POL_NAME;
-                        DATE_PRIKREP_TFOMS.Text = Data_prikrep;
-                        SPOSOB_TFOMS.Text = SPOSOB.Replace("<td>", "").Trim();
-                        SMO_TFOMS.Text = SMO_NAM;
-                        PRZ_TFOMS.Text = PRZ_NAM;
-                        DATE_START_TFOMS.Text = DBEG;
+                        DATE_END_TFOMS.Text = DEND;
+                    }
+                    else
+                    {
+                        DATE_END_TFOMS.Text = "";
+                    }
 
-                        if (DEND != "..")
-                        {
-                            DATE_END_TFOMS.Text = DEND;
-                        }
-                        else
-                        {
-                            DATE_END_TFOMS.Text = "";
-                        }
+                    if (DSTOP != ".. ")
+                    {
+                        DATE_NULL_TFOMS.Text = DSTOP;
+                    }
+                    else
+                    {
+                        DATE_NULL_TFOMS.Text = "";
+                    }
 
-                        if (DSTOP != "..")
-                        {
-                            DATE_NULL_TFOMS.Text = DSTOP;
-                        }
-                        else
-                        {
-                            DATE_NULL_TFOMS.Text = "";
-                        }
+                    if (RSTOP != ".. ")
+                    {
+                        PRICIHIA_NULL_TFOMS.Text = RSTOP;
+                    }
+                    else
+                    {
+                        PRICIHIA_NULL_TFOMS.Text = "";
+                    }
 
-                        if (RSTOP != "..")
-                        {
-                            PRICIHIA_NULL_TFOMS.Text = RSTOP;
-                        }
-                        else
-                        {
-                            PRICIHIA_NULL_TFOMS.Text = "";
-                        }
+                    if (DS != ".. ")
+                    {
+                        DATE_DEAD_TFOMS.Text = DS;
+                    }
+                    else
+                    {
+                        DATE_DEAD_TFOMS.Text = "";
+                    }
 
-                        if (DS != "..")
+                    if (DS != "" && DS != ".. ")
+                    {
+                        DATE_DEAD_TFOMS.Background = Brushes.Red;
+                    }
+                    string load_pers_grid = $@" SELECT top(1) pp.SROKDOVERENOSTI,pp.ID,pp.ACTIVE,op.przcod,pe.UNLOAD,ENP ,FAM , IM  , OT ,W ,DR ,MO,oks.CAPTION as C_OKSM,r.NameWithID , pp.COMMENT,pe.DVIZIT, pp.DATEVIDACHI, pp.PRIZNAKVIDACHI,
+            SS  ,VPOLIS,SPOLIS ,NPOLIS,DBEG ,DEND ,DSTOP ,BLANK ,DRECEIVED,f.NameWithId as MO_NameWithId,op.filename,pp.phone,p.AGENT, pp.CYCLE,(select pr.namewithid  from POL_PERSONS_INFORM pin
+left join PRICHINA_INFORMIROVANIYA pr
+on pin.PRICHINA_INFORM=pr.ID
+where PERSON_ID=pp.ID and pin.id=(select max(id) from POL_PERSONS_INFORM where PERSON_ID=pp.ID)) as inform, st.namewithkod as STOP_REASON, pe.id as EVENT_ID
+              FROM [dbo].[POL_PERSONS] pp left join 
+            pol_events pe on pp.event_guid=pe.idguid
+         	LEFT JOIN POL_PRZ_AGENTS p
+			on p.ID = pe.AGENT
+		    left join pol_polises ps
+            on pp.EVENT_GUID=ps.EVENT_GUID
+            left join pol_oplist op
+            on pp.EVENT_GUID=op.EVENT_GUID
+            left join r001 r
+            on pe.tip_op=r.kod
+            left join f003 f
+            on pp.MO=f.mcod
+            left join SPR_STOP st
+            on ps.STOP_REASON=st.kod
+			left join SPR_79_OKSM oks
+			on pp.C_OKSM=oks.A3
+			where pp.FAM = '{FAM}'
+			and pp.IM = '{IM}'
+			and pp.OT = '{OT}'
+			and pp.DR = '{DR}'
+			order by pe.ID DESC";
+                    var List = MyReader.MySelect<Events>(load_pers_grid, Properties.Settings.Default.DocExchangeConnectionString);
+                    if (List.Count != 0)
+                    {
+                        FAM_B.Text = List[0].FAM;
+                        IM_B.Text = List[0].IM;
+                        OT_B.Text = List[0].OT;
+                        DR_B.EditValue = List[0].DR;
+                        if (List[0].VPOLIS == 1)
                         {
-                            DATE_DEAD_TFOMS.Text = DS;
+                            VIDPOLISA_B.Text = "Полис ОМС старого образца";
                         }
-                        else
+                        else if (List[0].VPOLIS == 2)
                         {
-                            DATE_DEAD_TFOMS.Text = "";
+                            VIDPOLISA_B.Text = "Временное свидетельство, подтверждающее оформление полиса обязательного медицинского страхования";
                         }
+                        else if (List[0].VPOLIS == 3)
+                        {
+                            VIDPOLISA_B.Text = "Полис ОМС единого образца";
+                        }
+                        SNILS_B.Text = List[0].SS;
+                        POLIS_B.Text = List[0].SPOLIS.Trim() + " " + NPOLIS.Trim();
+                        ENP_B.Text = List[0].ENP;
+                        MR_B.Text = MR;
+                        ENP_B.Text = List[0].ENP;
+                        POLIK_B.Text = POLIKLIN_TFOMS.Text;
+                        DATE_P_B.Text = DATE_PRIKREP_TFOMS.Text;
+                        SPOSOB_B.Text = SPOSOB.Replace("<td>", "").Trim();
+                        //SMO_B.Text = List[0].;
+                        PRZ_B.Text = List[0].PRZCOD;
+                        DATE_BEG_B.EditValue = List[0].DBEG;
+                        D_END_B.EditValue = List[0].DEND;
+                        D_NULL_B.EditValue = List[0].DSTOP;
+                        PRICH_B.Text = List[0].STOP_REASON;
 
-                        if (DS != "" && DS != "..")
+                    }
+                    else
+                    {
+                        string m = "В нашей базе не найден данный ЗЛ!";
+                        string t = "Ошибка!";
+                        int b = 1;
+                        Message me = new Message(m, t, b);
+                        me.ShowDialog();
+
+                        return;
+
+                    }
+
+                }
+                // Поиск по SNILS
+                else if (SerPolis.Text == "" && NomPolis.Text == "" && fam.Text == "" && im.Text == "" && dr.Text == "" && ENP.Text == "" && Type_doc.Text == "" && SerPolis_Passport.Text == "" && NomPolis_Passport.Text == "" && SNILSF.Text != "")
+                {
+
+                    var snilsik = SNILSF.Text.Split(' ');
+
+
+                    req.AllowAutoRedirect = true;
+                    req.Cookies = Cookies;
+                    req[HttpHeader.Accept] = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9";
+                    req[HttpHeader.AcceptLanguage] = "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7";
+                    req.UserAgent = Http.ChromeUserAgent();
+                    var ResponsePolis = req.Post("http://192.168.10.13/handler.php", $@"ss21={snilsik[0]}&ss22={snilsik[1]}&ss23={snilsik[2]}&ss24={snilsik[3]}&hidden=ss&b1=&sid=" + sid, "application/x-www-form-urlencoded").ToString();
+                    var FAM = Request.Pars(ResponsePolis, "FAM1\">", "<");
+                    var IM = Request.Pars(ResponsePolis, "IM1\">", "<");
+                    var OT = Request.Pars(ResponsePolis, "OT1\">", "<");
+                    var DR = Request.Pars(ResponsePolis, "DR1\">", "<");
+                    var VP = Request.Pars(ResponsePolis, "VP1\">", "<");
+                    var SNILS = Request.Pars(ResponsePolis, "SNILS1\">", "<");
+                    var NPOLIS = Request.Pars(ResponsePolis, "NPOLIS1\">", "<");
+                    var ENP = Request.Pars(ResponsePolis, "ENP1\">", "<");
+                    var MR = Request.Pars(ResponsePolis, "MR1\">", "<");
+                    var POL_NAME = Request.Pars(ResponsePolis, "POL_NAME1\">", "<");
+                    var SPOSOB = Request.Pars(ResponsePolis, "Способ прикрепления: </span></td>", "</td>");
+                    var Data_prikrep = Request.Pars(ResponsePolis, "DAtt1\">", "<");
+                    var SMO_NAM = Request.Pars(ResponsePolis, "SMO_NAM1\">", "<");
+                    var PRZ_NAM = Request.Pars(ResponsePolis, "PRZ_NAME1\">", "<");
+                    var DBEG = Request.Pars(ResponsePolis, "DBEG1\">", "<");
+                    var DEND = Request.Pars(ResponsePolis, "DEND1\">", "<");
+                    var DSTOP = Request.Pars(ResponsePolis, "DSTOP1\">", "<");
+                    var RSTOP = Request.Pars(ResponsePolis, "RSTOP1\">", "<");
+                    var DS = Request.Pars(ResponsePolis, "DS1\">", "<");
+                    FAM_TFOMS.Text = FAM;
+                    IM_TFOMS.Text = IM;
+                    OT_TFOMS.Text = OT;
+                    DR_TFOMS.Text = DR;
+                    VIDPOLIS_TFOMS.Text = VP;
+                    SNILS_TFOMS.Text = SNILS;
+                    POLIS_TFOMS.Text = NPOLIS.Trim();
+                    ENP_TFOMS.Text = ENP;
+                    MR_TFOMS.Text = MR;
+                    POLIKLIN_TFOMS.Text = POL_NAME;
+                    DATE_PRIKREP_TFOMS.Text = Data_prikrep;
+                    SPOSOB_TFOMS.Text = SPOSOB.Replace("<td>", "").Trim();
+                    SMO_TFOMS.Text = SMO_NAM;
+                    PRZ_TFOMS.Text = PRZ_NAM;
+                    DATE_START_TFOMS.Text = DBEG;
+
+                    if (DEND != ".. ")
+                    {
+                        DATE_END_TFOMS.Text = DEND;
+                    }
+                    else
+                    {
+                        DATE_END_TFOMS.Text = "";
+                    }
+
+                    if (DSTOP != ".. ")
+                    {
+                        DATE_NULL_TFOMS.Text = DSTOP;
+                    }
+                    else
+                    {
+                        DATE_NULL_TFOMS.Text = "";
+                    }
+
+                    if (RSTOP != ".. ")
+                    {
+                        PRICIHIA_NULL_TFOMS.Text = RSTOP;
+                    }
+                    else
+                    {
+                        PRICIHIA_NULL_TFOMS.Text = "";
+                    }
+
+                    if (DS != ".. ")
+                    {
+                        DATE_DEAD_TFOMS.Text = DS;
+                    }
+                    else
+                    {
+                        DATE_DEAD_TFOMS.Text = "";
+                    }
+
+                    if (DS != "" && DS != ".. ")
+                    {
+                        DATE_DEAD_TFOMS.Background = Brushes.Red;
+                    }
+                    string load_pers_grid = $@" SELECT top(1) pp.SROKDOVERENOSTI,pp.ID,pp.ACTIVE,op.przcod,pe.UNLOAD,ENP ,FAM , IM  , OT ,W ,DR ,MO,oks.CAPTION as C_OKSM,r.NameWithID , pp.COMMENT,pe.DVIZIT, pp.DATEVIDACHI, pp.PRIZNAKVIDACHI,
+            SS  ,VPOLIS,SPOLIS ,NPOLIS,DBEG ,DEND ,DSTOP ,BLANK ,DRECEIVED,f.NameWithId as MO_NameWithId,op.filename,pp.phone,p.AGENT, pp.CYCLE,(select pr.namewithid  from POL_PERSONS_INFORM pin
+left join PRICHINA_INFORMIROVANIYA pr
+on pin.PRICHINA_INFORM=pr.ID
+where PERSON_ID=pp.ID and pin.id=(select max(id) from POL_PERSONS_INFORM where PERSON_ID=pp.ID)) as inform, st.namewithkod as STOP_REASON, pe.id as EVENT_ID
+              FROM [dbo].[POL_PERSONS] pp left join 
+            pol_events pe on pp.event_guid=pe.idguid
+         	LEFT JOIN POL_PRZ_AGENTS p
+			on p.ID = pe.AGENT
+		    left join pol_polises ps
+            on pp.EVENT_GUID=ps.EVENT_GUID
+            left join pol_oplist op
+            on pp.EVENT_GUID=op.EVENT_GUID
+            left join r001 r
+            on pe.tip_op=r.kod
+            left join f003 f
+            on pp.MO=f.mcod
+            left join SPR_STOP st
+            on ps.STOP_REASON=st.kod
+			left join SPR_79_OKSM oks
+			on pp.C_OKSM=oks.A3
+			where pp.FAM = '{FAM}'
+			and pp.IM = '{IM}'
+			and pp.OT = '{OT}'
+			and pp.DR = '{DR}'
+			order by pe.ID DESC";
+                    var List = MyReader.MySelect<Events>(load_pers_grid, Properties.Settings.Default.DocExchangeConnectionString);
+                    if (List.Count != 0)
+                    {
+                        FAM_B.Text = List[0].FAM;
+                        IM_B.Text = List[0].IM;
+                        OT_B.Text = List[0].OT;
+                        DR_B.EditValue = List[0].DR;
+                        if (List[0].VPOLIS == 1)
                         {
-                            DATE_DEAD_TFOMS.Background = Brushes.Red;
+                            VIDPOLISA_B.Text = "Полис ОМС старого образца";
                         }
+                        else if (List[0].VPOLIS == 2)
+                        {
+                            VIDPOLISA_B.Text = "Временное свидетельство, подтверждающее оформление полиса обязательного медицинского страхования";
+                        }
+                        else if (List[0].VPOLIS == 3)
+                        {
+                            VIDPOLISA_B.Text = "Полис ОМС единого образца";
+                        }
+                        SNILS_B.Text = List[0].SS;
+                        POLIS_B.Text = List[0].SPOLIS.Trim() + " " + NPOLIS.Trim();
+                        ENP_B.Text = List[0].ENP;
+                        MR_B.Text = MR;
+                        ENP_B.Text = List[0].ENP;
+                        POLIK_B.Text = POLIKLIN_TFOMS.Text;
+                        DATE_P_B.Text = DATE_PRIKREP_TFOMS.Text;
+                        SPOSOB_B.Text = SPOSOB.Replace("<td>", "").Trim();
+                        //SMO_B.Text = List[0].;
+                        PRZ_B.Text = List[0].PRZCOD;
+                        DATE_BEG_B.EditValue = List[0].DBEG;
+                        D_END_B.EditValue = List[0].DEND;
+                        D_NULL_B.EditValue = List[0].DSTOP;
+                        PRICH_B.Text = List[0].STOP_REASON;
+
+                    }
+                    else
+                    {
+                        string m = "В нашей базе не найден данный ЗЛ!";
+                        string t = "Ошибка!";
+                        int b = 1;
+                        Message me = new Message(m, t, b);
+                        me.ShowDialog();
+
+                        return;
+
+                    }
+
+                }
+                // Поиск по Прикрепление и полис на дату лечения
+                else if (SerPolis.Text == "" && NomPolis.Text == "" && fam.Text != "" && im.Text != "" && dr.Text != "" && ENP.Text != "" && Type_doc.Text == "" && SerPolis_Passport.Text == "" && NomPolis_Passport.Text == "" && SNILSF.Text == "" && Date_lech.Text != "")
+                {
+                    var Date_lechen = Date_lech.DateTime.ToLongDateString().Split(' ');
+                    var drr = dr.DateTime.ToLongDateString().Split(' ');
+                    if (drr[0].Length == 1)
+                    {
+                        drr[0] = "0" + drr[0];
+                    }
+                    if (Date_lechen[0].Length == 1)
+                    {
+                        Date_lechen[0] = "0" + Date_lechen[0];
+                    }
+                    ///
+
+
+
+
+                    var Per2 = Month[drr[1]];
+                    ///
+                    req.AllowAutoRedirect = true;
+                    req.Cookies = Cookies;
+                    req[HttpHeader.Accept] = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9";
+                    req[HttpHeader.AcceptLanguage] = "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7";
+                    req.UserAgent = Http.ChromeUserAgent();
+                    var ResponsePolis = req.Post("http://192.168.10.13/handler.php", $@"dd2={Date_lechen[0]}&mm2={Uri.EscapeDataString(Per2)}&yy2={Date_lechen[2]}&f1={Uri.EscapeDataString(fam.Text)}&im1={Uri.EscapeDataString(im.Text)}&ot1={Uri.EscapeDataString(ot.Text)}&enp={this.ENP.Text}&dd={drr[0]}&mm={Uri.EscapeDataString(Per2)}&yy={drr[2]}&hidden=attache&b1=&sid=" + sid, "application/x-www-form-urlencoded").ToString();
+                    var FAM = Request.Pars(ResponsePolis, "FAM1\">", "<");
+                    var IM = Request.Pars(ResponsePolis, "IM1\">", "<");
+                    var OT = Request.Pars(ResponsePolis, "OT1\">", "<");
+                    var DR = Request.Pars(ResponsePolis, "DR1\">", "<");
+                    var VP = Request.Pars(ResponsePolis, "VP1\">", "<");
+                    var SNILS = Request.Pars(ResponsePolis, "SNILS1\">", "<");
+                    var NPOLIS = Request.Pars(ResponsePolis, "NPOLIS1\">", "<");
+                    var ENP = Request.Pars(ResponsePolis, "ENP1\">", "<");
+                    var MR = Request.Pars(ResponsePolis, "MR1\">", "<");
+                    var POL_NAME = Request.Pars(ResponsePolis, "POL_NAME1\">", "<");
+                    var SPOSOB = Request.Pars(ResponsePolis, "Способ прикрепления: </span></td>", "</td>");
+                    var Data_prikrep = Request.Pars(ResponsePolis, "DAtt1\">", "<");
+                    var SMO_NAM = Request.Pars(ResponsePolis, "SMO_NAM1\">", "<");
+                    var PRZ_NAM = Request.Pars(ResponsePolis, "PRZ_NAME1\">", "<");
+                    var DBEG = Request.Pars(ResponsePolis, "DBEG1\">", "<");
+                    var DEND = Request.Pars(ResponsePolis, "DEND1\">", "<");
+                    var DSTOP = Request.Pars(ResponsePolis, "DSTOP1\">", "<");
+                    var RSTOP = Request.Pars(ResponsePolis, "RSTOP1\">", "<");
+                    var DS = Request.Pars(ResponsePolis, "DS1\">", "<");
+                    FAM_TFOMS.Text = FAM;
+                    IM_TFOMS.Text = IM;
+                    OT_TFOMS.Text = OT;
+                    DR_TFOMS.Text = DR;
+                    VIDPOLIS_TFOMS.Text = VP;
+                    SNILS_TFOMS.Text = SNILS;
+                    POLIS_TFOMS.Text = NPOLIS.Trim();
+                    ENP_TFOMS.Text = ENP;
+                    MR_TFOMS.Text = MR;
+                    POLIKLIN_TFOMS.Text = POL_NAME;
+                    DATE_PRIKREP_TFOMS.Text = Data_prikrep;
+                    SPOSOB_TFOMS.Text = SPOSOB.Replace("<td>", "").Trim();
+                    SMO_TFOMS.Text = SMO_NAM;
+                    PRZ_TFOMS.Text = PRZ_NAM;
+                    DATE_START_TFOMS.Text = DBEG;
+
+                    if (DEND != ".. ")
+                    {
+                        DATE_END_TFOMS.Text = DEND;
+                    }
+                    else
+                    {
+                        DATE_END_TFOMS.Text = "";
+                    }
+
+                    if (DSTOP != ".. ")
+                    {
+                        DATE_NULL_TFOMS.Text = DSTOP;
+                    }
+                    else
+                    {
+                        DATE_NULL_TFOMS.Text = "";
+                    }
+
+                    if (RSTOP != ".. ")
+                    {
+                        PRICIHIA_NULL_TFOMS.Text = RSTOP;
+                    }
+                    else
+                    {
+                        PRICIHIA_NULL_TFOMS.Text = "";
+                    }
+
+                    if (DS != ".. ")
+                    {
+                        DATE_DEAD_TFOMS.Text = DS;
+                    }
+                    else
+                    {
+                        DATE_DEAD_TFOMS.Text = "";
+                    }
+
+                    if (DS != "" && DS != ".. ")
+                    {
+                        DATE_DEAD_TFOMS.Background = Brushes.Red;
+                    }
+                    string load_pers_grid = $@" SELECT top(1) pp.SROKDOVERENOSTI,pp.ID,pp.ACTIVE,op.przcod,pe.UNLOAD,ENP ,FAM , IM  , OT ,W ,DR ,MO,oks.CAPTION as C_OKSM,r.NameWithID , pp.COMMENT,pe.DVIZIT, pp.DATEVIDACHI, pp.PRIZNAKVIDACHI,
+            SS  ,VPOLIS,SPOLIS ,NPOLIS,DBEG ,DEND ,DSTOP ,BLANK ,DRECEIVED,f.NameWithId as MO_NameWithId,op.filename,pp.phone,p.AGENT, pp.CYCLE,(select pr.namewithid  from POL_PERSONS_INFORM pin
+left join PRICHINA_INFORMIROVANIYA pr
+on pin.PRICHINA_INFORM=pr.ID
+where PERSON_ID=pp.ID and pin.id=(select max(id) from POL_PERSONS_INFORM where PERSON_ID=pp.ID)) as inform, st.namewithkod as STOP_REASON, pe.id as EVENT_ID
+              FROM [dbo].[POL_PERSONS] pp left join 
+            pol_events pe on pp.event_guid=pe.idguid
+         	LEFT JOIN POL_PRZ_AGENTS p
+			on p.ID = pe.AGENT
+		    left join pol_polises ps
+            on pp.EVENT_GUID=ps.EVENT_GUID
+            left join pol_oplist op
+            on pp.EVENT_GUID=op.EVENT_GUID
+            left join r001 r
+            on pe.tip_op=r.kod
+            left join f003 f
+            on pp.MO=f.mcod
+            left join SPR_STOP st
+            on ps.STOP_REASON=st.kod
+			left join SPR_79_OKSM oks
+			on pp.C_OKSM=oks.A3
+			where pp.FAM = '{FAM}'
+			and pp.IM = '{IM}'
+			and pp.OT = '{OT}'
+			and pp.DR = '{DR}'
+			order by pe.ID DESC";
+                    var List = MyReader.MySelect<Events>(load_pers_grid, Properties.Settings.Default.DocExchangeConnectionString);
+                    if (List.Count != 0)
+                    {
+                        FAM_B.Text = List[0].FAM;
+                        IM_B.Text = List[0].IM;
+                        OT_B.Text = List[0].OT;
+                        DR_B.EditValue = List[0].DR;
+                        if (List[0].VPOLIS == 1)
+                        {
+                            VIDPOLISA_B.Text = "Полис ОМС старого образца";
+                        }
+                        else if (List[0].VPOLIS == 2)
+                        {
+                            VIDPOLISA_B.Text = "Временное свидетельство, подтверждающее оформление полиса обязательного медицинского страхования";
+                        }
+                        else if (List[0].VPOLIS == 3)
+                        {
+                            VIDPOLISA_B.Text = "Полис ОМС единого образца";
+                        }
+                        SNILS_B.Text = List[0].SS;
+                        POLIS_B.Text = List[0].SPOLIS.Trim() + " " + NPOLIS.Trim();
+                        ENP_B.Text = List[0].ENP;
+                        MR_B.Text = MR;
+                        ENP_B.Text = List[0].ENP;
+                        POLIK_B.Text = POLIKLIN_TFOMS.Text;
+                        DATE_P_B.Text = DATE_PRIKREP_TFOMS.Text;
+                        SPOSOB_B.Text = SPOSOB.Replace("<td>", "").Trim();
+                        //SMO_B.Text = List[0].;
+                        PRZ_B.Text = List[0].PRZCOD;
+                        DATE_BEG_B.EditValue = List[0].DBEG;
+                        D_END_B.EditValue = List[0].DEND;
+                        D_NULL_B.EditValue = List[0].DSTOP;
+                        PRICH_B.Text = List[0].STOP_REASON;
+                    
+                    }
+                    else
+                    {
+                        string m = "В нашей базе не найден данный ЗЛ!";
+                        string t = "Ошибка!";
+                        int b = 1;
+                        Message me = new Message(m, t, b);
+                        me.ShowDialog();
+
+                        return;
+
                     }
                 }
-
-
-
 
 
             }
 
-           
+
+
+
         }
 
         private void Clear_Click(object sender, RoutedEventArgs e)
@@ -503,6 +1208,13 @@ namespace Insurance
             im.Text = "";
             ot.Text = "";
             dr.EditValue = null;
+            SerPolis.Text = "";
+            NomPolis.Text = "";
+            ENP.Text = "";
+            SNILSF.Text = "";
+            SerPolis_Passport.Text = "";
+            NomPolis_Passport.Text = "";
+            Date_lech.EditValue = null;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -536,6 +1248,32 @@ namespace Insurance
             Type_docZ.Add("Дипломатический паспорт гражданина Российской Федерации");
             Type_docZ.Add("Паспорт иностранного гражданина");
             Type_doc.ItemsSource = Type_docZ;
+
+            Month.Clear();
+            Month.Add("Сентября", "Сентябрь");
+            Month.Add("сентября", "Сентябрь");
+            Month.Add("Октября", "Октябрь");
+            Month.Add("октября", "Октябрь");
+            Month.Add("Ноября", "Ноябрь");
+            Month.Add("ноября", "Ноябрь");
+            Month.Add("Декабря", "Декабрь");
+            Month.Add("декабря", "Декабрь");
+            Month.Add("Января", "Январь");
+            Month.Add("января", "Январь");
+            Month.Add("Февраля", "Февраль");
+            Month.Add("февраля", "Февраль");
+            Month.Add("Марта", "Март");
+            Month.Add("марта", "Март");
+            Month.Add("Апреля", "Апрель");
+            Month.Add("апреля", "Апрель");
+            Month.Add("Мая", "Май");
+            Month.Add("мая", "Май");
+            Month.Add("Июня", "Июнь");
+            Month.Add("июня", "Июнь");
+            Month.Add("Июля", "Июль");
+            Month.Add("июля", "Июль");
+            Month.Add("Августа", "Август");
+            Month.Add("августа", "Август");
         }
     }
     

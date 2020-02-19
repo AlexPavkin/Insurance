@@ -78,7 +78,7 @@
         <Label Content="Отчество" HorizontalAlignment="Left" Margin="314,10,0,0" VerticalAlignment="Top" Width="150" Foreground="#FFF3F4F8" HorizontalContentAlignment="Center"/>
         <dxe:DateEdit x:Name="dr" HorizontalAlignment="Left" Margin="469,32,0,0" VerticalAlignment="Top" Width="150" NullValueButtonPlacement="EditBox"/>
         <Label Content="Дата рождения" HorizontalAlignment="Left" Margin="469,10,0,0" VerticalAlignment="Top" Width="150" Foreground="#FFF3F4F8" HorizontalContentAlignment="Center"/>
-        <Button x:Name="poisk1" HorizontalAlignment="Left" Margin="1097,71,0,0" VerticalAlignment="Top" 
+        <Button x:Name="poisk1" HorizontalAlignment="Left" Margin="1109,10,0,0" VerticalAlignment="Top" 
                 Width="96" Click="Button_Click" Style="{StaticResource myButtonStyle1}">
             <StackPanel HorizontalAlignment="Center" Margin="0,0" Orientation="Horizontal" Width="86">
                 <Image Source="Insurance_icons\search.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
@@ -93,7 +93,7 @@
                 <TextBlock Text="Найти" VerticalAlignment="Center" Foreground="White" FontWeight="Bold"/>
             </StackPanel>
         </Button>
-        <Button x:Name="clear" HorizontalAlignment="Left" Margin="1198,71,0,0" VerticalAlignment="Top" 
+        <Button x:Name="clear" HorizontalAlignment="Left" Margin="1210,10,0,0" VerticalAlignment="Top" 
                 Width="96"  Style="{StaticResource myButtonStyle1}" Click="Clear_Click">
             <StackPanel HorizontalAlignment="Center" Margin="0,0" Orientation="Horizontal" Width="86">
                 <Image Source="Insurance_icons\clear.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
@@ -114,7 +114,7 @@
         <Label Content="Номер полиса" HorizontalAlignment="Left" Margin="159,59,0,0" VerticalAlignment="Top" Width="150" Foreground="#FFF3F4F8" HorizontalContentAlignment="Center"/>
         <dxe:TextEdit x:Name="ENP" HorizontalAlignment="Left" Margin="314,81,0,0" VerticalAlignment="Top" Width="150"/>
         <Label Content="ЕНП" HorizontalAlignment="Left" Margin="314,59,0,0" VerticalAlignment="Top" Width="150" Foreground="#FFF3F4F8" HorizontalContentAlignment="Center"/>
-        <dxe:TextEdit x:Name="SNILS" HorizontalAlignment="Left" Margin="469,81,0,0" VerticalAlignment="Top" Width="150"/>
+        <dxe:TextEdit x:Name="SNILSF" HorizontalAlignment="Left" Margin="469,81,0,0" VerticalAlignment="Top" Width="150" Mask="\d\d\d \d\d\d \d\d\d \d\d" MaskType="Regular"/>
         <Label Content="СНИЛС" HorizontalAlignment="Left" Margin="492,59,0,0" VerticalAlignment="Top" Width="107" Foreground="#FFF3F4F8" HorizontalContentAlignment="Center"/>
 
         <dxlc:LayoutControl HorizontalAlignment="Left" Height="316" Margin="-5,112,0,0" VerticalAlignment="Top" Width="643" Orientation="Vertical">
@@ -186,63 +186,63 @@
             <dxlc:LayoutGroup Header="Данные из нашей базы                                                                                      Закреплен(а) за" View="GroupBox" Margin="-2,-2,-2,-297" >
                 <dxlc:LayoutGroup Orientation="Vertical">
                     <dxlc:LayoutItem Label="Фамилия" Foreground="White">
-                        <dxe:TextEdit IsReadOnly="True"/>
+                        <dxe:TextEdit x:Name="FAM_B" IsReadOnly="True"/>
                     </dxlc:LayoutItem>
                     <dxlc:LayoutItem Label="Имя" Foreground="White">
-                        <dxe:TextEdit IsReadOnly="True"/>
+                        <dxe:TextEdit x:Name="IM_B" IsReadOnly="True"/>
                     </dxlc:LayoutItem>
                     <dxlc:LayoutItem Label="Отчество" Foreground="White">
-                        <dxe:TextEdit IsReadOnly="True"/>
+                        <dxe:TextEdit x:Name="OT_B" IsReadOnly="True"/>
                     </dxlc:LayoutItem>
                     <dxlc:LayoutItem Label="Дата рождения" Foreground="White">
-                        <dxe:DateEdit IsReadOnly="True"/>
+                        <dxe:DateEdit x:Name="DR_B" IsReadOnly="True"/>
                     </dxlc:LayoutItem>
                     <dxlc:LayoutItem Label="Вид полиса" Background="#00000000" Foreground="White">
-                        <dxe:TextEdit IsReadOnly="True"/>
+                        <dxe:TextEdit x:Name="VIDPOLISA_B" IsReadOnly="True"/>
                     </dxlc:LayoutItem>
                     <dxlc:LayoutItem Label="СНИЛС" Foreground="White">
-                        <dxe:TextEdit IsReadOnly="True"/>
+                        <dxe:TextEdit x:Name="SNILS_B" IsReadOnly="True"/>
                     </dxlc:LayoutItem>
                     <dxlc:LayoutItem Label="Полис" Foreground="White">
-                        <dxe:TextEdit IsReadOnly="True"/>
+                        <dxe:TextEdit x:Name="POLIS_B" IsReadOnly="True"/>
                     </dxlc:LayoutItem>
                     <dxlc:LayoutItem Label="ЕНП" Foreground="White">
-                        <dxe:TextEdit IsReadOnly="True"/>
+                        <dxe:TextEdit x:Name="ENP_B" IsReadOnly="True"/>
                     </dxlc:LayoutItem>
                     <dxlc:LayoutItem Label="Место рождения" Foreground="White">
-                        <dxe:TextEdit IsReadOnly="True"/>
+                        <dxe:TextEdit x:Name="MR_B" IsReadOnly="True"/>
                     </dxlc:LayoutItem>
                 </dxlc:LayoutGroup>
                 <dxlc:LayoutGroup dx:ScrollViewerTouchBehavior.IsEnabled="True" Orientation="Vertical" Serialization:SerializableItem.TypeName="LayoutGroup">
                     <dxlc:LayoutItem Label="Поликлиникой" Foreground="White">
-                        <dxe:TextEdit IsReadOnly="True"/>
+                        <dxe:TextEdit x:Name="POLIK_B" IsReadOnly="True"/>
                     </dxlc:LayoutItem>
                     <dxlc:LayoutItem Label="Дата прикрепления" Foreground="White">
-                        <dxe:DateEdit IsReadOnly="True"/>
+                        <dxe:DateEdit x:Name="DATE_P_B" IsReadOnly="True"/>
                     </dxlc:LayoutItem>
                     <dxlc:LayoutItem Label="Способ прикрепления" Foreground="White">
-                        <dxe:TextEdit IsReadOnly="True"/>
+                        <dxe:TextEdit x:Name="SPOSOB_B" IsReadOnly="True"/>
                     </dxlc:LayoutItem>
                     <dxlc:LayoutItem Label="СМО" Foreground="White">
-                        <dxe:TextEdit IsReadOnly="True"/>
+                        <dxe:TextEdit x:Name="SMO_B" IsReadOnly="True"/>
                     </dxlc:LayoutItem>
                     <dxlc:LayoutItem Label="ПРЗ" Foreground="White">
-                        <dxe:TextEdit IsReadOnly="True"/>
+                        <dxe:TextEdit x:Name="PRZ_B" IsReadOnly="True"/>
                     </dxlc:LayoutItem>
                     <dxlc:LayoutItem Label="Дата начала страхования" Foreground="White">
-                        <dxe:DateEdit IsReadOnly="True"/>
+                        <dxe:DateEdit x:Name="DATE_BEG_B" IsReadOnly="True"/>
                     </dxlc:LayoutItem>
                     <dxlc:LayoutItem Label="Дата окончания" Foreground="White">
-                        <dxe:DateEdit IsReadOnly="True"/>
+                        <dxe:DateEdit x:Name="D_END_B" IsReadOnly="True"/>
                     </dxlc:LayoutItem>
                     <dxlc:LayoutItem Label="Дата аннулирования" Foreground="White">
-                        <dxe:DateEdit IsReadOnly="True"/>
+                        <dxe:DateEdit x:Name="D_NULL_B" IsReadOnly="True"/>
                     </dxlc:LayoutItem>
                     <dxlc:LayoutItem Label="Причина аннулирования" Foreground="White">
-                        <dxe:TextEdit IsReadOnly="True"/>
+                        <dxe:TextEdit x:Name="PRICH_B" IsReadOnly="True"/>
                     </dxlc:LayoutItem>
                     <dxlc:LayoutItem Label="Дата смерти" Foreground="White">
-                        <dxe:DateEdit IsReadOnly="True"/>
+                        <dxe:DateEdit x:Name="DDEAD_B" IsReadOnly="True"/>
                     </dxlc:LayoutItem>
                 </dxlc:LayoutGroup>
             </dxlc:LayoutGroup>
@@ -254,6 +254,8 @@
         <Label Content="Серия документа" HorizontalAlignment="Left" Margin="668,59,0,0" VerticalAlignment="Top" Width="128" Foreground="#FFF3F4F8" HorizontalContentAlignment="Center"/>
         <dxe:TextEdit x:Name="NomPolis_Passport" HorizontalAlignment="Left" Margin="810,81,0,0" VerticalAlignment="Top" Width="150"/>
         <Label Content="Номер документа" HorizontalAlignment="Left" Margin="810,59,0,0" VerticalAlignment="Top" Width="143" Foreground="#FFF3F4F8" HorizontalContentAlignment="Center"/>
+        <dxe:DateEdit x:Name="Date_lech" HorizontalAlignment="Left" Margin="1021,81,0,0" VerticalAlignment="Top" Width="275" NullValueButtonPlacement="EditBox"/>
+        <Label Content="Дата начала лечения" HorizontalAlignment="Left" Margin="1021,59,0,0" VerticalAlignment="Top" Width="275" Foreground="#FFF3F4F8" HorizontalContentAlignment="Center"/>
 
 
     </Grid>
