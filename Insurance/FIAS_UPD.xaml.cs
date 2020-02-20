@@ -72,6 +72,7 @@ namespace Insurance
     {
         public delegate void ThreadStart(string[] reg);
         public delegate void MyDelegate();
+        public delegate void MyDelegateErr(Exception ex);
         public delegate void MyProgress(double i);
         public FIAS_UPD()
         {
@@ -91,6 +92,7 @@ namespace Insurance
         {
             PBar.Value = i;
         }
+        
 
         public string regions;
         private void Fias_upd_Click(object sender, RoutedEventArgs e)
@@ -198,22 +200,22 @@ namespace Insurance
                             {
 
                                 entry.WriteToDirectory(opf.FileName.Replace("\\" + opf.SafeFileName, ""), new ExtractionOptions());
-                                try
-                                {
-                                    connSQL1.Open();
-                                    using (var command = new SqlCommand($@" DELETE FROM Houses where AOGUID in (select AOGUID from AddressObjects where REGIONCODE={Region[i]}) ; 
-                                                                            DELETE FROM AddressObjects where REGIONCODE={Region[i]};", connSQL1)) //DBCC CHECKIDENT (ADDROB, RESEED, 0); DBCC CHECKIDENT(AddressObjects, RESEED, 0);
-                                    {
-                                        command.CommandTimeout = 0;
-                                        command.ExecuteNonQuery();
-                                    }
-                                    connSQL1.Close();
+                                //try
+                                //{
+                                //    connSQL1.Open();
+                                //    using (var command = new SqlCommand($@" DELETE FROM Houses where AOGUID in (select AOGUID from AddressObjects where REGIONCODE={Region[i]}) ; 
+                                //                                            DELETE FROM AddressObjects where REGIONCODE={Region[i]};", connSQL1)) //DBCC CHECKIDENT (ADDROB, RESEED, 0); DBCC CHECKIDENT(AddressObjects, RESEED, 0);
+                                //    {
+                                //        command.CommandTimeout = 0;
+                                //        command.ExecuteNonQuery();
+                                //    }
+                                //    connSQL1.Close();
 
-                                }
-                                catch
-                                {
+                                //}
+                                //catch
+                                //{
 
-                                }
+                                //}
 
                                 DataTable dt = new DataTable();
                                 string dbffile = opf.FileName.Replace(opf.SafeFileName, "ADDROB" + Region[i] + ".DBF");
@@ -259,21 +261,23 @@ namespace Insurance
 
                                     try
                                     {
-                                        //                                        string command = $@" insert into AddressObjects ([AOGUID],[FORMALNAME],[REGIONCODE],[AUTOCODE],[AREACODE],[CITYCODE],[CTARCODE],[PLACECODE],
-                                        //[STREETCODE],[EXTRCODE],[SEXTCODE],[OFFNAME],[POSTALCODE],[IFNSFL],[TERRIFNSFL],[IFNSUL],[TERRIFNSUL],[OKATO],[OKTMO],[UPDATEDATE],[SHORTNAME],[AOLEVEL],[PARENTGUID],[AOID],[PREVID],
-                                        //[NEXTID],[CODE],[PLAINCODE],[ACTSTATUS],[CENTSTATUS],[OPERSTATUS],[CURRSTATUS],[STARTDATE],[ENDDATE],[NORMDOC],[LIVESTATUS])  
-                                        //select CAST([AOGUID] as UNIQUEIDENTIFIER),[FORMALNAME],[REGIONCODE],[AUTOCODE],[AREACODE],[CITYCODE],[CTARCODE],[PLACECODE],[STREETCODE],[EXTRCODE],[SEXTCODE],[OFFNAME],[POSTALCODE],
-                                        //[IFNSFL],[TERRIFNSFL],[IFNSUL],[TERRIFNSUL],[OKATO],[OKTMO],[UPDATEDATE],[SHORTNAME],[AOLEVEL],CAST([PARENTGUID] as uniqueidentifier),CAST([AOID] as uniqueidentifier),
-                                        //cast([PREVID] as UNIQUEIDENTIFIER),CAST([NEXTID] as uniqueidentifier),[CODE],[PLAINCODE],[ACTSTATUS],[CENTSTATUS],[OPERSTATUS],[CURRSTATUS],[STARTDATE],[ENDDATE],
-                                        //cast([NORMDOC] as uniqueidentifier),[LIVESTATUS]  from @t ";
-                                        
+                                        string command0 = $@" update AddressObjects set [AOGUID]=CAST(dt.AOGUID as UNIQUEIDENTIFIER),[FORMALNAME]=dt.FORMALNAME,[REGIONCODE]=dt.REGIONCODE,[AUTOCODE]=dt.AUTOCODE,[AREACODE]=dt.AREACODE,
+                                        [CITYCODE]=dt.CITYCODE,[CTARCODE]=dt.CTARCODE,[PLACECODE]=dt.PLACECODE,[STREETCODE]=dt.STREETCODE,[EXTRCODE]=dt.EXTRCODE,[SEXTCODE]=dt.SEXTCODE,[OFFNAME]=dt.OFFNAME,
+                                        [POSTALCODE]=dt.POSTALCODE,[IFNSFL]=dt.IFNSFL,[TERRIFNSFL]=dt.TERRIFNSFL,[IFNSUL]=dt.IFNSUL,[TERRIFNSUL]=dt.TERRIFNSUL,[OKATO]=dt.OKATO,[OKTMO]=dt.OKTMO,[UPDATEDATE]=dt.UPDATEDATE,
+                                        [SHORTNAME]=dt.SHORTNAME,[AOLEVEL]=dt.AOLEVEL,[PARENTGUID]=CAST(dt.PARENTGUID as uniqueidentifier),[AOID]=CAST(dt.AOID as uniqueidentifier),[PREVID]=cast(dt.PREVID as UNIQUEIDENTIFIER),
+                                        [NEXTID]=CAST(dt.NEXTID as uniqueidentifier),[CODE]=dt.CODE,[PLAINCODE]=dt.PLAINCODE,[ACTSTATUS]=dt.ACTSTATUS,[CENTSTATUS]=dt.CENTSTATUS,[OPERSTATUS]=dt.OPERSTATUS,[CURRSTATUS]=dt.CURRSTATUS,
+                                        [STARTDATE]=dt.STARTDATE,[ENDDATE]=dt.ENDDATE, [NORMDOC]=cast(dt.NORMDOC as uniqueidentifier),[LIVESTATUS]=dt.LIVESTATUS
+                                        from @dt dt where AddressObjects.aoid=CAST(dt.AOID as uniqueidentifier)";
+
                                         string command = $@" insert into AddressObjects ([AOGUID],[FORMALNAME],[REGIONCODE],[AUTOCODE],[AREACODE],[CITYCODE],[CTARCODE],[PLACECODE],
                                         [STREETCODE],[EXTRCODE],[SEXTCODE],[OFFNAME],[POSTALCODE],[IFNSFL],[TERRIFNSFL],[IFNSUL],[TERRIFNSUL],[OKATO],[OKTMO],[UPDATEDATE],[SHORTNAME],[AOLEVEL],[PARENTGUID],[AOID],[PREVID],
                                         [NEXTID],[CODE],[PLAINCODE],[ACTSTATUS],[CENTSTATUS],[OPERSTATUS],[CURRSTATUS],[STARTDATE],[ENDDATE],[NORMDOC],[LIVESTATUS])  
-                                        select CAST([AOGUID] as UNIQUEIDENTIFIER),[FORMALNAME],[REGIONCODE],[AUTOCODE],[AREACODE],[CITYCODE],[CTARCODE],[PLACECODE],[STREETCODE],[EXTRCODE],[SEXTCODE],[OFFNAME],[POSTALCODE],
-                                        [IFNSFL],[TERRIFNSFL],[IFNSUL],[TERRIFNSUL],[OKATO],[OKTMO],[UPDATEDATE],[SHORTNAME],[AOLEVEL],CAST([PARENTGUID] as uniqueidentifier),CAST([AOID] as uniqueidentifier),
-                                        cast([PREVID] as UNIQUEIDENTIFIER),CAST([NEXTID] as uniqueidentifier),[CODE],[PLAINCODE],[ACTSTATUS],[CENTSTATUS],[OPERSTATUS],[CURRSTATUS],[STARTDATE],[ENDDATE],
-                                        cast([NORMDOC] as uniqueidentifier),[LIVESTATUS] from @dt ";
+                                        select CAST(dt.AOGUID as UNIQUEIDENTIFIER),dt.FORMALNAME,dt.REGIONCODE,dt.AUTOCODE,dt.AREACODE,dt.CITYCODE,dt.CTARCODE,dt.PLACECODE,dt.STREETCODE,dt.EXTRCODE,dt.SEXTCODE,dt.OFFNAME,dt.POSTALCODE,
+                                        dt.IFNSFL,dt.TERRIFNSFL,dt.IFNSUL,dt.TERRIFNSUL,dt.OKATO,dt.OKTMO,dt.UPDATEDATE,dt.SHORTNAME,dt.AOLEVEL,CAST(dt.PARENTGUID as uniqueidentifier),CAST(dt.AOID as uniqueidentifier),
+                                        cast(dt.PREVID as UNIQUEIDENTIFIER),CAST(dt.NEXTID as uniqueidentifier),dt.CODE,dt.PLAINCODE,dt.ACTSTATUS,dt.CENTSTATUS,dt.OPERSTATUS,dt.CURRSTATUS,dt.STARTDATE,dt.ENDDATE,
+                                        cast(dt.NORMDOC as uniqueidentifier),dt.LIVESTATUS from @dt dt
+                                        left join AddressObjects ao on CAST(dt.AOID as uniqueidentifier) =ao.aoid where ao.aoguid is null";
+                                        MyReader.UpdateFromTable<DataTable>(command0, ConnectionString1, dt);
                                         MyReader.UpdateFromTable<DataTable>(command, ConnectionString1, dt);
                                     }
                                     catch
@@ -308,7 +312,7 @@ namespace Insurance
                 else
                 {
                     //files = Directory.GetFiles(f2, "ADDROB*.DBF"); //Directory.GetFiles(f2);
-                    DataTable dt = new DataTable();
+                    //DataTable dt = new DataTable();
                     // string ConnectionString = @"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + f2 + ";Extended Properties=dBASE IV;";
                     //string ConnectionString = @"Provider=VFPOLEDB.1;Data Source=" + f2 + ";";
                     //string ConnectionString1 = Properties.Settings.Default.fias;
@@ -316,175 +320,138 @@ namespace Insurance
                     //OleDbConnection conn = new OleDbConnection(ConnectionString);
                     SqlConnection connSQL = new SqlConnection(ConnectionString1);
                     var archive = SharpCompress.Archives.Rar.RarArchive.Open(opf.FileName);
-                    foreach (var entry in archive.Entries)
+                    entrs = archive.Entries.Where(x => x.Key.StartsWith("ADDROB") == true || x.Key.StartsWith("HOUSE") == true);
+                    foreach (var entry in entrs)
                     {
-                        if (entry.Key.Contains("ADDROB") == true)
-                        {
-                            entry.WriteToDirectory(opf.FileName.Replace("\\" + opf.SafeFileName, ""), new ExtractionOptions());
-                            string ConnectionString = String.Format(@"Provider=Microsoft.ACE.OLEDB.12.0; Data Source={0}; 
-Extended Properties=dBASE IV;", opf.FileName.Replace("\\" + opf.SafeFileName, ""));
+                        j = j + (50.00 / entrs.Count());
+                        Thread.Sleep(50);
+                        //Progressing pr = new Progressing(Progress);
 
-                            OleDbConnection conn = new OleDbConnection(ConnectionString);
-                            DataTable dt1 = new DataTable();
-                            connSQL.Close();
+                        Dispatcher.BeginInvoke(new MyProgress(ProgressCount), Math.Round(j, 0, MidpointRounding.AwayFromZero));
+                        
 
-                            try
+                            if (entry.Key.Contains("ADDROB")==true)
                             {
-                                OleDbDataAdapter oledbAdapter;
-                                DataSet ds;
+                                DataTable dt = new DataTable();
+                                entry.WriteToDirectory(opf.FileName.Replace("\\" + opf.SafeFileName, ""), new ExtractionOptions());
+                                //try
+                                //{
+                                //    connSQL1.Open();
+                                //    using (var command = new SqlCommand($@" DELETE FROM Houses ; 
+                                //                                            DELETE FROM AddressObjects", connSQL1)) //DBCC CHECKIDENT (ADDROB, RESEED, 0); DBCC CHECKIDENT(AddressObjects, RESEED, 0);
+                                //    {
+                                //        command.CommandTimeout = 0;
+                                //        command.ExecuteNonQuery();
+                                //    }
+                                //    connSQL1.Close();
 
-                                ds = new DataSet();
-                                ds.Clear();
-                                int columns = 0;
+                                //}
+                                //catch
+                                //{
 
-                                conn.Open();
-                                connSQL.Open();
+                                //}
 
-                                ds = new DataSet();
-                                ds.Clear();
-
-
-                                string Sql = "select * from " + entry.Key;
-                                oledbAdapter = new OleDbDataAdapter(Sql, conn);
-                                try
+                                //DataTable dt = new DataTable();
+                                string dbffile = opf.FileName.Replace(opf.SafeFileName, entry.Key);
+                                using (Stream fos = File.Open(dbffile, FileMode.OpenOrCreate, FileAccess.ReadWrite))
                                 {
-                                    oledbAdapter.Fill(ds);
-                                }
-                                catch
-                                {
-                                    MessageBox.Show("Ошибка ядра! Переименуйте файл и попробуйте снова!");
-                                }
+                                    var dbf = new DotNetDBF.DBFReader(fos);
+                                    dbf.CharEncoding = Encoding.GetEncoding(866);
 
-                                columns = ds.Tables[0].Columns.Count;
-
-                                conn.Close();
-                                connSQL.Close();
+                                    var cnt = dbf.RecordCount;
 
 
-                                var TB = $@"  CREATE TABLE [dbo].[AddressObjects](
-    [ACTSTATUS][float] NULL,
 
-    [AOGUID] [varchar] (36) NULL,
-	[AOID] [varchar] (36) NULL,
-	[AOLEVEL] [float] NULL,
-	[AREACODE] [varchar] (3) NULL,
-	[AUTOCODE] [varchar] (1) NULL,
-	[CENTSTATUS] [float] NULL,
-	[CITYCODE] [varchar] (3) NULL,
-	[CODE] [varchar] (17) NULL,
-	[CURRSTATUS] [float] NULL,
-	[ENDDATE] [date] NULL,
-	[FORMALNAME] [varchar] (120) NULL,
-	[IFNSFL] [varchar] (4) NULL,
-	[IFNSUL] [varchar] (4) NULL,
-	[NEXTID] [varchar] (36) NULL,
-	[OFFNAME] [varchar] (120) NULL,
-	[OKATO] [varchar] (11) NULL,
-	[OKTMO] [varchar] (11) NULL,
-	[OPERSTATUS] [float] NULL,
-	[PARENTGUID] [varchar] (36) NULL,
-	[PLACECODE] [varchar] (3) NULL,
-	[PLAINCODE] [varchar] (15) NULL,
-	[POSTALCODE] [varchar] (6) NULL,
-	[PREVID] [varchar] (36) NULL,
-	[REGIONCODE] [varchar] (2) NULL,
-	[SHORTNAME] [varchar] (10) NULL,
-	[STARTDATE] [date] NULL,
-	[STREETCODE] [varchar] (4) NULL,
-	[TERRIFNSFL] [varchar] (4) NULL,
-	[TERRIFNSUL] [varchar] (4) NULL,
-	[UPDATEDATE] [date] NULL,
-	[CTARCODE] [varchar] (3) NULL,
-	[EXTRCODE] [varchar] (4) NULL,
-	[SEXTCODE] [varchar] (3) NULL,
-	[LIVESTATUS] [float] NULL,
-	[NORMDOC] [varchar] (36) NULL,
-	[PLANCODE] [varchar] (4) NULL,
-	[CADNUM] [varchar] (100) NULL,
-	[DIVTYPE] [float] NULL
-) ON[PRIMARY]
-
-  UPDATE AddressObjects SET NEXTID=NULL WHERE NEXTID=''
-  UPDATE AddressObjects SET PARENTGUID = NULL WHERE PARENTGUID = ''
-  UPDATE AddressObjects SET PREVID = NULL WHERE PREVID = ''
-  UPDATE AddressObjects SET NORMDOC = NULL WHERE NORMDOC = ''";
-                                TB = TB.Replace("AddressObjects", entry.Key.Replace(".DBF", ""));
-                                try
-                                {
-                                    connSQL.Open();
-                                    using (var command = new SqlCommand(TB, connSQL))
+                                    var fields = dbf.Fields;
+                                    for (int ii = 0; ii < fields.Count(); ii++)
                                     {
-
-                                        command.ExecuteNonQuery();
+                                        DataColumn workCol = dt.Columns.Add(fields[ii].Name, fields[ii].Type);
+                                        workCol.AllowDBNull = true;
+                                        workCol.DefaultValue = DBNull.Value;
                                     }
 
-                                    connSQL.Close();
+                                    //var result = (from s in fields select s.Name).ToArray();
+                                    //dt.Load(dbf.NextRecord());
+                                    for (int ii = 0; ii < dbf.RecordCount; ii++)
+                                    {
+                                        var rtt = dbf.NextRecord();
+
+                                        if (rtt != null)
+                                        {
+                                            for (int i = 0; i < rtt.Count(); i++)
+                                            {
+                                                if (rtt[i].ToString() == "")
+                                                {
+                                                    rtt[i] = null;
+                                                }
+                                            }
+                                            dt.LoadDataRow(rtt, true);
+
+                                        }
+
+                                    }
+                                string command0 = $@" update AddressObjects set [AOGUID]=CAST(dt.AOGUID as UNIQUEIDENTIFIER),[FORMALNAME]=dt.FORMALNAME,[REGIONCODE]=dt.REGIONCODE,[AUTOCODE]=dt.AUTOCODE,[AREACODE]=dt.AREACODE,
+                                        [CITYCODE]=dt.CITYCODE,[CTARCODE]=dt.CTARCODE,[PLACECODE]=dt.PLACECODE,[STREETCODE]=dt.STREETCODE,[EXTRCODE]=dt.EXTRCODE,[SEXTCODE]=dt.SEXTCODE,[OFFNAME]=dt.OFFNAME,
+                                        [POSTALCODE]=dt.POSTALCODE,[IFNSFL]=dt.IFNSFL,[TERRIFNSFL]=dt.TERRIFNSFL,[IFNSUL]=dt.IFNSUL,[TERRIFNSUL]=dt.TERRIFNSUL,[OKATO]=dt.OKATO,[OKTMO]=dt.OKTMO,[UPDATEDATE]=dt.UPDATEDATE,
+                                        [SHORTNAME]=dt.SHORTNAME,[AOLEVEL]=dt.AOLEVEL,[PARENTGUID]=CAST(dt.PARENTGUID as uniqueidentifier),[AOID]=CAST(dt.AOID as uniqueidentifier),[PREVID]=cast(dt.PREVID as UNIQUEIDENTIFIER),
+                                        [NEXTID]=CAST(dt.NEXTID as uniqueidentifier),[CODE]=dt.CODE,[PLAINCODE]=dt.PLAINCODE,[ACTSTATUS]=dt.ACTSTATUS,[CENTSTATUS]=dt.CENTSTATUS,[OPERSTATUS]=dt.OPERSTATUS,[CURRSTATUS]=dt.CURRSTATUS,
+                                        [STARTDATE]=dt.STARTDATE,[ENDDATE]=dt.ENDDATE, [NORMDOC]=cast(dt.NORMDOC as uniqueidentifier),[LIVESTATUS]=dt.LIVESTATUS
+                                        from @dt dt where AddressObjects.aoid=CAST(dt.AOID as uniqueidentifier)";
+
+                                string command = $@" insert into AddressObjects ([AOGUID],[FORMALNAME],[REGIONCODE],[AUTOCODE],[AREACODE],[CITYCODE],[CTARCODE],[PLACECODE],
+                                        [STREETCODE],[EXTRCODE],[SEXTCODE],[OFFNAME],[POSTALCODE],[IFNSFL],[TERRIFNSFL],[IFNSUL],[TERRIFNSUL],[OKATO],[OKTMO],[UPDATEDATE],[SHORTNAME],[AOLEVEL],[PARENTGUID],[AOID],[PREVID],
+                                        [NEXTID],[CODE],[PLAINCODE],[ACTSTATUS],[CENTSTATUS],[OPERSTATUS],[CURRSTATUS],[STARTDATE],[ENDDATE],[NORMDOC],[LIVESTATUS])  
+                                        select CAST(dt.AOGUID as UNIQUEIDENTIFIER),dt.FORMALNAME,dt.REGIONCODE,dt.AUTOCODE,dt.AREACODE,dt.CITYCODE,dt.CTARCODE,dt.PLACECODE,dt.STREETCODE,dt.EXTRCODE,dt.SEXTCODE,dt.OFFNAME,dt.POSTALCODE,
+                                        dt.IFNSFL,dt.TERRIFNSFL,dt.IFNSUL,dt.TERRIFNSUL,dt.OKATO,dt.OKTMO,dt.UPDATEDATE,dt.SHORTNAME,dt.AOLEVEL,CAST(dt.PARENTGUID as uniqueidentifier),CAST(dt.AOID as uniqueidentifier),
+                                        cast(dt.PREVID as UNIQUEIDENTIFIER),CAST(dt.NEXTID as uniqueidentifier),dt.CODE,dt.PLAINCODE,dt.ACTSTATUS,dt.CENTSTATUS,dt.OPERSTATUS,dt.CURRSTATUS,dt.STARTDATE,dt.ENDDATE,
+                                        cast(dt.NORMDOC as uniqueidentifier),dt.LIVESTATUS from @dt dt
+                                        left join AddressObjects ao on CAST(dt.AOID as uniqueidentifier) =ao.aoid where ao.aoguid is null";
+                                
+                                try
+                                        {
+                                            MyReader.UpdateFromTable<DataTable>(command0, ConnectionString1, dt);
+                                            MyReader.UpdateFromTable<DataTable>(command, ConnectionString1, dt);
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Dispatcher.BeginInvoke(new MyDelegateErr(MessErr), ex);
+                                            Thread.Sleep(100);
+                                            while (j >= 0)
+                                            {
+                                                Dispatcher.BeginInvoke(new MyProgress(ProgressCount), j);
+                                                j = j - 1;
+                                        
+                                                Thread.Sleep(50);
+                                                if (j > 0 && j < 1)
+                                                {
+                                                    j = 0;
+                                                }
+                                            }
+                                        
+                                            return;
+                                        }
+
+                            }
+                                try
+                                {
+
+                                    File.Delete(opf.FileName.Replace(opf.SafeFileName, "") + entry.Key);
+
                                 }
                                 catch
                                 {
-                                    MessageBox.Show("Ошибка создания таблицы -" + f.Replace(".DBF", ""));
                                 }
-
-
-                                conn.Open();
-                                connSQL.Open();
-                                SqlBulkCopy bulk = new SqlBulkCopy(connSQL);
-                                bulk.DestinationTableName = "dbo." + entry.Key.Replace(".DBF", "");
-                                bulk.BulkCopyTimeout = 0;
-                                bulk.BatchSize = 100000;
-
-                                OleDbCommand comm = conn.CreateCommand();
-                                comm.CommandText = @"SELECT *  FROM " + entry.Key;
-                                dt.Load(comm.ExecuteReader());
-                                bulk.WriteToServer(dt);
-                                conn.Close();
-                                connSQL.Close();
+                                //if (i== Region.Count() - 1 && entry.Key == "ADDROB" + Region[Region.Count() - 1] + ".DBF")
+                                if (j >= 50)
+                                {
+                                    goto forward;
+                                }
                             }
 
-                            catch (Exception e1)
-                            {
-                                MessageBox.Show("ошибка копирования" + e1.ToString());
-                            }
-                            
-                        }
-
-                        try
-                        {
-                            connSQL.Open();
-                            using (var command = new SqlCommand($@"insert into AddressObjects ([AOGUID],[FORMALNAME],[REGIONCODE],[AUTOCODE],[AREACODE],[CITYCODE],[CTARCODE],[PLACECODE],
-[STREETCODE],[EXTRCODE],[SEXTCODE],[OFFNAME],[POSTALCODE],[IFNSFL],[TERRIFNSFL],[IFNSUL],[TERRIFNSUL],[OKATO],[OKTMO],[UPDATEDATE],[SHORTNAME],[AOLEVEL],[PARENTGUID],[AOID],[PREVID],
-[NEXTID],[CODE],[PLAINCODE],[ACTSTATUS],[CENTSTATUS],[OPERSTATUS],[CURRSTATUS],[STARTDATE],[ENDDATE],[NORMDOC],[LIVESTATUS])  
-select CAST([AOGUID] as UNIQUEIDENTIFIER),[FORMALNAME],[REGIONCODE],[AUTOCODE],[AREACODE],[CITYCODE],[CTARCODE],[PLACECODE],[STREETCODE],[EXTRCODE],[SEXTCODE],[OFFNAME],[POSTALCODE],
-[IFNSFL],[TERRIFNSFL],[IFNSUL],[TERRIFNSUL],[OKATO],[OKTMO],[UPDATEDATE],[SHORTNAME],[AOLEVEL],CAST([PARENTGUID] as uniqueidentifier),CAST([AOID] as uniqueidentifier),
-cast([PREVID] as UNIQUEIDENTIFIER),CONVERT(uniqueidentifier,[NEXTID]),[CODE],[PLAINCODE],[ACTSTATUS],[CENTSTATUS],[OPERSTATUS],[CURRSTATUS],[STARTDATE],[ENDDATE],
-cast([NORMDOC] as uniqueidentifier),[LIVESTATUS]  from {entry.Key.Replace(".DBF", "")} ", connSQL))
-                            {
-
-                                command.ExecuteNonQuery();
-                            }
                             connSQL.Close();
-                        }
-                        catch
-                        {
-                            connSQL.Close();
-                        }
-                        try
-                        {
-                            connSQL.Open();
-                            using (var command = new SqlCommand("DROP TABLE " + entry.Key.Replace(".DBF", ""), connSQL))
-                            {
-                                command.ExecuteNonQuery();
-                            }
-                            connSQL.Close();
-                            File.Delete(opf.FileName.Replace(opf.SafeFileName, "") + entry.Key);
-                        }
-                        catch
-                        {
-                        }
-                        if (entry.Key.Contains("NDOCTYPE") == true)
-                        {
-                            goto forward;
-                        }
+
+
+                        
                     }
 
                 }
@@ -552,14 +519,40 @@ cast([NORMDOC] as uniqueidentifier),[LIVESTATUS]  from {entry.Key.Replace(".DBF"
                                         }
 
                                     }
-
+                                    string command0 = $@"update Houses set [POSTALCODE]=dt.POSTALCODE,[IFNSFL]=dt.IFNSFL,[TERRIFNSFL]=dt.TERRIFNSFL,[IFNSUL]=dt.IFNSUL,[TERRIFNSUL]=dt.TERRIFNSUL,[OKATO]=dt.OKATO,
+[OKTMO]=dt.OKTMO,[UPDATEDATE]=dt.UPDATEDATE,[HOUSENUM]=dt.HOUSENUM,[ESTSTATUS]=dt.ESTSTATUS,[BUILDNUM]=dt.BUILDNUM,[STRUCNUM]=dt.STRUCNUM,[STRSTATUS]=dt.STRSTATUS,[HOUSEID]=dt.HOUSEID,[HOUSEGUID]=dt.HOUSEGUID,
+[AOGUID]=dt.AOGUID,[STARTDATE]=dt.STARTDATE,[ENDDATE]=dt.ENDDATE,[STATSTATUS]=dt.STATSTATUS,[NORMDOC]=dt.NORMDOC,[COUNTER]=dt.COUNTER  
+from @dt dt where Houses.HOUSEID=dt.HOUSEID";
 
                                     string command=$@"insert into Houses ([POSTALCODE],[IFNSFL],[TERRIFNSFL],[IFNSUL],[TERRIFNSUL],[OKATO],[OKTMO],[UPDATEDATE],[HOUSENUM],
 [ESTSTATUS],[BUILDNUM],[STRUCNUM],[STRSTATUS],[HOUSEID],[HOUSEGUID],[AOGUID],[STARTDATE],[ENDDATE],[STATSTATUS],[NORMDOC],[COUNTER])  
-select [POSTALCODE],[IFNSFL],[TERRIFNSFL],[IFNSUL],[TERRIFNSUL],[OKATO],[OKTMO],[UPDATEDATE],[HOUSENUM],[ESTSTATUS],[BUILDNUM],[STRUCNUM],[STRSTATUS],[HOUSEID],[HOUSEGUID],[AOGUID],
-[STARTDATE],[ENDDATE],[STATSTATUS],[NORMDOC],[COUNTER]  from @dt";
-                                    MyReader.UpdateFromTable<DataTable>(command, ConnectionString11, dt1);
-                                    
+select dt.POSTALCODE,dt.IFNSFL,dt.TERRIFNSFL,dt.IFNSUL,dt.TERRIFNSUL,dt.OKATO,dt.OKTMO,dt.UPDATEDATE,dt.HOUSENUM,dt.ESTSTATUS,dt.BUILDNUM,dt.STRUCNUM,dt.STRSTATUS,dt.HOUSEID,dt.HOUSEGUID,dt.AOGUID,
+dt.STARTDATE,dt.ENDDATE,dt.STATSTATUS,dt.NORMDOC,dt.COUNTER  from @dt dt
+left join houses h on dt.HOUSEID=h.HOUSEID where h.id is null";
+                                    try
+                                    {
+                                        MyReader.UpdateFromTable<DataTable>(command0, ConnectionString11, dt1);
+                                        MyReader.UpdateFromTable<DataTable>(command, ConnectionString11, dt1);
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        Dispatcher.BeginInvoke(new MyDelegateErr(MessErr),ex);
+                                        Thread.Sleep(100);
+                                        while(j>=0)
+                                        {
+                                            Dispatcher.BeginInvoke(new MyProgress(ProgressCount), j);
+                                            j = j - 1;
+                                            
+                                            Thread.Sleep(50);
+                                            if(j>0 && j<1)
+                                            {
+                                                j = 0;
+                                            }
+                                        }
+                                        
+                                        return;
+                                    }
+
                                 }
                                 try
                                 {
@@ -580,7 +573,7 @@ select [POSTALCODE],[IFNSFL],[TERRIFNSFL],[IFNSUL],[TERRIFNSUL],[OKATO],[OKTMO],
                         }
                     }
                     endproc1:
-                    
+
                     //Dispatcher.BeginInvoke(new MyProgress(ProgressCount),100);
                     Dispatcher.BeginInvoke(new MyDelegate(ProgressMessR));
                     //string m = $@"Для вступления в силу изменений программа будет перезапущена!";
@@ -591,6 +584,7 @@ select [POSTALCODE],[IFNSFL],[TERRIFNSFL],[IFNSUL],[TERRIFNSUL],[OKATO],[OKTMO],
                     //System.Diagnostics.Process.Start(Environment.CurrentDirectory + @"\InsRun.vbs");
                     //this.Close();
                     //Application.Current.Shutdown();
+                   
                 }
 
                 else
@@ -602,7 +596,7 @@ select [POSTALCODE],[IFNSFL],[TERRIFNSFL],[IFNSUL],[TERRIFNSUL],[OKATO],[OKTMO],
                     //}
                     //for (int xz = 0; xz < fileshouses.Length; xz++)
                     //{
-                    DataTable dt1 = new DataTable();
+                    //DataTable dt1 = new DataTable();
                     //string ConnectionString = @"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + f2 + ";Extended Properties=dBASE IV;";
                     //string ConnectionStringZ = @"Provider=VFPOLEDB.1;Data Source=" + f2 + ";";
                     string ConnectionStringZ = String.Format(@"Provider=Microsoft.ACE.OLEDB.12.0; Data Source={0}; 
@@ -612,197 +606,113 @@ Extended Properties=dBASE IV;", opf.FileName.Replace("\\" + opf.SafeFileName, ""
                     OleDbConnection conn1 = new OleDbConnection(ConnectionStringZ);
                     SqlConnection connSQ1L = new SqlConnection(ConnectionString11);
                     var archive = SharpCompress.Archives.Rar.RarArchive.Open(opf.FileName);
-
-                    foreach (var entry in archive.Entries)
+                    entrs = archive.Entries.Where(x => x.Key.StartsWith("ADDROB") == true || x.Key.StartsWith("HOUSE") == true);
+                    foreach (var entry in entrs)
                     {
-                        if (entry.Key.Contains("HOUSE") == true)
-                        {
-                            try
+                        j = j + (50.00 / entrs.Count());
+                        Thread.Sleep(50);
+                        //Progressing pr = new Progressing(Progress);
+
+                        Dispatcher.BeginInvoke(new MyProgress(ProgressCount), Math.Round(j, 0, MidpointRounding.AwayFromZero));
+                        
+                            if (entry.Key.Contains("HOUSE"))
                             {
-                                OleDbDataAdapter oledbAdapter1;
-                                DataSet ds1;
-
-                                int columns = 0;
-
-                                conn1.Open();
-                                connSQL1.Open();
-
-                                ds1 = new DataSet();
-                                ds1.Clear();
-
-                                string Sql = "select * from " + entry.Key;
-                                oledbAdapter1 = new OleDbDataAdapter(Sql, conn1);
-                                try
+                                entry.WriteToDirectory(opf.FileName.Replace("\\" + opf.SafeFileName, ""), new ExtractionOptions());
+                                //DataTable dt1 = new DataTable();
+                                DataTable dt1 = new DataTable();
+                                //string ConnectionString11 = Properties.Settings.Default.FIASConnectionString;
+                                // conn1 = new OleDbConnection(ConnectionStringZ);
+                                //SqlConnection connSQ1L = new SqlConnection(ConnectionString11);
+                                string dbffile = opf.FileName.Replace(opf.SafeFileName, entry.Key);
+                                using (Stream fos = File.Open(dbffile, FileMode.OpenOrCreate, FileAccess.ReadWrite))
                                 {
-                                    oledbAdapter1.Fill(ds1);
-                                }
-                                catch
-                                {
-                                    MessageBox.Show("Ошибка ядра! Переименуйте файл и попробуйте снова!");
-                                }
+                                    var dbf = new DotNetDBF.DBFReader(fos);
+                                    dbf.CharEncoding = Encoding.GetEncoding(866);
 
-                                columns = ds1.Tables[0].Columns.Count;
-
-                                conn1.Close();
-                                connSQL1.Close();
-
-                                //List<string> SQL = new List<string>();
-                                //SQL.Add("CREATE TABLE [" + entry.Key.Replace(".DBF", "") + "] (");
-                                //SQL.Add(Environment.NewLine);
-                                //for (int x = 0; x < columns; x++)
-                                //{
-
-                                //    if (x == columns - 1)
-                                //    {
-                                //        SQL.Add("[" + ds1.Tables[0].Columns[x] + "] VARCHAR(250) );");
-                                //    }
-                                //    else
-                                //    {
-                                //        SQL.Add("[" + ds1.Tables[0].Columns[x] + "] VARCHAR(250)," + Environment.NewLine);
-                                //    }
-                                //}
-
-                                //string Table = string.Join(Environment.NewLine, SQL.ToArray());
-                                //try
-                                //{
-                                //    connSQL1.Open();
-                                //    using (var command = new SqlCommand(Table, connSQL1))
-                                //    {
-
-                                //        command.ExecuteNonQuery();
-                                //    }
+                                    var cnt = dbf.RecordCount;
 
 
 
-                                //    connSQL1.Close();
-                                //}
-                                //catch
-                                //{
-                                //    MessageBox.Show("Ошибка создания таблицы -" + f.Replace(".DBF", ""));
-                                //}
-                                var TBHOUSES = $@"CREATE TABLE [dbo].[AddressObjects](
- [AOGUID] [varchar](36) NULL,
-  [BUILDNUM] [varchar](10) NULL,
-  [ENDDATE] [datetime] NULL,
-  [ESTSTATUS] [float] NULL,
-  [HOUSEGUID] [varchar](36) NULL,
-  [HOUSEID] [varchar](36) NULL,
-  [HOUSENUM] [varchar](20) NULL,
-  [STATSTATUS] [float] NULL,
-  [IFNSFL] [varchar](4) NULL,
-  [IFNSUL] [varchar](4) NULL,
-  [OKATO] [varchar](11) NULL,
-  [OKTMO] [varchar](11) NULL,
-  [POSTALCODE] [varchar](6) NULL,
-  [STARTDATE] [date] NULL,
-  [STRUCNUM] [varchar](10) NULL,
-  [STRSTATUS] [float] NULL,
-  [TERRIFNSFL] [varchar](4) NULL,
-  [TERRIFNSUL] [varchar](4) NULL,
-  [UPDATEDATE] [date] NULL,
-  [NORMDOC] [varchar](36) NULL,
-  [COUNTER] [float] NULL,
-  [CADNUM] [varchar](100) NULL,
-  [DIVTYPE] [float] NULL
-) ON [PRIMARY]
-
-  UPDATE AddressObjects SET AOGUID=NULL WHERE AOGUID=''
-  UPDATE AddressObjects SET HOUSEGUID = NULL WHERE HOUSEGUID = ''
-  UPDATE AddressObjects SET HOUSEID = NULL WHERE HOUSEID = ''
-  UPDATE AddressObjects SET NORMDOC = NULL WHERE NORMDOC = ''";
-                                TBHOUSES = TBHOUSES.Replace("AddressObjects", entry.Key.Replace(".DBF", ""));
-                                try
-                                {
-                                    connSQL1.Open();
-                                    using (var command = new SqlCommand(TBHOUSES, connSQL1))
+                                    var fields = dbf.Fields;
+                                    for (int ii = 0; ii < fields.Count(); ii++)
                                     {
-
-                                        command.ExecuteNonQuery();
+                                        DataColumn workCol = dt1.Columns.Add(fields[ii].Name, fields[ii].Type);
+                                        workCol.AllowDBNull = true;
+                                        workCol.DefaultValue = DBNull.Value;
                                     }
 
-                                    connSQL1.Close();
+                                    //var result = (from s in fields select s.Name).ToArray();
+                                    //dt.Load(dbf.NextRecord());
+                                    for (int ii = 0; ii < dbf.RecordCount; ii++)
+                                    {
+                                        var rtt = dbf.NextRecord();
+
+                                        if (rtt != null)
+                                        {
+                                            for (int i = 0; i < rtt.Count(); i++)
+                                            {
+                                                if (rtt[i].ToString() == "")
+                                                {
+                                                    rtt[i] = null;
+                                                }
+                                            }
+                                            dt1.LoadDataRow(rtt, true);
+
+                                        }
+
+                                    }
+                                string command0 = $@"update Houses set [POSTALCODE]=dt.POSTALCODE,[IFNSFL]=dt.IFNSFL,[TERRIFNSFL]=dt.TERRIFNSFL,[IFNSUL]=dt.IFNSUL,[TERRIFNSUL]=dt.TERRIFNSUL,[OKATO]=dt.OKATO,
+[OKTMO]=dt.OKTMO,[UPDATEDATE]=dt.UPDATEDATE,[HOUSENUM]=dt.HOUSENUM,[ESTSTATUS]=dt.ESTSTATUS,[BUILDNUM]=dt.BUILDNUM,[STRUCNUM]=dt.STRUCNUM,[STRSTATUS]=dt.STRSTATUS,[HOUSEID]=dt.HOUSEID,[HOUSEGUID]=dt.HOUSEGUID,
+[AOGUID]=dt.AOGUID,[STARTDATE]=dt.STARTDATE,[ENDDATE]=dt.ENDDATE,[STATSTATUS]=dt.STATSTATUS,[NORMDOC]=dt.NORMDOC,[COUNTER]=dt.COUNTER  
+from @dt dt where Houses.HOUSEID=dt.HOUSEID";
+
+                                string command = $@"insert into Houses ([POSTALCODE],[IFNSFL],[TERRIFNSFL],[IFNSUL],[TERRIFNSUL],[OKATO],[OKTMO],[UPDATEDATE],[HOUSENUM],
+[ESTSTATUS],[BUILDNUM],[STRUCNUM],[STRSTATUS],[HOUSEID],[HOUSEGUID],[AOGUID],[STARTDATE],[ENDDATE],[STATSTATUS],[NORMDOC],[COUNTER])  
+select dt.POSTALCODE,dt.IFNSFL,dt.TERRIFNSFL,dt.IFNSUL,dt.TERRIFNSUL,dt.OKATO,dt.OKTMO,dt.UPDATEDATE,dt.HOUSENUM,dt.ESTSTATUS,dt.BUILDNUM,dt.STRUCNUM,dt.STRSTATUS,dt.HOUSEID,dt.HOUSEGUID,dt.AOGUID,
+dt.STARTDATE,dt.ENDDATE,dt.STATSTATUS,dt.NORMDOC,dt.COUNTER  from @dt dt
+left join houses h on dt.HOUSEID=h.HOUSEID where h.id is null";
+                                try
+                                {
+                                    MyReader.UpdateFromTable<DataTable>(command0, ConnectionString11, dt1);
+                                    MyReader.UpdateFromTable<DataTable>(command, ConnectionString11, dt1);
+                                }
+                                catch (Exception ex)
+                                {
+                                    Dispatcher.BeginInvoke(new MyDelegateErr(MessErr), ex);
+                                    Thread.Sleep(100);
+                                    while (j >= 0)
+                                    {
+                                        Dispatcher.BeginInvoke(new MyProgress(ProgressCount), j);
+                                        j = j - 1;
+
+                                        Thread.Sleep(50);
+                                        if (j > 0 && j < 1)
+                                        {
+                                            j = 0;
+                                        }
+                                    }
+
+                                    return;
+                                }
+
+                            }
+                                try
+                                {
+
+                                    File.Delete(opf.FileName.Replace(opf.SafeFileName, "") + entry.Key);
+
                                 }
                                 catch
                                 {
-                                    MessageBox.Show("Ошибка создания таблицы -" + f.Replace(".DBF", ""));
                                 }
-
-                                conn1.Open();
-                                connSQL1.Open();
-                                SqlBulkCopy bulk = new SqlBulkCopy(connSQL1);
-                                bulk.DestinationTableName = "dbo." + entry.Key.Replace(".DBF", "");
-                                bulk.BatchSize = 100000;
-                                bulk.BulkCopyTimeout = 0;
-
-                                OleDbCommand comm1 = conn1.CreateCommand();
-                                comm1.CommandText = @"SELECT *  FROM " + entry.Key;
-                                dt1.Load(comm1.ExecuteReader());
-
-                                bulk.WriteToServer(dt1);
-                                //OleDbDataReader read = comm.ExecuteReader();
-                                //bulk.WriteToServer(read);
-
-                                conn1.Close();
-                                connSQL1.Close();
+                                //if (i== Region.Count() - 1 && entry.Key == "HOUSE" + Region[Region.Count() - 1] + ".DBF")
+                                if (j == 100)
+                                {
+                                    goto endproc;
+                                }
                             }
 
-                            catch (Exception e3)
-                            {
-                                MessageBox.Show("ошибка копирования" + e3.ToString());
-                            }
-
-                            //try
-                            //{
-                            //    connSQL1.Open();
-                            //    using (var command = new SqlCommand("insert into HOUSEZ([AOGUID],[BUILDNUM],[ENDDATE],[ESTSTATUS],[HOUSEGUID],[HOUSEID],[HOUSENUM],[STATSTATUS],[IFNSFL],[IFNSUL],[OKATO],[OKTMO],[POSTALCODE],[STARTDATE],[STRUCNUM] ,[STRSTATUS] ,[TERRIFNSFL],[TERRIFNSUL],[UPDATEDATE] ,[NORMDOC],[COUNTER],[CADNUM] ,[DIVTYPE]) 	select [AOGUID],[BUILDNUM],[ENDDATE],[ESTSTATUS],[HOUSEGUID],[HOUSEID],[HOUSENUM],[STATSTATUS],[IFNSFL],[IFNSUL],[OKATO],[OKTMO],[POSTALCODE],[STARTDATE],[STRUCNUM] ,[STRSTATUS] ,[TERRIFNSFL],[TERRIFNSUL],[UPDATEDATE] ,[NORMDOC],[COUNTER],[CADNUM] ,[DIVTYPE] from " + entry.Key.Replace(".DBF", ""), connSQL1))
-                            //    {
-
-                            //        command.ExecuteNonQuery();
-                            //    }
-                            //    connSQL1.Close();
-                            //}
-                            //catch
-                            //{
-                            //}
-
-
-                        }
-
-
-                        try
-                        {
-                            connSQL1.Open();
-                            using (var command = new SqlCommand($@"insert into Houses ([POSTALCODE],[IFNSFL],[TERRIFNSFL],[IFNSUL],[TERRIFNSUL],[OKATO],[OKTMO],[UPDATEDATE],[HOUSENUM],
-[ESTSTATUS],[BUILDNUM],[STRUCNUM],[STRSTATUS],[HOUSEID],[HOUSEGUID],[AOGUID],[STARTDATE],[ENDDATE],[STATSTATUS],[NORMDOC],[COUNTER])  
-select [POSTALCODE],[IFNSFL],[TERRIFNSFL],[IFNSUL],[TERRIFNSUL],[OKATO],[OKTMO],[UPDATEDATE],[HOUSENUM],[ESTSTATUS],[BUILDNUM],[STRUCNUM],[STRSTATUS],[HOUSEID],[HOUSEGUID],[AOGUID],
-[STARTDATE],[ENDDATE],[STATSTATUS],[NORMDOC],[COUNTER]  from {entry.Key.Replace(".DBF", "")}", connSQL1))
-                            {
-
-                                command.ExecuteNonQuery();
-                            }
-                            connSQL1.Close();
-                        }
-                        catch
-                        {
-                        }
-                        try
-                        {
-                            connSQL1.Open();
-                            using (var command = new SqlCommand("DROP TABLE " + entry.Key.Replace(".DBF", ""), connSQL1))
-                            {
-
-                                command.ExecuteNonQuery();
-                            }
-                            File.Delete(opf.FileName.Replace(opf.SafeFileName, "") + entry.Key);
-                            connSQL1.Close();
-                        }
-                        catch
-                        {
-                        }
-                        if (entry.Key.Contains("NDOCTYPE") == true)
-                        {
-                            goto endproc;
-                        }
+                        
                     }
                 endproc:
                     
@@ -855,7 +765,7 @@ select [POSTALCODE],[IFNSFL],[TERRIFNSFL],[IFNSUL],[TERRIFNSUL],[OKATO],[OKTMO],
         }
         private void ProgressMessAll()
         {
-            string m = $@"Справочник ФИАС по всем регионам успешно обновлен!";
+            string m = $@"Справочник ФИАС по всем регионам успешно обновлен! Закончено в: {DateTime.Now.ToString()}";
             string t = "Сообщение!";
             int b = 1;
             Message me = new Message(m, t, b);
@@ -868,6 +778,16 @@ select [POSTALCODE],[IFNSFL],[TERRIFNSFL],[IFNSUL],[TERRIFNSUL],[OKATO],[OKTMO],
             System.Diagnostics.Process.Start(Environment.CurrentDirectory + @"\InsRun.vbs");
             this.Close();
             Application.Current.Shutdown();
+        }
+
+        private void MessErr(Exception ex)
+        {
+            string m = $@"Справочник ФИАС по всем регионам успешно обновлен!";
+            string t = "Ошибка!";
+            int b = 1;
+            Message me = new Message(ex.Message, t, b);
+            me.ShowDialog();
+            
         }
 
 

@@ -217,26 +217,13 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
                     //SqlParameter t = cmd.Parameters.AddWithValue("@t", dt);
                     //t.SqlDbType = SqlDbType.Structured;
                     //t.TypeName = "dbo.ForUpdate";
-                    try
-                    {
+                    
                         cmd.CommandTimeout = 0;
                         con.Open();
                         cmd0.ExecuteNonQuery();
                         int str = cmd.ExecuteNonQuery();
                         int isrt = str;
-                        con.Close();
-                    }
-                      catch(Exception e)
-                    {
-                        
-                        con.Close();
-                        string tt = $@"Информация для разработчика! Ошибка!";
-                        int b = 1;
-                        Message me = new Message(e.Message, tt, b);
-                        me.ShowDialog();
-                    }                
-
-                
+                        con.Close();    
             
 
            
@@ -492,7 +479,17 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
             G_layuot.save_Layout(Properties.Settings.Default.DocExchangeConnectionString, pers_grid, pers_grid_2);
             ////restore_Layout();
             ////layout_InUse();
-        }
+         List<F003> molist = MyReader.MySelect<F003>($@"SELECT mcod,namewithid from f003 order by mcod", Properties.Settings.Default.DocExchangeConnectionString);
+         List<V005> pol_DataContext = MyReader.MySelect<V005>(@"select IDPOL,NameWithID from SPR_79_V005", Properties.Settings.Default.DocExchangeConnectionString);
+         List<F011> doc_type_DataContext = MyReader.MySelect<F011>(@"select ID,NameWithID from SPR_79_F011", Properties.Settings.Default.DocExchangeConnectionString);
+         List<OKSM> str_vid_DataContext = MyReader.MySelect<OKSM>(@"select ID,CAPTION from SPR_79_OKSM", Properties.Settings.Default.DocExchangeConnectionString);
+         List<V013> kat_zl_DataContext = MyReader.MySelect<V013>(@"select IDKAT,NameWithID from V013", Properties.Settings.Default.DocExchangeConnectionString);
+         List<F008> type_policy_DataContext = MyReader.MySelect<F008>(@"select ID,NameWithID from SPR_79_F008", Properties.Settings.Default.DocExchangeConnectionString);
+         List<FIO> fio_col = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_fam", Properties.Settings.Default.DocExchangeConnectionString);
+         List<FIO> im_DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_im", Properties.Settings.Default.DocExchangeConnectionString);
+         List<FIO> ot_DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_ot", Properties.Settings.Default.DocExchangeConnectionString);
+         List<NAME_VP> kem_vid_DataContext = MyReader.MySelect<NAME_VP>(@"select id,name from spr_namevp", Properties.Settings.Default.DocExchangeConnectionString);
+    }
 
         public List<F003> molist = MyReader.MySelect<F003>($@"SELECT mcod,namewithid from f003 order by mcod", Properties.Settings.Default.DocExchangeConnectionString);
         public List<V005> pol_DataContext = MyReader.MySelect<V005>(@"select IDPOL,NameWithID from SPR_79_V005", Properties.Settings.Default.DocExchangeConnectionString);
