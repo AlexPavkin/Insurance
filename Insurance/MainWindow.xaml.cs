@@ -2361,7 +2361,7 @@ from pol_prz_agents where prz_code like'%{prz.EditValue.ToString()}%'", Properti
 
         private void poisk_Click(object sender, RoutedEventArgs e)
         {
-            Poisk w4 = new Poisk();
+            Poisk_Vladik w4 = new Poisk_Vladik();
             w4.ShowDialog();
         }
 
