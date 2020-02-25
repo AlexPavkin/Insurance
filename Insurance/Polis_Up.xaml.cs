@@ -74,7 +74,9 @@ namespace Insurance
 
                     tb = new DataTable();
                     Spreadsheet excel = new Spreadsheet();
+                    
                     excel.LoadFromFile(ex_path[0]);
+                    
                     tb = excel.ExportToDataTable(excel.Worksheets[0].Name,true);
                     //string filename = ex_path[0];
                     //string ConStr = String.Format("Provider=Microsoft.ACE.OLEDB.12.0; Data Source={0}; Extended Properties=Excel 12.0;", filename);
