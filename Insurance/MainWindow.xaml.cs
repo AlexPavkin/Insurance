@@ -6489,6 +6489,7 @@ update pol_documents set PREVDOCGUID=(select idguid from pol_documents where id=
         }
         private void Potok()
         {
+            //d_obr.EditValue = null;
             Cursor = Cursors.Wait;
             if (Vars.Btn != "1")
             {
@@ -6620,7 +6621,16 @@ on t0.idguid = t3.person_guid", con);
                        dost1.EditValue = dost_1.Split(';');
                        cel_vizita.EditValue = tip_op_.ToString();
                        sp_pod_z.EditValue = Convert.ToInt32(sppz_.ToString() == "" ? 0 : sppz_);
-                       d_obr.EditValue = Convert.ToDateTime(dvisit_.ToString() == "" ? DateTime.Today : dvisit_);
+                       if(Vars.Btn=="3")
+                       {
+                           d_obr.EditValue = DateTime.Today;
+                       }
+                       else if(Vars.Btn == "2")
+                       {
+                           d_obr.EditValue = Convert.ToDateTime(dvisit_.ToString() == "" ? DateTime.Today : dvisit_);
+                       }
+                       
+                       
                        petition.EditValue = Convert.ToBoolean(petition_.ToString() == "" ? 0 : petition_);
                        pr_pod_z_polis.SelectedIndex = Convert.ToInt32(rpolis_.ToString() == "" ? 0 : rpolis_) - 1;
                        form_polis.SelectedIndex = Convert.ToInt32(fpolis_.ToString() == "" ? 0 : fpolis_);
@@ -7169,6 +7179,7 @@ where pr.event_guid=(select event_guid from pol_persons where id=@id) and pr.add
                         else
                         {
                             this.Title = "Создание нового события существующему ЗЛ";
+                            d_obr.EditValue = DateTime.Today;
                         }
                     }
                 }));
