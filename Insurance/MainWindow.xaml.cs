@@ -6484,8 +6484,13 @@ update pol_documents set PREVDOCGUID=(select idguid from pol_documents where id=
         {
             if (e.Key == Key.Enter)
             {
-                tabs.SelectedIndex = 1;
+                To_pers();
             }
+            else
+            {
+                return;
+            }
+           
         }
         private void Potok()
         {
@@ -8753,101 +8758,117 @@ join POL_POLISES pp on p.EVENT_GUID = pp.EVENT_GUID", con);
 
             }
         }
-//        private void Reload_tick(object sender, EventArgs e)
-//        {
 
-//            //Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Background,
-//            //    new Action(delegate ()
-//            //    {
-//            //        erp1 = MyReader.MySelect<PEOPLES>($@"select top(20)* from pol_persons order by id desc", Properties.Settings.Default.DocExchangeConnectionString);
-//            //        foreach (var item in erp1)
-//            //        {
-//            //            if (erp.Where(c => c.ID == item.ID).Count() == 0)
-//            //            {
-//            //                erp.Add(item);
-//            //            }
-//            //        }
-//            //        //pol_zagr.RefreshData();
-//            //Add_btn_Click(this,re);
-//            //}));
+        private void To_pers()
+        {
+            tabs.SelectedIndex = 1;
+        }
 
-//            Thread thread = new Thread(spisok_up);
+        private void Pr_pod_z_smo_SelectedIndexChanged(object sender, RoutedEventArgs e)
+        {
+            To_pers();
+        }
 
-//            thread.Start();
 
-//            //pol_zagr.RefreshData();
-//        }
-//        public static List<Events> ev;
-//        public static List<Events> ev1;
-//        private void spisok_up()
-//        {
-//            string com = $@"SELECT top(1000) sss.id , pp.SROKDOVERENOSTI, pp.ID, pp.ACTIVE, op.przcod, pe.UNLOAD, pp.ENP, pp.FAM, pp.IM, pp.OT, pp.W,pp. DR, MO, oks.CAPTION as C_OKSM, r.NameWithID , pp.COMMENT, pe.DVIZIT, pp.DATEVIDACHI, pp.PRIZNAKVIDACHI,
-//            pp.SS, ps.VPOLIS, ps.SPOLIS, ps.NPOLIS, ps.DBEG, ps.DEND, ps.DSTOP, BLANK, ps.DRECEIVED, f.NameWithId as MO_NameWithId , op.filename, pp.phone, p.AGENT, pp.CYCLE, (select pr.namewithid  from POL_PERSONS_INFORM pin
-//      left join PRICHINA_INFORMIROVANIYA pr
-//      on pin.PRICHINA_INFORM = pr.ID
-//where PERSON_ID = pp.ID and pin.id = (select max(id) from POL_PERSONS_INFORM where PERSON_ID = pp.ID)) as inform, st.namewithkod as STOP_REASON, pe.id as EVENT_ID
-//              FROM POL_PERSONS pp left join
-//           pol_events pe on pp.event_guid = pe.idguid
 
-//             LEFT JOIN POL_PRZ_AGENTS p
 
-//            on p.ID = pe.AGENT
 
-//            left join pol_polises ps
-//            on pp.EVENT_GUID = ps.EVENT_GUID
-//            left join pol_oplist op
-//            on pp.EVENT_GUID = op.EVENT_GUID
-//            left join r001 r
-//            on pe.tip_op = r.kod
-//            left join f003 f
-//            on pp.MO = f.mcod
-//            left join SPR_STOP st
-//            on ps.STOP_REASON = st.kod
 
-//            left join SPR_79_OKSM oks
+        //        private void Reload_tick(object sender, EventArgs e)
+        //        {
 
-//            on pp.C_OKSM = oks.A3
-//			left join @t sss
-//			on sss.ID=pp.ID
-//			where sss.id is null";
-//            //string com = $@"select * from  @t order by id desc";
+        //            //Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Background,
+        //            //    new Action(delegate ()
+        //            //    {
+        //            //        erp1 = MyReader.MySelect<PEOPLES>($@"select top(20)* from pol_persons order by id desc", Properties.Settings.Default.DocExchangeConnectionString);
+        //            //        foreach (var item in erp1)
+        //            //        {
+        //            //            if (erp.Where(c => c.ID == item.ID).Count() == 0)
+        //            //            {
+        //            //                erp.Add(item);
+        //            //            }
+        //            //        }
+        //            //        //pol_zagr.RefreshData();
+        //            //Add_btn_Click(this,re);
+        //            //}));
 
-//            try
-//            {
-//                ev1 = MyReader.MySelect<Events>(com, Properties.Settings.Default.DocExchangeConnectionString, ev);
-//            }
-//            catch (Exception e)
-//            {
+        //            Thread thread = new Thread(spisok_up);
 
-//                this.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
-//                (ThreadStart)delegate ()
-//                {
-//                    string t0 = "Ошибка!";
-//                    int b0 = 1;
-//                    Message me0 = new Message(e.Message, t0, b0);
-//                    me0.ShowDialog();
-//                }
-//                );
-//                return;
-//            }
+        //            thread.Start();
 
-//            ev.AddRange(ev1);
-//            //foreach (var item in erp1)
-//            //{
-//            //    if (erp.Where(c => c.ID == item.ID).Count() == 0)
-//            //    {
-//            //        erp.Add(item);
-//            //    }
-//            //}
-//            this.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
-//                (ThreadStart)delegate ()
-//                {
+        //            //pol_zagr.RefreshData();
+        //        }
+        //        public static List<Events> ev;
+        //        public static List<Events> ev1;
+        //        private void spisok_up()
+        //        {
+        //            string com = $@"SELECT top(1000) sss.id , pp.SROKDOVERENOSTI, pp.ID, pp.ACTIVE, op.przcod, pe.UNLOAD, pp.ENP, pp.FAM, pp.IM, pp.OT, pp.W,pp. DR, MO, oks.CAPTION as C_OKSM, r.NameWithID , pp.COMMENT, pe.DVIZIT, pp.DATEVIDACHI, pp.PRIZNAKVIDACHI,
+        //            pp.SS, ps.VPOLIS, ps.SPOLIS, ps.NPOLIS, ps.DBEG, ps.DEND, ps.DSTOP, BLANK, ps.DRECEIVED, f.NameWithId as MO_NameWithId , op.filename, pp.phone, p.AGENT, pp.CYCLE, (select pr.namewithid  from POL_PERSONS_INFORM pin
+        //      left join PRICHINA_INFORMIROVANIYA pr
+        //      on pin.PRICHINA_INFORM = pr.ID
+        //where PERSON_ID = pp.ID and pin.id = (select max(id) from POL_PERSONS_INFORM where PERSON_ID = pp.ID)) as inform, st.namewithkod as STOP_REASON, pe.id as EVENT_ID
+        //              FROM POL_PERSONS pp left join
+        //           pol_events pe on pp.event_guid = pe.idguid
 
-//                    pers_grid.RefreshData();
-//                }
-//            );
+        //             LEFT JOIN POL_PRZ_AGENTS p
 
-//        }
+        //            on p.ID = pe.AGENT
+
+        //            left join pol_polises ps
+        //            on pp.EVENT_GUID = ps.EVENT_GUID
+        //            left join pol_oplist op
+        //            on pp.EVENT_GUID = op.EVENT_GUID
+        //            left join r001 r
+        //            on pe.tip_op = r.kod
+        //            left join f003 f
+        //            on pp.MO = f.mcod
+        //            left join SPR_STOP st
+        //            on ps.STOP_REASON = st.kod
+
+        //            left join SPR_79_OKSM oks
+
+        //            on pp.C_OKSM = oks.A3
+        //			left join @t sss
+        //			on sss.ID=pp.ID
+        //			where sss.id is null";
+        //            //string com = $@"select * from  @t order by id desc";
+
+        //            try
+        //            {
+        //                ev1 = MyReader.MySelect<Events>(com, Properties.Settings.Default.DocExchangeConnectionString, ev);
+        //            }
+        //            catch (Exception e)
+        //            {
+
+        //                this.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
+        //                (ThreadStart)delegate ()
+        //                {
+        //                    string t0 = "Ошибка!";
+        //                    int b0 = 1;
+        //                    Message me0 = new Message(e.Message, t0, b0);
+        //                    me0.ShowDialog();
+        //                }
+        //                );
+        //                return;
+        //            }
+
+        //            ev.AddRange(ev1);
+        //            //foreach (var item in erp1)
+        //            //{
+        //            //    if (erp.Where(c => c.ID == item.ID).Count() == 0)
+        //            //    {
+        //            //        erp.Add(item);
+        //            //    }
+        //            //}
+        //            this.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
+        //                (ThreadStart)delegate ()
+        //                {
+
+        //                    pers_grid.RefreshData();
+        //                }
+        //            );
+
+        //        }
 
     }
 }

@@ -703,7 +703,7 @@
                                                 <dxe:ComboBoxEdit x:Name="form_polis" NullValueButtonPlacement="EditBox" AutoComplete="True" ValidateOnTextInput="False" IncrementalFiltering="True" FilterCondition="Contains" ImmediatePopup="True" />
                                             </dxlc:LayoutItem>
                                             <dxlc:LayoutItem Label="Причина подачи заявления о выборе (замене) СМО" LabelPosition="Top">
-                                                <dxe:ComboBoxEdit x:Name="pr_pod_z_smo" PreviewKeyDown="Pr_pod_z_smo_PreviewKeyDown" NullValueButtonPlacement="EditBox" AutoComplete="True" ValidateOnTextInput="False" IncrementalFiltering="True" FilterCondition="Contains" ImmediatePopup="True" />
+                                                <dxe:ComboBoxEdit x:Name="pr_pod_z_smo" PreviewKeyDown="Pr_pod_z_smo_PreviewKeyDown" NullValueButtonPlacement="EditBox" AutoComplete="True" ValidateOnTextInput="False" IncrementalFiltering="True" FilterCondition="Contains" ImmediatePopup="True" SelectedIndexChanged="Pr_pod_z_smo_SelectedIndexChanged" />
                                             </dxlc:LayoutItem>
 
                                         </dxlc:LayoutGroup>
