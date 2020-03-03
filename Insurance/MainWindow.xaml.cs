@@ -2361,8 +2361,17 @@ from pol_prz_agents where prz_code like'%{prz.EditValue.ToString()}%'", Properti
 
         private void poisk_Click(object sender, RoutedEventArgs e)
         {
-            Poisk_Vladik w4 = new Poisk_Vladik();
-            w4.ShowDialog();
+            if(Vars.SMO.Substring(0, 2) == "25")
+            {
+                Poisk_Vladik w4 = new Poisk_Vladik();
+                w4.ShowDialog();
+            }
+            else if(Vars.SMO.Substring(0, 2) == "46")
+            {
+                Poisk w4 = new Poisk();
+                w4.ShowDialog();
+            }
+            
         }
 
         private void del_btn_Click(object sender, RoutedEventArgs e)
