@@ -6482,15 +6482,17 @@ update pol_documents set PREVDOCGUID=(select idguid from pol_documents where id=
 
         private void Pr_pod_z_smo_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter)
-            {
-                To_pers();
-            }
-            else
-            {
-                return;
-            }
-           
+            //if (e.Key == Key.Enter)
+            //{
+            //    pr_pod_z_smo.Focus();
+            //    To_pers();
+            //}
+            //else
+            //{
+            //    pr_pod_z_smo.Focus();
+            //    return;
+            //}
+
         }
         private void Potok()
         {
@@ -8765,6 +8767,11 @@ join POL_POLISES pp on p.EVENT_GUID = pp.EVENT_GUID", con);
         }
 
         private void Pr_pod_z_smo_SelectedIndexChanged(object sender, RoutedEventArgs e)
+        {
+            //To_pers();
+        }
+
+        private void Pr_pod_z_smo_PopupClosed(object sender, ClosePopupEventArgs e)
         {
             To_pers();
         }
