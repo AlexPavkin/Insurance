@@ -347,15 +347,16 @@ namespace Insurance
                             SqlCommand com = new SqlCommand($@" update POL_POLISES
 set VPOLIS=3, SPOLIS='{ENP_s[i].SBLANK}', 
 NPOLIS='{ENP_s[i].NUMBLANK}' , DRECEIVED='{dateP.DateTime}', DEND=(case
-        when (select C_OKSM from POL_PERSONS where id=(select max(id) from POL_PERSONS where enp='{ENP_s[i].ENP}')) not in ('RUS') then DSTOP else null end) ,DSTOP=null
-where PERSON_GUID=(select IDGUID from POL_PERSONS
+        when (select C_OKSM from POL_PERSONS where id=(select max(id) from POL_PERSONS where enp='{ENP_s[i].ENP}')) not in ('RUS') then DSTOP else null end) ,
+where EVENT_GUID=(select EVENT_GUID from POL_PERSONS
  where id=(select max(id) from POL_PERSONS where enp='{ENP_s[i].ENP}')) 
- update pol_events set tip_op='П060', unload=0 where PERSON_GUID=(select IDGUID from POL_PERSONS
+
+ update pol_events set tip_op='П060', unload=0 where IDGUID=(select EVENT_GUID from POL_PERSONS
  where id=(select max(id) from POL_PERSONS where enp='{ENP_s[i].ENP}')) AND tip_op<>'П060'
  update pol_persons set comment='Загружены серия и номер бланка! Файл: {polis_up_file_[0]}' where id=(select max(id) from POL_PERSONS 
 where   enp='{ENP_s[i].ENP}') 
 update pol_unload_history set korob='Загружены серия и номер бланка! Файл: {polis_up_file_[0]}' 
-where person_guid=(select idguid from POL_PERSONS where id=(select max(id) from POL_PERSONS 
+where event_guid=(select event_guid from POL_PERSONS where id=(select max(id) from POL_PERSONS 
 where enp='{ENP_s[i].ENP}')) and comment like '%включен в заявку%'", con);
                             con.Open();
                             com.ExecuteNonQuery();
@@ -422,15 +423,16 @@ where enp='{ENP_s[i].ENP}')) and comment like '%включен в заявку%'
                             SqlCommand com = new SqlCommand($@" update POL_POLISES
 set VPOLIS=3, SPOLIS='{ENP_s[i].SBLANK}', 
 NPOLIS='{ENP_s[i].NUMBLANK}' , DRECEIVED='{dateP.DateTime}', DEND=(case
-        when (select C_OKSM from POL_PERSONS where id=(select max(id) from POL_PERSONS where enp='{ENP_s[i].ENP}')) not in ('RUS') then DSTOP else null end) ,DSTOP=null
-where PERSON_GUID=(select IDGUID from POL_PERSONS
+        when (select C_OKSM from POL_PERSONS where id=(select max(id) from POL_PERSONS where enp='{ENP_s[i].ENP}')) not in ('RUS') then DSTOP else null end) ,
+where EVENT_GUID=(select EVENT_GUID from POL_PERSONS
  where id=(select max(id) from POL_PERSONS where enp='{ENP_s[i].ENP}')) 
- update pol_events set tip_op='П060', unload=0 where PERSON_GUID=(select IDGUID from POL_PERSONS
+
+ update pol_events set tip_op='П060', unload=0 where IDGUID=(select EVENT_GUID from POL_PERSONS
  where id=(select max(id) from POL_PERSONS where enp='{ENP_s[i].ENP}')) AND tip_op<>'П060'
- update pol_persons set comment='Загружены серия и номер бланка! Файл: {polis_up_file_[y]}' where id=(select max(id) from POL_PERSONS 
+ update pol_persons set comment='Загружены серия и номер бланка! Файл: {polis_up_file_[0]}' where id=(select max(id) from POL_PERSONS 
 where   enp='{ENP_s[i].ENP}') 
-update pol_unload_history set korob='Загружены серия и номер бланка! Файл: {polis_up_file_[y]}' 
-where person_guid=(select idguid from POL_PERSONS where id=(select max(id) from POL_PERSONS 
+update pol_unload_history set korob='Загружены серия и номер бланка! Файл: {polis_up_file_[0]}' 
+where event_guid=(select event_guid from POL_PERSONS where id=(select max(id) from POL_PERSONS 
 where enp='{ENP_s[i].ENP}')) and comment like '%включен в заявку%'", con);
                                    con.Open();
                                    com.ExecuteNonQuery();

@@ -13,6 +13,7 @@ using System.IO;
 using System.Data;
 using System.Reflection;
 using DevExpress.Xpf.Grid;
+using DevExpress.Data.Filtering;
 using System.Collections.ObjectModel;
 using System.Net;
 using System.Xml.Linq;
@@ -2843,19 +2844,31 @@ DEALLOCATE MY_CURSOR
             }
             else
             {
-                string strf =
-                     pers_grid.ActiveFilterInfo.FilterString.Substring(
-                         pers_grid.ActiveFilterInfo.FilterString.IndexOf("'", 0));
-                string strf1 = strf.Replace("'", "").Replace(")", "").Replace(".", "");
-                string strf2 = $@"where FAM LIKE '{strf1}%' OR  IM LIKE '{strf1}%' OR  OT LIKE '{strf1}%' order by ID desc";
-                var peopleList = MyReader.MySelect<Events>(SPR.MyReader.load_pers_grid + strf2, connectionString);
-                pers_grid.ItemsSource = peopleList;
-                pers_grid.View.FocusedRowHandle = -1;
-                pers_grid.FilterString = "";
-                //////ev = MyReader.MySelect<Events>(SPR.MyReader.load_pers_grid + strf2, connectionString);
-                ////// pers_grid.ItemsSource = ev;
-                ////// pers_grid.View.FocusedRowHandle = -1;
+                var fcrt = pers_grid.ActiveFilterInfo.FilterOperator;
+                if (SPR.Premmissions == "User")
+                {
 
+                    var peopleList = MyReader.MySelect<Events>(SPR.MyReader.load_pers_grid + strf_usr, connectionString);
+                    pers_grid.ItemsSource = peopleList;
+                    pers_grid.View.FocusedRowHandle = -1;
+                    //////ev = MyReader.MySelect<Events>(SPR.MyReader.load_pers_grid + strf_usr, connectionString);
+                    //////pers_grid.ItemsSource = ev;
+                    //////pers_grid.View.FocusedRowHandle = -1;
+                }
+                else
+                {
+
+                    var peopleList = MyReader.MySelect<Events>(SPR.MyReader.load_pers_grid + strf_adm, connectionString);
+                    pers_grid.ItemsSource = peopleList;
+                    pers_grid.View.FocusedRowHandle = -1;
+                    //////ev = MyReader.MySelect<Events>(SPR.MyReader.load_pers_grid + strf_adm, connectionString);
+                    //////pers_grid.ItemsSource = ev;
+                    //////pers_grid.View.FocusedRowHandle = -1;
+                }
+
+                pers_grid.FilterCriteria = fcrt;
+                
+                
             }
 
             //InsMethods.PersData_Default(this);
