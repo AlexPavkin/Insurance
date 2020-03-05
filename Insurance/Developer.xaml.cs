@@ -656,6 +656,16 @@ where PERSON_ID = pp.ID and pin.id = (select max(id) from POL_PERSONS_INFORM whe
             
         }
 
+        private void Text_b_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            DataTable dt = new DataTable();
+            
+            int[] rrr;
+            var r = pol_zagr.SelectedItems;
+            
+            dt = null;
+
+        }
     }
     public class Class_params : IComparable<Class_params>
     {

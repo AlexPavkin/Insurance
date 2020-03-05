@@ -274,6 +274,7 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
             return dataTable;
 
         }
+        
         public static List<Class_params> Get_Fields_Dt<T>()
         {
             List<Class_params> list= new List<Class_params>();
@@ -8603,7 +8604,22 @@ delete from POL_PERSONS where id in({sg_rows_zl})", con);
 
         private void Clear_Click(object sender, RoutedEventArgs e)
         {
-            InsMethods.PersData_Default(this);
+
+            string m = "Вы действительно хотите очистить все поля?";
+            string t = "Внимание!";
+            int b = 2;
+            Message me = new Message(m, t, b);
+            me.ShowDialog();
+
+            //var result = MessageBox.Show("Вы действительно хотите удалить записи", "Внимание!", MessageBoxButton.YesNo);
+            if (Vars.mes_res != 1)
+            {
+                return;
+            }
+            else
+            {
+                InsMethods.PersData_Default(this);
+            }
         }
 
         private void Fam1_GotFocus(object sender, RoutedEventArgs e)

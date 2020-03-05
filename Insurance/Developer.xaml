@@ -23,7 +23,7 @@
         <Button x:Name="from_excel_btn_Copy1" Content="Проба EXCEL в CSV (выгрузка) " HorizontalAlignment="Left" Margin="435,10,0,0" VerticalAlignment="Top" Width="379"  Height="31" FontWeight="Bold" TabIndex="3" Click="From_excel_btn_Copy1_Click" />
         <Button x:Name="from_excel_btn_Copy2" Content="Проба SQL в CSV (выгрузка) " HorizontalAlignment="Left" Margin="435,46,0,0" VerticalAlignment="Top" Width="379"  Height="31" FontWeight="Bold" TabIndex="3" Click="From_excel_btn_Copy2_Click"  />
         <Button x:Name="from_excel_btn_Copy3" Content="Проба интеграции МИС" HorizontalAlignment="Left" Margin="852,10,0,0" VerticalAlignment="Top" Width="379"  Height="31" FontWeight="Bold" TabIndex="3" Click="From_excel_btn_Copy3_Click"  />
-        <TextBox x:Name="text_b" HorizontalAlignment="Left" Height="31" Margin="852,46,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="379" />
+        <TextBox x:Name="text_b" HorizontalAlignment="Left" Height="31" Margin="852,46,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="379" TextChanged="Text_b_TextChanged" />
         <Button x:Name="from_dbf" Content="Проба загрузки DBF" HorizontalAlignment="Left" Margin="10,82,0,0" VerticalAlignment="Top" Width="379"  Height="31" FontWeight="Bold" TabIndex="3" Click="From_dbf_Click" RenderTransformOrigin="1.02,0.694"  />
         <Button x:Name="add_btn" Content="Проба обновления грида" HorizontalAlignment="Left" Margin="435,82,0,0" VerticalAlignment="Top" Width="379"  Height="31" FontWeight="Bold" TabIndex="3" Click="Add_btn_Click"   />
         <Button x:Name="file_Copy" Content="Из многих папок в одну" HorizontalAlignment="Left" Margin="852,82,0,0" VerticalAlignment="Top" Width="379"  Height="31" FontWeight="Bold" TabIndex="3" Click="File_Copy_Click" />
