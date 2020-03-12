@@ -74,9 +74,7 @@
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>
   </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
-  </PropertyGroup>
+  <PropertyGroup />
   <ItemGroup>
     <Reference Include="Bytescout.Spreadsheet, Version=3.6.0.1821, Culture=neutral, PublicKeyToken=f7dd1bd9d40a50eb, processorArchitecture=MSIL">
       <HintPath>..\packages\Bytescout.Spreadsheet.3.6.0.1821\lib\net40\Bytescout.Spreadsheet.dll</HintPath>
@@ -133,17 +131,17 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net40\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="FastReport, Version=2018.3.17.0, Culture=neutral, PublicKeyToken=db7e5ce63278458c, processorArchitecture=MSIL">
+    <Reference Include="FastReport, Version=2019.4.5.0, Culture=neutral, PublicKeyToken=db7e5ce63278458c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\FastReports\FastReport.Net\Framework 4.0\FastReport.dll</HintPath>
+      <HintPath>..\..\Полисная исходы\РЕГИОНЫ\ВЛАДИВОСТОК\Insurance_Last_Version(09_12_2019)\Insurance_Last_Version\Insurance\bin\Debug\FastReport.dll</HintPath>
     </Reference>
-    <Reference Include="FastReport.Bars, Version=2018.3.17.0, Culture=neutral, PublicKeyToken=db7e5ce63278458c, processorArchitecture=MSIL">
+    <Reference Include="FastReport.Bars, Version=2019.4.5.0, Culture=neutral, PublicKeyToken=db7e5ce63278458c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\FastReports\FastReport.Net\Framework 4.0\FastReport.Bars.dll</HintPath>
+      <HintPath>..\..\Полисная исходы\РЕГИОНЫ\ВЛАДИВОСТОК\Insurance_Last_Version(09_12_2019)\Insurance_Last_Version\Insurance\bin\Debug\FastReport.Bars.dll</HintPath>
     </Reference>
-    <Reference Include="FastReport.Editor, Version=2018.3.17.0, Culture=neutral, PublicKeyToken=db7e5ce63278458c, processorArchitecture=MSIL">
+    <Reference Include="FastReport.Editor, Version=2019.4.5.0, Culture=neutral, PublicKeyToken=db7e5ce63278458c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\FastReports\FastReport.Net\Framework 4.0\FastReport.Editor.dll</HintPath>
+      <HintPath>..\..\Полисная исходы\РЕГИОНЫ\ВЛАДИВОСТОК\Insurance_Last_Version(09_12_2019)\Insurance_Last_Version\Insurance\bin\Debug\FastReport.Editor.dll</HintPath>
     </Reference>
     <Reference Include="FastReport.VSDesign, Version=1.0.0.0, Culture=neutral, PublicKeyToken=db7e5ce63278458c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -219,6 +217,7 @@
     <Compile Include="Auth.xaml.cs">
       <DependentUpon>Auth.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Classes\POISKVLADIK.cs" />
     <Compile Include="Developer.xaml.cs">
       <DependentUpon>Developer.xaml</DependentUpon>
     </Compile>
@@ -438,23 +437,13 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <None Include="Insurance_TemporaryKey.pfx" />
     <None Include="packages.config" />
-    <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

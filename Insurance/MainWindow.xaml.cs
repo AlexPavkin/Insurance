@@ -982,8 +982,7 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
                     //pers_grid_Loaded(this, e);
                     Window_Loaded(this, e);
                     //}
-
-
+                   
                 }
                 else
                 {
