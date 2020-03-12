@@ -347,7 +347,7 @@ namespace Insurance
                             SqlCommand com = new SqlCommand($@" update POL_POLISES
 set VPOLIS=3, SPOLIS='{ENP_s[i].SBLANK}', 
 NPOLIS='{ENP_s[i].NUMBLANK}' , DRECEIVED='{dateP.DateTime}', DEND=(case
-        when (select C_OKSM from POL_PERSONS where id=(select max(id) from POL_PERSONS where enp='{ENP_s[i].ENP}')) not in ('RUS') then DSTOP else null end) ,
+        when (select C_OKSM from POL_PERSONS where id=(select max(id) from POL_PERSONS where enp='{ENP_s[i].ENP}')) not in ('RUS') then DSTOP else null end) ,DSTOP=null
 where EVENT_GUID=(select EVENT_GUID from POL_PERSONS
  where id=(select max(id) from POL_PERSONS where enp='{ENP_s[i].ENP}')) 
 
@@ -423,7 +423,7 @@ where enp='{ENP_s[i].ENP}')) and comment like '%включен в заявку%'
                             SqlCommand com = new SqlCommand($@" update POL_POLISES
 set VPOLIS=3, SPOLIS='{ENP_s[i].SBLANK}', 
 NPOLIS='{ENP_s[i].NUMBLANK}' , DRECEIVED='{dateP.DateTime}', DEND=(case
-        when (select C_OKSM from POL_PERSONS where id=(select max(id) from POL_PERSONS where enp='{ENP_s[i].ENP}')) not in ('RUS') then DSTOP else null end) ,
+        when (select C_OKSM from POL_PERSONS where id=(select max(id) from POL_PERSONS where enp='{ENP_s[i].ENP}')) not in ('RUS') then DSTOP else null end) ,DSTOP=null
 where EVENT_GUID=(select EVENT_GUID from POL_PERSONS
  where id=(select max(id) from POL_PERSONS where enp='{ENP_s[i].ENP}')) 
 
