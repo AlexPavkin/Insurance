@@ -587,7 +587,7 @@
                     </Button>
                 </Grid>
             </dx:DXTabItem>
-            <dx:DXTabItem x:Name="Tab_ZL" Header="Работа с застрахованными" Background="White" GotFocus="DXTabItem_GotFocus" Padding="9,3" Visibility="Hidden">
+            <dx:DXTabItem x:Name="Tab_ZL" Header="Работа с застрахованными" Background="White" GotFocus="DXTabItem_GotFocus" Padding="9,3">
                 <ScrollViewer HorizontalScrollBarVisibility="Auto">
                     <Grid x:Name="gp2" Background="#FF5F7B8B" Height="948" Margin="0,0,0,0">
                         <TextBox x:Name="_1" HorizontalAlignment="Left" Height="23" Margin="169,1042,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="65" Visibility="Hidden" VerticalScrollBarVisibility="Visible" d:IsHidden="True" />
