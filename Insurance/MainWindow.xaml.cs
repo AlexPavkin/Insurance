@@ -2903,7 +2903,7 @@ DEALLOCATE MY_CURSOR
                 
                 return;
             }
-            else if((DateTime)docexp1.EditValue < (DateTime)(fakt_prekr.EditValue))
+            else if(ddnum.Text != "" && (DateTime)docexp1.EditValue < (DateTime)(fakt_prekr.EditValue))
             {
                 string m = "Дата прекращения ВС не может быть больше даты окончания действия ДД!";
                 string t = "Ошибка!";
@@ -8880,6 +8880,38 @@ join POL_POLISES pp on p.EVENT_GUID = pp.EVENT_GUID", con);
         private void Pr_pod_z_smo_PopupClosed(object sender, ClosePopupEventArgs e)
         {
             To_pers();
+        }
+
+        private void Del_rper_btn_Click(object sender, RoutedEventArgs e)
+        {
+            string m1 = "Вы действиьельно хотите удалить сведения о представителе ЗЛ?";
+            string t1 = "Внимание!";
+            int b1 = 2;
+            Message me1 = new Message(m1, t1, b1);
+            me1.ShowDialog();
+
+            if (Vars.mes_res == 1)
+            {
+                fam1.Text = "";
+                im1.Text = "";
+                ot1.Text = "";
+                pol_pr.EditValue = null;
+                dr1.EditValue = null;
+                phone_p1.Text = "";
+                doctype1.EditValue = null;
+                docser1.Text = "";
+                docnum1.Text = "";
+                docdate1.EditValue = null;
+                status_p2.SelectedIndex = -1;
+                srok_doverenosti.EditValue = null;
+                rper_load = 0;
+                rper = Guid.Empty;
+            }
+            else
+            {
+                return;
+            }
+            
         }
 
 

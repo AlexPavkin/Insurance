@@ -598,68 +598,84 @@
                         <TextBox x:Name="_6" HorizontalAlignment="Left" Height="23" Margin="222,1097,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="144" Visibility="Hidden" VerticalScrollBarVisibility="Visible" d:IsHidden="True" />
                         <TextBox x:Name="_7" HorizontalAlignment="Left" Height="78" Margin="459,1097,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="259" Visibility="Hidden" VerticalScrollBarVisibility="Visible" d:IsHidden="True" />
                         <TextBox x:Name="_8" HorizontalAlignment="Left" Height="23" Margin="371,1097,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="83" Visibility="Hidden" VerticalScrollBarVisibility="Visible" RenderTransformOrigin="0.434,7.043" d:IsHidden="True" />
-                        <Button x:Name="nazad" Height="40" HorizontalAlignment="Left" Style="{StaticResource myButtonStyle1}" Margin="10,5,0,0" VerticalAlignment="Top" Width="78" Click="nazad_Click">
-                            <StackPanel Orientation="Horizontal" Width="78">
-                                <!--Margin="5,0"-->
-                                <Image Source="Insurance_icons\back.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
-                                    <Image.OpacityMask>
-                                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                            <GradientStop Color="Black" Offset="0" />
-                                            <GradientStop Color="White" Offset="1" />
-                                        </LinearGradientBrush>
-                                    </Image.OpacityMask>
+                        <StackPanel Orientation="Horizontal">
+                            <Button x:Name="nazad" Height="40" HorizontalAlignment="Left" Style="{StaticResource myButtonStyle1}" Margin="10,5,0,0" VerticalAlignment="Top" Width="78" Click="nazad_Click">
+                                <StackPanel Orientation="Horizontal" Width="78">
+                                    <!--Margin="5,0"-->
+                                    <Image Source="Insurance_icons\back.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
+                                        <Image.OpacityMask>
+                                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                <GradientStop Color="Black" Offset="0" />
+                                                <GradientStop Color="White" Offset="1" />
+                                            </LinearGradientBrush>
+                                        </Image.OpacityMask>
 
-                                </Image>
-                                <TextBlock Text="Назад" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,0" Foreground="White" FontWeight="Bold" FontSize="12" />
-                            </StackPanel>
-                        </Button>
-                        <Button x:Name="dalee" Height="40" HorizontalAlignment="Left" Style="{StaticResource myButtonStyle1}" Margin="126,5,0,0" VerticalAlignment="Top" Width="100" Click="dalee_Click_1" TabIndex="7">
-                            <StackPanel Orientation="Horizontal" Width="100">
-                                <!--Margin="5,0"-->
-                                <Image Source="Insurance_icons\save.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
-                                    <Image.OpacityMask>
-                                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                            <GradientStop Color="Black" Offset="0" />
-                                            <GradientStop Color="White" Offset="1" />
-                                        </LinearGradientBrush>
-                                    </Image.OpacityMask>
+                                    </Image>
+                                    <TextBlock Text="Назад" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,0" Foreground="White" FontWeight="Bold" FontSize="12" />
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="dalee" Height="40" HorizontalAlignment="Left" Style="{StaticResource myButtonStyle1}" Margin="10,5,0,0" VerticalAlignment="Top" Width="100" Click="dalee_Click_1" TabIndex="7">
+                                <StackPanel Orientation="Horizontal" Width="100">
+                                    <!--Margin="5,0"-->
+                                    <Image Source="Insurance_icons\save.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
+                                        <Image.OpacityMask>
+                                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                <GradientStop Color="Black" Offset="0" />
+                                                <GradientStop Color="White" Offset="1" />
+                                            </LinearGradientBrush>
+                                        </Image.OpacityMask>
 
-                                </Image>
-                                <TextBlock Text="Сохранить" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,0" Foreground="White" FontWeight="Bold" FontSize="12" />
-                            </StackPanel>
-                        </Button>
-                        <TextBox x:Name="_10" HorizontalAlignment="Left" Height="32" Margin="10,1165,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="611" Visibility="Hidden" />
-                        <dxe:TextEdit x:Name="towntxt" HorizontalAlignment="Left" Margin="102,1277,0,0" VerticalAlignment="Top" Width="253" Visibility="Hidden" />
-                        <Button x:Name="print" Style="{StaticResource myButtonStyle1}" ToolTip="Печать заявления ЗЛ или временного свидетельства" Height="40" HorizontalAlignment="Left" Margin="264,5,0,0" VerticalAlignment="Top" Width="165" Click="print_Click_1">
-                            <StackPanel Orientation="Horizontal" Width="165">
-                                <!--Margin="5,0"-->
-                                <Image Source="Insurance_icons\print.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
-                                    <Image.OpacityMask>
-                                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                            <GradientStop Color="Black" Offset="0" />
-                                            <GradientStop Color="White" Offset="1" />
-                                        </LinearGradientBrush>
-                                    </Image.OpacityMask>
+                                    </Image>
+                                    <TextBlock Text="Сохранить" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,0" Foreground="White" FontWeight="Bold" FontSize="12" />
+                                </StackPanel>
+                            </Button>
+                            <TextBox x:Name="_10" HorizontalAlignment="Left" Height="32" Margin="10,1165,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="611" Visibility="Collapsed" />
+                            <dxe:TextEdit x:Name="towntxt" HorizontalAlignment="Left" Margin="102,1277,0,0" VerticalAlignment="Top" Width="253" Visibility="Collapsed" />
+                            <Button x:Name="print" Style="{StaticResource myButtonStyle1}" Margin="10,5,0,0" ToolTip="Печать заявления ЗЛ или временного свидетельства" Height="40" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="165" Click="print_Click_1">
+                                <StackPanel Orientation="Horizontal" Width="165">
+                                    <!--Margin="5,0"-->
+                                    <Image Source="Insurance_icons\print.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
+                                        <Image.OpacityMask>
+                                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                <GradientStop Color="Black" Offset="0" />
+                                                <GradientStop Color="White" Offset="1" />
+                                            </LinearGradientBrush>
+                                        </Image.OpacityMask>
 
-                                </Image>
-                                <TextBlock Text="Печать заявления ЗЛ" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,0" Foreground="White" FontWeight="Bold" FontSize="12" />
-                            </StackPanel>
-                        </Button>
-                        <Button x:Name="clear" Style="{StaticResource myButtonStyle1}" ToolTip="Очистка всех полей для заведения нового ЗЛ" Height="40" HorizontalAlignment="Left" Margin="464,5,0,0" VerticalAlignment="Top" Width="165" Click="Clear_Click" >
-                            <StackPanel Orientation="Horizontal" Width="165">
-                                <!--Margin="5,0"-->
-                                <Image Source="Insurance_icons\clear.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
-                                    <Image.OpacityMask>
-                                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                            <GradientStop Color="Black" Offset="0" />
-                                            <GradientStop Color="White" Offset="1" />
-                                        </LinearGradientBrush>
-                                    </Image.OpacityMask>
+                                    </Image>
+                                    <TextBlock Text="Печать заявления ЗЛ" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,0" Foreground="White" FontWeight="Bold" FontSize="12" />
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="clear" Style="{StaticResource myButtonStyle1}" ToolTip="Очистка всех полей для заведения нового ЗЛ" Height="40" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" Width="165" Click="Clear_Click" >
+                                <StackPanel Orientation="Horizontal" Width="165">
+                                    <!--Margin="5,0"-->
+                                    <Image Source="Insurance_icons\clear.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
+                                        <Image.OpacityMask>
+                                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                <GradientStop Color="Black" Offset="0" />
+                                                <GradientStop Color="White" Offset="1" />
+                                            </LinearGradientBrush>
+                                        </Image.OpacityMask>
 
-                                </Image>
-                                <TextBlock Text="Очистить все поля" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,0" Foreground="White" FontWeight="Bold" FontSize="12" />
-                            </StackPanel>
-                        </Button>
+                                    </Image>
+                                    <TextBlock Text="Очистить все поля" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,0" Foreground="White" FontWeight="Bold" FontSize="12" />
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="del_rper_btn" Style="{StaticResource myButtonStyle1}" ToolTip="Удаление выбранных записей" HorizontalAlignment="Left" Height="50" Margin="5,0" VerticalAlignment="Top"  TabIndex="9" Click="Del_rper_btn_Click">
+                                <StackPanel HorizontalAlignment="Center" Margin="5,0" Orientation="Horizontal">
+                                    <Image Source="Insurance_icons\delete_1.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
+                                        <Image.OpacityMask>
+                                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                <GradientStop Color="Black" Offset="0" />
+                                                <GradientStop Color="White" Offset="1" />
+                                            </LinearGradientBrush>
+                                        </Image.OpacityMask>
+
+                                    </Image>
+                                    <TextBlock Text="Удалить сведения&#10;о представителе ЗЛ" VerticalAlignment="Center" Foreground="White" FontWeight="Bold" Margin="5" />
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
                         <dxg:GridControl x:Name="pers_grid_2" EnableSmartColumnsGeneration="True" HorizontalAlignment="Stretch" SelectionMode="Row" Margin="0,550,0,0" OpacityMask="#FFB3D8D7" Loaded="pers_grid_1_Loaded" 
                                 AutoGenerateColumns="AddNew" MouseDoubleClick="pers_grid_2_MouseDoubleClick" ScrollViewer.HorizontalScrollBarVisibility="Visible" ToolTipService.ShowDuration="10000" PreviewKeyDown="pers_grid_2_PreviewKeyDown" AutoGeneratedColumns="Pers_grid_2_AutoGeneratedColumns" GotFocus="Pers_grid_2_GotFocus">
 
