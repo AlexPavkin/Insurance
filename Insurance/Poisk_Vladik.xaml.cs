@@ -14,6 +14,8 @@ using System.Windows.Shapes;
 using Yamed.Server;
 using Insurance_SPR;
 using xNet;
+using Insurance.Classes;
+
 namespace Insurance
 {
     /// <summary>
@@ -33,9 +35,8 @@ namespace Insurance
         Dictionary<string, string> Month = new Dictionary<string, string>();
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            
         var req = new HttpRequest();
-            var Cookies = new CookieDictionary();
+        var Cookies = new CookieDictionary();
 
             req.Cookies = Cookies;
             req.UserAgent = Http.ChromeUserAgent();
@@ -81,6 +82,8 @@ namespace Insurance
                     var DSTOP = Request.Pars(ResponsePolis, "DSTOP1\">", "<");
                     var RSTOP = Request.Pars(ResponsePolis, "RSTOP1\">", "<");
                     var DS = Request.Pars(ResponsePolis, "DS1\">", "<");
+
+                  
                     FAM_TFOMS.Text = FAM;
                     IM_TFOMS.Text = IM;
                     OT_TFOMS.Text = OT;
@@ -137,6 +140,22 @@ namespace Insurance
                     {
                         DATE_DEAD_TFOMS.Background = Brushes.Red;
                     }
+                    POISKVLADIK.FAM_TFOMS = FAM_TFOMS.Text;
+                    POISKVLADIK.IM_TFOMS = IM_TFOMS.Text;
+                    POISKVLADIK.OT_TFOMS = OT_TFOMS.Text;
+                    POISKVLADIK.DR_TFOMS = DR_TFOMS.Text;
+                    POISKVLADIK.VIDPOLIS_TFOMS = VIDPOLIS_TFOMS.Text;
+                    POISKVLADIK.SNILS_TFOMS = SNILS_TFOMS.Text;
+                    POISKVLADIK.POLIS_TFOMS = POLIS_TFOMS.Text;
+                    POISKVLADIK.ENP_TFOMS = ENP_TFOMS.Text;
+                    POISKVLADIK.MR_TFOMS = MR_TFOMS.Text;
+                    POISKVLADIK.POLIKLIN_TFOMS = POLIKLIN_TFOMS.Text;
+                    POISKVLADIK.DATE_PRIKREP_TFOMS = DATE_PRIKREP_TFOMS.Text;
+                    POISKVLADIK.SPOSOB_TFOMS =  SPOSOB_TFOMS.Text;
+                    POISKVLADIK.SMO_TFOMS = SMO_TFOMS.Text;
+                    POISKVLADIK.PRZ_TFOMS = PRZ_TFOMS.Text;
+                    POISKVLADIK.DATE_START_TFOMS = DATE_START_TFOMS.Text;
+
                     string load_pers_grid = $@" SELECT top(1) pp.SROKDOVERENOSTI,pp.ID,pp.ACTIVE,op.przcod,pe.UNLOAD,ENP ,FAM , IM  , OT ,W ,DR ,MO,oks.CAPTION as C_OKSM,r.NameWithID , pp.COMMENT,pe.DVIZIT, pp.DATEVIDACHI, pp.PRIZNAKVIDACHI,
             SS  ,VPOLIS,SPOLIS ,NPOLIS,DBEG ,DEND ,DSTOP ,BLANK ,DRECEIVED,f.NameWithId as MO_NameWithId,op.filename,pp.phone,p.AGENT, pp.CYCLE,(select pr.namewithid  from POL_PERSONS_INFORM pin
 left join PRICHINA_INFORMIROVANIYA pr
@@ -183,7 +202,7 @@ where PERSON_ID=pp.ID and pin.id=(select max(id) from POL_PERSONS_INFORM where P
                             VIDPOLISA_B.Text = "Полис ОМС единого образца";
                         }
                         SNILS_B.Text = List[0].SS;
-                        POLIS_B.Text = List[0].SPOLIS.Trim() + " " + NPOLIS.Trim();
+                        POLIS_B.Text = List[0].SPOLIS.Trim() + " " + List[0].NPOLIS.Trim();
                         ENP_B.Text = List[0].ENP;
                         MR_B.Text = MR;
                         ENP_B.Text = List[0].ENP;
@@ -196,7 +215,7 @@ where PERSON_ID=pp.ID and pin.id=(select max(id) from POL_PERSONS_INFORM where P
                         D_END_B.EditValue = List[0].DEND;
                         D_NULL_B.EditValue = List[0].DSTOP;
                         PRICH_B.Text = List[0].STOP_REASON;
-
+                        
                     }
                     else
                     {
@@ -342,7 +361,7 @@ where PERSON_ID=pp.ID and pin.id=(select max(id) from POL_PERSONS_INFORM where P
                             VIDPOLISA_B.Text = "Полис ОМС единого образца";
                         }
                         SNILS_B.Text = List[0].SS;
-                        POLIS_B.Text = List[0].SPOLIS.Trim() + " " + NPOLIS.Trim();
+                        POLIS_B.Text = List[0].SPOLIS.Trim() + " " + List[0].NPOLIS.Trim();
                         ENP_B.Text = List[0].ENP;
                         MR_B.Text = MR;
                         ENP_B.Text = List[0].ENP;
@@ -502,7 +521,7 @@ where PERSON_ID=pp.ID and pin.id=(select max(id) from POL_PERSONS_INFORM where P
                             VIDPOLISA_B.Text = "Полис ОМС единого образца";
                         }
                         SNILS_B.Text = List[0].SS;
-                        POLIS_B.Text = List[0].SPOLIS.Trim() + " " + NPOLIS.Trim();
+                        POLIS_B.Text = List[0].SPOLIS.Trim() + " " + List[0].NPOLIS.Trim();
                         ENP_B.Text = List[0].ENP;
                         MR_B.Text = MR;
                         ENP_B.Text = List[0].ENP;
@@ -515,7 +534,6 @@ where PERSON_ID=pp.ID and pin.id=(select max(id) from POL_PERSONS_INFORM where P
                         D_END_B.EditValue = List[0].DEND;
                         D_NULL_B.EditValue = List[0].DSTOP;
                         PRICH_B.Text = List[0].STOP_REASON;
-
                     }
                     else
                     {
@@ -669,7 +687,7 @@ where PERSON_ID=pp.ID and pin.id=(select max(id) from POL_PERSONS_INFORM where P
                             VIDPOLISA_B.Text = "Полис ОМС единого образца";
                         }
                         SNILS_B.Text = List[0].SS;
-                        POLIS_B.Text = List[0].SPOLIS.Trim() + " " + NPOLIS.Trim();
+                        POLIS_B.Text = List[0].SPOLIS.Trim() + " " + List[0].NPOLIS.Trim();
                         ENP_B.Text = List[0].ENP;
                         MR_B.Text = MR;
                         ENP_B.Text = List[0].ENP;
@@ -829,7 +847,7 @@ where PERSON_ID=pp.ID and pin.id=(select max(id) from POL_PERSONS_INFORM where P
                             VIDPOLISA_B.Text = "Полис ОМС единого образца";
                         }
                         SNILS_B.Text = List[0].SS;
-                        POLIS_B.Text = List[0].SPOLIS.Trim() + " " + NPOLIS.Trim();
+                        POLIS_B.Text = List[0].SPOLIS.Trim() + " " + List[0].NPOLIS.Trim();
                         ENP_B.Text = List[0].ENP;
                         MR_B.Text = MR;
                         ENP_B.Text = List[0].ENP;
@@ -991,7 +1009,7 @@ where PERSON_ID=pp.ID and pin.id=(select max(id) from POL_PERSONS_INFORM where P
                             VIDPOLISA_B.Text = "Полис ОМС единого образца";
                         }
                         SNILS_B.Text = List[0].SS;
-                        POLIS_B.Text = List[0].SPOLIS.Trim() + " " + NPOLIS.Trim();
+                        POLIS_B.Text = List[0].SPOLIS.Trim() + " " + List[0].NPOLIS.Trim();
                         ENP_B.Text = List[0].ENP;
                         MR_B.Text = MR;
                         ENP_B.Text = List[0].ENP;
@@ -1166,7 +1184,7 @@ where PERSON_ID=pp.ID and pin.id=(select max(id) from POL_PERSONS_INFORM where P
                             VIDPOLISA_B.Text = "Полис ОМС единого образца";
                         }
                         SNILS_B.Text = List[0].SS;
-                        POLIS_B.Text = List[0].SPOLIS.Trim() + " " + NPOLIS.Trim();
+                        POLIS_B.Text = List[0].SPOLIS.Trim() + " " + List[0].NPOLIS.Trim();
                         ENP_B.Text = List[0].ENP;
                         MR_B.Text = MR;
                         ENP_B.Text = List[0].ENP;
@@ -1179,7 +1197,7 @@ where PERSON_ID=pp.ID and pin.id=(select max(id) from POL_PERSONS_INFORM where P
                         D_END_B.EditValue = List[0].DEND;
                         D_NULL_B.EditValue = List[0].DSTOP;
                         PRICH_B.Text = List[0].STOP_REASON;
-                    
+                  
                     }
                     else
                     {
