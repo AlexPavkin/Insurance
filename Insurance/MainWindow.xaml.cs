@@ -3960,7 +3960,7 @@ on t0.idguid = t3.person_guid", con);
                             }
                             else
                             {
-                                status_p2.SelectedIndex = Convert.ToInt32(prelation) - 1;
+                                status_p2.SelectedIndex = Convert.ToInt32(prelation);
                             }
 
                         }
@@ -6739,7 +6739,7 @@ on t0.idguid = t3.person_guid", con);
                            }
                            else
                            {
-                               status_p2.SelectedIndex = Convert.ToInt32(prelation) - 1;
+                               status_p2.SelectedIndex = Convert.ToInt32(prelation);
                            }
 
                        }
