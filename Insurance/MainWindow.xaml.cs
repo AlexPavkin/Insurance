@@ -848,6 +848,20 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
         //public string[] events_list;
         private void new_obr_Click(object sender, RoutedEventArgs e)
         {
+            fio_col = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_fam", Properties.Settings.Default.DocExchangeConnectionString);
+            im_DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_im", Properties.Settings.Default.DocExchangeConnectionString);
+            ot_DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_ot", Properties.Settings.Default.DocExchangeConnectionString);
+            kem_vid_DataContext = MyReader.MySelect<NAME_VP>(@"select id,name from spr_namevp", Properties.Settings.Default.DocExchangeConnectionString);
+            fam.DataContext = fio_col;
+            im.DataContext = im_DataContext;
+            ot.DataContext = ot_DataContext;
+            kem_vid.DataContext = kem_vid_DataContext;
+            fam1.DataContext = fio_col;
+            im1.DataContext = im_DataContext;
+            ot1.DataContext = ot_DataContext;
+            prev_fam.DataContext = fio_col;
+            prev_im.DataContext = im_DataContext;
+            prev_ot.DataContext = ot_DataContext;
             //layout_InUse();
 
             //object UNLOAD="";
@@ -2880,6 +2894,47 @@ DEALLOCATE MY_CURSOR
 
         private void dalee_Click_1(object sender, RoutedEventArgs e)
         {
+            if(ddnum.Text!="" && fakt_prekr.EditValue==null)
+            {
+                string m = "Дата прекращения ВС не может быть пустой у иностранца!";
+                string t = "Ошибка!";
+                int b = 1;
+                Message me = new Message(m, t, b);
+                me.ShowDialog();
+                
+                return;
+            }
+            else if((DateTime)docexp1.EditValue < (DateTime)(fakt_prekr.EditValue))
+            {
+                string m = "Дата прекращения ВС не может быть больше даты окончания действия ДД!";
+                string t = "Ошибка!";
+                int b = 1;
+                Message me = new Message(m, t, b);
+                me.ShowDialog();
+                
+                return;
+            }
+            if((im.Text=="" || ot.Text=="") && dost1.EditValue==null)
+            {
+                string m = "Проверьте ФИО и надежность идентификации!";
+                string t = "Ошибка!";
+                int b = 1;
+                Message me = new Message(m, t, b);
+                me.ShowDialog();
+
+                return;
+            }
+            if((cel_vizita.EditValue.ToString().Contains("П010") && pr_pod_z_smo.SelectedIndex!=0) || (cel_vizita.DisplayText.Contains("желани") && pr_pod_z_smo.SelectedIndex != 1)
+                || (cel_vizita.DisplayText.Contains("житель") && pr_pod_z_smo.SelectedIndex != 2) || (cel_vizita.DisplayText.Contains("расторж") && pr_pod_z_smo.SelectedIndex != 3))
+            {
+                string m = "Несовпадение причины внесения изменений в РС ЕРЗ и причины подачи заявления о выборе (замене) СМО";
+                string t = "Ошибка!";
+                int b = 1;
+                Message me = new Message(m, t, b);
+                me.ShowDialog();
+
+                return;
+            }
             Vars.PunctRz = prz.EditValue.ToString();
             Vars.mes_res = 0;
             if (kat_zl.SelectedIndex == -1)
@@ -3961,7 +4016,7 @@ on t0.idguid = t3.person_guid", con);
                             }
                             else
                             {
-                                status_p2.SelectedIndex = Convert.ToInt32(prelation) - 1;
+                                status_p2.SelectedIndex = Convert.ToInt32(prelation);
                             }
 
                         }
@@ -6519,6 +6574,20 @@ update pol_documents set PREVDOCGUID=(select idguid from pol_documents where id=
         }
         private void Potok()
         {
+            fio_col = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_fam", Properties.Settings.Default.DocExchangeConnectionString);
+            im_DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_im", Properties.Settings.Default.DocExchangeConnectionString);
+            ot_DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_ot", Properties.Settings.Default.DocExchangeConnectionString);
+            kem_vid_DataContext = MyReader.MySelect<NAME_VP>(@"select id,name from spr_namevp", Properties.Settings.Default.DocExchangeConnectionString);
+            fam.DataContext = fio_col;
+            im.DataContext = im_DataContext;
+            ot.DataContext = ot_DataContext;
+            kem_vid.DataContext = kem_vid_DataContext;
+            fam1.DataContext = fio_col;
+            im1.DataContext = im_DataContext;
+            ot1.DataContext = ot_DataContext;
+            prev_fam.DataContext = fio_col;
+            prev_im.DataContext = im_DataContext;
+            prev_ot.DataContext = ot_DataContext;
             //d_obr.EditValue = null;
             Cursor = Cursors.Wait;
             if (Vars.Btn != "1")
