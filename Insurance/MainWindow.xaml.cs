@@ -2893,7 +2893,7 @@ DEALLOCATE MY_CURSOR
 
         private void dalee_Click_1(object sender, RoutedEventArgs e)
         {
-            if(ddnum.Text!="" && fakt_prekr.EditValue==null)
+            if(ddnum.Text!="" && (int)type_policy.EditValue==2 && fakt_prekr.EditValue==null)
             {
                 string m = "Дата прекращения ВС не может быть пустой у иностранца!";
                 string t = "Ошибка!";
@@ -2903,7 +2903,7 @@ DEALLOCATE MY_CURSOR
                 
                 return;
             }
-            else if(ddnum.Text != "" && (DateTime)docexp1.EditValue < (DateTime)(fakt_prekr.EditValue))
+            else if(ddnum.Text != "" && (int)type_policy.EditValue == 2 && (DateTime)docexp1.EditValue < (DateTime)(fakt_prekr.EditValue))
             {
                 string m = "Дата прекращения ВС не может быть больше даты окончания действия ДД!";
                 string t = "Ошибка!";
@@ -8884,7 +8884,7 @@ join POL_POLISES pp on p.EVENT_GUID = pp.EVENT_GUID", con);
 
         private void Del_rper_btn_Click(object sender, RoutedEventArgs e)
         {
-            string m1 = "Вы действиьельно хотите удалить сведения о представителе ЗЛ?";
+            string m1 = "Вы действительно хотите удалить сведения о представителе ЗЛ?";
             string t1 = "Внимание!";
             int b1 = 2;
             Message me1 = new Message(m1, t1, b1);
