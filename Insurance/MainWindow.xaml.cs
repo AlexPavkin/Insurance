@@ -4055,7 +4055,7 @@ on t0.idguid = t3.person_guid", con);
                         date_vid.DateTime = Convert.ToDateTime(docdate);
                         kem_vid.Text = name_vp.ToString();
                         kod_podr.Text = name_vp_code.ToString();
-                        mr2.Text = docmr.ToString();
+                        //mr2.Text = docmr.ToString();
                         str_vid.EditValue = str_vid_;
 
 
