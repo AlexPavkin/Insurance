@@ -40,6 +40,13 @@ namespace Insurance
                 inform_grid1.Visibility = Visibility.Collapsed;
                 inform_grid.VerticalAlignment = VerticalAlignment.Stretch;
                 del_file_panel.Visibility = Visibility.Visible;
+                Adder.Visibility = Visibility.Collapsed;
+                Adder_Copy1.Visibility = Visibility.Collapsed;
+                if(call_ == "unload_history")
+                {
+                    ViewFilesItem.IsEnabled = true;
+                }
+                
             }
             else
             {
@@ -177,6 +184,7 @@ on pe.idguid = op.EVENT_GUID
                     //del_btn_hist.Visibility = Visibility.Hidden;
                     //Del_file_btn.Visibility=Visibility.Visible;
                     inform_grid.Visibility = Visibility.Visible;
+                    inform_grid.VerticalAlignment = VerticalAlignment.Stretch;
                     //all_files.Visibility = Visibility.Visible;
                     del_file_panel.Visibility = Visibility.Visible;
                     var peopleList =
@@ -612,6 +620,7 @@ select *from(select
         private void Files_ItemClick(object sender, RoutedEventArgs e)
         {
             //            List<UNLOAD_FILES> UFS = new List<UNLOAD_FILES>();
+            
             var names = Funcs.MyFieldValues(inform_grid.GetSelectedRowHandles(), inform_grid, "FNAME");
             var files = MyReader.MySelect<UNLOAD_FILES_S>($@"select fxml ,fdate from POL_FILES where 
             filename in(select*from [dbo].[GetNamesFromString]('{names}',','))", Properties.Settings.Default.DocExchangeConnectionString);

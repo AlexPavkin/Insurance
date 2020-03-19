@@ -2893,7 +2893,7 @@ DEALLOCATE MY_CURSOR
 
         private void dalee_Click_1(object sender, RoutedEventArgs e)
         {
-            if(ddnum.Text!="" && fakt_prekr.EditValue==null)
+            if(ddnum.Text!="" && (int)type_policy.EditValue==2 && fakt_prekr.EditValue==null)
             {
                 string m = "Дата прекращения ВС не может быть пустой у иностранца!";
                 string t = "Ошибка!";
@@ -2903,7 +2903,7 @@ DEALLOCATE MY_CURSOR
                 
                 return;
             }
-            else if(ddnum.Text != "" && (DateTime)docexp1.EditValue < (DateTime)(fakt_prekr.EditValue))
+            else if(ddnum.Text != "" && (int)type_policy.EditValue == 2 && (DateTime)docexp1.EditValue < (DateTime)(fakt_prekr.EditValue))
             {
                 string m = "Дата прекращения ВС не может быть больше даты окончания действия ДД!";
                 string t = "Ошибка!";
@@ -4055,7 +4055,7 @@ on t0.idguid = t3.person_guid", con);
                         date_vid.DateTime = Convert.ToDateTime(docdate);
                         kem_vid.Text = name_vp.ToString();
                         kod_podr.Text = name_vp_code.ToString();
-                       // mr2.Text = docmr.ToString();
+                        //mr2.Text = docmr.ToString();
                         str_vid.EditValue = str_vid_;
 
 
