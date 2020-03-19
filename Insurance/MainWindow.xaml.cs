@@ -4055,7 +4055,7 @@ on t0.idguid = t3.person_guid", con);
                         date_vid.DateTime = Convert.ToDateTime(docdate);
                         kem_vid.Text = name_vp.ToString();
                         kod_podr.Text = name_vp_code.ToString();
-                        mr2.Text = docmr.ToString();
+                       // mr2.Text = docmr.ToString();
                         str_vid.EditValue = str_vid_;
 
 
@@ -8884,7 +8884,7 @@ join POL_POLISES pp on p.EVENT_GUID = pp.EVENT_GUID", con);
 
         private void Del_rper_btn_Click(object sender, RoutedEventArgs e)
         {
-            string m1 = "Вы действиьельно хотите удалить сведения о представителе ЗЛ?";
+            string m1 = "Вы действительно хотите удалить сведения о представителе ЗЛ?";
             string t1 = "Внимание!";
             int b1 = 2;
             Message me1 = new Message(m1, t1, b1);
