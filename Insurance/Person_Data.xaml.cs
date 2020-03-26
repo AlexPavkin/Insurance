@@ -3736,6 +3736,8 @@ on t0.idguid = t3.PARENTGUID", con);
                    reader1.Close();
                    con.Close();
                }));
+                
+
                 Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Background,
                 new Action(delegate ()
                 {
