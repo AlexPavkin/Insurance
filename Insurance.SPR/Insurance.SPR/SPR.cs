@@ -205,8 +205,14 @@ on pp.IDGUID=d.PERSON_GUID and d.MAIN=1 and d.ACTIVE=1
         public static string insert_polises = "insert into pol_polises (vpolis,spolis,npolis,dbeg,dend,dstop,blank,dreceived,person_guid,event_guid,dout) values (@vpolis,@spolis,@npolis,@dbeg,@dend,@dstop,@blank,@dreceived, " +
                 "(select person_guid from pol_relation_doc_pers where id=SCOPE_IDENTITY()),(select event_guid from pol_relation_doc_pers where id=SCOPE_IDENTITY()),@dout ) ";
 
+        public static string insert_polises_3 = "insert into pol_polises (vpolis,spolis,npolis,dbeg,dend,dstop,blank,dreceived,person_guid,event_guid,dout) values (@vpolis,@spolis,@npolis,@dbeg,@dend,@dstop,@blank,@dreceived, " +
+                "(select idguid from pol_persons where id=@id_p),(select event_guid from pol_persons where id=@id_p),@dout ) ";
+
         public static string update_polises = "update pol_polises set dbeg=@dbeg,dend=@dend,dstop=@dstop,blank=0,dreceived=@dreceived,person_guid= " +
                                 "(select person_guid from pol_relation_doc_pers where id=SCOPE_IDENTITY()),event_guid=(select event_guid from pol_relation_doc_pers where id=SCOPE_IDENTITY())" +
+                                "where spolis=@spolis and npolis=@npolis ";
+        public static string update_polises_3 = "update pol_polises set dbeg=@dbeg,dend=@dend,dstop=@dstop,blank=0,dreceived=@dreceived,person_guid= " +
+                                "(select idguid from pol_persons where id=@id_p),event_guid=(select event_guid from pol_persons where id=@id_p)" +
                                 "where spolis=@spolis and npolis=@npolis ";
 
     }

@@ -148,7 +148,8 @@ namespace Insurance
                         string filename = ex_path;
                         string[] attache = File.ReadAllLines(filename);
 
-                        var cls0 = attache[0].Split('|');
+                        //var cls0 = attache[0].Split('|');
+                        var cls0 = attache[0].Split(';');
                         for (int i = 0; i < cls0.Count(); i++)
                         {
                             tb.Columns.Add("Column" + i.ToString(), typeof(string));

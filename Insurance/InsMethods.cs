@@ -10449,11 +10449,11 @@ dstart=@date_mo where idguid='{perguid}'", con);
             string zap_polis;
             if (PD.blank_polis != false)
             {
-                zap_polis = SPR.update_polises;
+                zap_polis = SPR.update_polises_3;
             }
             else
             {
-                zap_polis = SPR.insert_polises;
+                zap_polis = SPR.insert_polises_3;
             }
             string module = "SaveDD_bt3_b0_s1_p13";
             SqlTransaction tr = null;
@@ -11416,8 +11416,9 @@ NAME_VP='{PD.kem_vid1.Text}', NAME_VP_CODE='{PD.kod_podr1.Text}', active=0,main=
             if (PD.prev_persguid == Guid.Empty && PD.prev_fam.Text != "")
             {
                 SqlConnection con = new SqlConnection(connectionString);
-                SqlCommand cmdpers = new SqlCommand($@"insert into POL_PERSONS(IDGUID, PARENTGUID, FAM,IM,OT,W,DR,MR,ACTIVE)
-                                values(newid(),'{Vars.IdP}','{PD.prev_fam.Text}','{PD.prev_im.Text}','{PD.prev_ot.Text}',{PD.prev_pol.EditValue},'{PD.prev_dr.DateTime}','{PD.prev_mr.Text}',0)", con);
+                SqlCommand cmdpers = new SqlCommand($@"insert into POL_PERSONS_OLD(IDGUID,PERSON_GUID, EVENT_GUID, FAM,IM,OT,W,DR,MR)
+                                values(newid(),(select idguid from pol_persons where id={Vars.IdP}),(select event_guid from pol_persons where id={Vars.IdP}),'{PD.prev_fam.Text}','{PD.prev_im.Text}',
+'{PD.prev_ot.Text}',{PD.prev_pol.EditValue},'{PD.prev_dr.DateTime}','{PD.prev_mr.Text}')", con);
                 con.Open();
                 cmdpers.ExecuteNonQuery();
                 con.Close();

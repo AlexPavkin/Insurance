@@ -31,6 +31,7 @@ using System.Data.Linq;
 using DotNetDBF;
 using Bytescout.Spreadsheet;
 using Ionic.Zip;
+using System.Xml;
 
 namespace Insurance
 {
@@ -946,7 +947,7 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
 
                     //}
                     Vars.grid_num = 1;
-                    Vars.IdP = pers_grid.GetFocusedRowCellValue("ID").ToString();
+                    Vars.IdP = pers_grid.GetCellValue(pers_grid.GetSelectedRowHandles()[0], "ID").ToString();
                     string m = "Вы хотите исправить ошибки в данных или создать новое событие?";
                     string t = "Внимание!";
                     int b = 0;
@@ -2903,15 +2904,30 @@ DEALLOCATE MY_CURSOR
                 
                 return;
             }
-            else if(ddnum.Text != "" && (int)type_policy.EditValue == 2 && (DateTime)docexp1.EditValue < (DateTime)(fakt_prekr.EditValue))
+            else if(ddnum.Text != "" && (int)type_policy.EditValue == 2 )
             {
-                string m = "Дата прекращения ВС не может быть больше даты окончания действия ДД!";
-                string t = "Ошибка!";
-                int b = 1;
-                Message me = new Message(m, t, b);
-                me.ShowDialog();
+                if(docexp1.EditValue==null && (int)ddtype.EditValue != 11)
+                {
+                    string m = "Дата окончания ДД может быть пустой только у бессрочного вида на жительство!";
+                    string t = "Ошибка!";
+                    int b = 1;
+                    Message me = new Message(m, t, b);
+                    me.ShowDialog();
+
+                    return;
+                }
+                else if(docexp1.EditValue != null && (DateTime)(docexp1.EditValue ?? new DateTime(1900, 1, 1)) < (DateTime)(fakt_prekr.EditValue))
+                {
+                    string m = "Дата прекращения ВС не может быть больше даты окончания действия ДД!";
+                    string t = "Ошибка!";
+                    int b = 1;
+                    Message me = new Message(m, t, b);
+                    me.ShowDialog();
+
+                    return;
+                }
                 
-                return;
+                
             }
             if((im.Text=="" || ot.Text=="") && dost1.EditValue==null)
             {
@@ -8912,6 +8928,110 @@ join POL_POLISES pp on p.EVENT_GUID = pp.EVENT_GUID", con);
                 return;
             }
             
+        }
+
+        private void Load_flk_zl_ItemClick(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
+        {
+            OpenFileDialog OPF = new OpenFileDialog();
+
+            OPF.Multiselect = true;
+            bool res = OPF.ShowDialog().Value;
+            string[] files = OPF.FileNames;
+            string[] shfiles = OPF.SafeFileNames;
+            int ev_id = (int)pers_grid.GetCellValue(pers_grid.GetSelectedRowHandles()[0],"EVENT_ID");
+            int y = 0;
+            if (res == true)
+            {
+                foreach (string file in files)
+                {
+                    FileInfo fi = new FileInfo(file);
+
+                    XmlDocument xDoc = new XmlDocument();
+                    xDoc.Load(file);
+                    string rfile = shfiles[y].Replace("P", "i");
+                    if (rfile.Length > 22)
+                    {
+                        rfile = rfile.Substring(0, 18) + ".xml";
+                    }
+
+
+                    //var test = xDoc.Descendants("Companies").Elements("Company").Select(r => r.Value).ToArray();
+                    // получим корневой элемент
+                    XmlElement xRoot = xDoc.DocumentElement;
+                    if (xRoot.Attributes.GetNamedItem("COMMENT") != null)
+                    {
+                        var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
+                        SqlConnection con = new SqlConnection(connectionString);
+                        SqlCommand com = new SqlCommand($@"update pol_persons 
+ set comment='{xRoot.Attributes.GetNamedItem("COMMENT").Value.Replace((char)39, (char)32)}' 
+ where event_guid in (select event_guid from pol_events where id='{ev_id}') 
+ update pol_events set unload=0  where id='{ev_id}')
+ update pol_unload_history set comment ='{xRoot.Attributes.GetNamedItem("COMMENT").Value.Replace((char)39, (char)32)}'
+ where  fname='{rfile}' and event_guid in(select event_guid from pol_events where id='{ev_id}')", con);
+                        con.Open();
+                        com.ExecuteNonQuery();
+                        con.Close();
+                    }
+                    else
+                    {
+                        var xx = xDoc.ChildNodes[1].ChildNodes[0].Attributes.GetNamedItem("N_REC").Value.ToString();
+                        if (xx.Length < 36)
+                        {
+                            goto forward;
+                        }
+                        var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
+                        SqlConnection con = new SqlConnection(connectionString);
+                        SqlCommand com = new SqlCommand($@"exec [Load_flk_zl] @xml = '{xDoc.LastChild.OuterXml.Replace((char)39, (char)32)}', @fname='{rfile}', @ev_id={ev_id}", con);
+                        con.Open();
+                        com.ExecuteNonQuery();
+                        con.Close();
+
+                    }
+                forward:
+                    y = y + 1;
+                }
+                string m = "ЕНП и ошибки ФЛК успешно загружены";
+                string t = "Сообщение";
+                int b = 1;
+                Message me = new Message(m, t, b);
+                me.ShowDialog();
+
+
+            }
+        }
+
+        private void Load_OK_ItemClick(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
+        {
+            
+            string sg_rows_zl = " ";
+            int[] rt = pers_grid.GetSelectedRowHandles();
+            for (int i = 0; i < rt.Count(); i++)
+            {                
+                var ddd_zl = pers_grid.GetCellValue(rt[i], "ID");
+                var sgr_zl = sg_rows_zl.Insert(sg_rows_zl.Length, ddd_zl.ToString()) + ",";
+                sg_rows_zl = sgr_zl;
+            }
+            sg_rows_zl = sg_rows_zl.Substring(0, sg_rows_zl.Length - 1);
+            string m1 = "Вы действительно хотите проставить комментарий 'ОК!' выбрвнным ЗЛ?";
+            string t1 = "Внимание!";
+            int b1 = 2;
+            Message me1 = new Message(m1, t1, b1);
+            me1.ShowDialog();
+
+            if (Vars.mes_res == 1)
+            {
+                var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
+                SqlConnection con = new SqlConnection(connectionString);
+                SqlCommand comm = new SqlCommand($@"update pol_persons set comment='ОК!' where id in({sg_rows_zl})
+                update pol_events set unload=1 where idguid in(select event_guid from pol_persons where id in({sg_rows_zl}))", con);
+                con.Open();
+                comm.ExecuteNonQuery();
+                con.Close();
+            }
+            else
+            {
+                return;
+            }
         }
 
 
