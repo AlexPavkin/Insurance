@@ -4956,7 +4956,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
             SqlTransaction tr = null;
             var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
             SqlConnection con2 = new SqlConnection(connectionString);
-            SqlCommand comm2 = new SqlCommand("update pol_persons set SROKDOVERENOSTI=@SROK,PRIZNAKVIDACHI=@PRIZNAKVIDACHI,DATEVIDACHI=@DATEVIDACHI,ENP=@enp,FAM=@fam,IM=@im,OT=@ot,W=@w,DR=@dr,ss=@ss,mr=@mr,birth_oksm=@boksm,"
+            SqlCommand comm2 = new SqlCommand("update pol_persons set COMMENT=@COMMENT, SROKDOVERENOSTI=@SROK,PRIZNAKVIDACHI=@PRIZNAKVIDACHI,DATEVIDACHI=@DATEVIDACHI,ENP=@enp,FAM=@fam,IM=@im,OT=@ot,W=@w,DR=@dr,ss=@ss,mr=@mr,birth_oksm=@boksm,"
                                               + "c_oksm=@coksm,phone=@phone,email=@email,kateg=@kateg,dost=@dost,ddeath=@ddeath,rperson_guid=@rpguid, mo=@mo, dstart=@date_mo where id=@id_p " +
 
                 "update pol_addresses set fias_l1=@FIAS_L1,fias_l3=@FIAS_L3,fias_l4=@FIAS_L4,fias_l6=@FIAS_L6,fias_l7=@FIAS_L7,fias_l90=@FIAS_L90," +
@@ -5004,6 +5004,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
             comm2.Parameters.AddWithValue("@method", Vars.Sposob);
             comm2.Parameters.AddWithValue("@pet", Convert.ToInt32(PD.petition.EditValue));
             comm2.Parameters.AddWithValue("@SROK", PD.srok_doverenosti.EditValue ?? DBNull.Value);
+            comm2.Parameters.AddWithValue("@COMMENT", PD.comments.Text);
             if (PD.priznak_vidachi.IsChecked == true)
             {
                 comm2.Parameters.AddWithValue("@PRIZNAKVIDACHI", "1");
@@ -5451,7 +5452,7 @@ NAME_VP='{PD.kem_vid1.Text}', NAME_VP_CODE='{PD.kod_podr1.Text}' where idguid='{
         {
             var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
             SqlConnection con3 = new SqlConnection(connectionString);
-            SqlCommand comm3 = new SqlCommand("update pol_persons set SROKDOVERENOSTI=@srok_doverenosti,PRIZNAKVIDACHI=@PRIZNAKVIDACHI,DATEVIDACHI=@DATEVIDACHI,ENP=@enp,FAM=@fam,IM=@im,OT=@ot,W=@w,DR=@dr,ss=@ss,mr=@mr,birth_oksm=@boksm,"
+            SqlCommand comm3 = new SqlCommand("update pol_persons set COMMENT=@COMMENT, SROKDOVERENOSTI=@srok_doverenosti,PRIZNAKVIDACHI=@PRIZNAKVIDACHI,DATEVIDACHI=@DATEVIDACHI,ENP=@enp,FAM=@fam,IM=@im,OT=@ot,W=@w,DR=@dr,ss=@ss,mr=@mr,birth_oksm=@boksm,"
                 + "c_oksm=@coksm,phone=@phone,email=@email,kateg=@kateg,dost=@dost,ddeath=@ddeath,rperson_guid=@rpguid, mo=@mo, dstart=@date_mo where id=@id_p " +
 
                 "update pol_addresses set fias_l1=@FIAS_L1,fias_l3=@FIAS_L3,fias_l4=@FIAS_L4,fias_l6=@FIAS_L6,fias_l7=@FIAS_L7,fias_l90=@FIAS_L90," +
@@ -5487,6 +5488,7 @@ NAME_VP='{PD.kem_vid1.Text}', NAME_VP_CODE='{PD.kod_podr1.Text}' where idguid='{
             comm3.Parameters.AddWithValue("@coksm", PD.gr.EditValue.ToString());
             comm3.Parameters.AddWithValue("@tip_op", Vars.CelVisit);
             comm3.Parameters.AddWithValue("@srok_doverenosti", PD.srok_doverenosti.EditValue ?? DBNull.Value);
+            comm3.Parameters.AddWithValue("@COMMENT", PD.comments.Text);
             if (PD.priznak_vidachi.IsChecked == true)
             {
                 comm3.Parameters.AddWithValue("@PRIZNAKVIDACHI", "1");
@@ -10902,7 +10904,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
             var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
             SqlConnection con2 = new SqlConnection(connectionString);
             SqlCommand comm2 = new SqlCommand("update pol_persons set SROKDOVERENOSTI=@srok_doverenosti,PRIZNAKVIDACHI=@PRIZNAKVIDACHI,DATEVIDACHI=@DATEVIDACHI,ENP=@enp,FAM=@fam,IM=@im,OT=@ot,W=@w,DR=@dr,ss=@ss,mr=@mr,birth_oksm=@boksm,"
-                + "c_oksm=@coksm,phone=@phone,email=@email,kateg=@kateg,dost=@dost,ddeath=@ddeath,rperson_guid=@rpguid, mo=@mo, dstart=@date_mo where id=@id_p " +
+                + "c_oksm=@coksm,phone=@phone,email=@email,kateg=@kateg,dost=@dost,ddeath=@ddeath,rperson_guid=@rpguid, mo=@mo, dstart=@date_mo, COMMENT=@COMMENT where id=@id_p " +
 
                 "update pol_addresses set fias_l1=@FIAS_L1,fias_l3=@FIAS_L3,fias_l4=@FIAS_L4,fias_l6=@FIAS_L6,fias_l7=@FIAS_L7,fias_l90=@FIAS_L90," +
                 "fias_l91=@FIAS_L91, dom=@DOM,korp=@KORP,ext=@EXT,kv=@KV, house_guid=@HOUSE_GUID where idguid=(select ADDR_GUID from pol_relation_addr_pers where addres_g=1 and event_guid=(select event_guid from pol_persons where id=@id_p)) and " +
@@ -10957,6 +10959,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
             comm2.Parameters.AddWithValue("@name_vp1", PD.ddkemv.Text);
             comm2.Parameters.AddWithValue("@docexp1", PD.docexp1.EditValue ?? DBNull.Value);
             comm2.Parameters.AddWithValue("@srok_doverenosti", PD.srok_doverenosti.EditValue ?? DBNull.Value);
+            comm2.Parameters.AddWithValue("@COMMENT", PD.comments.Text);
             if (PD.priznak_vidachi.IsChecked == true)
             {
                 comm2.Parameters.AddWithValue("@PRIZNAKVIDACHI", "1");
@@ -11444,7 +11447,7 @@ NAME_VP='{PD.kem_vid1.Text}', NAME_VP_CODE='{PD.kod_podr1.Text}', active=0,main=
             var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
             SqlConnection con3 = new SqlConnection(connectionString);
             SqlCommand comm3 = new SqlCommand("update pol_persons set SROKDOVERENOSTI=@srok_doverenosti,PRIZNAKVIDACHI=@PRIZNAKVIDACHI,DATEVIDACHI=@DATEVIDACHI,ENP=@enp,FAM=@fam,IM=@im,OT=@ot,W=@w,DR=@dr,ss=@ss,mr=@mr,birth_oksm=@boksm,"
-                + "c_oksm=@coksm,phone=@phone,email=@email,kateg=@kateg,dost=@dost,ddeath=@ddeath,rperson_guid=@rpguid,mo=@mo,dstart=@date_mo where id=@id_p " +
+                + "c_oksm=@coksm,phone=@phone,email=@email,kateg=@kateg,dost=@dost,ddeath=@ddeath,rperson_guid=@rpguid,mo=@mo,dstart=@date_mo, COMMENT=@COMMENT where id=@id_p " +
 
                 "update pol_addresses set fias_l1=@FIAS_L1,fias_l3=@FIAS_L3,fias_l4=@FIAS_L4,fias_l6=@FIAS_L6,fias_l7=@FIAS_L7,fias_l90=@FIAS_L90," +
                 "fias_l91=@FIAS_L91, dom=@DOM,korp=@KORP,ext=@EXT,kv=@KV,house_guid=@HOUSE_GUID where idguid=(select ADDR_GUID from pol_relation_addr_pers where addres_g=1 and person_guid=(select idguid from pol_persons where id=@id_p)) and " +
@@ -11488,6 +11491,7 @@ NAME_VP='{PD.kem_vid1.Text}', NAME_VP_CODE='{PD.kod_podr1.Text}', active=0,main=
             comm3.Parameters.AddWithValue("@name_vp1", PD.ddkemv.Text);
             comm3.Parameters.AddWithValue("@docexp1", PD.docexp1.EditValue ?? DBNull.Value);
             comm3.Parameters.AddWithValue("@srok_doverenosti", PD.srok_doverenosti.EditValue ?? DBNull.Value);
+            comm3.Parameters.AddWithValue("@COMMENT", PD.comments.Text);
             if (PD.priznak_vidachi.IsChecked == true)
             {
                 comm3.Parameters.AddWithValue("@PRIZNAKVIDACHI", "1");

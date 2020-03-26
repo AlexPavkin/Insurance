@@ -1293,6 +1293,13 @@ where PERSON_ID=pp.ID and pin.id=(select max(id) from POL_PERSONS_INFORM where P
             Month.Add("Августа", "Август");
             Month.Add("августа", "Август");
         }
+
+        private void Poisk1_Copy_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+            POISKVLADIK.Load_ZL = true;
+       
+        }
     }
     
 }

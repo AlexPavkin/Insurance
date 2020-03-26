@@ -256,6 +256,21 @@
         <Label Content="Номер документа" HorizontalAlignment="Left" Margin="810,59,0,0" VerticalAlignment="Top" Width="143" Foreground="#FFF3F4F8" HorizontalContentAlignment="Center"/>
         <dxe:DateEdit x:Name="Date_lech" HorizontalAlignment="Left" Margin="1021,81,0,0" VerticalAlignment="Top" Width="275" NullValueButtonPlacement="EditBox"/>
         <Label Content="Дата начала лечения" HorizontalAlignment="Left" Margin="1021,59,0,0" VerticalAlignment="Top" Width="275" Foreground="#FFF3F4F8" HorizontalContentAlignment="Center"/>
+        <Button x:Name="poisk1_Copy" HorizontalAlignment="Left" Margin="1001,10,0,0" VerticalAlignment="Top" 
+            Width="111" Click="Poisk1_Copy_Click" Style="{StaticResource myButtonStyle1}">
+            <StackPanel HorizontalAlignment="Center" Margin="0,0" Orientation="Horizontal" Width="111">
+                <Image Source="{dx:DXImage Image=EditDataSource_32x32.png}" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
+                    <Image.OpacityMask>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="Black" Offset="0"/>
+                            <GradientStop Color="White" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Image.OpacityMask>
+
+                </Image>
+                <TextBlock Text="Открыть ЗЛ" VerticalAlignment="Center" Foreground="White" FontWeight="Bold"/>
+            </StackPanel>
+        </Button>
 
 
     </Grid>

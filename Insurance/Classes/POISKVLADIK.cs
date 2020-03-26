@@ -7,6 +7,7 @@ namespace Insurance.Classes
 {
    static class POISKVLADIK
     {
+        public static bool Load_ZL { get; set; } = false;
         public static string FAM_TFOMS { get; set; }
         public static string IM_TFOMS { get; set; }
         public static string OT_TFOMS { get; set; }

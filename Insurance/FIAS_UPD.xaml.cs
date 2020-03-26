@@ -172,7 +172,7 @@ namespace Insurance
                 var fias_cat = connSQL1.Database;
 
 
-                IEnumerable<SharpCompress.Archives.Rar.RarArchiveEntry> entrs=null;
+                IEnumerable<SharpCompress.Archives.Zip.ZipArchiveEntry> entrs=null;
                 //Directory.GetFiles(f2);
                 // List<string> files = Directory.GetFiles(f2, "*.DBF").ToList<string>();
                 double j = 0;
@@ -184,7 +184,7 @@ namespace Insurance
 
                     SqlConnection connSQL = new SqlConnection(ConnectionString1);
                     //files = Directory.GetFiles(f2, "ADDROB" + Region + "*.DBF");
-                    var archive = SharpCompress.Archives.Rar.RarArchive.Open(opf.FileName);
+                    var archive = SharpCompress.Archives.Zip.ZipArchive.Open(opf.FileName);
                     entrs = archive.Entries.Where(x=>x.Key.StartsWith("ADDROB")==true||x.Key.StartsWith("HOUSE")==true);
                     foreach (var entry in entrs)
                     {
@@ -235,27 +235,33 @@ namespace Insurance
                                         workCol.AllowDBNull = true;
                                         workCol.DefaultValue = DBNull.Value;
                                     }
-
-                                    //var result = (from s in fields select s.Name).ToArray();
-                                    //dt.Load(dbf.NextRecord());
-                                    for (int ii = 0; ii < dbf.RecordCount; ii++)
-                                    {
-                                        var rtt = dbf.NextRecord();
-                                        
-                                        if (rtt != null)
+                                
+                                        //var result = (from s in fields select s.Name).ToArray();
+                                        //dt.Load(dbf.NextRecord());
+                                        for (int ii = 0; ii < dbf.RecordCount; ii++)
                                         {
-                                            for (i = 0; i < rtt.Count(); i++)
+                                            var rtt = dbf.NextRecord();
+
+                                            if (rtt != null)
                                             {
-                                                if (rtt[i].ToString() == "")
+                                                for (i = 0; i < rtt.Count(); i++)
+                                            {
+                                                if (rtt[i] == null)
                                                 {
                                                     rtt[i] = null;
                                                 }
-                                            }
-                                            dt.LoadDataRow(rtt, true);
-                                            
-                                        }
+                                                else
+                                                if (rtt[i].ToString() == "")
+                                                    {
+                                                        rtt[i] = null;
+                                                    }
+                                                }
+                                                dt.LoadDataRow(rtt, true);
 
-                                    }
+                                            }
+
+                                        }
+                               
                                     
 
 
@@ -319,7 +325,7 @@ namespace Insurance
                     string ConnectionString1 = Properties.Settings.Default.FIASConnectionString;
                     //OleDbConnection conn = new OleDbConnection(ConnectionString);
                     SqlConnection connSQL = new SqlConnection(ConnectionString1);
-                    var archive = SharpCompress.Archives.Rar.RarArchive.Open(opf.FileName);
+                    var archive = SharpCompress.Archives.Zip.ZipArchive.Open(opf.FileName);
                     entrs = archive.Entries.Where(x => x.Key.StartsWith("ADDROB") == true || x.Key.StartsWith("HOUSE") == true);
                     foreach (var entry in entrs)
                     {
@@ -509,6 +515,11 @@ namespace Insurance
                                         {
                                             for (i = 0; i < rtt.Count(); i++)
                                             {
+                                                if (rtt[i] == null)
+                                                {
+                                                    rtt[i] = null;
+                                                }
+                                                else
                                                 if (rtt[i].ToString() == "")
                                                 {
                                                     rtt[i] = null;
@@ -518,7 +529,9 @@ namespace Insurance
 
                                         }
 
-                                    }
+                                    
+                                }
+                            
                                     string command0 = $@"update Houses set [POSTALCODE]=dt.POSTALCODE,[IFNSFL]=dt.IFNSFL,[TERRIFNSFL]=dt.TERRIFNSFL,[IFNSUL]=dt.IFNSUL,[TERRIFNSUL]=dt.TERRIFNSUL,[OKATO]=dt.OKATO,
 [OKTMO]=dt.OKTMO,[UPDATEDATE]=dt.UPDATEDATE,[HOUSENUM]=dt.HOUSENUM,[ESTSTATUS]=dt.ESTSTATUS,[BUILDNUM]=dt.BUILDNUM,[STRUCNUM]=dt.STRUCNUM,[STRSTATUS]=dt.STRSTATUS,[HOUSEID]=dt.HOUSEID,[HOUSEGUID]=dt.HOUSEGUID,
 [AOGUID]=dt.AOGUID,[STARTDATE]=dt.STARTDATE,[ENDDATE]=dt.ENDDATE,[STATSTATUS]=dt.STATSTATUS,[NORMDOC]=dt.NORMDOC,[COUNTER]=dt.COUNTER  
@@ -605,7 +618,7 @@ Extended Properties=dBASE IV;", opf.FileName.Replace("\\" + opf.SafeFileName, ""
                     string ConnectionString11 = Properties.Settings.Default.FIASConnectionString;
                     OleDbConnection conn1 = new OleDbConnection(ConnectionStringZ);
                     SqlConnection connSQ1L = new SqlConnection(ConnectionString11);
-                    var archive = SharpCompress.Archives.Rar.RarArchive.Open(opf.FileName);
+                    var archive = SharpCompress.Archives.Zip.ZipArchive.Open(opf.FileName);
                     entrs = archive.Entries.Where(x => x.Key.StartsWith("ADDROB") == true || x.Key.StartsWith("HOUSE") == true);
                     foreach (var entry in entrs)
                     {
