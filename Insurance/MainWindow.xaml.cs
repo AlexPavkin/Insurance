@@ -31,7 +31,7 @@ using System.Data.Linq;
 using DotNetDBF;
 using Bytescout.Spreadsheet;
 using Ionic.Zip;
-using Insurance.Classes;
+using System.Xml;
 
 namespace Insurance
 {
@@ -769,7 +769,7 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
             //prz_Agent.DataContext = MyReader.MySelect<AgentsSmo>(@"select id,prz_code,agent from pol_prz_agents", Properties.Settings.Default.DocExchangeConnectionString);
             if (SPR.Premmissions == "User")
             {
-                prz.DataContext = MyReader.MySelect<PrzSmo>($@"select id,prz_code,prz_name,NameWithCode from pol_prz where prz_code in ({SPR.PRZ_CODE.Replace(";",",")})", Properties.Settings.Default.DocExchangeConnectionString);
+                prz.DataContext = MyReader.MySelect<PrzSmo>($@"select id,prz_code,prz_name,NameWithCode from pol_prz where prz_code in ({SPR.PRZ_CODE})", Properties.Settings.Default.DocExchangeConnectionString);
                 prz_Agent.DataContext = MyReader.MySelect<AgentsSmo>($@"select id,prz_code,agent from pol_prz_agents where id={Vars.Agnt}", Properties.Settings.Default.DocExchangeConnectionString);
             }
             else
@@ -842,7 +842,7 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
                 Load_att_btn.Visibility = Visibility.Collapsed;
                 Unload_att_btn.Visibility = Visibility.Collapsed;
             }
-           
+
         }
         //string cel_viz;
 
@@ -947,7 +947,7 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
 
                     //}
                     Vars.grid_num = 1;
-                    Vars.IdP = pers_grid.GetFocusedRowCellValue("ID").ToString();
+                    Vars.IdP = pers_grid.GetCellValue(pers_grid.GetSelectedRowHandles()[0], "ID").ToString();
                     string m = "Вы хотите исправить ошибки в данных или создать новое событие?";
                     string t = "Внимание!";
                     int b = 0;
@@ -1078,8 +1078,6 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
         private void w_main_Activated(object sender, EventArgs e)
         {
 
-            LodadZ();
-
 
             DispatcherTimer timer = new DispatcherTimer();  // если надо, то в скобках указываем приоритет, например DispatcherPriority.Render
             timer.Interval = TimeSpan.FromSeconds(1);
@@ -1128,7 +1126,7 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
                     $@"select id,prz_code,agent from pol_prz_agents where agent='{SPR.Login}'",
                     Properties.Settings.Default.DocExchangeConnectionString);
                 prz.DataContext = MyReader.MySelect<PrzSmo>(
-                    $@"select id,prz_code,prz_name,NameWithCode from pol_prz where prz_code in( {SPR.PRZ_CODE.Replace(";",",")})",
+                    $@"select id,prz_code,prz_name,NameWithCode from pol_prz where prz_code in( {SPR.PRZ_CODE})",
                     Properties.Settings.Default.DocExchangeConnectionString);
             }
             else
@@ -2906,15 +2904,30 @@ DEALLOCATE MY_CURSOR
                 
                 return;
             }
-            else if(ddnum.Text != "" && (int)type_policy.EditValue == 2 && (DateTime)docexp1.EditValue < (DateTime)(fakt_prekr.EditValue))
+            else if(ddnum.Text != "" && (int)type_policy.EditValue == 2 )
             {
-                string m = "Дата прекращения ВС не может быть больше даты окончания действия ДД!";
-                string t = "Ошибка!";
-                int b = 1;
-                Message me = new Message(m, t, b);
-                me.ShowDialog();
+                if(docexp1.EditValue==null && (int)ddtype.EditValue != 11)
+                {
+                    string m = "Дата окончания ДД может быть пустой только у бессрочного вида на жительство!";
+                    string t = "Ошибка!";
+                    int b = 1;
+                    Message me = new Message(m, t, b);
+                    me.ShowDialog();
+
+                    return;
+                }
+                else if(docexp1.EditValue != null && (DateTime)(docexp1.EditValue ?? new DateTime(1900, 1, 1)) < (DateTime)(fakt_prekr.EditValue))
+                {
+                    string m = "Дата прекращения ВС не может быть больше даты окончания действия ДД!";
+                    string t = "Ошибка!";
+                    int b = 1;
+                    Message me = new Message(m, t, b);
+                    me.ShowDialog();
+
+                    return;
+                }
                 
-                return;
+                
             }
             if((im.Text=="" || ot.Text=="") && dost1.EditValue==null)
             {
@@ -3657,215 +3670,144 @@ DEALLOCATE MY_CURSOR
         //private void Window_Loaded(object sender, RoutedEventArgs e)
         //{
         //}
-        public void LodadZ()
+        private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            if (POISKVLADIK.Load_ZL == true)
-            {
-                Tab_ZL.Visibility = Visibility.Visible;
-                Tab_ZL.IsSelected = true;
-                fam.Text = POISKVLADIK.FAM_TFOMS;
-                im.Text = POISKVLADIK.IM_TFOMS;
-                ot.Text = POISKVLADIK.OT_TFOMS;
-                dr.Text = POISKVLADIK.DR_TFOMS;
-                type_policy.Text = POISKVLADIK.VIDPOLIS_TFOMS;
-                snils.Text = POISKVLADIK.SNILS_TFOMS;
-                ser_blank.Text = POISKVLADIK.POLIS_TFOMS.Substring(0, 3);
-                
+            //this.pr_pod_z_smo.ItemsSource = null;
+            //this.pr_pod_z_polis.ItemsSource = null;
+            //this.form_polis.ItemsSource = null;
+            //status_p2.ItemsSource = null;
+            //status_p2.ItemsSource = null;
+            //list1.Add("1 Первичный выбор СМО");
+            //list1.Add("2 Замена СМО в соответствии с правом замены");
+            //list1.Add("3 Замена СМО в связи со сменой места жительства");
+            //list1.Add("4 Замена СМО в связи с прекращением действия договора");
+            //this.pr_pod_z_smo.ItemsSource = list1;
+            ////pr_pod_z_smo.SelectedIndex = 0;
 
-                if (POISKVLADIK.VIDPOLIS_TFOMS == "2")
-                {
-                    num_blank.Text = POISKVLADIK.POLIS_TFOMS.Substring(3, 6);
-                }
-                else
-                {
-                    num_blank.Text = POISKVLADIK.POLIS_TFOMS.Substring(4, 7);
-                }
-                enp.Text = POISKVLADIK.ENP_TFOMS;
-                mr2.Text = POISKVLADIK.MR_TFOMS;
-                mo_cmb.Text = POISKVLADIK.POLIKLIN_TFOMS;
-                date_mo.Text = POISKVLADIK.DATE_PRIKREP_TFOMS;
-                date_vid1.Text = POISKVLADIK.DATE_START_TFOMS;
-                date_end.Text = POISKVLADIK.DATE_END_TFOMS;
-                fakt_prekr.Text = POISKVLADIK.DATE_NULL_TFOMS;
-                dddate.Text = POISKVLADIK.DATE_DEAD_TFOMS;
-                date_vid1.Text = POISKVLADIK.DATE_START_TFOMS;
-                date_vid1.Text = POISKVLADIK.DATE_START_TFOMS;
-                POISKVLADIK.Load_ZL = false;
-            }
-        }
+            //list2.Add("1 Изменение реквизитов");
+            //list2.Add("2 Установление ошибочности сведений");
+            //list2.Add("3 Ветхость и непригодность полиса");
+            //list2.Add("4 Утрата ранее выданного полиса");
+            //list2.Add("5 Окончание срока действия полиса");
+            //this.pr_pod_z_polis.ItemsSource = list2;
 
-        public void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            //if (POISKVLADIK.Load_ZL == true)
+            //list3.Add("0 Не требует изготовления полиса");
+            //list3.Add("1 Бумажный бланк");
+            //list3.Add("2 Пластиковая карта");
+            //list3.Add("3 В составе УЭК");
+            //list3.Add("4 Отказ от полиса");
+            //this.form_polis.ItemsSource = list3;
+
+            //list0.Add("1 Родитель");
+            //list0.Add("2 Опекун");
+            //list0.Add("3 Представитель");
+            //status_p2.ItemsSource = list0;
+
+
+            ////form_polis.SelectedIndex = 1;
+
+            //list4.Add(new Dost { ID = "1", NameWithID = "1 Отсутствует отчество" });
+            //list4.Add(new Dost { ID = "2", NameWithID = "2 Отсутствует фамилия" });
+            //list4.Add(new Dost { ID = "3", NameWithID = "3 Отсутствует имя" });
+            //list4.Add(new Dost { ID = "4", NameWithID = "4 Известен только месяц и год даты рождения" });
+            //list4.Add(new Dost { ID = "5", NameWithID = "5 Известен только год даты рождения" });
+            //list4.Add(new Dost { ID = "6", NameWithID = "6 Дата рождения не соответствует календарю" });
+
+            //this.dost1.ItemsSource = list4;
+
+
+            //layout_InUse();
+            pers_grid_2.View.FocusedRowHandle = -1;
+
+
+            //if (SPR.Premmissions == "USER")
             //{
-            //    Tab_ZL.Visibility = Visibility.Visible;
-            //    fam.Text = POISKVLADIK.FAM_TFOMS;
-            //    im.Text = POISKVLADIK.IM_TFOMS;
-            //    ot.Text = POISKVLADIK.OT_TFOMS;
-            //    dr.Text = POISKVLADIK.DR_TFOMS;
-            //    type_policy.Text = POISKVLADIK.VIDPOLIS_TFOMS;
-            //    snils.Text = POISKVLADIK.SNILS_TFOMS;
-            //    ser_blank.Text = POISKVLADIK.POLIS_TFOMS.Substring(0, 3);
-
-
-            //    if (POISKVLADIK.VIDPOLIS_TFOMS == "2")
-            //    {
-            //        num_blank.Text = POISKVLADIK.POLIS_TFOMS.Substring(3, 6);
-            //    }
-            //    else
-            //    {
-            //        num_blank.Text = POISKVLADIK.POLIS_TFOMS.Substring(4, 7);
-            //    }
-            //    enp.Text = POISKVLADIK.ENP_TFOMS;
-            //    mr2.Text = POISKVLADIK.MR_TFOMS;
-            //    mo_cmb.Text = POISKVLADIK.POLIKLIN_TFOMS;
-            //    date_mo.Text = POISKVLADIK.DATE_PRIKREP_TFOMS;
-            //    date_vid1.Text = POISKVLADIK.DATE_START_TFOMS;
-            //    date_end.Text = POISKVLADIK.DATE_END_TFOMS;
-            //    fakt_prekr.Text = POISKVLADIK.DATE_NULL_TFOMS;
-            //    dddate.Text = POISKVLADIK.DATE_DEAD_TFOMS;
-            //    date_vid1.Text = POISKVLADIK.DATE_START_TFOMS;
-            //    date_vid1.Text = POISKVLADIK.DATE_START_TFOMS;
-
+            //    upload.IsEnabled = false;
+            //    download.IsEnabled = false;
             //}
             //else
             //{
-                //this.pr_pod_z_smo.ItemsSource = null;
-                //this.pr_pod_z_polis.ItemsSource = null;
-                //this.form_polis.ItemsSource = null;
-                //status_p2.ItemsSource = null;
-                //status_p2.ItemsSource = null;
-                //list1.Add("1 Первичный выбор СМО");
-                //list1.Add("2 Замена СМО в соответствии с правом замены");
-                //list1.Add("3 Замена СМО в связи со сменой места жительства");
-                //list1.Add("4 Замена СМО в связи с прекращением действия договора");
-                //this.pr_pod_z_smo.ItemsSource = list1;
-                ////pr_pod_z_smo.SelectedIndex = 0;
+            //    upload.IsEnabled = true;
+            //    download.IsEnabled = true;
+            //}
 
-                //list2.Add("1 Изменение реквизитов");
-                //list2.Add("2 Установление ошибочности сведений");
-                //list2.Add("3 Ветхость и непригодность полиса");
-                //list2.Add("4 Утрата ранее выданного полиса");
-                //list2.Add("5 Окончание срока действия полиса");
-                //this.pr_pod_z_polis.ItemsSource = list2;
+            //LoadingDecorator1.IsSplashScreenShown = true;
+            Cursor = Cursors.Wait;
+            //Thread t0 = new Thread(delegate ()
+            //{
+            //    Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Background,
+            //    new Action(delegate ()
+            //    {
+            //       //Vars.DateVisit = Convert.ToDateTime(d_obr.EditValue);
+            //       var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
+            //       var peopleList =
+            //           MyReader.MySelect<People>(SPR.MyReader.load_pers_grid2 + strf_adm, connectionString);
+            //       pers_grid_2.ItemsSource = peopleList;
+            //       pers_grid_2.View.FocusedRowHandle = -1;
+            //    }));
+            //});
+            //t0.Start();
+            //list1.Add("1 Первичный выбор СМО");
+            //list1.Add("2 Замена СМО в соответствии с правом замены");
+            //list1.Add("3 Замена СМО в связи со сменой места жительства");
+            //list1.Add("4 Замена СМО в связи с прекращением действия договора");
+            //this.pr_pod_z_smo.ItemsSource = list1;
+            ////pr_pod_z_smo.SelectedIndex = 0;
 
-                //list3.Add("0 Не требует изготовления полиса");
-                //list3.Add("1 Бумажный бланк");
-                //list3.Add("2 Пластиковая карта");
-                //list3.Add("3 В составе УЭК");
-                //list3.Add("4 Отказ от полиса");
-                //this.form_polis.ItemsSource = list3;
+            //list2.Add("1 Изменение реквизитов");
+            //list2.Add("2 Установление ошибочности сведений");
+            //list2.Add("3 Ветхость и непригодность полиса");
+            //list2.Add("4 Утрата ранее выданного полиса");
+            //list2.Add("5 Окончание срока действия полиса");
+            //this.pr_pod_z_polis.ItemsSource = list2;
 
-                //list0.Add("1 Родитель");
-                //list0.Add("2 Опекун");
-                //list0.Add("3 Представитель");
-                //status_p2.ItemsSource = list0;
+            //list3.Add("0 Не требует изготовления полиса");
+            //list3.Add("1 Бумажный бланк");
+            //list3.Add("2 Пластиковая карта");
+            //list3.Add("3 В составе УЭК");
+            //list3.Add("4 Отказ от полиса");
+            //this.form_polis.ItemsSource = list3;
 
-
-                ////form_polis.SelectedIndex = 1;
-
-                //list4.Add(new Dost { ID = "1", NameWithID = "1 Отсутствует отчество" });
-                //list4.Add(new Dost { ID = "2", NameWithID = "2 Отсутствует фамилия" });
-                //list4.Add(new Dost { ID = "3", NameWithID = "3 Отсутствует имя" });
-                //list4.Add(new Dost { ID = "4", NameWithID = "4 Известен только месяц и год даты рождения" });
-                //list4.Add(new Dost { ID = "5", NameWithID = "5 Известен только год даты рождения" });
-                //list4.Add(new Dost { ID = "6", NameWithID = "6 Дата рождения не соответствует календарю" });
-
-                //this.dost1.ItemsSource = list4;
-
-
-                //layout_InUse();
-                pers_grid_2.View.FocusedRowHandle = -1;
-
-
-                //if (SPR.Premmissions == "USER")
+            if (Vars.Btn != "1")
+            {
+                //Thread t2 = new Thread(delegate ()
                 //{
-                //    upload.IsEnabled = false;
-                //    download.IsEnabled = false;
-                //}
-                //else
-                //{
-                //    upload.IsEnabled = true;
-                //    download.IsEnabled = true;
-                //}
-
-                //LoadingDecorator1.IsSplashScreenShown = true;
-                Cursor = Cursors.Wait;
-                //Thread t0 = new Thread(delegate ()
-                //{
-                //    Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Background,
-                //    new Action(delegate ()
-                //    {
-                //       //Vars.DateVisit = Convert.ToDateTime(d_obr.EditValue);
-                //       var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
-                //       var peopleList =
-                //           MyReader.MySelect<People>(SPR.MyReader.load_pers_grid2 + strf_adm, connectionString);
-                //       pers_grid_2.ItemsSource = peopleList;
-                //       pers_grid_2.View.FocusedRowHandle = -1;
-                //    }));
-                //});
-                //t0.Start();
-                //list1.Add("1 Первичный выбор СМО");
-                //list1.Add("2 Замена СМО в соответствии с правом замены");
-                //list1.Add("3 Замена СМО в связи со сменой места жительства");
-                //list1.Add("4 Замена СМО в связи с прекращением действия договора");
-                //this.pr_pod_z_smo.ItemsSource = list1;
-                ////pr_pod_z_smo.SelectedIndex = 0;
-
-                //list2.Add("1 Изменение реквизитов");
-                //list2.Add("2 Установление ошибочности сведений");
-                //list2.Add("3 Ветхость и непригодность полиса");
-                //list2.Add("4 Утрата ранее выданного полиса");
-                //list2.Add("5 Окончание срока действия полиса");
-                //this.pr_pod_z_polis.ItemsSource = list2;
-
-                //list3.Add("0 Не требует изготовления полиса");
-                //list3.Add("1 Бумажный бланк");
-                //list3.Add("2 Пластиковая карта");
-                //list3.Add("3 В составе УЭК");
-                //list3.Add("4 Отказ от полиса");
-                //this.form_polis.ItemsSource = list3;
-
-                if (Vars.Btn != "1")
+                Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Background,
+                new Action(delegate ()
                 {
-                    //Thread t2 = new Thread(delegate ()
-                    //{
-                    Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Background,
-                    new Action(delegate ()
+
+
+                    var connectionString1 = Properties.Settings.Default.DocExchangeConnectionString;
+                    SqlConnection con = new SqlConnection(connectionString1);
+                    SqlCommand comm = new SqlCommand("select photo as prf from pol_personsb where event_guid=(select event_guid from pol_persons where id=@id) and type=2", con);
+                    comm.Parameters.AddWithValue("@id", Vars.IdP);
+                    con.Open();
+                    string prf1 = (string)comm.ExecuteScalar();
+                    con.Close();
+                    SqlCommand comm1 = new SqlCommand("select photo as prp from pol_personsb where event_guid=(select event_guid from pol_persons where id=@id) and type=3", con);
+                    comm1.Parameters.AddWithValue("@id", Vars.IdP);
+                    con.Open();
+                    string prp = (string)comm1.ExecuteScalar();
+                    con.Close();
+
+                    if (prf1 == null || prf1 == "")
                     {
+                        zl_photo.EditValue = "";
+                    }
+                    else
+                    {
+                        zl_photo.EditValue = Convert.FromBase64String(prf1);
+                    }
+                    if (prp == null || prp == "")
+                    {
+                        zl_podp.EditValue = "";
+                    }
+                    else
+                    {
+                        zl_podp.EditValue = Convert.FromBase64String(prp);
+                    }
 
-
-                        var connectionString1 = Properties.Settings.Default.DocExchangeConnectionString;
-                        SqlConnection con = new SqlConnection(connectionString1);
-                        SqlCommand comm = new SqlCommand("select photo as prf from pol_personsb where event_guid=(select event_guid from pol_persons where id=@id) and type=2", con);
-                        comm.Parameters.AddWithValue("@id", Vars.IdP);
-                        con.Open();
-                        string prf1 = (string)comm.ExecuteScalar();
-                        con.Close();
-                        SqlCommand comm1 = new SqlCommand("select photo as prp from pol_personsb where event_guid=(select event_guid from pol_persons where id=@id) and type=3", con);
-                        comm1.Parameters.AddWithValue("@id", Vars.IdP);
-                        con.Open();
-                        string prp = (string)comm1.ExecuteScalar();
-                        con.Close();
-
-                        if (prf1 == null || prf1 == "")
-                        {
-                            zl_photo.EditValue = "";
-                        }
-                        else
-                        {
-                            zl_photo.EditValue = Convert.FromBase64String(prf1);
-                        }
-                        if (prp == null || prp == "")
-                        {
-                            zl_podp.EditValue = "";
-                        }
-                        else
-                        {
-                            zl_podp.EditValue = Convert.FromBase64String(prp);
-                        }
-
-                        SqlCommand comm3 = new SqlCommand(@"select t0.*,t1.FAM as fam1,t1.im as im1, t1.ot as ot1, t0.DATEVIDACHI as datevidachi, t0.PRIZNAKVIDACHI as priznak_vidachi,
+                    SqlCommand comm3 = new SqlCommand(@"select t0.*,t1.FAM as fam1,t1.im as im1, t1.ot as ot1, t0.DATEVIDACHI as datevidachi, t0.PRIZNAKVIDACHI as priznak_vidachi,
 t1.dr as dr1,t1.phone as phone1,t2.PRELATION,t1.idguid as idguid1,t1.w as w1,t0.mo as MO,t0.dstart as DSTART,
 t3.idguid as prev_persguid,t3.fam as fam2,t3.im as im2,t3.ot as ot2,t3.w as w2,t3.dr as dr2,t3.mr as mr2,t2.tip_op as tip_op,
 t2.method as sppz,t2.rsmo as rsmo,t2.rpolis as rpolis,t2.fpolis as fpolis,t2.petition as petition,t2.dvizit 
@@ -3881,825 +3823,749 @@ on t0.EVENT_GUID=t2.IDGUID
 LEFT join
 (select * from pol_persons_old )T3
 on t0.idguid = t3.person_guid", con);
-                        comm3.Parameters.AddWithValue("@id", Vars.IdP);
-                        con.Open();
-                        SqlDataReader reader1 = comm3.ExecuteReader();
+                    comm3.Parameters.AddWithValue("@id", Vars.IdP);
+                    con.Open();
+                    SqlDataReader reader1 = comm3.ExecuteReader();
 
-                        while (reader1.Read()) // построчно считываем данные
-                        {
-                            object fam_ = reader1["FAM"];
-                            object im_ = reader1["IM"];
-
-                            object ot_ = reader1["OT"];
-                            object dr_ = reader1["DR"];
-                            object datevidachi_ = reader1["datevidachi"];
-                            object priznak_vidachi_ = reader1["PRIZNAKVIDACHI"];
-                            object w = reader1["W"];
-                            object mr_ = reader1["MR"];
-                            object birthoksm = reader1["BIRTH_OKSM"];
-                            object coksm = reader1["C_OKSM"];
-                            object ss = reader1["SS"];
-                            object enp_ = reader1["ENP"];
-                            object dost = reader1["DOST"];
-                            object phone_ = reader1["PHONE"];
-                            object email_ = reader1["EMAIL"];
-                            object rpersonguid = reader1["RPERSON_GUID"];
-                            object kateg = reader1["kateg"];
-                            object dost_ = reader1["DOST"];
-                            object ddeath_ = reader1["DDEATH"];
-                            object fam_1 = reader1["fam1"];
-                            object im_1 = reader1["im1"];
-                            object ot_1 = reader1["ot1"];
-                            object dr_1 = reader1["dr1"];
-                            object phone_1 = reader1["phone1"];
-                            object prelation = reader1["PRELATION"];
-                            object idguid_ = reader1["idguid1"];
-                            object w1_ = reader1["w1"];
-                            object _mo = reader1["MO"];
-                            object _dstart = reader1["DSTART"];
-                            object fam2_ = reader1["fam2"];
-                            object im2_ = reader1["im2"];
-                            object ot2_ = reader1["ot2"];
-                            object dr2_ = reader1["dr2"];
-                            object w2 = reader1["w2"];
-                            object mr2_ = reader1["mr2"];
-                            object tip_op_ = reader1["tip_op"];
-                            object sppz_ = reader1["sppz"];
-                            object rsmo_ = reader1["rsmo"];
-                            object rpolis_ = reader1["rpolis"];
-                            object fpolis_ = reader1["fpolis"];
-                            object petition_ = reader1["petition"];
-                            object dvisit_ = reader1["dvizit"];
-                            object srok_doverenosti_ = reader1["SROKDOVERENOSTI"];
-                            object prev_persguid_ = reader1["prev_persguid"];
-                            object commnet_ = reader1["COMMENT"];
-
-                            comments.Text = commnet_.ToString();
-                            prev_persguid = prev_persguid_.ToString() == "" ? Guid.Empty : (Guid)prev_persguid_;
-                            rper = idguid_.ToString() == "" ? Guid.Empty : (Guid)idguid_;
-                            if (ddeath_.ToString() == "")
-                            {
-
-                            }
-                            else
-                            {
-                                ddeath.DateTime = Convert.ToDateTime(ddeath_);
-                            }
-
-
-                            string dost_1 = dost_.ToString();
-                            fam.Text = fam_.ToString();
-                            im.Text = im_.ToString();
-                            ot.Text = ot_.ToString();
-                            dr.DateTime = Convert.ToDateTime(dr_);
-                            pol.SelectedIndex = Convert.ToInt32(w);
-                            mr2.Text = mr_.ToString();
-                            str_r.EditValue = birthoksm.ToString();
-                            gr.EditValue = coksm.ToString();
-                            enp.Text = enp_.ToString();
-
-                            srok_doverenosti.EditValue = srok_doverenosti_;
-
-                            if (datevidachi_.ToString() == "")
-                            {
-
-                            }
-                            else
-                            {
-                                //date_vidachi.DateTime = Convert.ToDateTime(datevidachi_);
-                                date_vidachi.EditValue = datevidachi_;
-                            }
-
-
-                            if (priznak_vidachi_.ToString() == "True")
-                            {
-                                priznak_vidachi.IsChecked = true;
-                            }
-                            else
-                            {
-                                priznak_vidachi.IsChecked = false;
-                            }
-
-                            snils.Text = ss.ToString();
-                            phone.Text = phone_.ToString();
-                            email.Text = email_.ToString();
-                            kat_zl.EditValue = kateg;
-
-                            dost1.EditValue = dost_1.Split(';');
-                            //dost1.SelectedItem= dost_1.Split(',').ToList();
-                            cel_vizita.EditValue = tip_op_.ToString();
-
-                            if (sppz_.ToString() == "")
-                            {
-
-                            }
-                            else
-                            {
-                                sp_pod_z.EditValue = Convert.ToInt32(sppz_);
-                            }
-
-                            if (dvisit_.ToString() == "")
-                            {
-
-                            }
-                            else if (dvisit_.ToString() == "01.01.2018 0:00:00")
-                            {
-                                d_obr.EditValue = DateTime.Now;
-                            }
-                            else
-                            {
-                                d_obr.EditValue = Convert.ToDateTime(dvisit_);
-                            }
-
-                            if (petition_.ToString() == "")
-                            {
-
-                            }
-                            else
-                            {
-                                petition.EditValue = Convert.ToBoolean(petition_);
-                            }
-
-                            pr_pod_z_polis.SelectedIndex = Convert.ToInt32(rpolis_.ToString() == "" ? 0 : rpolis_) - 1;
-                            form_polis.SelectedIndex = Convert.ToInt32(fpolis_.ToString() == "" ? -1 : fpolis_);
-                            pr_pod_z_smo.SelectedIndex = Convert.ToInt32(rsmo_.ToString() == "" ? 0 : rsmo_) - 1;
-
-                            if (_mo.ToString() == "")
-                            {
-
-                            }
-                            else
-                            {
-                                mo_cmb.EditValue = _mo.ToString();
-                            }
-
-                            if (_dstart.ToString() == "")
-                            {
-
-                            }
-                            else
-                            {
-                                date_mo.EditValue = Convert.ToDateTime(_dstart);
-                            }
-
-                            prev_fam.Text = fam2_.ToString();
-                            prev_im.Text = im2_.ToString();
-                            prev_ot.Text = ot2_.ToString();
-                            if (w2.ToString() == "")
-                            {
-
-                            }
-                            else
-                            {
-                                prev_pol.SelectedIndex = Convert.ToInt32(w2);
-                            }
-                            if (dr2_.ToString() == "")
-                            {
-
-                            }
-                            else
-                            {
-                                prev_dr.DateTime = Convert.ToDateTime(dr2_);
-                            }
-
-                            prev_mr.Text = mr2_.ToString();
-                            if (rpersonguid.ToString() == "00000000-0000-0000-0000-000000000000" || rpersonguid.ToString() == "")
-                            {
-
-                            }
-                            else
-                            {
-                                fam1.Text = fam_1.ToString();
-                                im1.Text = im_1.ToString();
-                                ot1.Text = ot_1.ToString();
-                                pol_pr.SelectedIndex = Convert.ToInt32(w1_ == DBNull.Value ? -1 : w1_);
-
-                                idguid = idguid_.ToString();
-                                if (dr_1.ToString() == "")
-                                {
-                                    dr1.EditValue = "";
-                                }
-                                else
-                                {
-                                    dr1.DateTime = Convert.ToDateTime(dr_1);
-                                }
-
-                                phone_p1.Text = phone_1.ToString();
-                                if (prelation.ToString() == "")
-                                {
-                                    status_p2.SelectedIndex = -1;
-                                }
-                                else
-                                {
-                                    status_p2.SelectedIndex = Convert.ToInt32(prelation);
-                                }
-
-                            }
-
-                        }
-                        reader1.Close();
-                        con.Close();
-                    }));
-                    //});
-                    //  t2.Start();
-                    //  Thread t3 = new Thread(delegate ()
-                    //  {
-                    Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Background,
-                    new Action(delegate ()
+                    while (reader1.Read()) // построчно считываем данные
                     {
-                        var connectionString1 = Properties.Settings.Default.DocExchangeConnectionString;
-                        SqlConnection con = new SqlConnection(connectionString1);
-                        SqlCommand comm2 = new SqlCommand(@"select * from pol_documents where isnull(event_guid,PERSON_GUID)=(select isnull(event_guid,IDGUID) from pol_persons where id=@id) and main=1 and active=1", con);
-                        comm2.Parameters.AddWithValue("@id", Vars.IdP);
-                        con.Open();
-                        SqlDataReader reader = comm2.ExecuteReader();
+                        object fam_ = reader1["FAM"];
+                        object im_ = reader1["IM"];
 
-                        while (reader.Read()) // построчно считываем данные
+                        object ot_ = reader1["OT"];
+                        object dr_ = reader1["DR"];
+                        object datevidachi_ = reader1["datevidachi"];
+                        object priznak_vidachi_ = reader1["PRIZNAKVIDACHI"];
+                        object w = reader1["W"];
+                        object mr_ = reader1["MR"];
+                        object birthoksm = reader1["BIRTH_OKSM"];
+                        object coksm = reader1["C_OKSM"];
+                        object ss = reader1["SS"];
+                        object enp_ = reader1["ENP"];
+                        object dost = reader1["DOST"];
+                        object phone_ = reader1["PHONE"];
+                        object email_ = reader1["EMAIL"];
+                        object rpersonguid = reader1["RPERSON_GUID"];
+                        object kateg = reader1["kateg"];
+                        object dost_ = reader1["DOST"];
+                        object ddeath_ = reader1["DDEATH"];
+                        object fam_1 = reader1["fam1"];
+                        object im_1 = reader1["im1"];
+                        object ot_1 = reader1["ot1"];
+                        object dr_1 = reader1["dr1"];
+                        object phone_1 = reader1["phone1"];
+                        object prelation = reader1["PRELATION"];
+                        object idguid_ = reader1["idguid1"];
+                        object w1_ = reader1["w1"];
+                        object _mo = reader1["MO"];
+                        object _dstart = reader1["DSTART"];
+                        object fam2_ = reader1["fam2"];
+                        object im2_ = reader1["im2"];
+                        object ot2_ = reader1["ot2"];
+                        object dr2_ = reader1["dr2"];
+                        object w2 = reader1["w2"];
+                        object mr2_ = reader1["mr2"];
+                        object tip_op_ = reader1["tip_op"];
+                        object sppz_ = reader1["sppz"];
+                        object rsmo_ = reader1["rsmo"];
+                        object rpolis_ = reader1["rpolis"];
+                        object fpolis_ = reader1["fpolis"];
+                        object petition_ = reader1["petition"];
+                        object dvisit_ = reader1["dvizit"];
+                        object srok_doverenosti_ = reader1["SROKDOVERENOSTI"];
+                        object prev_persguid_ = reader1["prev_persguid"];
+
+                        prev_persguid = prev_persguid_.ToString() == "" ? Guid.Empty : (Guid)prev_persguid_;
+                        rper = idguid_.ToString() == "" ? Guid.Empty : (Guid)idguid_;
+                        if (ddeath_.ToString() == "")
                         {
-                            object doctype = reader["DOCTYPE"];
-                            object docser = reader["DOCSER"];
-                            object docnum = reader["DOCNUM"];
-                            object docdate = reader["DOCDATE"];
-                            object name_vp = reader["NAME_VP"];
-                            object name_vp_code = reader["NAME_VP_CODE"];
-                            object docmr = reader["DOCMR"];
-                            object str_vid_ = reader["OKSM"];
 
-                            doc_type.EditValue = doctype;
-                            doc_ser.Text = docser.ToString();
-                            doc_num.Text = docnum.ToString();
-                            date_vid.DateTime = Convert.ToDateTime(docdate);
-                            kem_vid.Text = name_vp.ToString();
-                            kod_podr.Text = name_vp_code.ToString();
-                            // mr2.Text = docmr.ToString();
-                            str_vid.EditValue = str_vid_;
+                        }
+                        else
+                        {
+                            ddeath.DateTime = Convert.ToDateTime(ddeath_);
+                        }
 
 
+                        string dost_1 = dost_.ToString();
+                        fam.Text = fam_.ToString();
+                        im.Text = im_.ToString();
+                        ot.Text = ot_.ToString();
+                        dr.DateTime = Convert.ToDateTime(dr_);
+                        pol.SelectedIndex = Convert.ToInt32(w);
+                        mr2.Text = mr_.ToString();
+                        str_r.EditValue = birthoksm.ToString();
+                        gr.EditValue = coksm.ToString();
+                        enp.Text = enp_.ToString();
+
+                        srok_doverenosti.EditValue = srok_doverenosti_;
+
+                        if (datevidachi_.ToString() == "")
+                        {
+
+                        }
+                        else
+                        {
+                            //date_vidachi.DateTime = Convert.ToDateTime(datevidachi_);
+                            date_vidachi.EditValue = datevidachi_;
+                        }
+
+
+                        if (priznak_vidachi_.ToString() == "True")
+                        {
+                            priznak_vidachi.IsChecked = true;
+                        }
+                        else
+                        {
+                            priznak_vidachi.IsChecked = false;
+                        }
+
+                        snils.Text = ss.ToString();
+                        phone.Text = phone_.ToString();
+                        email.Text = email_.ToString();
+                        kat_zl.EditValue = kateg;
+
+                        dost1.EditValue = dost_1.Split(';');
+                        //dost1.SelectedItem= dost_1.Split(',').ToList();
+                        cel_vizita.EditValue = tip_op_.ToString();
+
+                        if (sppz_.ToString() == "")
+                        {
+
+                        }
+                        else
+                        {
+                            sp_pod_z.EditValue = Convert.ToInt32(sppz_);
+                        }
+
+                        if (dvisit_.ToString() == "")
+                        {
+
+                        }
+                        else if (dvisit_.ToString() == "01.01.2018 0:00:00")
+                        {
+                            d_obr.EditValue = DateTime.Now;
+                        }
+                        else
+                        {
+                            d_obr.EditValue = Convert.ToDateTime(dvisit_);
+                        }
+
+                        if (petition_.ToString() == "")
+                        {
+
+                        }
+                        else
+                        {
+                            petition.EditValue = Convert.ToBoolean(petition_);
+                        }
+
+                        pr_pod_z_polis.SelectedIndex = Convert.ToInt32(rpolis_.ToString() == "" ? 0 : rpolis_) - 1;
+                        form_polis.SelectedIndex = Convert.ToInt32(fpolis_.ToString() == "" ? -1 : fpolis_);
+                        pr_pod_z_smo.SelectedIndex = Convert.ToInt32(rsmo_.ToString() == "" ? 0 : rsmo_) - 1;
+
+                        if (_mo.ToString() == "")
+                        {
+
+                        }
+                        else
+                        {
+                            mo_cmb.EditValue = _mo.ToString();
+                        }
+
+                        if (_dstart.ToString() == "")
+                        {
+
+                        }
+                        else
+                        {
+                            date_mo.EditValue = Convert.ToDateTime(_dstart);
+                        }
+
+                        prev_fam.Text = fam2_.ToString();
+                        prev_im.Text = im2_.ToString();
+                        prev_ot.Text = ot2_.ToString();
+                        if (w2.ToString() == "")
+                        {
+
+                        }
+                        else
+                        {
+                            prev_pol.SelectedIndex = Convert.ToInt32(w2);
+                        }
+                        if (dr2_.ToString() == "")
+                        {
+
+                        }
+                        else
+                        {
+                            prev_dr.DateTime = Convert.ToDateTime(dr2_);
+                        }
+
+                        prev_mr.Text = mr2_.ToString();
+                        if (rpersonguid.ToString() == "00000000-0000-0000-0000-000000000000" || rpersonguid.ToString() == "")
+                        {
+
+                        }
+                        else
+                        {
+                            fam1.Text = fam_1.ToString();
+                            im1.Text = im_1.ToString();
+                            ot1.Text = ot_1.ToString();
+                            pol_pr.SelectedIndex = Convert.ToInt32(w1_ == DBNull.Value ? -1 : w1_);
+
+                            idguid = idguid_.ToString();
+                            if (dr_1.ToString() == "")
+                            {
+                                dr1.EditValue = "";
+                            }
+                            else
+                            {
+                                dr1.DateTime = Convert.ToDateTime(dr_1);
+                            }
+
+                            phone_p1.Text = phone_1.ToString();
+                            if (prelation.ToString() == "")
+                            {
+                                status_p2.SelectedIndex = -1;
+                            }
+                            else
+                            {
+                                status_p2.SelectedIndex = Convert.ToInt32(prelation);
+                            }
 
                         }
 
-                        reader.Close();
+                    }
+                    reader1.Close();
+                    con.Close();
+                }));
+                //});
+                //  t2.Start();
+                //  Thread t3 = new Thread(delegate ()
+                //  {
+                Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Background,
+                new Action(delegate ()
+                {
+                    var connectionString1 = Properties.Settings.Default.DocExchangeConnectionString;
+                    SqlConnection con = new SqlConnection(connectionString1);
+                    SqlCommand comm2 = new SqlCommand(@"select * from pol_documents where isnull(event_guid,PERSON_GUID)=(select isnull(event_guid,IDGUID) from pol_persons where id=@id) and main=1 and active=1", con);
+                    comm2.Parameters.AddWithValue("@id", Vars.IdP);
+                    con.Open();
+                    SqlDataReader reader = comm2.ExecuteReader();
 
-                        con.Close();
+                    while (reader.Read()) // построчно считываем данные
+                    {
+                        object doctype = reader["DOCTYPE"];
+                        object docser = reader["DOCSER"];
+                        object docnum = reader["DOCNUM"];
+                        object docdate = reader["DOCDATE"];
+                        object name_vp = reader["NAME_VP"];
+                        object name_vp_code = reader["NAME_VP_CODE"];
+                        object docmr = reader["DOCMR"];
+                        object str_vid_ = reader["OKSM"];
 
-                        SqlCommand comm16 = new SqlCommand(@"select * from pol_documents_old where 
+                        doc_type.EditValue = doctype;
+                        doc_ser.Text = docser.ToString();
+                        doc_num.Text = docnum.ToString();
+                        date_vid.DateTime = Convert.ToDateTime(docdate);
+                        kem_vid.Text = name_vp.ToString();
+                        kod_podr.Text = name_vp_code.ToString();
+                        //mr2.Text = docmr.ToString();
+                        str_vid.EditValue = str_vid_;
+
+
+
+                    }
+
+                    reader.Close();
+
+                    con.Close();
+
+                    SqlCommand comm16 = new SqlCommand(@"select * from pol_documents_old where 
                 event_guid=(select event_guid from pol_persons where id=@id)", con);
-                        comm16.Parameters.AddWithValue("@id", Vars.IdP);
-                        con.Open();
-                        SqlDataReader reader16 = comm16.ExecuteReader();
-                        if (reader16.HasRows == false)
-                        {
-                            doc_type1.EditValue = 14;
-                        }
-
-                        while (reader16.Read()) // построчно считываем данные
-                        {
-                            object doctype_1 = reader16["DOCTYPE"];
-                            object docser_1 = reader16["DOCSER"];
-                            object docnum_1 = reader16["DOCNUM"];
-                            object docdate_1 = reader16["DOCDATE"];
-                            object name_vp_1 = reader16["NAME_VP"];
-                            object name_vp_code_1 = reader16["NAME_VP_CODE"];
-                            object docmr_1 = reader16["DOCMR"];
-                            object str_vid_1 = reader16["OKSM"];
-                            object idguid_ = reader16["IDGUID"];
-
-
-                            doc_type1.EditValue = doctype_1;
-                            old_doc = 1;
-                            old_doc_guid = idguid_.ToString();
-
-
-                            doc_ser1.Text = docser_1.ToString();
-                            doc_num1.Text = docnum_1.ToString();
-
-                            date_vid2.DateTime = Convert.ToDateTime(docdate_1);
-
-
-                            kem_vid1.Text = name_vp_1.ToString();
-                            kod_podr1.Text = name_vp_code_1.ToString();
-                            prev_mr.Text = docmr_1.ToString();
-                            str_vid1.EditValue = str_vid_1;
-
-
-
-                        }
-
-                        reader16.Close();
-
-                        con.Close();
-
-
-                        SqlCommand comm4 = new SqlCommand(@"select * from pol_documents 
-where event_guid=(select event_guid from pol_persons where id=@id) and main=0 and active=1", con);
-                        comm4.Parameters.AddWithValue("@id", Vars.IdP);
-                        con.Open();
-                        SqlDataReader reader2 = comm4.ExecuteReader();
-
-                        while (reader2.Read()) // построчно считываем данные
-                        {
-                            object doctype = reader2["DOCTYPE"];
-                            object docser = reader2["DOCSER"];
-                            object docnum = reader2["DOCNUM"];
-                            object docdate = reader2["DOCDATE"];
-                            object docexp = reader2["DOCEXP"];
-                            object name_vp = reader2["NAME_VP"];
-                            object idguid_ = reader2["IDGUID"];
-
-
-                            ddtype.EditValue = doctype;
-                            ddser.Text = docser.ToString();
-                            ddnum.Text = docnum.ToString();
-                            dddate.DateTime = Convert.ToDateTime(docdate);
-                            docexp1.DateTime = Convert.ToDateTime(docexp);
-                            ddkemv.Text = name_vp.ToString();
-
-                            dop_doc = 1;
-                            dop_doc_guid = idguid_.ToString();
-
-                        }
-
-                        reader2.Close();
-
-                        con.Close();
-                        SqlCommand comm10 = new SqlCommand(@"select * from pol_documents where PERSON_GUID=(select RPERSON_GUID 
-from POL_EVENTS where IDGUID=(select event_guid from pol_persons where id=@id) and main=1)", con);
-                        comm10.Parameters.AddWithValue("@id", Vars.IdP);
-                        con.Open();
-                        SqlDataReader reader10 = comm10.ExecuteReader();
-
-                        while (reader10.Read()) // построчно считываем данные
-                        {
-                            object doctype = reader10["DOCTYPE"];
-                            object docser = reader10["DOCSER"];
-                            object docnum = reader10["DOCNUM"];
-                            object docdate = reader10["DOCDATE"];
-                            object name_vp = reader10["NAME_VP"];
-
-
-
-                            doctype1.EditValue = doctype;
-                            docser1.Text = docser.ToString();
-                            docnum1.Text = docnum.ToString();
-                            docdate1.DateTime = Convert.ToDateTime(docdate);
-
-
-
-
-                        }
-
-                        reader10.Close();
-
-                        con.Close();
-                    }));
-                    //});
-                    // t3.Start();
-
-                    // Thread t4 = new Thread(delegate ()
-                    // {
-                    Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Background,
-                    new Action(delegate ()
+                    comm16.Parameters.AddWithValue("@id", Vars.IdP);
+                    con.Open();
+                    SqlDataReader reader16 = comm16.ExecuteReader();
+                    if (reader16.HasRows == false)
                     {
-                        var connectionString1 = Properties.Settings.Default.DocExchangeConnectionString;
-                        SqlConnection con = new SqlConnection(connectionString1);
+                        doc_type1.EditValue = 14;
+                    }
 
-                        SqlCommand comm5 = new SqlCommand(@"select *from pol_addresses pa left join POL_RELATION_ADDR_PERS pr on pa.IDGUID=pr.ADDR_GUID 
+                    while (reader16.Read()) // построчно считываем данные
+                    {
+                        object doctype_1 = reader16["DOCTYPE"];
+                        object docser_1 = reader16["DOCSER"];
+                        object docnum_1 = reader16["DOCNUM"];
+                        object docdate_1 = reader16["DOCDATE"];
+                        object name_vp_1 = reader16["NAME_VP"];
+                        object name_vp_code_1 = reader16["NAME_VP_CODE"];
+                        object docmr_1 = reader16["DOCMR"];
+                        object str_vid_1 = reader16["OKSM"];
+                        object idguid_ = reader16["IDGUID"];
+
+
+                        doc_type1.EditValue = doctype_1;
+                        old_doc = 1;
+                        old_doc_guid = idguid_.ToString();
+
+
+                        doc_ser1.Text = docser_1.ToString();
+                        doc_num1.Text = docnum_1.ToString();
+
+                        date_vid2.DateTime = Convert.ToDateTime(docdate_1);
+
+
+                        kem_vid1.Text = name_vp_1.ToString();
+                        kod_podr1.Text = name_vp_code_1.ToString();
+                        prev_mr.Text = docmr_1.ToString();
+                        str_vid1.EditValue = str_vid_1;
+
+
+
+                    }
+
+                    reader16.Close();
+
+                    con.Close();
+
+
+                    SqlCommand comm4 = new SqlCommand(@"select * from pol_documents 
+where event_guid=(select event_guid from pol_persons where id=@id) and main=0 and active=1", con);
+                    comm4.Parameters.AddWithValue("@id", Vars.IdP);
+                    con.Open();
+                    SqlDataReader reader2 = comm4.ExecuteReader();
+
+                    while (reader2.Read()) // построчно считываем данные
+                    {
+                        object doctype = reader2["DOCTYPE"];
+                        object docser = reader2["DOCSER"];
+                        object docnum = reader2["DOCNUM"];
+                        object docdate = reader2["DOCDATE"];
+                        object docexp = reader2["DOCEXP"];
+                        object name_vp = reader2["NAME_VP"];
+                        object idguid_ = reader2["IDGUID"];
+
+
+                        ddtype.EditValue = doctype;
+                        ddser.Text = docser.ToString();
+                        ddnum.Text = docnum.ToString();
+                        dddate.DateTime = Convert.ToDateTime(docdate);
+                        docexp1.DateTime = Convert.ToDateTime(docexp);
+                        ddkemv.Text = name_vp.ToString();
+
+                        dop_doc = 1;
+                        dop_doc_guid = idguid_.ToString();
+
+                    }
+
+                    reader2.Close();
+
+                    con.Close();
+                    SqlCommand comm10 = new SqlCommand(@"select * from pol_documents where PERSON_GUID=(select RPERSON_GUID 
+from POL_EVENTS where IDGUID=(select event_guid from pol_persons where id=@id) and main=1)", con);
+                    comm10.Parameters.AddWithValue("@id", Vars.IdP);
+                    con.Open();
+                    SqlDataReader reader10 = comm10.ExecuteReader();
+
+                    while (reader10.Read()) // построчно считываем данные
+                    {
+                        object doctype = reader10["DOCTYPE"];
+                        object docser = reader10["DOCSER"];
+                        object docnum = reader10["DOCNUM"];
+                        object docdate = reader10["DOCDATE"];
+                        object name_vp = reader10["NAME_VP"];
+
+
+
+                        doctype1.EditValue = doctype;
+                        docser1.Text = docser.ToString();
+                        docnum1.Text = docnum.ToString();
+                        docdate1.DateTime = Convert.ToDateTime(docdate);
+
+
+
+
+                    }
+
+                    reader10.Close();
+
+                    con.Close();
+                }));
+                //});
+                // t3.Start();
+
+                // Thread t4 = new Thread(delegate ()
+                // {
+                Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Background,
+                new Action(delegate ()
+                {
+                    var connectionString1 = Properties.Settings.Default.DocExchangeConnectionString;
+                    SqlConnection con = new SqlConnection(connectionString1);
+
+                    SqlCommand comm5 = new SqlCommand(@"select *from pol_addresses pa left join POL_RELATION_ADDR_PERS pr on pa.IDGUID=pr.ADDR_GUID 
 where pr.event_guid=(select event_guid from pol_persons where id=@id) and pr.addres_g=1 ", con);
-                        comm5.Parameters.AddWithValue("@id", Vars.IdP);
-                        con.Open();
-                        SqlDataReader reader3 = comm5.ExecuteReader();
+                    comm5.Parameters.AddWithValue("@id", Vars.IdP);
+                    con.Open();
+                    SqlDataReader reader3 = comm5.ExecuteReader();
 
-                        while (reader3.Read()) // построчно считываем данные
+                    while (reader3.Read()) // построчно считываем данные
+                    {
+                        object obl = reader3["FIAS_L1"];
+                        object rn = reader3["FIAS_L3"];
+                        object town = reader3["FIAS_L4"];
+                        object np = reader3["FIAS_L6"];
+                        object street = reader3["FIAS_L7"];
+                        object dom_ = reader3["HOUSE_GUID"];
+                        object korp_ = reader3["KORP"];
+                        object str_ = reader3["EXT"];
+                        object kv_ = reader3["KV"];
+                        object d_reg = reader3["DREG"];
+                        object bomg = reader3["BOMG"];
+                        object addr_g_ = reader3["ADDRES_G"];
+                        object addr_p_ = reader3["ADDRES_P"];
+                        // object str = reader3["addrstr"];
+
+
+
+                        //fias.addrstr.Text = str.ToString();
+                        L1 = obl.ToString();
+                        L3 = rn.ToString();
+                        L4 = town.ToString();
+                        L6 = np.ToString();
+                        L7 = street.ToString();
+                        fias.reg.EditValue = obl;
+                        if (rn.ToString() == "00000000-0000-0000-0000-000000000000")
                         {
-                            object obl = reader3["FIAS_L1"];
-                            object rn = reader3["FIAS_L3"];
-                            object town = reader3["FIAS_L4"];
-                            object np = reader3["FIAS_L6"];
-                            object street = reader3["FIAS_L7"];
-                            object dom_ = reader3["HOUSE_GUID"];
-                            object korp_ = reader3["KORP"];
-                            object str_ = reader3["EXT"];
-                            object kv_ = reader3["KV"];
-                            object d_reg = reader3["DREG"];
-                            object bomg = reader3["BOMG"];
-                            object addr_g_ = reader3["ADDRES_G"];
-                            object addr_p_ = reader3["ADDRES_P"];
-                            // object str = reader3["addrstr"];
+                            fias.reg_rn.EditValue = null;
+                        }
+                        else
+                        {
+                            fias.reg_rn.EditValue = rn;
+                        }
+                        if (town.ToString() == "00000000-0000-0000-0000-000000000000")
+                        {
+                            fias.reg_town.EditValue = null;
+                        }
+                        else
+                        {
+                            fias.reg_town.EditValue = town;
+                        }
+                        //fias.reg_rn.EditValue = rn;
+                        //fias.reg_town.EditValue = town;
+                        if (np.ToString() == "00000000-0000-0000-0000-000000000000")
+                        {
+                            fias.reg_np.EditValue = null;
+
+                        }
+                        else
+                        {
+                            fias.reg_np.EditValue = np;
+                        }
+                        if (street.ToString() == "00000000-0000-0000-0000-000000000000")
+                        {
+                            fias.reg_ul.EditValue = null;
+
+                        }
+                        else
+                        {
+                            fias.reg_ul.EditValue = street;
+                        }
+
+                        fias.reg_dom.EditValue = dom_;
+                        if (fias.reg_dom.EditValue != null)
+                        {
+                            dstrkor = fias.reg_dom.Text.Replace(' ', ',').Split(',');
+                            domsplit = dstrkor[0].Replace("д.", "");
+                        }
+                        else
+                        {
+                            domsplit = "";
+                        }
+
+                        fias.reg_korp.Text = korp_.ToString();
+                        fias.reg_str.Text = str_.ToString();
+                        fias.reg_kv.Text = kv_.ToString();
+                        try
+                        {
+                            fias.bomj.IsChecked = Convert.ToBoolean(bomg);
+                        }
+                        catch
+                        {
+                            fias.bomj.IsChecked = Convert.ToBoolean(0);
+                            string mx = "Не удалось получить значение из базы!";
+                            string t = "Внимание!";
+                            int b = 1;
+                            Message me = new Message(mx, t, b);
+                            me.ShowDialog();
+                        }
+                        if (d_reg.ToString() == "")
+                        {
+
+                        }
+                        else
+                        {
+                            fias.reg_dr.EditValue = Convert.ToDateTime(d_reg);
+                        }
+                        if (Convert.ToBoolean(addr_g_) == true && Convert.ToBoolean(addr_p_) == true)
+                        {
+                            fias1.sovp_addr.IsChecked = true;
+                        }
+                        else
+                        {
+                            fias1.sovp_addr.IsChecked = false;
+                        }
 
 
 
-                            //fias.addrstr.Text = str.ToString();
-                            L1 = obl.ToString();
-                            L3 = rn.ToString();
-                            L4 = town.ToString();
-                            L6 = np.ToString();
-                            L7 = street.ToString();
-                            fias.reg.EditValue = obl;
+                    }
+                    reader3.Close();
+                    con.Close();
+                    if (fias.bomj.IsChecked == false)
+                    {
+                        SqlCommand comm6 = new SqlCommand(@"select *from pol_addresses pa left join POL_RELATION_ADDR_PERS pr on pa.IDGUID=pr.ADDR_GUID 
+where pr.event_guid=(select event_guid from pol_persons where id=@id) and pr.addres_p=1 ", con);
+                        comm6.Parameters.AddWithValue("@id", Vars.IdP);
+                        con.Open();
+                        SqlDataReader reader4 = comm6.ExecuteReader();
+
+                        while (reader4.Read()) // построчно считываем данные
+                        {
+                            object obl = reader4["FIAS_L1"];
+                            object rn = reader4["FIAS_L3"];
+                            object town = reader4["FIAS_L4"];
+                            object np = reader4["FIAS_L6"];
+                            object street = reader4["FIAS_L7"];
+                            object dom_ = reader4["HOUSE_GUID"];
+                            object korp_ = reader4["KORP"];
+                            object str_ = reader4["EXT"];
+                            object kv_ = reader4["KV"];
+                            object d_reg = reader4["DREG"];
+                            object bomg = reader4["BOMG"];
+                            //object str = reader4["addrstr"];
+
+                            //fias1.addrstr1.Text = str.ToString();
+                            L1_1 = obl.ToString();
+                            L3_1 = rn.ToString();
+                            L4_1 = town.ToString();
+                            L6_1 = np.ToString();
+                            L7_1 = street.ToString();
+                            fias1.reg1.EditValue = obl;
                             if (rn.ToString() == "00000000-0000-0000-0000-000000000000")
                             {
-                                fias.reg_rn.EditValue = null;
+                                fias1.reg_rn1.EditValue = null;
                             }
                             else
                             {
-                                fias.reg_rn.EditValue = rn;
+                                fias1.reg_rn1.EditValue = rn;
                             }
                             if (town.ToString() == "00000000-0000-0000-0000-000000000000")
                             {
-                                fias.reg_town.EditValue = null;
+                                fias1.reg_town1.EditValue = null;
                             }
                             else
                             {
-                                fias.reg_town.EditValue = town;
+                                fias1.reg_town1.EditValue = town;
                             }
                             //fias.reg_rn.EditValue = rn;
                             //fias.reg_town.EditValue = town;
                             if (np.ToString() == "00000000-0000-0000-0000-000000000000")
                             {
-                                fias.reg_np.EditValue = null;
+                                fias1.reg_np1.EditValue = null;
 
                             }
                             else
                             {
-                                fias.reg_np.EditValue = np;
+                                fias1.reg_np1.EditValue = np;
                             }
                             if (street.ToString() == "00000000-0000-0000-0000-000000000000")
                             {
-                                fias.reg_ul.EditValue = null;
+                                fias1.reg_ul1.EditValue = null;
 
                             }
                             else
                             {
-                                fias.reg_ul.EditValue = street;
+                                fias1.reg_ul1.EditValue = street;
                             }
+                            fias1.reg_dom1.EditValue = dom_;
 
-                            fias.reg_dom.EditValue = dom_;
-                            if (fias.reg_dom.EditValue != null)
+                            if (fias1.reg_dom1.EditValue != null)
                             {
-                                dstrkor = fias.reg_dom.Text.Replace(' ', ',').Split(',');
-                                domsplit = dstrkor[0].Replace("д.", "");
+                                dstrkor1 = fias1.reg_dom1.Text.Replace(' ', ',').Split(',');
+                                domsplit1 = dstrkor1[0].Replace("д.", "");
                             }
                             else
                             {
-                                domsplit = "";
+                                domsplit1 = "";
                             }
-
-                            fias.reg_korp.Text = korp_.ToString();
-                            fias.reg_str.Text = str_.ToString();
-                            fias.reg_kv.Text = kv_.ToString();
-                            try
-                            {
-                                fias.bomj.IsChecked = Convert.ToBoolean(bomg);
-                            }
-                            catch
-                            {
-                                fias.bomj.IsChecked = Convert.ToBoolean(0);
-                                string mx = "Не удалось получить значение из базы!";
-                                string t = "Внимание!";
-                                int b = 1;
-                                Message me = new Message(mx, t, b);
-                                me.ShowDialog();
-                            }
+                            fias1.reg_korp1.Text = korp_.ToString();
+                            fias1.reg_str1.Text = str_.ToString();
+                            fias1.reg_kv1.Text = kv_.ToString();
                             if (d_reg.ToString() == "")
                             {
 
                             }
                             else
                             {
-                                fias.reg_dr.EditValue = Convert.ToDateTime(d_reg);
-                            }
-                            if (Convert.ToBoolean(addr_g_) == true && Convert.ToBoolean(addr_p_) == true)
-                            {
-                                fias1.sovp_addr.IsChecked = true;
-                            }
-                            else
-                            {
-                                fias1.sovp_addr.IsChecked = false;
+                                fias1.reg_dr1.EditValue = Convert.ToDateTime(d_reg);
                             }
 
 
 
                         }
-                        reader3.Close();
+                        reader4.Close();
                         con.Close();
-                        if (fias.bomj.IsChecked == false)
+
+                        SqlCommand comm26 = new SqlCommand("select * from pol_addresses pa " +
+                          "left join POL_RELATION_ADDR_PERS pr on pa.IDGUID=pr.ADDR_GUID  " +
+                          "where pr.event_guid=(select event_guid from pol_persons where id=@id) and pr.addres_p=1", con);
+                        comm26.Parameters.AddWithValue("@id", Vars.IdP);
+                        con.Open();
+                        SqlDataReader reader14 = comm26.ExecuteReader();
+
+                        while (reader14.Read()) // построчно считываем данные
                         {
-                            SqlCommand comm6 = new SqlCommand(@"select *from pol_addresses pa left join POL_RELATION_ADDR_PERS pr on pa.IDGUID=pr.ADDR_GUID 
-where pr.event_guid=(select event_guid from pol_persons where id=@id) and pr.addres_p=1 ", con);
-                            comm6.Parameters.AddWithValue("@id", Vars.IdP);
-                            con.Open();
-                            SqlDataReader reader4 = comm6.ExecuteReader();
+                            object obl = reader14["FIAS_L1"];
+                            object rn = reader14["FIAS_L3"];
+                            object town = reader14["FIAS_L4"];
+                            object np = reader14["FIAS_L6"];
+                            object street = reader14["FIAS_L7"];
+                            object dom_ = reader14["HOUSE_GUID"];
+                            object korp_ = reader14["KORP"];
+                            object str_ = reader14["EXT"];
+                            object kv_ = reader14["KV"];
+                            object d_reg = reader14["DREG"];
+                            object bomg = reader14["BOMG"];
 
-                            while (reader4.Read()) // построчно считываем данные
+
+                            L1_1 = obl.ToString();
+                            L3_1 = rn.ToString();
+                            L4_1 = town.ToString();
+                            L6_1 = np.ToString();
+                            L7_1 = street.ToString();
+                            fias1.reg1.EditValue = obl;
+                            if (rn.ToString() == "00000000-0000-0000-0000-000000000000")
                             {
-                                object obl = reader4["FIAS_L1"];
-                                object rn = reader4["FIAS_L3"];
-                                object town = reader4["FIAS_L4"];
-                                object np = reader4["FIAS_L6"];
-                                object street = reader4["FIAS_L7"];
-                                object dom_ = reader4["HOUSE_GUID"];
-                                object korp_ = reader4["KORP"];
-                                object str_ = reader4["EXT"];
-                                object kv_ = reader4["KV"];
-                                object d_reg = reader4["DREG"];
-                                object bomg = reader4["BOMG"];
-                                //object str = reader4["addrstr"];
-
-                                //fias1.addrstr1.Text = str.ToString();
-                                L1_1 = obl.ToString();
-                                L3_1 = rn.ToString();
-                                L4_1 = town.ToString();
-                                L6_1 = np.ToString();
-                                L7_1 = street.ToString();
-                                fias1.reg1.EditValue = obl;
-                                if (rn.ToString() == "00000000-0000-0000-0000-000000000000")
-                                {
-                                    fias1.reg_rn1.EditValue = null;
-                                }
-                                else
-                                {
-                                    fias1.reg_rn1.EditValue = rn;
-                                }
-                                if (town.ToString() == "00000000-0000-0000-0000-000000000000")
-                                {
-                                    fias1.reg_town1.EditValue = null;
-                                }
-                                else
-                                {
-                                    fias1.reg_town1.EditValue = town;
-                                }
-                                //fias.reg_rn.EditValue = rn;
-                                //fias.reg_town.EditValue = town;
-                                if (np.ToString() == "00000000-0000-0000-0000-000000000000")
-                                {
-                                    fias1.reg_np1.EditValue = null;
-
-                                }
-                                else
-                                {
-                                    fias1.reg_np1.EditValue = np;
-                                }
-                                if (street.ToString() == "00000000-0000-0000-0000-000000000000")
-                                {
-                                    fias1.reg_ul1.EditValue = null;
-
-                                }
-                                else
-                                {
-                                    fias1.reg_ul1.EditValue = street;
-                                }
-                                fias1.reg_dom1.EditValue = dom_;
-
-                                if (fias1.reg_dom1.EditValue != null)
-                                {
-                                    dstrkor1 = fias1.reg_dom1.Text.Replace(' ', ',').Split(',');
-                                    domsplit1 = dstrkor1[0].Replace("д.", "");
-                                }
-                                else
-                                {
-                                    domsplit1 = "";
-                                }
-                                fias1.reg_korp1.Text = korp_.ToString();
-                                fias1.reg_str1.Text = str_.ToString();
-                                fias1.reg_kv1.Text = kv_.ToString();
-                                if (d_reg.ToString() == "")
-                                {
-
-                                }
-                                else
-                                {
-                                    fias1.reg_dr1.EditValue = Convert.ToDateTime(d_reg);
-                                }
-
-
-
-                            }
-                            reader4.Close();
-                            con.Close();
-
-                            SqlCommand comm26 = new SqlCommand("select * from pol_addresses pa " +
-                              "left join POL_RELATION_ADDR_PERS pr on pa.IDGUID=pr.ADDR_GUID  " +
-                              "where pr.event_guid=(select event_guid from pol_persons where id=@id) and pr.addres_p=1", con);
-                            comm26.Parameters.AddWithValue("@id", Vars.IdP);
-                            con.Open();
-                            SqlDataReader reader14 = comm26.ExecuteReader();
-
-                            while (reader14.Read()) // построчно считываем данные
-                            {
-                                object obl = reader14["FIAS_L1"];
-                                object rn = reader14["FIAS_L3"];
-                                object town = reader14["FIAS_L4"];
-                                object np = reader14["FIAS_L6"];
-                                object street = reader14["FIAS_L7"];
-                                object dom_ = reader14["HOUSE_GUID"];
-                                object korp_ = reader14["KORP"];
-                                object str_ = reader14["EXT"];
-                                object kv_ = reader14["KV"];
-                                object d_reg = reader14["DREG"];
-                                object bomg = reader14["BOMG"];
-
-
-                                L1_1 = obl.ToString();
-                                L3_1 = rn.ToString();
-                                L4_1 = town.ToString();
-                                L6_1 = np.ToString();
-                                L7_1 = street.ToString();
-                                fias1.reg1.EditValue = obl;
-                                if (rn.ToString() == "00000000-0000-0000-0000-000000000000")
-                                {
-                                    fias1.reg_rn1.EditValue = null;
-                                }
-                                else
-                                {
-                                    fias1.reg_rn1.EditValue = rn;
-                                }
-                                if (town.ToString() == "00000000-0000-0000-0000-000000000000")
-                                {
-                                    fias1.reg_town1.EditValue = null;
-                                }
-                                else
-                                {
-                                    fias1.reg_town1.EditValue = town;
-                                }
-                                //fias.reg_rn.EditValue = rn;
-                                //fias.reg_town.EditValue = town;
-                                if (np.ToString() == "00000000-0000-0000-0000-000000000000")
-                                {
-                                    fias1.reg_np1.EditValue = null;
-
-                                }
-                                else
-                                {
-                                    fias1.reg_np1.EditValue = np;
-                                }
-                                if (street.ToString() == "00000000-0000-0000-0000-000000000000")
-                                {
-                                    fias1.reg_ul1.EditValue = null;
-
-                                }
-                                else
-                                {
-                                    fias1.reg_ul1.EditValue = street;
-                                }
-                                fias1.reg_dom1.EditValue = dom_;
-
-                                if (fias1.reg_dom1.EditValue != null)
-                                {
-                                    dstrkor1 = fias1.reg_dom1.Text.Replace(' ', ',').Split(',');
-                                    domsplit1 = dstrkor1[0].Replace("д.", "");
-                                }
-                                else
-                                {
-                                    domsplit1 = "";
-                                }
-                                fias1.reg_korp1.Text = korp_.ToString();
-                                fias1.reg_str1.Text = str_.ToString();
-                                fias1.reg_kv1.Text = kv_.ToString();
-                                if (d_reg.ToString() == "")
-                                {
-
-                                }
-                                else
-                                {
-                                    fias1.reg_dr1.EditValue = Convert.ToDateTime(d_reg);
-                                }
-
-
-
-                            }
-                            reader14.Close();
-                            con.Close();
-                            if (Vars.Btn == "2")
-                            {
-                                this.Title = "Исправление ошибочных данных застрахованного лица";
+                                fias1.reg_rn1.EditValue = null;
                             }
                             else
                             {
-                                this.Title = "Создание нового события существующему ЗЛ";
+                                fias1.reg_rn1.EditValue = rn;
                             }
+                            if (town.ToString() == "00000000-0000-0000-0000-000000000000")
+                            {
+                                fias1.reg_town1.EditValue = null;
+                            }
+                            else
+                            {
+                                fias1.reg_town1.EditValue = town;
+                            }
+                            //fias.reg_rn.EditValue = rn;
+                            //fias.reg_town.EditValue = town;
+                            if (np.ToString() == "00000000-0000-0000-0000-000000000000")
+                            {
+                                fias1.reg_np1.EditValue = null;
+
+                            }
+                            else
+                            {
+                                fias1.reg_np1.EditValue = np;
+                            }
+                            if (street.ToString() == "00000000-0000-0000-0000-000000000000")
+                            {
+                                fias1.reg_ul1.EditValue = null;
+
+                            }
+                            else
+                            {
+                                fias1.reg_ul1.EditValue = street;
+                            }
+                            fias1.reg_dom1.EditValue = dom_;
+
+                            if (fias1.reg_dom1.EditValue != null)
+                            {
+                                dstrkor1 = fias1.reg_dom1.Text.Replace(' ', ',').Split(',');
+                                domsplit1 = dstrkor1[0].Replace("д.", "");
+                            }
+                            else
+                            {
+                                domsplit1 = "";
+                            }
+                            fias1.reg_korp1.Text = korp_.ToString();
+                            fias1.reg_str1.Text = str_.ToString();
+                            fias1.reg_kv1.Text = kv_.ToString();
+                            if (d_reg.ToString() == "")
+                            {
+
+                            }
+                            else
+                            {
+                                fias1.reg_dr1.EditValue = Convert.ToDateTime(d_reg);
+                            }
+
+
+
                         }
-                        if (Vars.CelVisit == "П010" || Vars.CelVisit == "П034" || Vars.CelVisit == "П035" || Vars.CelVisit == "П036" || Vars.CelVisit == "П061" || Vars.CelVisit == "П062" || Vars.CelVisit == "П063")
+                        reader14.Close();
+                        con.Close();
+                        if (Vars.Btn == "2")
                         {
-                            SqlCommand comm7;
-                            type_policy.EditValue = 2;
-                            if (Vars.Btn == "2")
-                            {
-                                comm7 = new SqlCommand("select * from pol_polises where event_guid=(select event_guid from POL_persons where id=@id)", con);
-                                comm7.Parameters.AddWithValue("@id", Vars.IdP);
-                            }
-                            else
-                            {
-                                comm7 = new SqlCommand("select * from pol_polises where id=(select min(id) from POL_POLISES where vpolis=2 and blank=1 and DBEG is null)", con);
-                                comm7.Parameters.AddWithValue("@id", Vars.IdP);
-
-                            }
-
-                            con.Open();
-                            SqlDataReader reader5 = comm7.ExecuteReader();
-
-                            while (reader5.Read()) // построчно считываем данные
-                            {
-                                object vpolis = reader5["VPOLIS"];
-                                object spolis = reader5["SPOLIS"];
-                                object npolis = reader5["NPOLIS"];
-                                object dbeg = reader5["DBEG"];
-                                object dend = reader5["DEND"];
-                                object dstop = reader5["DSTOP"];
-                                object dout_ = reader5["DOUT"];
-                                object drecieved = reader5["DRECEIVED"];
-                                object blank = reader5["BLANK"];
-
-
-                                try
-                                {
-                                    ser_blank.Text = spolis.ToString();
-                                    num_blank.Text = npolis.ToString();
-                                    sblank = spolis.ToString();
-                                    spolis_ = spolis.ToString();
-                                }
-                                catch
-                                {
-                                    MessageBox.Show("Ошибка чтения серии или номера бланка! Попробуйте открыть ЗЛ снова!", "Внимание!", MessageBoxButton.OK, MessageBoxImage.Warning);
-                                }
-
-                                if (Vars.Btn == "2")
-                                {
-                                    type_policy.EditValue = Convert.ToInt32(vpolis);
-                                    date_vid1.EditValue = Convert.ToDateTime(dbeg);
-                                    date_poluch.EditValue = Convert.ToDateTime(dbeg);
-                                    if (dstop == DBNull.Value)
-                                    {
-                                        fakt_prekr.EditValue = null;
-                                    }
-                                    else
-                                    {
-                                        fakt_prekr.EditValue = Convert.ToDateTime(dstop);
-                                    }
-
-                                }
-                                else
-                                {
-                                    type_policy.EditValue = 2;
-                                    date_vid1.EditValue = DateTime.Today;
-                                    date_poluch.EditValue = date_vid1.DateTime;
-                                }
-
-
-
-                                if (Convert.ToBoolean(blank) == true)
-                                {
-                                    pustoy.IsChecked = true;
-                                }
-                                else
-                                {
-                                    pustoy.IsChecked = false;
-                                }
-
-
-
-                            }
-                            reader5.Close();
-                            con.Close();
-
+                            this.Title = "Исправление ошибочных данных застрахованного лица";
                         }
                         else
                         {
-                            type_policy.EditValue = 3;
-                            date_vid1.EditValue = null;
-                            date_poluch.EditValue = null;
-                            SqlCommand comm7 = new SqlCommand("select * from pol_polises  where event_guid=(select event_guid from pol_persons where id=@id)", con);
+                            this.Title = "Создание нового события существующему ЗЛ";
+                        }
+                    }
+                    if (Vars.CelVisit == "П010" || Vars.CelVisit == "П034" || Vars.CelVisit == "П035" || Vars.CelVisit == "П036" || Vars.CelVisit == "П061" || Vars.CelVisit == "П062" || Vars.CelVisit == "П063")
+                    {
+                        SqlCommand comm7;
+                        type_policy.EditValue = 2;
+                        if (Vars.Btn == "2")
+                        {
+                            comm7 = new SqlCommand("select * from pol_polises where event_guid=(select event_guid from POL_persons where id=@id)", con);
                             comm7.Parameters.AddWithValue("@id", Vars.IdP);
-                            con.Open();
-                            SqlDataReader reader5 = comm7.ExecuteReader();
+                        }
+                        else
+                        {
+                            comm7 = new SqlCommand("select * from pol_polises where id=(select min(id) from POL_POLISES where vpolis=2 and blank=1 and DBEG is null)", con);
+                            comm7.Parameters.AddWithValue("@id", Vars.IdP);
 
-                            while (reader5.Read()) // построчно считываем данные
+                        }
+
+                        con.Open();
+                        SqlDataReader reader5 = comm7.ExecuteReader();
+
+                        while (reader5.Read()) // построчно считываем данные
+                        {
+                            object vpolis = reader5["VPOLIS"];
+                            object spolis = reader5["SPOLIS"];
+                            object npolis = reader5["NPOLIS"];
+                            object dbeg = reader5["DBEG"];
+                            object dend = reader5["DEND"];
+                            object dstop = reader5["DSTOP"];
+                            object dout_ = reader5["DOUT"];
+                            object drecieved = reader5["DRECEIVED"];
+                            object blank = reader5["BLANK"];
+
+
+                            try
                             {
-                                object vpolis = reader5["VPOLIS"];
-                                object spolis = reader5["SPOLIS"];
-                                object npolis = reader5["NPOLIS"];
-                                object dbeg = reader5["DBEG"];
-                                object dend = reader5["DEND"];
-                                object dstop = reader5["DSTOP"];
-                                object dout_ = reader5["DOUT"];
-                                object blank = reader5["BLANK"];
-                                object dreceived = reader5["DRECEIVED"];
-
-
-
-
-                                type_policy.EditValue = Convert.ToInt32(vpolis);
                                 ser_blank.Text = spolis.ToString();
                                 num_blank.Text = npolis.ToString();
+                                sblank = spolis.ToString();
+                                spolis_ = spolis.ToString();
+                            }
+                            catch
+                            {
+                                MessageBox.Show("Ошибка чтения серии или номера бланка! Попробуйте открыть ЗЛ снова!", "Внимание!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            }
 
+                            if (Vars.Btn == "2")
+                            {
+                                type_policy.EditValue = Convert.ToInt32(vpolis);
                                 date_vid1.EditValue = Convert.ToDateTime(dbeg);
-                                if (dend == DBNull.Value)
-                                {
-                                    date_end.EditValue = null;
-                                }
-                                else
-                                {
-                                    date_end.EditValue = Convert.ToDateTime(dend);
-                                }
-
+                                date_poluch.EditValue = Convert.ToDateTime(dbeg);
                                 if (dstop == DBNull.Value)
                                 {
                                     fakt_prekr.EditValue = null;
@@ -4709,164 +4575,237 @@ where pr.event_guid=(select event_guid from pol_persons where id=@id) and pr.add
                                     fakt_prekr.EditValue = Convert.ToDateTime(dstop);
                                 }
 
-                                if (dreceived == DBNull.Value)
-                                {
-                                    date_vid.EditValue = null;
-                                }
-                                else
-                                {
-                                    date_poluch.EditValue = Convert.ToDateTime(dreceived);
-                                }
-                                if (dout_ == DBNull.Value)
-                                {
-                                    dout.EditValue = null;
-                                }
-                                else
-                                {
-                                    dout.EditValue = Convert.ToDateTime(dout_);
-                                }
-
-
-                                if (Convert.ToBoolean(blank) == true)
-                                {
-                                    pustoy.IsChecked = true;
-                                }
-                                else
-                                {
-                                    pustoy.IsChecked = false;
-                                }
-
-
-
                             }
-                            reader5.Close();
-                            con.Close();
+                            else
+                            {
+                                type_policy.EditValue = 2;
+                                date_vid1.EditValue = DateTime.Today;
+                                date_poluch.EditValue = date_vid1.DateTime;
+                            }
+
+
+
+                            if (Convert.ToBoolean(blank) == true)
+                            {
+                                pustoy.IsChecked = true;
+                            }
+                            else
+                            {
+                                pustoy.IsChecked = false;
+                            }
+
+
 
                         }
-                        SqlCommand comm8 = new SqlCommand(@"select *from pol_addresses old_g where 
-event_guid=(select event_guid from pol_persons where id=@id)", con);
-                        comm8.Parameters.AddWithValue("@id", Vars.IdP);
-                        con.Open();
-                        SqlDataReader reader8 = comm8.ExecuteReader();
-
-                        while (reader8.Read()) // построчно считываем данные
-                        {
-                            object adres_ = reader8["Old_G"];
-
-                            fias.adres.Text = adres_.ToString();
-                        }
-                        reader8.Close();
+                        reader5.Close();
                         con.Close();
-                        //Binding bind = new Binding();
-                        //bind.Source = towntxt;
-                        //bind.Path = new PropertyPath("Text");
-                        //bind.Mode = BindingMode.TwoWay;
-                        //fias.reg_town.SetBinding(ComboBoxEdit.DataContextProperty, bind);
-                        //if (kat_zl.EditValue != "")
-                        //{
-                        //    kat_zl.SelectedIndex = Convert.ToInt32(kat_zl.EditValue) - 1;
-                        //}
-                        //else
-                        //{
-                        //    kat_zl.SelectedIndex = -1;
-                        //}
-                        Vars.NewCelViz = 0;
-                    }));
 
+                    }
+                    else
+                    {
+                        type_policy.EditValue = 3;
+                        date_vid1.EditValue = null;
+                        date_poluch.EditValue = null;
+                        SqlCommand comm7 = new SqlCommand("select * from pol_polises  where event_guid=(select event_guid from pol_persons where id=@id)", con);
+                        comm7.Parameters.AddWithValue("@id", Vars.IdP);
+                        con.Open();
+                        SqlDataReader reader5 = comm7.ExecuteReader();
 
-                    //});
-                    // t4.Start();
-                }
-                else
-                {
-                    InsMethods.PersData_Default(this);
-                }
-
-                //           Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Background,
-                //           new Action(delegate ()
-                //           {
-
-                //                   //Insurance.DocExchangeDataSet docExchangeDataSet = ((Insurance.DocExchangeDataSet)(this.FindResource("docExchangeDataSet")));
-                //                   //    // Загрузить данные в таблицу POL_PERSONS. Можно изменить этот код как требуется.
-                //                   //    Insurance.DocExchangeDataSetTableAdapters.POL_PERSONSTableAdapter docExchangeDataSetPOL_PERSONSTableAdapter = new Insurance.DocExchangeDataSetTableAdapters.POL_PERSONSTableAdapter();
-                //                   //    docExchangeDataSetPOL_PERSONSTableAdapter.Fill(docExchangeDataSet.POL_PERSONS);
-                //                   //    System.Windows.Data.CollectionViewSource pOL_PERSONSViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("pOL_PERSONSViewSource")));
-                //                   //    pOL_PERSONSViewSource.View.MoveCurrentToFirst();
-                //                   //    pers_grid_2.Columns[1].Visible = false;
-                //                   //    pers_grid_2.Columns[2].Visible = false;
-                //                   //    pers_grid_2.Columns[3].Visible = false;
-                //                   //    pers_grid_2.Columns[4].Visible = false;
-                //                   //    pers_grid_2.View.FocusedRowHandle = -1;
-
-
-                //               list0.Add("1 Родитель");
-                //               list0.Add("2 Опекун");
-                //               list0.Add("3 Представитель");
-                //               status_p2.ItemsSource = list0;
-
-
-                //               //form_polis.SelectedIndex = 1;
-
-                //               list4.Add(new Dost { ID = "1", NameWithID = "1 Отсутствует отчество" });
-                //               list4.Add(new Dost { ID = "2", NameWithID = "2 Отсутствует фамилия" });
-                //               list4.Add(new Dost { ID = "3", NameWithID = "3 Отсутствует имя" });
-                //               list4.Add(new Dost { ID = "4", NameWithID = "4 Известен только месяц и год даты рождения" });
-                //               list4.Add(new Dost { ID = "5", NameWithID = "5 Известен только год даты рождения" });
-                //               list4.Add(new Dost { ID = "6", NameWithID = "6 Дата рождения не соответствует календарю" });
-
-                //               this.dost1.ItemsSource = list4;
-
-
-                //               pers_grid_2.View.FocusedRowHandle = -1;
-                //               pers_grid_2.SelectedItem = -1;
+                        while (reader5.Read()) // построчно считываем данные
+                        {
+                            object vpolis = reader5["VPOLIS"];
+                            object spolis = reader5["SPOLIS"];
+                            object npolis = reader5["NPOLIS"];
+                            object dbeg = reader5["DBEG"];
+                            object dend = reader5["DEND"];
+                            object dstop = reader5["DSTOP"];
+                            object dout_ = reader5["DOUT"];
+                            object blank = reader5["BLANK"];
+                            object dreceived = reader5["DRECEIVED"];
 
 
 
 
-                //               var molist =
-                //                       MyReader.MySelect<F003>(
-                //                           $@"
-                //           SELECT mcod,namewithid from f003
-                //order by mcod", Properties.Settings.Default.DocExchangeConnectionString);
-                //               mo_cmb.DataContext = molist;
+                            type_policy.EditValue = Convert.ToInt32(vpolis);
+                            ser_blank.Text = spolis.ToString();
+                            num_blank.Text = npolis.ToString();
 
-                //               pol.DataContext = MyReader.MySelect<V005>(@"select IDPOL,NameWithID from SPR_79_V005", Properties.Settings.Default.DocExchangeConnectionString);
-                //               pol_pr.DataContext = MyReader.MySelect<V005>(@"select IDPOL,NameWithID from SPR_79_V005", Properties.Settings.Default.DocExchangeConnectionString);
-                //               doc_type.DataContext = MyReader.MySelect<F011>(@"select ID,NameWithID from SPR_79_F011", Properties.Settings.Default.DocExchangeConnectionString);
-                //               doctype1.DataContext = MyReader.MySelect<F011>(@"select ID,NameWithID from SPR_79_F011", Properties.Settings.Default.DocExchangeConnectionString);
-                //               doc_type1.DataContext = MyReader.MySelect<F011>(@"select ID,NameWithID from SPR_79_F011", Properties.Settings.Default.DocExchangeConnectionString);
-                //               ddtype.DataContext = MyReader.MySelect<F011>(@"select ID,NameWithID from SPR_79_F011", Properties.Settings.Default.DocExchangeConnectionString);
-                //               str_vid.DataContext = MyReader.MySelect<OKSM>(@"select ID,CAPTION from SPR_79_OKSM", Properties.Settings.Default.DocExchangeConnectionString);
-                //               str_vid1.DataContext = MyReader.MySelect<OKSM>(@"select ID,CAPTION from SPR_79_OKSM", Properties.Settings.Default.DocExchangeConnectionString);
-                //               str_r.DataContext = MyReader.MySelect<OKSM>(@"select ID,CAPTION from SPR_79_OKSM", Properties.Settings.Default.DocExchangeConnectionString);
-                //               gr.DataContext = MyReader.MySelect<OKSM>(@"select ID,CAPTION from SPR_79_OKSM", Properties.Settings.Default.DocExchangeConnectionString);
-                //               kat_zl.DataContext = MyReader.MySelect<V013>(@"select IDKAT,NameWithID from V013", Properties.Settings.Default.DocExchangeConnectionString);
-                //               type_policy.DataContext = MyReader.MySelect<F008>(@"select ID,NameWithID from SPR_79_F008", Properties.Settings.Default.DocExchangeConnectionString);
-                //               prev_pol.DataContext = MyReader.MySelect<V005>(@"select IDPOL,NameWithID from SPR_79_V005", Properties.Settings.Default.DocExchangeConnectionString);
-                //                   //kem_vid.DataContext = MyReader.MySelect<NAMEVP>(@"select distinct name_vp from pol_documents order by name_vp",connectionString);
-                //                   // LoadingDecorator1.IsSplashScreenShown = false;
-                //               fam.DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_fam", Properties.Settings.Default.DocExchangeConnectionString);
-                //               im.DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_im", Properties.Settings.Default.DocExchangeConnectionString);
-                //               ot.DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_ot", Properties.Settings.Default.DocExchangeConnectionString);
-                //               kem_vid.DataContext = MyReader.MySelect<NAME_VP>(@"select id,name from spr_namevp", Properties.Settings.Default.DocExchangeConnectionString);
-                //               fam1.DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_fam", Properties.Settings.Default.DocExchangeConnectionString);
-                //               im1.DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_im", Properties.Settings.Default.DocExchangeConnectionString);
-                //               ot1.DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_ot", Properties.Settings.Default.DocExchangeConnectionString);
-                //               prev_fam.DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_fam", Properties.Settings.Default.DocExchangeConnectionString);
-                //               prev_im.DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_im", Properties.Settings.Default.DocExchangeConnectionString);
-                //               prev_ot.DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_ot", Properties.Settings.Default.DocExchangeConnectionString);
+                            date_vid1.EditValue = Convert.ToDateTime(dbeg);
+                            if (dend == DBNull.Value)
+                            {
+                                date_end.EditValue = null;
+                            }
+                            else
+                            {
+                                date_end.EditValue = Convert.ToDateTime(dend);
+                            }
 
-                //               Cursor = Cursors.Arrow;
-                //           }));
-                //Thread t1 = new Thread(delegate ()
-                //{
+                            if (dstop == DBNull.Value)
+                            {
+                                fakt_prekr.EditValue = null;
+                            }
+                            else
+                            {
+                                fakt_prekr.EditValue = Convert.ToDateTime(dstop);
+                            }
+
+                            if (dreceived == DBNull.Value)
+                            {
+                                date_vid.EditValue = null;
+                            }
+                            else
+                            {
+                                date_poluch.EditValue = Convert.ToDateTime(dreceived);
+                            }
+                            if (dout_ == DBNull.Value)
+                            {
+                                dout.EditValue = null;
+                            }
+                            else
+                            {
+                                dout.EditValue = Convert.ToDateTime(dout_);
+                            }
 
 
-                //restore_Layout();
-                //MessageBox.Show(spolis_+" "+(Vars.IdP ?? "111").ToString());
+                            if (Convert.ToBoolean(blank) == true)
+                            {
+                                pustoy.IsChecked = true;
+                            }
+                            else
+                            {
+                                pustoy.IsChecked = false;
+                            }
 
-            
+
+
+                        }
+                        reader5.Close();
+                        con.Close();
+
+                    }
+                    SqlCommand comm8 = new SqlCommand(@"select *from pol_addresses old_g where 
+event_guid=(select event_guid from pol_persons where id=@id)", con);
+                    comm8.Parameters.AddWithValue("@id", Vars.IdP);
+                    con.Open();
+                    SqlDataReader reader8 = comm8.ExecuteReader();
+
+                    while (reader8.Read()) // построчно считываем данные
+                    {
+                        object adres_ = reader8["Old_G"];
+
+                        fias.adres.Text = adres_.ToString();
+                    }
+                    reader8.Close();
+                    con.Close();
+                    //Binding bind = new Binding();
+                    //bind.Source = towntxt;
+                    //bind.Path = new PropertyPath("Text");
+                    //bind.Mode = BindingMode.TwoWay;
+                    //fias.reg_town.SetBinding(ComboBoxEdit.DataContextProperty, bind);
+                    //if (kat_zl.EditValue != "")
+                    //{
+                    //    kat_zl.SelectedIndex = Convert.ToInt32(kat_zl.EditValue) - 1;
+                    //}
+                    //else
+                    //{
+                    //    kat_zl.SelectedIndex = -1;
+                    //}
+                    Vars.NewCelViz = 0;
+                }));
+
+
+                //});
+                // t4.Start();
+            }
+            else
+            {
+                InsMethods.PersData_Default(this);
+            }
+
+            //           Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Background,
+            //           new Action(delegate ()
+            //           {
+
+            //                   //Insurance.DocExchangeDataSet docExchangeDataSet = ((Insurance.DocExchangeDataSet)(this.FindResource("docExchangeDataSet")));
+            //                   //    // Загрузить данные в таблицу POL_PERSONS. Можно изменить этот код как требуется.
+            //                   //    Insurance.DocExchangeDataSetTableAdapters.POL_PERSONSTableAdapter docExchangeDataSetPOL_PERSONSTableAdapter = new Insurance.DocExchangeDataSetTableAdapters.POL_PERSONSTableAdapter();
+            //                   //    docExchangeDataSetPOL_PERSONSTableAdapter.Fill(docExchangeDataSet.POL_PERSONS);
+            //                   //    System.Windows.Data.CollectionViewSource pOL_PERSONSViewSource = ((System.Windows.Data.CollectionViewSource)(this.FindResource("pOL_PERSONSViewSource")));
+            //                   //    pOL_PERSONSViewSource.View.MoveCurrentToFirst();
+            //                   //    pers_grid_2.Columns[1].Visible = false;
+            //                   //    pers_grid_2.Columns[2].Visible = false;
+            //                   //    pers_grid_2.Columns[3].Visible = false;
+            //                   //    pers_grid_2.Columns[4].Visible = false;
+            //                   //    pers_grid_2.View.FocusedRowHandle = -1;
+
+
+            //               list0.Add("1 Родитель");
+            //               list0.Add("2 Опекун");
+            //               list0.Add("3 Представитель");
+            //               status_p2.ItemsSource = list0;
+
+
+            //               //form_polis.SelectedIndex = 1;
+
+            //               list4.Add(new Dost { ID = "1", NameWithID = "1 Отсутствует отчество" });
+            //               list4.Add(new Dost { ID = "2", NameWithID = "2 Отсутствует фамилия" });
+            //               list4.Add(new Dost { ID = "3", NameWithID = "3 Отсутствует имя" });
+            //               list4.Add(new Dost { ID = "4", NameWithID = "4 Известен только месяц и год даты рождения" });
+            //               list4.Add(new Dost { ID = "5", NameWithID = "5 Известен только год даты рождения" });
+            //               list4.Add(new Dost { ID = "6", NameWithID = "6 Дата рождения не соответствует календарю" });
+
+            //               this.dost1.ItemsSource = list4;
+
+
+            //               pers_grid_2.View.FocusedRowHandle = -1;
+            //               pers_grid_2.SelectedItem = -1;
+
+
+
+
+            //               var molist =
+            //                       MyReader.MySelect<F003>(
+            //                           $@"
+            //           SELECT mcod,namewithid from f003
+            //order by mcod", Properties.Settings.Default.DocExchangeConnectionString);
+            //               mo_cmb.DataContext = molist;
+
+            //               pol.DataContext = MyReader.MySelect<V005>(@"select IDPOL,NameWithID from SPR_79_V005", Properties.Settings.Default.DocExchangeConnectionString);
+            //               pol_pr.DataContext = MyReader.MySelect<V005>(@"select IDPOL,NameWithID from SPR_79_V005", Properties.Settings.Default.DocExchangeConnectionString);
+            //               doc_type.DataContext = MyReader.MySelect<F011>(@"select ID,NameWithID from SPR_79_F011", Properties.Settings.Default.DocExchangeConnectionString);
+            //               doctype1.DataContext = MyReader.MySelect<F011>(@"select ID,NameWithID from SPR_79_F011", Properties.Settings.Default.DocExchangeConnectionString);
+            //               doc_type1.DataContext = MyReader.MySelect<F011>(@"select ID,NameWithID from SPR_79_F011", Properties.Settings.Default.DocExchangeConnectionString);
+            //               ddtype.DataContext = MyReader.MySelect<F011>(@"select ID,NameWithID from SPR_79_F011", Properties.Settings.Default.DocExchangeConnectionString);
+            //               str_vid.DataContext = MyReader.MySelect<OKSM>(@"select ID,CAPTION from SPR_79_OKSM", Properties.Settings.Default.DocExchangeConnectionString);
+            //               str_vid1.DataContext = MyReader.MySelect<OKSM>(@"select ID,CAPTION from SPR_79_OKSM", Properties.Settings.Default.DocExchangeConnectionString);
+            //               str_r.DataContext = MyReader.MySelect<OKSM>(@"select ID,CAPTION from SPR_79_OKSM", Properties.Settings.Default.DocExchangeConnectionString);
+            //               gr.DataContext = MyReader.MySelect<OKSM>(@"select ID,CAPTION from SPR_79_OKSM", Properties.Settings.Default.DocExchangeConnectionString);
+            //               kat_zl.DataContext = MyReader.MySelect<V013>(@"select IDKAT,NameWithID from V013", Properties.Settings.Default.DocExchangeConnectionString);
+            //               type_policy.DataContext = MyReader.MySelect<F008>(@"select ID,NameWithID from SPR_79_F008", Properties.Settings.Default.DocExchangeConnectionString);
+            //               prev_pol.DataContext = MyReader.MySelect<V005>(@"select IDPOL,NameWithID from SPR_79_V005", Properties.Settings.Default.DocExchangeConnectionString);
+            //                   //kem_vid.DataContext = MyReader.MySelect<NAMEVP>(@"select distinct name_vp from pol_documents order by name_vp",connectionString);
+            //                   // LoadingDecorator1.IsSplashScreenShown = false;
+            //               fam.DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_fam", Properties.Settings.Default.DocExchangeConnectionString);
+            //               im.DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_im", Properties.Settings.Default.DocExchangeConnectionString);
+            //               ot.DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_ot", Properties.Settings.Default.DocExchangeConnectionString);
+            //               kem_vid.DataContext = MyReader.MySelect<NAME_VP>(@"select id,name from spr_namevp", Properties.Settings.Default.DocExchangeConnectionString);
+            //               fam1.DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_fam", Properties.Settings.Default.DocExchangeConnectionString);
+            //               im1.DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_im", Properties.Settings.Default.DocExchangeConnectionString);
+            //               ot1.DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_ot", Properties.Settings.Default.DocExchangeConnectionString);
+            //               prev_fam.DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_fam", Properties.Settings.Default.DocExchangeConnectionString);
+            //               prev_im.DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_im", Properties.Settings.Default.DocExchangeConnectionString);
+            //               prev_ot.DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_ot", Properties.Settings.Default.DocExchangeConnectionString);
+
+            //               Cursor = Cursors.Arrow;
+            //           }));
+            //Thread t1 = new Thread(delegate ()
+            //{
+
+
+            //restore_Layout();
+            //MessageBox.Show(spolis_+" "+(Vars.IdP ?? "111").ToString());
         }
+
 
         public string sblank;
         public int rper_load = 0;
@@ -8989,6 +8928,110 @@ join POL_POLISES pp on p.EVENT_GUID = pp.EVENT_GUID", con);
                 return;
             }
             
+        }
+
+        private void Load_flk_zl_ItemClick(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
+        {
+            OpenFileDialog OPF = new OpenFileDialog();
+
+            OPF.Multiselect = true;
+            bool res = OPF.ShowDialog().Value;
+            string[] files = OPF.FileNames;
+            string[] shfiles = OPF.SafeFileNames;
+            int ev_id = (int)pers_grid.GetCellValue(pers_grid.GetSelectedRowHandles()[0],"EVENT_ID");
+            int y = 0;
+            if (res == true)
+            {
+                foreach (string file in files)
+                {
+                    FileInfo fi = new FileInfo(file);
+
+                    XmlDocument xDoc = new XmlDocument();
+                    xDoc.Load(file);
+                    string rfile = shfiles[y].Replace("P", "i");
+                    if (rfile.Length > 22)
+                    {
+                        rfile = rfile.Substring(0, 18) + ".xml";
+                    }
+
+
+                    //var test = xDoc.Descendants("Companies").Elements("Company").Select(r => r.Value).ToArray();
+                    // получим корневой элемент
+                    XmlElement xRoot = xDoc.DocumentElement;
+                    if (xRoot.Attributes.GetNamedItem("COMMENT") != null)
+                    {
+                        var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
+                        SqlConnection con = new SqlConnection(connectionString);
+                        SqlCommand com = new SqlCommand($@"update pol_persons 
+ set comment='{xRoot.Attributes.GetNamedItem("COMMENT").Value.Replace((char)39, (char)32)}' 
+ where event_guid in (select event_guid from pol_events where id='{ev_id}') 
+ update pol_events set unload=0  where id='{ev_id}')
+ update pol_unload_history set comment ='{xRoot.Attributes.GetNamedItem("COMMENT").Value.Replace((char)39, (char)32)}'
+ where  fname='{rfile}' and event_guid in(select event_guid from pol_events where id='{ev_id}')", con);
+                        con.Open();
+                        com.ExecuteNonQuery();
+                        con.Close();
+                    }
+                    else
+                    {
+                        var xx = xDoc.ChildNodes[1].ChildNodes[0].Attributes.GetNamedItem("N_REC").Value.ToString();
+                        if (xx.Length < 36)
+                        {
+                            goto forward;
+                        }
+                        var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
+                        SqlConnection con = new SqlConnection(connectionString);
+                        SqlCommand com = new SqlCommand($@"exec [Load_flk_zl] @xml = '{xDoc.LastChild.OuterXml.Replace((char)39, (char)32)}', @fname='{rfile}', @ev_id={ev_id}", con);
+                        con.Open();
+                        com.ExecuteNonQuery();
+                        con.Close();
+
+                    }
+                forward:
+                    y = y + 1;
+                }
+                string m = "ЕНП и ошибки ФЛК успешно загружены";
+                string t = "Сообщение";
+                int b = 1;
+                Message me = new Message(m, t, b);
+                me.ShowDialog();
+
+
+            }
+        }
+
+        private void Load_OK_ItemClick(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
+        {
+            
+            string sg_rows_zl = " ";
+            int[] rt = pers_grid.GetSelectedRowHandles();
+            for (int i = 0; i < rt.Count(); i++)
+            {                
+                var ddd_zl = pers_grid.GetCellValue(rt[i], "ID");
+                var sgr_zl = sg_rows_zl.Insert(sg_rows_zl.Length, ddd_zl.ToString()) + ",";
+                sg_rows_zl = sgr_zl;
+            }
+            sg_rows_zl = sg_rows_zl.Substring(0, sg_rows_zl.Length - 1);
+            string m1 = "Вы действительно хотите проставить комментарий 'ОК!' выбрвнным ЗЛ?";
+            string t1 = "Внимание!";
+            int b1 = 2;
+            Message me1 = new Message(m1, t1, b1);
+            me1.ShowDialog();
+
+            if (Vars.mes_res == 1)
+            {
+                var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
+                SqlConnection con = new SqlConnection(connectionString);
+                SqlCommand comm = new SqlCommand($@"update pol_persons set comment='ОК!' where id in({sg_rows_zl})
+                update pol_events set unload=1 where idguid in(select event_guid from pol_persons where id in({sg_rows_zl}))", con);
+                con.Open();
+                comm.ExecuteNonQuery();
+                con.Close();
+            }
+            else
+            {
+                return;
+            }
         }
 
 
