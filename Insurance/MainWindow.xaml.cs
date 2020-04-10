@@ -5377,35 +5377,90 @@ where e.person_guid='{rper}' and main=1", con);
 
         private void ser_blank_EditValueChanged(object sender, EditValueChangedEventArgs e)
         {
-            int h_add = Get_holidays(date_vid1.DateTime, date_vid1.DateTime.AddBusinessDays(44));
-            //try
-            //{
+            DateTime ddd = HOLIDAYS.AddWorkDays(date_vid1.DateTime);
 
-            if (date_end.EditValue == null && type_policy.EditValue.ToString() == "2")
+            //List<DateTime> h = HOLIDAYS.H_List;
+            //int h_add = Get_holidays(date_vid1.DateTime, date_vid1.DateTime.AddBusinessDays(44));
+            //h_add = Get_holidays(date_vid1.DateTime, date_vid1.DateTime.AddBusinessDays(44+h_add));
+            DateTime dte = new DateTime(DateTime.Today.Year, 12, 31);
+            if (type_policy.EditValue.ToString() != "2")
             {
-                date_end.DateTime = date_vid1.DateTime.AddBusinessDays(44 + h_add);
-                date_poluch.DateTime = date_vid1.DateTime;
-            }
-            else if (date_end.EditValue != null && type_policy.EditValue.ToString() == "2")
-            {
-                date_end.DateTime = date_vid1.DateTime.AddBusinessDays(44 + h_add);
-                date_poluch.DateTime = date_vid1.DateTime;
-            }
-            else if (date_end.EditValue == null && type_policy.EditValue.ToString() != "2")
-            {
-                date_vid1.EditValue = DateTime.Today;
-                date_poluch.EditValue = date_vid1.EditValue;
+
             }
             else
             {
-                date_vid1.EditValue = DateTime.Today;
-                date_poluch.EditValue = date_vid1.EditValue;
+                pustoy.IsChecked = false;
+                if (date_end.EditValue == null && docexp1.EditValue == null)
+                {
+                    //date_end.DateTime = date_vid1.DateTime.AddBusinessDays(44+h_add);
+                    //for (int i = 0; i < h.Count; i++)
+                    //{
+                    //    if (date_end.DateTime == h[i] || date_end.DateTime.DayOfWeek == DayOfWeek.Saturday || date_end.DateTime.DayOfWeek == DayOfWeek.Sunday)
+                    //    {
+                    //        date_end.DateTime = date_end.DateTime.AddDays(1);
+                    //        i = i - 1;
+                    //    }
+                    //}
+                    date_end.DateTime = ddd;
+                    date_poluch.DateTime = date_vid1.DateTime;
+                }
+                else if (date_end.EditValue != null && type_policy.EditValue.ToString() == "2")
+                {
+                    //date_end.DateTime = date_vid1.DateTime.AddBusinessDays(44+h_add);
+                    //for (int i = 0; i < h.Count; i++)
+                    //{
+                    //    if (date_end.DateTime == h[i] || date_end.DateTime.DayOfWeek == DayOfWeek.Saturday || date_end.DateTime.DayOfWeek == DayOfWeek.Sunday)
+                    //    {
+                    //        date_end.DateTime = date_end.DateTime.AddDays(1);
+                    //        i = i - 1;
+                    //    }
+                    //}
+                    date_end.DateTime = ddd;
+                    date_poluch.DateTime = date_vid1.DateTime;
+                }
+                else if (date_end.EditValue == null && Convert.ToDateTime(docexp1.EditValue) > dte)
+                {
+                    date_end.EditValue = dte;
+                    date_poluch.DateTime = date_vid1.DateTime;
+                }
+                else if (date_end.EditValue == null && Convert.ToDateTime(docexp1.EditValue) < dte)
+                {
+                    date_end.EditValue = docexp1.EditValue;
+                    date_poluch.DateTime = date_vid1.DateTime;
+                }
+
             }
-            //}
-            //catch
+
+            //---------------------------------------
+            //int h_add = Get_holidays(date_vid1.DateTime, date_vid1.DateTime.AddBusinessDays(44));
+            ////try
+            ////{
+
+            //if (date_end.EditValue == null && type_policy.EditValue.ToString() == "2")
             //{
-            //    Window_Loaded(this, e);
+            //    date_end.DateTime = date_vid1.DateTime.AddBusinessDays(44 + h_add);
+            //    date_poluch.DateTime = date_vid1.DateTime;
             //}
+            //else if (date_end.EditValue != null && type_policy.EditValue.ToString() == "2")
+            //{
+            //    date_end.DateTime = date_vid1.DateTime.AddBusinessDays(44 + h_add);
+            //    date_poluch.DateTime = date_vid1.DateTime;
+            //}
+            //else if (date_end.EditValue == null && type_policy.EditValue.ToString() != "2")
+            //{
+            //    date_vid1.EditValue = DateTime.Today;
+            //    date_poluch.EditValue = date_vid1.EditValue;
+            //}
+            //else
+            //{
+            //    date_vid1.EditValue = DateTime.Today;
+            //    date_poluch.EditValue = date_vid1.EditValue;
+            //}
+            ////}
+            ////catch
+            ////{
+            ////    Window_Loaded(this, e);
+            ////}
         }
 
         private void enp_EditValueChanged(object sender, EditValueChangedEventArgs e)

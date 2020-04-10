@@ -6029,7 +6029,7 @@ NAME_VP='{PD.kem_vid1.Text}', NAME_VP_CODE='{PD.kod_podr1.Text}', active=0,main=
             comm.Parameters.AddWithValue("@docnam1", PD.ddnum.Text);
             comm.Parameters.AddWithValue("@docdate1", PD.dddate.DateTime);
             comm.Parameters.AddWithValue("@name_vp1", PD.ddkemv.Text);
-            comm.Parameters.AddWithValue("@docexp1", PD.docexp1.DateTime);
+            comm.Parameters.AddWithValue("@docexp1", PD.docexp1.EditValue ?? DBNull.Value);
             comm.Parameters.AddWithValue("@FIAS_L1", PD.fias.reg.EditValue);
             if (PD.fias.reg_rn.EditValue == null)
             {
@@ -6502,7 +6502,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
             comm.Parameters.AddWithValue("@docnam1", PD.ddnum.Text);
             comm.Parameters.AddWithValue("@docdate1", PD.dddate.DateTime);
             comm.Parameters.AddWithValue("@name_vp1", PD.ddkemv.Text);
-            comm.Parameters.AddWithValue("@docexp1", PD.docexp1.DateTime);
+            comm.Parameters.AddWithValue("@docexp1", PD.docexp1.EditValue ?? DBNull.Value);
             comm.Parameters.AddWithValue("@FIAS_L1", PD.fias.reg.EditValue);
             if (PD.fias.reg_rn.EditValue == null)
             {
@@ -6927,7 +6927,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
             comm.Parameters.AddWithValue("@docnam1", PD.ddnum.Text);
             comm.Parameters.AddWithValue("@docdate1", PD.dddate.DateTime);
             comm.Parameters.AddWithValue("@name_vp1", PD.ddkemv.Text);
-            comm.Parameters.AddWithValue("@docexp1", PD.docexp1.DateTime);
+            comm.Parameters.AddWithValue("@docexp1", PD.docexp1.EditValue ?? DBNull.Value);
             comm.Parameters.AddWithValue("@FIAS_L1", PD.fias.reg.EditValue);
             if (PD.fias.reg_rn.EditValue == null)
             {
@@ -7311,7 +7311,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
             comm.Parameters.AddWithValue("@docnam1", PD.ddnum.Text);
             comm.Parameters.AddWithValue("@docdate1", PD.dddate.DateTime);
             comm.Parameters.AddWithValue("@name_vp1", PD.ddkemv.Text);
-            comm.Parameters.AddWithValue("@docexp1", PD.docexp1.DateTime);
+            comm.Parameters.AddWithValue("@docexp1", PD.docexp1.EditValue ?? DBNull.Value);
             comm.Parameters.AddWithValue("@FIAS_L1", PD.fias.reg.EditValue);
             comm.Parameters.AddWithValue("@vpolis", PD.type_policy.EditValue.ToString());
             comm.Parameters.AddWithValue("@spolis", PD.ser_blank.Text);
@@ -7664,7 +7664,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
             comm.Parameters.AddWithValue("@docnam1", PD.ddnum.Text);
             comm.Parameters.AddWithValue("@docdate1", PD.dddate.DateTime);
             comm.Parameters.AddWithValue("@name_vp1", PD.ddkemv.Text);
-            comm.Parameters.AddWithValue("@docexp1", PD.docexp1.DateTime);
+            comm.Parameters.AddWithValue("@docexp1", PD.docexp1.EditValue ?? DBNull.Value);
             comm.Parameters.AddWithValue("@FIAS_L1", PD.fias.reg.EditValue);
             comm.Parameters.AddWithValue("@vpolis", PD.type_policy.EditValue.ToString());
             comm.Parameters.AddWithValue("@spolis", PD.ser_blank.Text);
@@ -8017,7 +8017,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
             comm.Parameters.AddWithValue("@docnam1", PD.ddnum.Text);
             comm.Parameters.AddWithValue("@docdate1", PD.dddate.DateTime);
             comm.Parameters.AddWithValue("@name_vp1", PD.ddkemv.Text);
-            comm.Parameters.AddWithValue("@docexp1", PD.docexp1.DateTime);
+            comm.Parameters.AddWithValue("@docexp1", PD.docexp1.EditValue ?? DBNull.Value);
             comm.Parameters.AddWithValue("@FIAS_L1", PD.fias.reg.EditValue);
             comm.Parameters.AddWithValue("@vpolis", PD.type_policy.EditValue.ToString());
             comm.Parameters.AddWithValue("@spolis", PD.ser_blank.Text);
@@ -8415,7 +8415,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
             comm.Parameters.AddWithValue("@docnam1", PD.ddnum.Text);
             comm.Parameters.AddWithValue("@docdate1", PD.dddate.DateTime);
             comm.Parameters.AddWithValue("@name_vp1", PD.ddkemv.Text);
-            comm.Parameters.AddWithValue("@docexp1", PD.docexp1.DateTime);
+            comm.Parameters.AddWithValue("@docexp1", PD.docexp1.EditValue ?? DBNull.Value);
 
             if (PD.pustoy.IsChecked == true)
             {
@@ -8823,7 +8823,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
             comm.Parameters.AddWithValue("@docnam1", PD.ddnum.Text);
             comm.Parameters.AddWithValue("@docdate1", PD.dddate.DateTime);
             comm.Parameters.AddWithValue("@name_vp1", PD.ddkemv.Text);
-            comm.Parameters.AddWithValue("@docexp1", PD.docexp1.DateTime);
+            comm.Parameters.AddWithValue("@docexp1", PD.docexp1.EditValue ?? DBNull.Value);
 
             if (Convert.ToDateTime(PD.date_end.EditValue) == DateTime.MinValue)
             {
@@ -9250,7 +9250,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
             comm.Parameters.AddWithValue("@docnam1", PD.ddnum.Text);
             comm.Parameters.AddWithValue("@docdate1", PD.dddate.DateTime);
             comm.Parameters.AddWithValue("@name_vp1", PD.ddkemv.Text);
-            comm.Parameters.AddWithValue("@docexp1", PD.docexp1.DateTime);
+            comm.Parameters.AddWithValue("@docexp1", PD.docexp1.EditValue ?? DBNull.Value);
 
             if (Convert.ToDateTime(PD.date_end.EditValue) == DateTime.MinValue)
             {
@@ -9709,7 +9709,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
             comm.Parameters.AddWithValue("@docnam1", PD.ddnum.Text);
             comm.Parameters.AddWithValue("@docdate1", PD.docdate1.DateTime);
             comm.Parameters.AddWithValue("@name_vp1", PD.ddkemv.Text);
-            comm.Parameters.AddWithValue("@docexp1", PD.docexp1.DateTime);
+            comm.Parameters.AddWithValue("@docexp1", PD.docexp1.EditValue ?? DBNull.Value);
 
             if (PD.pustoy.IsChecked == true)
             {
@@ -10194,7 +10194,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
             comm.Parameters.AddWithValue("@docnam1", PD.ddnum.Text);
             comm.Parameters.AddWithValue("@docdate1", PD.dddate.DateTime);
             comm.Parameters.AddWithValue("@name_vp1", PD.ddkemv.Text);
-            comm.Parameters.AddWithValue("@docexp1", PD.docexp1.DateTime);
+            comm.Parameters.AddWithValue("@docexp1", PD.docexp1.EditValue ?? DBNull.Value);
 
             if (PD.pustoy.IsChecked == true)
             {
@@ -10581,7 +10581,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
             comm.Parameters.AddWithValue("@docnam1", PD.ddnum.Text);
             comm.Parameters.AddWithValue("@docdate1", PD.dddate.DateTime);
             comm.Parameters.AddWithValue("@name_vp1", PD.ddkemv.Text);
-            comm.Parameters.AddWithValue("@docexp1", PD.docexp1.DateTime);
+            comm.Parameters.AddWithValue("@docexp1", PD.docexp1.EditValue ?? DBNull.Value);
 
             if (PD.pustoy.IsChecked == true)
             {
