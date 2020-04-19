@@ -140,21 +140,7 @@ namespace Insurance
                     {
                         DATE_DEAD_TFOMS.Background = Brushes.Red;
                     }
-                    POISKVLADIK.FAM_TFOMS = FAM_TFOMS.Text;
-                    POISKVLADIK.IM_TFOMS = IM_TFOMS.Text;
-                    POISKVLADIK.OT_TFOMS = OT_TFOMS.Text;
-                    POISKVLADIK.DR_TFOMS = DR_TFOMS.Text;
-                    POISKVLADIK.VIDPOLIS_TFOMS = VIDPOLIS_TFOMS.Text;
-                    POISKVLADIK.SNILS_TFOMS = SNILS_TFOMS.Text;
-                    POISKVLADIK.POLIS_TFOMS = POLIS_TFOMS.Text;
-                    POISKVLADIK.ENP_TFOMS = ENP_TFOMS.Text;
-                    POISKVLADIK.MR_TFOMS = MR_TFOMS.Text;
-                    POISKVLADIK.POLIKLIN_TFOMS = POLIKLIN_TFOMS.Text;
-                    POISKVLADIK.DATE_PRIKREP_TFOMS = DATE_PRIKREP_TFOMS.Text;
-                    POISKVLADIK.SPOSOB_TFOMS =  SPOSOB_TFOMS.Text;
-                    POISKVLADIK.SMO_TFOMS = SMO_TFOMS.Text;
-                    POISKVLADIK.PRZ_TFOMS = PRZ_TFOMS.Text;
-                    POISKVLADIK.DATE_START_TFOMS = DATE_START_TFOMS.Text;
+                    
 
                     string load_pers_grid = $@" SELECT top(1) pp.SROKDOVERENOSTI,pp.ID,pp.ACTIVE,op.przcod,pe.UNLOAD,ENP ,FAM , IM  , OT ,W ,DR ,MO,oks.CAPTION as C_OKSM,r.NameWithID , pp.COMMENT,pe.DVIZIT, pp.DATEVIDACHI, pp.PRIZNAKVIDACHI,
             SS  ,VPOLIS,SPOLIS ,NPOLIS,DBEG ,DEND ,DSTOP ,BLANK ,DRECEIVED,f.NameWithId as MO_NameWithId,op.filename,pp.phone,p.AGENT, pp.CYCLE,(select pr.namewithid  from POL_PERSONS_INFORM pin
@@ -315,6 +301,8 @@ where PERSON_ID=pp.ID and pin.id=(select max(id) from POL_PERSONS_INFORM where P
                     {
                         DATE_DEAD_TFOMS.Background = Brushes.Red;
                     }
+
+
                     string load_pers_grid = $@" SELECT top(1) pp.SROKDOVERENOSTI,pp.ID,pp.ACTIVE,op.przcod,pe.UNLOAD,ENP ,FAM , IM  , OT ,W ,DR ,MO,oks.CAPTION as C_OKSM,r.NameWithID , pp.COMMENT,pe.DVIZIT, pp.DATEVIDACHI, pp.PRIZNAKVIDACHI,
             SS  ,VPOLIS,SPOLIS ,NPOLIS,DBEG ,DEND ,DSTOP ,BLANK ,DRECEIVED,f.NameWithId as MO_NameWithId,op.filename,pp.phone,p.AGENT, pp.CYCLE,(select pr.namewithid  from POL_PERSONS_INFORM pin
 left join PRICHINA_INFORMIROVANIYA pr
@@ -1216,7 +1204,21 @@ where PERSON_ID=pp.ID and pin.id=(select max(id) from POL_PERSONS_INFORM where P
             }
 
 
-
+            POISKVLADIK.FAM_TFOMS = FAM_TFOMS.Text;
+            POISKVLADIK.IM_TFOMS = IM_TFOMS.Text;
+            POISKVLADIK.OT_TFOMS = OT_TFOMS.Text;
+            POISKVLADIK.DR_TFOMS = DR_TFOMS.Text;
+            POISKVLADIK.VIDPOLIS_TFOMS = VIDPOLIS_TFOMS.Text;
+            POISKVLADIK.SNILS_TFOMS = SNILS_TFOMS.Text;
+            POISKVLADIK.POLIS_TFOMS = POLIS_TFOMS.Text;
+            POISKVLADIK.ENP_TFOMS = ENP_TFOMS.Text;
+            POISKVLADIK.MR_TFOMS = MR_TFOMS.Text;
+            POISKVLADIK.POLIKLIN_TFOMS = POLIKLIN_TFOMS.Text;
+            POISKVLADIK.DATE_PRIKREP_TFOMS = DATE_PRIKREP_TFOMS.Text;
+            POISKVLADIK.SPOSOB_TFOMS = SPOSOB_TFOMS.Text;
+            POISKVLADIK.SMO_TFOMS = SMO_TFOMS.Text;
+            POISKVLADIK.PRZ_TFOMS = PRZ_TFOMS.Text;
+            POISKVLADIK.DATE_START_TFOMS = DATE_START_TFOMS.Text;
 
         }
 
@@ -1296,9 +1298,23 @@ where PERSON_ID=pp.ID and pin.id=(select max(id) from POL_PERSONS_INFORM where P
 
         private void Poisk1_Copy_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            POISKVLADIK.FAM_TFOMS = FAM_TFOMS.Text;
+            POISKVLADIK.IM_TFOMS = IM_TFOMS.Text;
+            POISKVLADIK.OT_TFOMS = OT_TFOMS.Text;
+            POISKVLADIK.DR_TFOMS = DR_TFOMS.Text;
+            POISKVLADIK.VIDPOLIS_TFOMS = VIDPOLIS_TFOMS.Text;
+            POISKVLADIK.SNILS_TFOMS = SNILS_TFOMS.Text;
+            POISKVLADIK.POLIS_TFOMS = POLIS_TFOMS.Text;
+            POISKVLADIK.ENP_TFOMS = ENP_TFOMS.Text;
+            POISKVLADIK.MR_TFOMS = MR_TFOMS.Text;
+            POISKVLADIK.POLIKLIN_TFOMS = POLIKLIN_TFOMS.Text;
+            POISKVLADIK.DATE_PRIKREP_TFOMS = DATE_PRIKREP_TFOMS.Text;
+            POISKVLADIK.SPOSOB_TFOMS = SPOSOB_TFOMS.Text;
+            POISKVLADIK.SMO_TFOMS = SMO_TFOMS.Text;
+            POISKVLADIK.PRZ_TFOMS = PRZ_TFOMS.Text;
+            POISKVLADIK.DATE_START_TFOMS = DATE_START_TFOMS.Text;
             POISKVLADIK.Load_ZL = true;
-       
+            this.Close();
         }
     }
     

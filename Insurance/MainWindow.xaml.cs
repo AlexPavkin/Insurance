@@ -32,6 +32,7 @@ using DotNetDBF;
 using Bytescout.Spreadsheet;
 using Ionic.Zip;
 using System.Xml;
+using Insurance.Classes;
 
 namespace Insurance
 {
@@ -1073,12 +1074,99 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
 
         }
 
+        public void Vladik()
+        {
+            if (POISKVLADIK.Load_ZL == true)
+            {
+                Tab_ZL.Visibility = Visibility.Visible;
+                MainTab.SelectedIndex = 1;
+                try
+                {
+                    fam.Text = POISKVLADIK.FAM_TFOMS;
+                }
+                catch
+                {
 
+                }
+                try
+                {
+                    im.Text = POISKVLADIK.IM_TFOMS;
+                }
+                catch
+                {
+
+                }
+                try
+                {
+                    ot.Text = POISKVLADIK.OT_TFOMS;
+                }
+                catch
+                {
+
+                }
+                try
+                {
+                    dr.Text = POISKVLADIK.DR_TFOMS;
+                }
+                catch
+                {
+
+                }
+                try
+                {
+                    if (POISKVLADIK.VIDPOLIS_TFOMS == "Полис до 2011г.")
+                    {
+                        type_policy.Text = "2    Временное свидетельство, подтверждающее оформление полиса обязательного медицинского страхования";
+                    }
+                    else
+                    {
+                        type_policy.Text = "2    Временное свидетельство, подтверждающее оформление полиса обязательного медицинского страхования";
+                    }
+                }
+                catch
+                {
+
+                }
+                try
+                {
+                    snils.Text = POISKVLADIK.SNILS_TFOMS;
+                }
+                catch
+                {
+
+                }
+
+                try
+                {
+                    num_blank.Text = POISKVLADIK.POLIS_TFOMS;
+                    enp.Text = POISKVLADIK.ENP_TFOMS;
+                    mr2.Text = POISKVLADIK.MR_TFOMS;
+                    mo_cmb.Text = POISKVLADIK.POLIKLIN_TFOMS;
+                    date_mo.Text = POISKVLADIK.DATE_PRIKREP_TFOMS;
+                    date_vid1.Text = POISKVLADIK.DATE_START_TFOMS;
+                    dost1.Text = POISKVLADIK.SPOSOB_TFOMS;
+                    date_end.Text = POISKVLADIK.DATE_END_TFOMS;
+                    fakt_prekr.Text = POISKVLADIK.SMO_TFOMS;
+                    ddeath.Text = POISKVLADIK.DATE_DEAD_TFOMS;
+                }
+                catch
+                {
+
+                }
+
+
+
+
+
+                POISKVLADIK.Load_ZL = false;
+               
+                return;
+            }
+        }
 
         private void w_main_Activated(object sender, EventArgs e)
         {
-
-
+            Vladik();
             DispatcherTimer timer = new DispatcherTimer();  // если надо, то в скобках указываем приоритет, например DispatcherPriority.Render
             timer.Interval = TimeSpan.FromSeconds(1);
             timer.Tick += new EventHandler(Ot_tick);
@@ -1391,7 +1479,7 @@ select @num", con);
 
         private void w_main_Loaded(object sender, RoutedEventArgs e)
         {
-
+      
             //layout_InUse();
             pers_grid.ClearSorting();
 
@@ -3672,6 +3760,7 @@ DEALLOCATE MY_CURSOR
         //}
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+           
             //this.pr_pod_z_smo.ItemsSource = null;
             //this.pr_pod_z_polis.ItemsSource = null;
             //this.form_polis.ItemsSource = null;
@@ -5232,86 +5321,95 @@ where e.person_guid='{rper}' and main=1", con);
 
         private void snils_EditValueChanged(object sender, EditValueChangedEventArgs e)
         {
-            if (snils.Text == "")
+            try
             {
-                snils.Background = new SolidColorBrush(Colors.White);
-                return;
+                if (snils.Text == "")
+                {
+                    snils.Background = new SolidColorBrush(Colors.White);
+                    return;
+                }
+                else
+                {
+                    string[] dst = snils.Text.Split(new char[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
+
+
+                    ssn = Convert.ToInt32(dst[0].Substring(0, 1)) * 9 + Convert.ToInt32(dst[0].Substring(1, 1)) * 8 + Convert.ToInt32(dst[0].Substring(2, 1)) * 7 + Convert.ToInt32(dst[1].Substring(0, 1)) * 6 +
+                    Convert.ToInt32(dst[1].Substring(1, 1)) * 5 + Convert.ToInt32(dst[1].Substring(2, 1)) * 4 + Convert.ToInt32(dst[2].Substring(0, 1)) * 3 + Convert.ToInt32(dst[2].Substring(1, 1)) * 2 +
+                    Convert.ToInt32(dst[2].Substring(2, 1)) * 1;
+                    kontr = Convert.ToInt32(dst[2].Substring(dst[2].Length - 2));
+                    if (ssn > 101 && ssn <= 200)
+                    {
+                        psn = ssn - 101;
+                        if (psn != kontr)
+                        {
+                            snils.Background = new SolidColorBrush(Colors.Red);
+                        }
+                        else
+                        {
+                            snils.Background = new SolidColorBrush(Colors.White);
+                        }
+
+                    }
+                    else if (ssn > 200 && ssn <= 300)
+                    {
+                        psn = ssn - 101 - 101;
+                        if (psn != kontr)
+                        {
+                            snils.Background = new SolidColorBrush(Colors.Red);
+                        }
+                        else
+                        {
+                            snils.Background = new SolidColorBrush(Colors.White);
+                        }
+                    }
+                    else if (ssn == 101 || ssn == 100)
+                    {
+                        psn = 0;
+                        if (psn != kontr)
+                        {
+                            snils.Background = new SolidColorBrush(Colors.Red);
+                        }
+                        else
+                        {
+                            snils.Background = new SolidColorBrush(Colors.White);
+                        }
+                    }
+                    else if (ssn < 100)
+                    {
+                        psn = ssn;
+                        if (psn != kontr)
+                        {
+                            snils.Background = new SolidColorBrush(Colors.Red);
+                        }
+                        else
+                        {
+                            snils.Background = new SolidColorBrush(Colors.White);
+                        }
+                    }
+                    else if (ssn > 300)
+                    {
+                        psn = ssn / 101;
+                        if (psn != kontr)
+                        {
+                            snils.Background = new SolidColorBrush(Colors.Red);
+                        }
+                        else
+                        {
+                            snils.Background = new SolidColorBrush(Colors.White);
+                        }
+                    }
+                }
             }
-            else
+            catch
             {
-                string[] dst = snils.Text.Split(new char[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
 
-
-                ssn = Convert.ToInt32(dst[0].Substring(0, 1)) * 9 + Convert.ToInt32(dst[0].Substring(1, 1)) * 8 + Convert.ToInt32(dst[0].Substring(2, 1)) * 7 + Convert.ToInt32(dst[1].Substring(0, 1)) * 6 +
-                Convert.ToInt32(dst[1].Substring(1, 1)) * 5 + Convert.ToInt32(dst[1].Substring(2, 1)) * 4 + Convert.ToInt32(dst[2].Substring(0, 1)) * 3 + Convert.ToInt32(dst[2].Substring(1, 1)) * 2 +
-                Convert.ToInt32(dst[2].Substring(2, 1)) * 1;
-                kontr = Convert.ToInt32(dst[2].Substring(dst[2].Length - 2));
-                if (ssn > 101 && ssn <= 200)
-                {
-                    psn = ssn - 101;
-                    if (psn != kontr)
-                    {
-                        snils.Background = new SolidColorBrush(Colors.Red);
-                    }
-                    else
-                    {
-                        snils.Background = new SolidColorBrush(Colors.White);
-                    }
-
-                }
-                else if (ssn > 200 && ssn <= 300)
-                {
-                    psn = ssn - 101 - 101;
-                    if (psn != kontr)
-                    {
-                        snils.Background = new SolidColorBrush(Colors.Red);
-                    }
-                    else
-                    {
-                        snils.Background = new SolidColorBrush(Colors.White);
-                    }
-                }
-                else if (ssn == 101 || ssn == 100)
-                {
-                    psn = 0;
-                    if (psn != kontr)
-                    {
-                        snils.Background = new SolidColorBrush(Colors.Red);
-                    }
-                    else
-                    {
-                        snils.Background = new SolidColorBrush(Colors.White);
-                    }
-                }
-                else if (ssn < 100)
-                {
-                    psn = ssn;
-                    if (psn != kontr)
-                    {
-                        snils.Background = new SolidColorBrush(Colors.Red);
-                    }
-                    else
-                    {
-                        snils.Background = new SolidColorBrush(Colors.White);
-                    }
-                }
-                else if (ssn > 300)
-                {
-                    psn = ssn / 101;
-                    if (psn != kontr)
-                    {
-                        snils.Background = new SolidColorBrush(Colors.Red);
-                    }
-                    else
-                    {
-                        snils.Background = new SolidColorBrush(Colors.White);
-                    }
-                }
             }
         }
 
         private void date_vid_EditValueChanged(object sender, EditValueChangedEventArgs e)
         {
+            try
+            { 
             //if(btn_=="2")
             //{
             DateTime firstDate = dr.DateTime;
@@ -5356,7 +5454,11 @@ where e.person_guid='{rper}' and main=1", con);
                 return;
             }
             // 
+             }
+            catch
+            {
 
+            }
         }
 
 

@@ -219,7 +219,7 @@
             </Setter>
 
         </Style>
-        
+
 
     </Window.Resources>
 
@@ -488,7 +488,7 @@
                                 <TextBlock Text="Удалить последнее&#10;      событие ЗЛ" VerticalAlignment="Center" Foreground="White" FontWeight="Bold" Margin="5" />
                             </StackPanel>
                         </Button>
-                        
+
                         <Button x:Name="Agent_btn_Izmenit" Style="{StaticResource myButtonStyle1}" ToolTip="Выберите агента и пункт выдачи в списке слева" HorizontalAlignment="Left" Height="50" Margin="5,0" VerticalAlignment="Top" Click="Agent_btn_Izmenit_Click" TabIndex="9">
                             <StackPanel HorizontalAlignment="Center" Margin="5,0" Orientation="Horizontal">
                                 <Image Source="Insurance_icons/edit.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
@@ -574,7 +574,7 @@
                             <TextBlock Text="Справка" VerticalAlignment="Center" Foreground="White" FontWeight="Bold" Margin="5" />
                         </StackPanel>
                     </Button>
-                    
+
                     <Button x:Name="Inform_btn" Style="{StaticResource myButtonStyle1}" ToolTip="Выделите ЗЛ из списка для информирования" HorizontalAlignment="Right" Height="50" VerticalAlignment="Top" TabIndex="9" Click="Inform_btn_Click" Margin="0,0,114,0">
                         <StackPanel HorizontalAlignment="Center" Margin="10,0" Orientation="Horizontal">
                             <Image Source="{dx:DXImage Image=Apply_32x32.png}" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
@@ -591,7 +591,7 @@
                     </Button>
                 </Grid>
             </dx:DXTabItem>
-            <dx:DXTabItem x:Name="Tab_ZL" Header="Работа с застрахованными" Background="White" GotFocus="DXTabItem_GotFocus" Padding="9,3">
+            <dx:DXTabItem x:Name="Tab_ZL" Header="Работа с застрахованными" Background="White" GotFocus="DXTabItem_GotFocus" Padding="9,3" AllowHide="Default" Visibility="Hidden">
                 <ScrollViewer HorizontalScrollBarVisibility="Auto">
                     <Grid x:Name="gp2" Background="#FF5F7B8B" Height="948" Margin="0,0,0,0">
                         <TextBox x:Name="_1" HorizontalAlignment="Left" Height="23" Margin="169,1042,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="65" Visibility="Hidden" VerticalScrollBarVisibility="Visible" d:IsHidden="True" />
@@ -745,9 +745,6 @@
                                                     <dxlc:LayoutItem Label="Имя" LabelHorizontalAlignment="Right">
                                                         <dxe:ComboBoxEdit CharacterCasing="Upper" x:Name="im" NullValueButtonPlacement="EditBox" ImmediatePopup="True" AutoComplete="False" FilterCondition="Contains" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding}" EditValue="IM" DisplayMember="IM" ValidateOnTextInput="False" IncrementalFiltering="True" ProcessNewValue="Im_ProcessNewValue" />
                                                     </dxlc:LayoutItem>
-                                                    <dxlc:LayoutItem Label="Отчество" LabelHorizontalAlignment="Right">
-                                                        <dxe:ComboBoxEdit CharacterCasing="Upper" x:Name="ot" NullValueButtonPlacement="EditBox" ImmediatePopup="True" AutoComplete="False" FilterCondition="Contains" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding}" EditValue="OT" DisplayMember="OT" ValidateOnTextInput="False" IncrementalFiltering="True" LostFocus="Ot_LostFocus" ProcessNewValue="Ot_ProcessNewValue" />
-                                                    </dxlc:LayoutItem>
                                                     <dxlc:LayoutItem Label="Дата рождения" LabelHorizontalAlignment="Right" FontWeight="Bold">
                                                         <dxe:DateEdit x:Name="dr" NullValueButtonPlacement="EditBox" MaskType="DateTimeAdvancingCaret" LostFocus="Dr_LostFocus" PreviewKeyDown="Dr_PreviewKeyDown" />
                                                     </dxlc:LayoutItem>
@@ -771,6 +768,9 @@
                                                     </dxlc:LayoutItem>
                                                     <dxlc:LayoutItem Label="Кем выдан" LabelHorizontalAlignment="Right" FontWeight="Bold">
                                                         <dxe:ComboBoxEdit CharacterCasing="Upper" x:Name="kem_vid" NullValueButtonPlacement="EditBox" ImmediatePopup="True" AutoComplete="False" FilterCondition="Contains" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding}" EditValue="NAME" DisplayMember="NAME" ValidateOnTextInput="False" IncrementalFiltering="True" ProcessNewValue="Kem_vid_ProcessNewValue" />
+                                                    </dxlc:LayoutItem>
+                                                    <dxlc:LayoutItem Label="Отчество" LabelHorizontalAlignment="Right">
+                                                        <dxe:ComboBoxEdit CharacterCasing="Upper" x:Name="ot" NullValueButtonPlacement="EditBox" ImmediatePopup="True" AutoComplete="False" FilterCondition="Contains" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding}" EditValue="OT" DisplayMember="OT" ValidateOnTextInput="False" IncrementalFiltering="True" LostFocus="Ot_LostFocus" ProcessNewValue="Ot_ProcessNewValue" />
                                                     </dxlc:LayoutItem>
                                                 </dxlc:LayoutGroup>
                                                 <dxlc:LayoutGroup dx:ScrollViewerTouchBehavior.IsEnabled="True" Orientation="Vertical" Serialization:SerializableItem.TypeName="LayoutGroup">
