@@ -1315,6 +1315,7 @@ where PERSON_ID=pp.ID and pin.id=(select max(id) from POL_PERSONS_INFORM where P
             POISKVLADIK.DATE_START_TFOMS = DATE_START_TFOMS.Text;
             POISKVLADIK.Load_ZL = true;
             this.Close();
+
         }
     }
     
