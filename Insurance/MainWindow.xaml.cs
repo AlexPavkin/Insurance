@@ -1078,6 +1078,7 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
         {
             if (POISKVLADIK.Load_ZL == true)
             {
+
                 Tab_ZL.Visibility = Visibility.Visible;
                 MainTab.SelectedIndex = 1;
                 try
