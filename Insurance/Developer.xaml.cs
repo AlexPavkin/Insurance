@@ -667,6 +667,51 @@ where PERSON_ID = pp.ID and pin.id = (select max(id) from POL_PERSONS_INFORM whe
             dt = null;
 
         }
+
+        private void To_dbf_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog SF = new SaveFileDialog();
+            SF.DefaultExt = ".dbf";
+            SF.Filter = "Файлы DBF (.dbf)|*.dbf";
+            bool res = SF.ShowDialog().Value;
+
+            if (res == true)
+            {
+                DataTable dt = new DataTable();
+                string dbffile = SF.FileName;
+                using (Stream fos = File.Open(dbffile, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+                {
+                    var writer = new DotNetDBF.DBFWriter(fos);
+                    writer.CharEncoding = Encoding.GetEncoding(866);
+                    writer.Signature = DotNetDBF.DBFSignature.DBase3;
+                    writer.LanguageDriver = 0x26; // кодировка 866
+                    var field1 = new DotNetDBF.DBFField("DOCDATE", DotNetDBF.NativeDbType.Date);
+                    var field2 = new DotNetDBF.DBFField("DOCNUMBER", DotNetDBF.NativeDbType.Char, 10);
+                    var field3 = new DotNetDBF.DBFField("DOCSER", DotNetDBF.NativeDbType.Char, 8);
+                    var field4 = new DotNetDBF.DBFField("DOCTYPE", DotNetDBF.NativeDbType.Numeric, 2, 0);
+                    var field5 = new DotNetDBF.DBFField("RETPRICE", DotNetDBF.NativeDbType.Numeric, 10, 2);
+                    var field6 = new DotNetDBF.DBFField("QUANTITY", DotNetDBF.NativeDbType.Numeric, 3, 2);
+                    var field7 = new DotNetDBF.DBFField("APCODE", DotNetDBF.NativeDbType.Numeric, 10, 0);
+                    var field8 = new DotNetDBF.DBFField("CLNTNAME", DotNetDBF.NativeDbType.Char, 255);
+                    var field9 = new DotNetDBF.DBFField("CLNTPHONE", DotNetDBF.NativeDbType.Char, 20);
+
+                    writer.Fields = new DotNetDBF.DBFReader(fos).Fields;
+
+                    //for (int i = 0; i < docList.Count; i++)
+                    //{
+                    //    writer.AddRecord(docList[i].DOCDATE, docList[i].DOCNUM, docList[i].DOCSER, docList[i].DOCTYPE
+                    //       // добавляем поля в набор
+                    //       );
+                    //}
+
+                    writer.Write(fos);
+
+                    var dbf = new DotNetDBF.DBFReader(fos);
+
+                    var cnt = dbf.RecordCount;
+                }
+            }
+        }
     }
     public class Class_params : IComparable<Class_params>
     {
