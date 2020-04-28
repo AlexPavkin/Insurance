@@ -32,17 +32,19 @@ namespace Insurance
         {
             InitializeComponent();
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            WindowState = WindowState.Maximized;
             call_ = call;
             if (call_ == "unload_history" || call_ == "unload_files" || call_ == "person_history")
             {
                 WindowState = WindowState.Maximized;
                 infom_ctrl.Visibility = Visibility.Collapsed;
                 inform_grid1.Visibility = Visibility.Collapsed;
-                inform_grid.VerticalAlignment = VerticalAlignment.Stretch;
+                //inform_grid.VerticalAlignment = VerticalAlignment.Stretch;
                 del_file_panel.Visibility = Visibility.Visible;
                 Adder.Visibility = Visibility.Collapsed;
                 Adder_Copy1.Visibility = Visibility.Collapsed;
-                if(call_ == "unload_history")
+                
+                if (call_ == "unload_history")
                 {
                     ViewFilesItem.IsEnabled = true;
                 }
@@ -55,18 +57,19 @@ namespace Insurance
                     //this.Height = 100;
                     G_layuot.restore_Layout(Properties.Settings.Default.DocExchangeConnectionString, inform_grid, "1");
                 }
+                inform_grid.Visibility = Visibility.Visible;
             }
             
             //Adder.Visibility = Visibility.Collapsed;
-            Premiss_edt.Visibility = Visibility.Collapsed;
-            dateP.Visibility = Visibility.Collapsed;
-            inform_grid.Visibility = Visibility.Collapsed;
+            //Premiss_edt.Visibility = Visibility.Collapsed;
+            //dateP.Visibility = Visibility.Collapsed;
+            
             del_file_panel.Visibility = Visibility.Collapsed;
             //Del_file_btn.Visibility = Visibility.Hidden;
-            del_btn_hist.Visibility = Visibility.Collapsed;
+            //del_btn_hist.Visibility = Visibility.Collapsed;
             //all_files.Visibility = Visibility.Hidden;
-            Premiss_edt.Visibility = Visibility.Collapsed;
-            dateP.Visibility = Visibility.Collapsed;
+            //Premiss_edt.Visibility = Visibility.Collapsed;
+            //dateP.Visibility = Visibility.Collapsed;
 
         }
         private void Informed_Loaded(object sender, RoutedEventArgs e)
@@ -97,8 +100,8 @@ namespace Insurance
                     //Adder.Visibility = Visibility.Visible;
                     // Premiss_edt.Visibility = Visibility.Visible;
                     //dateP.Visibility = Visibility.Visible;
-                    Premiss_edt.DataContext = MyReader.MySelect<INFORMIROVAN>(@"SELECT * FROM PRICHINA_INFORMIROVANIYA",
-                        Properties.Settings.Default.DocExchangeConnectionString);
+                    //Premiss_edt.DataContext = MyReader.MySelect<INFORMIROVAN>(@"SELECT * FROM PRICHINA_INFORMIROVANIYA",
+                    //    Properties.Settings.Default.DocExchangeConnectionString);
 
                     //Premiss_edt.SelectedIndex = 0;
                     //dateP.DateTime = DateTime.Now;
@@ -110,8 +113,8 @@ namespace Insurance
 
                     inform_grid.Visibility = Visibility.Visible;
                     //Del_file_btn.Visibility = Visibility.Hidden;
-                    del_file_panel.Visibility = Visibility.Hidden;
-                    del_btn_hist.Visibility = Visibility.Hidden;
+                    del_file_panel.Visibility = Visibility.Collapsed;
+                    //del_btn_hist.Visibility = Visibility.Hidden;
 
                 }
                 else if (call_ == "unload_history")
@@ -142,8 +145,8 @@ namespace Insurance
                 {
                     Title = "История событий ЗЛ";
                     Adder.Visibility = Visibility.Hidden;
-                    Premiss_edt.Visibility = Visibility.Hidden;
-                    dateP.Visibility = Visibility.Hidden;
+                    //Premiss_edt.Visibility = Visibility.Hidden;
+                    //dateP.Visibility = Visibility.Hidden;
                     //Del_file_btn.Visibility = Visibility.Hidden;
                     del_file_panel.Visibility = Visibility.Hidden;
                     inform_grid.Visibility = Visibility.Visible;
@@ -840,6 +843,14 @@ select *from(select
             int b = 1;
             Message me = new Message(m, t, b);
             me.ShowDialog();
+        }
+
+        private void TableView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var id = inform_grid.GetFocusedRowCellValue("ID");
+            var peopleList = MyReader.MySelect<INFORM_ALL>($@"select*from pol_persons_inform where person_id={id}", Properties.Settings.Default.DocExchangeConnectionString);
+            inform_grid1.ItemsSource = peopleList;
+            inform_grid1.View.FocusedRowHandle = -1;
         }
     }
     

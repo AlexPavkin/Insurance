@@ -22,10 +22,7 @@ namespace Insurance_SPR
         public class MyReader
         {
             public static string load_pers_grid =$@"SELECT  pp.SROKDOVERENOSTI,pp.ID,pp.ACTIVE,op.przcod,pe.UNLOAD,ENP ,FAM , IM  , OT ,W ,DR ,MO,oks.CAPTION as C_OKSM,r.NameWithID , pp.COMMENT,pe.DVIZIT, pp.DATEVIDACHI, pp.PRIZNAKVIDACHI,
-            SS  ,VPOLIS,SPOLIS ,NPOLIS,DBEG ,DEND ,DSTOP ,BLANK ,DRECEIVED,f.NameWithId as MO_NameWithId,op.filename,pp.phone,p.AGENT, pp.CYCLE,(select pr.namewithid  from POL_PERSONS_INFORM pin
-left join PRICHINA_INFORMIROVANIYA pr
-on pin.PRICHINA_INFORM=pr.ID
-where PERSON_ID=pp.ID and pin.id=(select max(id) from POL_PERSONS_INFORM where PERSON_ID=pp.ID)) as inform, st.namewithkod as STOP_REASON, pe.id as EVENT_ID
+            SS  ,VPOLIS,SPOLIS ,NPOLIS,DBEG ,DEND ,DSTOP ,BLANK ,DRECEIVED,f.NameWithId as MO_NameWithId,op.filename,pp.phone,p.AGENT, pp.CYCLE, st.namewithkod as STOP_REASON, pe.id as EVENT_ID
               FROM [dbo].[POL_PERSONS] pp left join 
             pol_events pe on pp.event_guid=pe.idguid
          	LEFT JOIN POL_PRZ_AGENTS p

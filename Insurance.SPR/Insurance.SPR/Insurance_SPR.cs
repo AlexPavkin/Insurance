@@ -79,8 +79,8 @@ namespace Insurance_SPR
         public bool PRIZNAKVIDACHI { get; set; } //Пункт выдачи
         [System.ComponentModel.DisplayName("Срок доверености")]
         public DateTime? SROKDOVERENOSTI { get; set; }
-        [System.ComponentModel.DisplayName("Информирование")]
-        public string INFORM { get; set; } //Пункт выдачи
+        //[System.ComponentModel.DisplayName("Информирование")]
+        //public string INFORM { get; set; } //Пункт выдачи
         [System.ComponentModel.DisplayName("Обработка закончена")]
         public bool CYCLE { get; set; } //Пункт выдачи
         public Int32 EVENT_ID { get; set; }
@@ -108,8 +108,91 @@ namespace Insurance_SPR
         [System.ComponentModel.DisplayName("Причина информирования")]
         public string PRICHINA_INFORM { get; set; }
     }
+    public class INFORM_ALL
+    {
+        public string SURNAME { get; set; }
+        public string NAME { get; set; }
+        public string SECNAME { get; set; }
+        public DateTime? DR { get; set; }
+        public int POL { get; set; }
+        public string SNILS { get; set; }
+        public int SCOMP { get; set; }
+        public string SN_POL { get; set; }
+        public int KOD_POL { get; set; }
+        public int KOD_POL1 { get; set; }
+        public string KMKB { get; set; }
+        public int DYEAR { get; set; }
+        public int PM1 { get; set; }
+        public int PM2 { get; set; }
+        public int PM3 { get; set; }
+        public int PM4 { get; set; }
+        public int ID_TFOMS { get; set; }
+        public string SMO { get; set; }
+        public int DPFS { get; set; }
+        public bool sogl { get; set; }
+        public int tema { get; set; }
+        public DateTime Date_uv { get; set; }
+        public int sposob { get; set; }
+        public int result { get; set; }
+        public string prim { get; set; }
+        public int VIDPROF { get; set; }
 
+    }
+    public class P4_INFORM
+    {               
+        public string SURNAME { get; set; }        
+        public string NAME { get; set; }        
+        public string SECNAME { get; set; }         
+        public DateTime? DR { get; set; }        
+        public int POL { get; set; }        
+        public string SNILS { get; set; }        
+        public int SCOMP { get; set; }                        
+        public string SN_POL { get; set; }
+        public int KOD_POL { get; set; }
+        public int KOD_POL1 { get; set; }
+        public string KMKB { get; set; }
+        public int DYEAR { get; set; }
+        public int PM1 { get; set; }
+        public int PM2 { get; set; }
+        public int PM3 { get; set; }
+        public int PM4 { get; set; }
+        public int ID_TFOMS { get; set; }
+        public string SMO { get; set; }
+        public int DPFS { get; set; }
+        public bool sogl { get; set; }
+        public int tema { get; set; }
+        public DateTime Date_uv { get; set; }
+        public int sposob { get; set; }
+        public int result { get; set; }
+        public string prim { get; set; }
 
+    }
+
+    public class P3_INFORM
+    {
+        public int ID_TFOMS { get; set; }
+        public string SURNAME { get; set; }
+        public string NAME { get; set; }
+        public string SECNAME { get; set; }
+        public DateTime? DR { get; set; }
+        public int POL { get; set; }
+        public string SNILS { get; set; }
+        public int SCOMP { get; set; }
+        public int DPFS { get; set; }
+        public string SN_POL { get; set; }
+        public int VIDPROF { get; set; }
+        public int DYEAR { get; set; }
+        public int DMONTH { get; set; }
+        public int Tema { get; set; }
+        public DateTime DATE_UV { get; set; }
+        public int SPOSOB { get; set; }
+        public int RESULT { get; set; }
+        public string prim { get; set; }
+        public int KOD_POL { get; set; }
+        public int KOD_POL1 { get; set; }
+        public string SMO { get; set; }
+        
+    }
     public class F003
     {
         public string mcod { get; set; }
