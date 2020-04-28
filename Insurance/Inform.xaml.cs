@@ -283,9 +283,10 @@ select *from(select
         {
           
                 Vars.IDSZ = Funcs.MyIds(inform_grid1.GetSelectedRowHandles(), inform_grid1);
+                inform_grid1.GetSelectedRowHandles
                 var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
                 var con = new SqlConnection(connectionString);
-                SqlCommand com = new SqlCommand($@"INSERT INTO POL_PERSONS_INFORM (PERSON_ID,PERSONGUID,FAM_P3,IM_P3,OT_P3,Month_P3,Year_P3,Theme_P3,Date_P3,SPOSOB_P3,RESULT_P3,VID_P3,PRIMECH) VALUES ({Vars.IDSZ},NEWID(),'{fam_p3.Text}','{im_p3.Text}','{ot_p3.Text}',{month_p3.EditValue},{Year_p3.EditValue},'{Theme_p3.Text}','{Date_evd_p3.DateTime.ToString("yyyy-MM-dd")}','{Sposob_p3.Text}','{Result_p3.Text}','{Vid_meropr_p3.Text}','{Primech_p3.EditValue}')", con);
+                SqlCommand com = new SqlCommand($@"INSERT INTO POL_PERSONS_INFORM (PERSON_ID,PERSONGUID,Month_P3,Year_P3,Theme_P3,Date_P3,SPOSOB_P3,RESULT_P3,VID_P3,PRIMECH) VALUES ({Vars.IDSZ},NEWID(),{month_p3.EditValue},{Year_p3.EditValue},'{Theme_p3.Text}','{Date_evd_p3.DateTime.ToString("yyyy-MM-dd")}','{Sposob_p3.Text}','{Result_p3.Text}','{Vid_meropr_p3.Text}','{Primech_p3.EditValue}')", con);
                 con.Open();
                 com.ExecuteNonQuery();
                 con.Close();
@@ -299,7 +300,7 @@ select *from(select
                 Vars.IDSZ = Funcs.MyIds(inform_grid.GetSelectedRowHandles(), inform_grid);
                 var connectionString1 = Properties.Settings.Default.DocExchangeConnectionString;
                 var con1 = new SqlConnection(connectionString);
-                SqlCommand com1= new SqlCommand($@"INSERT INTO POL_PERSONS_INFORM (PERSON_ID,PERSONGUID,FAM_P4,IM_P4,OT_P4,Year_P4,Month_1_P4,Month_2_P4,Month_3_P4,Month_4_P4, Theme_P4,Date_P4,SPOSOB_P4,RESULT_P4,SOGLASIE_P4,MKB_P4) VALUES ({Vars.IDSZ},NEWID(),'{fam_p4.Text}','{im_p4.Text}','{ot_p4.Text}',{Year_p4.EditValue},{Month1.Text},{Month2.Text},{Month3.Text},{Month4.Text},'{Tema_yved_p4.Text}','{dateyved_p4.DateTime.ToString("yyyy-MM-dd")}','{Sposob_p4.Text}','{Result_p4.Text}','{Soglasie.EditValue}','{MKB.EditValue.ToString()}')", con);
+                SqlCommand com1= new SqlCommand($@"INSERT INTO POL_PERSONS_INFORM (PERSON_ID,PERSONGUID,Year_P4,Month_1_P4,Month_2_P4,Month_3_P4,Month_4_P4,Theme_P4,Date_P4,SPOSOB_P4,RESULT_P4,SOGLASIE_P4,MKB_P4) VALUES ({Vars.IDSZ},NEWID(),{Year_p4.EditValue},{Month1.Text},{Month2.Text},{Month3.Text},{Month4.Text},'{Tema_yved_p4.Text}','{dateyved_p4.DateTime.ToString("yyyy-MM-dd")}','{Sposob_p4.Text}','{Result_p4.Text}','{Soglasie.EditValue}','{MKB.EditValue.ToString()}')", con);
                 //var ll = MKB_combo.EditValue.ToString();
                 con.Open();
                 com.ExecuteNonQuery();
