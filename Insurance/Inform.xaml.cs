@@ -280,7 +280,7 @@ select *from(select
         {
           
                 Vars.IDSZ = Funcs.MyIds(inform_grid1.GetSelectedRowHandles(), inform_grid1);
-                inform_grid1.GetSelectedRowHandles
+         
                 var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
                 var con = new SqlConnection(connectionString);
                 SqlCommand com = new SqlCommand($@"INSERT INTO POL_PERSONS_INFORM (PERSON_ID,PERSONGUID,Month_P3,Year_P3,Theme_P3,Date_P3,SPOSOB_P3,RESULT_P3,VID_P3,PRIMECH) VALUES ({Vars.IDSZ},NEWID(),{month_p3.EditValue},{Year_p3.EditValue},'{Theme_p3.Text}','{Date_evd_p3.DateTime.ToString("yyyy-MM-dd")}','{Sposob_p3.Text}','{Result_p3.Text}','{Vid_meropr_p3.Text}','{Primech_p3.EditValue}')", con);
