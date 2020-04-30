@@ -283,7 +283,7 @@ select *from(select
         {
           
                 Vars.IDSZ = Funcs.MyIds(inform_grid1.GetSelectedRowHandles(), inform_grid1);
-         
+                inform_grid1.GetSelectedRowHandles();
                 var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
                 var con = new SqlConnection(connectionString);
                 SqlCommand com = new SqlCommand($@"INSERT INTO POL_PERSONS_INFORM (PERSON_ID,PERSONGUID,Month_P3,Year_P3,Theme_P3,Date_P3,SPOSOB_P3,RESULT_P3,VID_P3,PRIMECH) VALUES ({Vars.IDSZ},NEWID(),{month_p3.EditValue},{Year_p3.EditValue},'{Theme_p3.Text}','{Date_evd_p3.DateTime.ToString("yyyy-MM-dd")}','{Sposob_p3.Text}','{Result_p3.Text}','{Vid_meropr_p3.Text}','{Primech_p3.EditValue}')", con);
@@ -848,8 +848,45 @@ select *from(select
 
         private void TableView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            fam_p3.Text= inform_grid.GetFocusedRowCellValue("FAM").ToString();
+            fam_p4.Text = inform_grid.GetFocusedRowCellValue("FAM").ToString();
+            im_p3.Text = inform_grid.GetFocusedRowCellValue("IM").ToString();
+            im_p4.Text = inform_grid.GetFocusedRowCellValue("IM").ToString();
+            ot_p3.Text = inform_grid.GetFocusedRowCellValue("OT").ToString();
+            ot_p4.Text = inform_grid.GetFocusedRowCellValue("OT").ToString();
+
             var id = inform_grid.GetFocusedRowCellValue("ID");
-            var peopleList = MyReader.MySelect<INFORM_ALL>($@"select*from pol_persons_inform where person_id={id}", Properties.Settings.Default.DocExchangeConnectionString);
+            var peopleList = MyReader.MySelect<INFORM_ALL>($@"  select t0.ID_TFOMS,SURNAME,NAME,SECNAME,DR,POL,SNILS,DPFS_3,SN_POL_3,VIDPROF_3,Tema_3,DATE_UV_3,sposob_3,result_3,prim_3,
+KMKB, PM1,  PM2,  PM3,  PM4, DPFS_4,SN_POL_4,  sogl_4,  tema_4,Date_uv_4, sposob_4, result_4, prim_4 
+ from (select p.id, pp.id as ID_TFOMS,fam as SURNAME,im as NAME,ot as SECNAME,
+pp.dr as DR, w as POL, pp.SS as SNILS,pol.VPOLIS as DPFS_3,
+(case when pol.VPOLIS=3 then ENP else pol.SPOLIS+' '+pol.NPOLIS end) as SN_POL_3,vp3.Name as VIDPROF_3, 
+tp3.Name as Tema_3,Date_P3 as DATE_UV_3,
+sps.Name as sposob_3,rp3.Name as result_3,PRIMECH as prim_3
+ from POL_PERSONS_INFORM p
+ join POL_PERSONS pp on p.PERSONGUID=pp.IDGUID
+ left join lpu_39 l on pp.MO=l.MCOD
+ left join POL_POLISES pol on pp.EVENT_GUID=pol.EVENT_GUID
+ left join THEME_INFORM_P3 tp3 on p.Theme_P3=tp3.ID
+ left join RESULT_INFORM_P3 rp3 on p.RESULT_P3=rp3.ID
+ left join SPOSOB_INFORM sps on p.SPOSOB_P3=sps.ID
+ left join VID_MEROPR_INFORM_P3 vp3 on p.VID_P3=vp3.ID
+ where  p.PERSON_ID={id})
+  T0
+ left join
+ (select p.id, pp.id as ID_TFOMS, mkb_p4 as KMKB,
+Month_1_P4 as PM1, Month_2_P4 as PM2, Month_3_P4 as PM3, Month_4_P4 as PM4,
+pol.VPOLIS as DPFS_4,(case when pol.VPOLIS=3 then ENP else pol.SPOLIS+' '+pol.NPOLIS end)as SN_POL_4, 
+soglasie_p4 as sogl_4, tp4.Name as tema_4,Date_P4 as Date_uv_4,
+sps.Name as sposob_4,rp4.Name as result_4,PRIMECH as prim_4
+ from POL_PERSONS_INFORM p
+ join POL_PERSONS pp on p.PERSONGUID=pp.IDGUID
+ left join lpu_39 l on pp.MO=l.MCOD
+ left join POL_POLISES pol on pp.EVENT_GUID=pol.EVENT_GUID 
+ left join THEME_INFORM_P4 tp4 on p.Theme_P4=tp4.ID
+ left join RESULT_INFORM_P3 rp4 on p.RESULT_P4=rp4.ID
+ left join SPOSOB_INFORM sps on p.SPOSOB_P3=sps.ID
+ where p.PERSON_ID={id})T1 on t0.id=T1.id ", Properties.Settings.Default.DocExchangeConnectionString);
             inform_grid1.ItemsSource = peopleList;
             inform_grid1.View.FocusedRowHandle = -1;
         }
