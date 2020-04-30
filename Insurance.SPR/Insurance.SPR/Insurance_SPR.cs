@@ -110,32 +110,35 @@ namespace Insurance_SPR
     }
     public class INFORM_ALL
     {
+       
         public string SURNAME { get; set; }
         public string NAME { get; set; }
         public string SECNAME { get; set; }
         public DateTime? DR { get; set; }
         public int POL { get; set; }
-        public string SNILS { get; set; }
-        public int SCOMP { get; set; }
-        public string SN_POL { get; set; }
-        public int KOD_POL { get; set; }
-        public int KOD_POL1 { get; set; }
-        public string KMKB { get; set; }
-        public int DYEAR { get; set; }
+        public string SNILS { get; set; }        
+        public int DPFS_3 { get; set; }
+        public string SN_POL_3 { get; set; }
+        public string VIDPROF_3 { get; set; }        
+        public string Tema_3 { get; set; }
+        public DateTime DATE_UV_3 { get; set; }
+        public string SPOSOB_3 { get; set; }
+        public string RESULT_3 { get; set; }
+        public string prim_3 { get; set; }
+        //---------------------------------------------        
+        public string KMKB { get; set; }        
         public int PM1 { get; set; }
         public int PM2 { get; set; }
         public int PM3 { get; set; }
-        public int PM4 { get; set; }
-        public int ID_TFOMS { get; set; }
-        public string SMO { get; set; }
-        public int DPFS { get; set; }
-        public bool sogl { get; set; }
-        public int tema { get; set; }
-        public DateTime Date_uv { get; set; }
-        public int sposob { get; set; }
-        public int result { get; set; }
-        public string prim { get; set; }
-        public int VIDPROF { get; set; }
+        public int PM4 { get; set; }         
+        public int DPFS_4 { get; set; }
+        public string SN_POL_4 { get; set; }
+        public bool sogl_4 { get; set; }
+        public string tema_4 { get; set; }
+        public DateTime Date_uv_4 { get; set; }
+        public string sposob_4 { get; set; }
+        public string result_4 { get; set; }
+        public string prim_4 { get; set; }
 
     }
     public class P4_INFORM
