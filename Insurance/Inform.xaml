@@ -118,45 +118,49 @@
                 <Label Content="По:" Margin="5,15" Foreground="White" FontWeight="Bold" Width="20" Height="22" HorizontalContentAlignment="Right" VerticalAlignment="Top" Visibility="Visible"/>
                 <dxe:DateEdit x:Name="end_d" NullValueButtonPlacement="EditBox" MaskType="DateTimeAdvancingCaret" Margin="5,15" Height="22" Width="150" VerticalAlignment="Top"/>
             </StackPanel>
-            <dxlc:LayoutControl x:Name="infom_ctrl" HorizontalAlignment="Stretch" Height="282"  VerticalAlignment="Top"  Orientation="Horizontal">
-                <dxlc:LayoutGroup Header="Приложение 3" View="GroupBox" HorizontalAlignment="Stretch" >
-                    <dxlc:LayoutGroup dx:ScrollViewerTouchBehavior.IsEnabled="True" Orientation="Vertical" Serialization:SerializableItem.TypeName="LayoutGroup" Width="280">
-                        <dxlc:LayoutItem Label="Фамилия" Foreground="White">
-                            <dxe:ComboBoxEdit   CharacterCasing="Upper" x:Name="fam_p3" ItemsSource="{Binding}" DisplayMember="FAM" IsSynchronizedWithCurrentItem="True" IncrementalFiltering="True" ImmediatePopup="True" NullValueButtonPlacement="EditBox"  EditValue="FAM" ValidateOnTextInput="False" EditValuePostDelay="0"/>
-                        </dxlc:LayoutItem>
-                        <dxlc:LayoutItem Label="Имя" Foreground="White">
-                            <dxe:ComboBoxEdit CharacterCasing="Upper" x:Name="im_p3" ItemsSource="{Binding}" DisplayMember="IM" IsSynchronizedWithCurrentItem="True" IncrementalFiltering="True" ImmediatePopup="True" NullValueButtonPlacement="EditBox"  EditValue="IM" ValidateOnTextInput="False" EditValuePostDelay="0"/>
-                        </dxlc:LayoutItem>
-                        <dxlc:LayoutItem Label="Отчество" Foreground="White">
-                            <dxe:ComboBoxEdit CharacterCasing="Upper" x:Name="ot_p3" ItemsSource="{Binding}" DisplayMember="OT" IsSynchronizedWithCurrentItem="True" IncrementalFiltering="True" ImmediatePopup="True" NullValueButtonPlacement="EditBox"  EditValue="OT" ValidateOnTextInput="False" EditValuePostDelay="0"/>
-                        </dxlc:LayoutItem>
-                        <dxlc:LayoutItem Label="Месяц" Foreground="White">
-                            <dxe:TextEdit x:Name="month_p3" CharacterCasing="Upper" />
-                        </dxlc:LayoutItem>
-                        <dxlc:LayoutItem Label="Год" Foreground="White">
-                            <dxe:TextEdit x:Name="Year_p3" CharacterCasing="Upper" />
-                        </dxlc:LayoutItem>
+            <dxlc:LayoutControl x:Name="infom_ctrl" HorizontalAlignment="Stretch" Height="278"  VerticalAlignment="Top"  Orientation="Horizontal">
+                <dxlc:LayoutGroup dx:ScrollViewerTouchBehavior.IsEnabled="True" Orientation="Vertical" Serialization:SerializableItem.TypeName="LayoutGroup">
+                    <dxlc:LayoutGroup Header="Приложение 3" View="GroupBox" HorizontalAlignment="Stretch" >
+                        <dxlc:LayoutGroup dx:ScrollViewerTouchBehavior.IsEnabled="True" Orientation="Vertical" Serialization:SerializableItem.TypeName="LayoutGroup" Width="280">
+                            <dxlc:LayoutItem Label="Фамилия" Foreground="White">
+                                <dxe:ComboBoxEdit   CharacterCasing="Upper" x:Name="fam_p3" ItemsSource="{Binding}" DisplayMember="FAM" IsSynchronizedWithCurrentItem="True" IncrementalFiltering="True" ImmediatePopup="True" NullValueButtonPlacement="EditBox"  EditValue="FAM" ValidateOnTextInput="False" EditValuePostDelay="0"/>
+                            </dxlc:LayoutItem>
+                            <dxlc:LayoutItem Label="Имя" Foreground="White">
+                                <dxe:ComboBoxEdit CharacterCasing="Upper" x:Name="im_p3" ItemsSource="{Binding}" DisplayMember="IM" IsSynchronizedWithCurrentItem="True" IncrementalFiltering="True" ImmediatePopup="True" NullValueButtonPlacement="EditBox"  EditValue="IM" ValidateOnTextInput="False" EditValuePostDelay="0"/>
+                            </dxlc:LayoutItem>
+                            <dxlc:LayoutItem Label="Отчество" Foreground="White">
+                                <dxe:ComboBoxEdit CharacterCasing="Upper" x:Name="ot_p3" ItemsSource="{Binding}" DisplayMember="OT" IsSynchronizedWithCurrentItem="True" IncrementalFiltering="True" ImmediatePopup="True" NullValueButtonPlacement="EditBox"  EditValue="OT" ValidateOnTextInput="False" EditValuePostDelay="0"/>
+                            </dxlc:LayoutItem>
+                            <dxlc:LayoutItem Label="Месяц" Foreground="White">
+                                <dxe:TextEdit x:Name="month_p3" CharacterCasing="Upper" GotFocus="Month_p3_GotFocus" />
+                            </dxlc:LayoutItem>
+                            <dxlc:LayoutItem Label="Год" Foreground="White">
+                                <dxe:TextEdit x:Name="Year_p3" CharacterCasing="Upper" />
+                            </dxlc:LayoutItem>
+                        </dxlc:LayoutGroup>
+                        <dxlc:LayoutGroup dx:ScrollViewerTouchBehavior.IsEnabled="True" Orientation="Vertical" Serialization:SerializableItem.TypeName="LayoutGroup">
+                            <dxlc:LayoutItem Label="Тема увед" Foreground="White">
+                                <dxe:ComboBoxEdit HorizontalScrollBarVisibility="Disabled" CharacterCasing="Upper" x:Name="Theme_p3" ItemsSource="{Binding}" DisplayMember="Name" IsSynchronizedWithCurrentItem="True" IncrementalFiltering="True" ImmediatePopup="True" NullValueButtonPlacement="EditBox"  EditValue="ID" ValidateOnTextInput="False" EditValuePostDelay="0"/>
+                            </dxlc:LayoutItem>
+                            <dxlc:LayoutItem Label="Дата увед" Foreground="#FFF7F5F5">
+                                <dxe:DateEdit x:Name="Date_evd_p3" HorizontalScrollBarVisibility="Disabled" ValidateOnTextInput="False" EditValuePostDelay="0"/>
+                            </dxlc:LayoutItem>
+                            <dxlc:LayoutItem Label="Способ" Foreground="#FFF9F4F4">
+                                <dxe:ComboBoxEdit CharacterCasing="Upper" x:Name="Sposob_p3" HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding}" DisplayMember="Name" IsSynchronizedWithCurrentItem="True" IncrementalFiltering="True" ImmediatePopup="True" NullValueButtonPlacement="EditBox"  EditValue="ID" ValidateOnTextInput="False" EditValuePostDelay="0"/>
+                            </dxlc:LayoutItem>
+                            <dxlc:LayoutItem Label="Результат" Foreground="#FFFBF7F7">
+                                <dxe:ComboBoxEdit CharacterCasing="Upper" x:Name="Result_p3" HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding}" DisplayMember="Name" IsSynchronizedWithCurrentItem="True" IncrementalFiltering="True" ImmediatePopup="True" NullValueButtonPlacement="EditBox"  EditValue="ID" ValidateOnTextInput="False" EditValuePostDelay="0"/>
+                            </dxlc:LayoutItem>
+                            <dxlc:LayoutItem Label="Вид мероприятий" Foreground="#FFFBF9F9">
+                                <dxe:ComboBoxEdit CharacterCasing="Upper" x:Name="Vid_meropr_p3" HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding}" DisplayMember="Name" IsSynchronizedWithCurrentItem="True" IncrementalFiltering="True" ImmediatePopup="True" NullValueButtonPlacement="EditBox"  EditValue="ID" ValidateOnTextInput="False" EditValuePostDelay="0"/>
+                            </dxlc:LayoutItem>
+                            <dxlc:LayoutItem Label="Примечание" Foreground="#FFFBF9F9">
+                                <dxe:TextEdit x:Name="Primech_p3" CharacterCasing="Upper" />
+                            </dxlc:LayoutItem>
+                        </dxlc:LayoutGroup>
                     </dxlc:LayoutGroup>
-                    <dxlc:LayoutGroup dx:ScrollViewerTouchBehavior.IsEnabled="True" Orientation="Vertical" Serialization:SerializableItem.TypeName="LayoutGroup">
-                        <dxlc:LayoutItem Label="Тема увед" Foreground="White">
-                            <dxe:ComboBoxEdit HorizontalScrollBarVisibility="Disabled" CharacterCasing="Upper" x:Name="Theme_p3" ItemsSource="{Binding}" DisplayMember="Name" IsSynchronizedWithCurrentItem="True" IncrementalFiltering="True" ImmediatePopup="True" NullValueButtonPlacement="EditBox"  EditValue="ID" ValidateOnTextInput="False" EditValuePostDelay="0"/>
-                        </dxlc:LayoutItem>
-                        <dxlc:LayoutItem Label="Дата увед" Foreground="#FFF7F5F5">
-                            <dxe:DateEdit x:Name="Date_evd_p3" HorizontalScrollBarVisibility="Disabled" ValidateOnTextInput="False" EditValuePostDelay="0"/>
-                        </dxlc:LayoutItem>
-                        <dxlc:LayoutItem Label="Способ" Foreground="#FFF9F4F4">
-                            <dxe:ComboBoxEdit CharacterCasing="Upper" x:Name="Sposob_p3" HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding}" DisplayMember="Name" IsSynchronizedWithCurrentItem="True" IncrementalFiltering="True" ImmediatePopup="True" NullValueButtonPlacement="EditBox"  EditValue="ID" ValidateOnTextInput="False" EditValuePostDelay="0"/>
-                        </dxlc:LayoutItem>
-                        <dxlc:LayoutItem Label="Результат" Foreground="#FFFBF7F7">
-                            <dxe:ComboBoxEdit CharacterCasing="Upper" x:Name="Result_p3" HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding}" DisplayMember="Name" IsSynchronizedWithCurrentItem="True" IncrementalFiltering="True" ImmediatePopup="True" NullValueButtonPlacement="EditBox"  EditValue="ID" ValidateOnTextInput="False" EditValuePostDelay="0"/>
-                        </dxlc:LayoutItem>
-                        <dxlc:LayoutItem Label="Вид мероприятий" Foreground="#FFFBF9F9">
-                            <dxe:ComboBoxEdit CharacterCasing="Upper" x:Name="Vid_meropr_p3" HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding}" DisplayMember="Name" IsSynchronizedWithCurrentItem="True" IncrementalFiltering="True" ImmediatePopup="True" NullValueButtonPlacement="EditBox"  EditValue="ID" ValidateOnTextInput="False" EditValuePostDelay="0"/>
-                        </dxlc:LayoutItem>
-                        <dxlc:LayoutItem Label="Примечание" Foreground="#FFFBF9F9">
-                            <dxe:TextEdit x:Name="Primech_p3" CharacterCasing="Upper" />
-                        </dxlc:LayoutItem>
-                    </dxlc:LayoutGroup>
+
+
                 </dxlc:LayoutGroup>
                 <dxlc:LayoutGroup Header="Приложение 4" View="GroupBox"  HorizontalAlignment="Stretch">
                     <dxlc:LayoutGroup dx:ScrollViewerTouchBehavior.IsEnabled="True" Orientation="Vertical" Serialization:SerializableItem.TypeName="LayoutGroup" Width="280">
@@ -211,11 +215,31 @@
                     </dxlc:LayoutGroup>
 
                 </dxlc:LayoutGroup>
-
+               
 
             </dxlc:LayoutControl>
 
-            <Button x:Name="Adder_Copy1"  HorizontalAlignment="Left" Margin="199,-55,0,0" VerticalAlignment="Top" Width="197" Height="50" Foreground="White" Click="Adder_Copy1_Click" Style="{StaticResource myButtonStyle1}">
+            <Button x:Name="Adder_Copy"  HorizontalAlignment="Left" Margin="220,-55,0,-263" VerticalAlignment="Top" Width="192" Height="52" Foreground="White" Style="{StaticResource myButtonStyle1}" Click="Adder_Copy_Click">
+                <Button x:Name="Adder_Copy4"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="192" Height="50" Foreground="White" Click="Adder_Copy4_Click" Style="{StaticResource myButtonStyle1}">
+                    <StackPanel x:Name="stack_btns1" Orientation="Horizontal" Width="182" >
+                        <!--Margin="5,0"-->
+                        <Image Source="Insurance_icons/Inform.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
+                            <Image.OpacityMask>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="Black" Offset="0"/>
+                                    <GradientStop Color="White" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Image.OpacityMask>
+
+                        </Image>
+                        <TextBlock x:Name="btn_load_txt1" Text="Проинформировать | П4" VerticalAlignment="Center"  TextAlignment="Center" Margin="0,0" Width="151"  Foreground="White" FontWeight="Bold" FontSize="12"   />
+
+                    </StackPanel>
+                </Button>
+
+            </Button>
+
+            <Button x:Name="Adder_Copy1"  HorizontalAlignment="Left" Margin="420,-55,0,0" VerticalAlignment="Top" Width="197" Height="50" Foreground="White" Click="Adder_Copy1_Click" Style="{StaticResource myButtonStyle1}">
                 <Button x:Name="Adder_Copy2"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="197" Height="40" Foreground="White" Click="Adder_Click" Style="{StaticResource myButtonStyle1}">
                     <StackPanel x:Name="stack_btns2" Orientation="Horizontal" Width="197" >
                         <!--Margin="5,0"-->
@@ -234,9 +258,9 @@
                 </Button>
             </Button>
 
-            <Button x:Name="Adder"  HorizontalAlignment="Left" Margin="13,-55,0,0" VerticalAlignment="Top" Width="178" Height="50" Foreground="White" Click="Adder_Click" Style="{StaticResource myButtonStyle1}">
-                <Button x:Name="Adder_Copy3"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="178" Height="50" Foreground="White" Click="Adder_Click" Style="{StaticResource myButtonStyle1}">
-                    <StackPanel x:Name="stack_btns3" Orientation="Horizontal" Width="178" >
+            <Button x:Name="Adder"  HorizontalAlignment="Left" Margin="13,-55,0,0" VerticalAlignment="Top" Width="192" Height="52" Foreground="White" Click="Adder_Click" Style="{StaticResource myButtonStyle1}">
+                <Button x:Name="Adder_Copy3"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="192" Height="50" Foreground="White" Click="Adder_Click" Style="{StaticResource myButtonStyle1}">
+                    <StackPanel x:Name="stack_btns3" Orientation="Horizontal" Width="182" >
                         <!--Margin="5,0"-->
                         <Image Source="Insurance_icons/Inform.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
                             <Image.OpacityMask>
@@ -247,76 +271,77 @@
                             </Image.OpacityMask>
 
                         </Image>
-                        <TextBlock x:Name="btn_load_txt3" Text="Проинформировать" VerticalAlignment="Center"  TextAlignment="Center" Margin="0,0" Width="149"  Foreground="White" FontWeight="Bold" FontSize="12"   />
+                        <TextBlock x:Name="btn_load_txt3" Text="Проинформировать | П3" VerticalAlignment="Center"  TextAlignment="Center" Margin="0,0" Width="151"  Foreground="White" FontWeight="Bold" FontSize="12"   />
 
                     </StackPanel>
                 </Button>
-            </Button>
-          <ScrollViewer HorizontalScrollBarVisibility="Auto">
-            <StackPanel Orientation="Vertical">
-                <dxg:GridControl x:Name="inform_grid" AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True" Margin="10,10,10,0" VerticalAlignment="Top" OpacityMask="#FF9BD8DB"  SelectionMode="Row" MaxHeight="500" MinHeight="200">
-                    <!--dx:DXSerializer.StoreLayoutMode="UI" dx:DXSerializer.SerializationID="inform_grid_inf" AutoGeneratedColumns="inform_grid_AutoGeneratedColumns"-->
-                    <dxg:GridControl.GroupSummary>
-                        <dxg:GridSummaryItem SummaryType="Count" />
-                    </dxg:GridControl.GroupSummary>
 
-                    <dxg:GridControl.TotalSummary>
-                        <dxg:GridSummaryItem SummaryType="Count" />
-                    </dxg:GridControl.TotalSummary>
-                    <dxg:GridControl.View>
-                        <dxg:TableView FilterEditorShowOperandTypeIcon="True" WaitIndicatorType="Panel"  ShowTotalSummary="True" ShowCheckBoxSelectorColumn="True"  CheckBoxSelectorColumnWidth="50"
+            </Button>
+            <ScrollViewer HorizontalScrollBarVisibility="Auto">
+                <StackPanel Orientation="Vertical">
+                    <dxg:GridControl x:Name="inform_grid" AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True" Margin="10,10,10,0" VerticalAlignment="Top" OpacityMask="#FF9BD8DB"  SelectionMode="Row" MaxHeight="500" MinHeight="200">
+                        <!--dx:DXSerializer.StoreLayoutMode="UI" dx:DXSerializer.SerializationID="inform_grid_inf" AutoGeneratedColumns="inform_grid_AutoGeneratedColumns"-->
+                        <dxg:GridControl.GroupSummary>
+                            <dxg:GridSummaryItem SummaryType="Count" />
+                        </dxg:GridControl.GroupSummary>
+
+                        <dxg:GridControl.TotalSummary>
+                            <dxg:GridSummaryItem SummaryType="Count" />
+                        </dxg:GridControl.TotalSummary>
+                        <dxg:GridControl.View>
+                            <dxg:TableView FilterEditorShowOperandTypeIcon="True" WaitIndicatorType="Panel"  ShowTotalSummary="True" ShowCheckBoxSelectorColumn="True"  CheckBoxSelectorColumnWidth="50"
                                RetainSelectionOnClickOutsideCheckBoxSelector="False" ShowAutoFilterRow="True" AllowConditionalFormattingMenu="True" AllowFixedColumnMenu="True" ColumnFilterPopupMode="Excel" 
                                ShowCriteriaInAutoFilterRow="False" EditFormShowMode="Dialog" EditFormPostConfirmation="YesNo" ShowEditFormUpdateCancelButtons="False" ShowEditFormOnEnterKey="False" EditFormColumnCount="1" 
-                               EditFormPostMode="Cached" MergedGroupingMode="Always" AllowMergedGrouping="True" Margin="0,0,-2,-2" AutoWidth="False" MouseDoubleClick="TableView_MouseDoubleClick" ShowEditFormOnF2Key="True" ShowEditFormOnDoubleClick="False">
+                               EditFormPostMode="Cached" MergedGroupingMode="Always" AllowMergedGrouping="True" Margin="0,0,-2,-2" AutoWidth="False" MouseDoubleClick="TableView_MouseDoubleClick" ShowEditFormOnF2Key="True" ShowEditFormOnDoubleClick="False" CanSelectRow="TableView_CanSelectRow" RowDoubleClick="TableView_RowDoubleClick">
 
-                            <dxg:TableView.FormatConditions>
-                                <dxg:FormatCondition Expression="[UNLOAD] = True" FieldName="" ApplyToRow="True">
-                                    <dx:Format Background="#FF9BBB59" />
-                                </dxg:FormatCondition>
-                                <dxg:FormatCondition ApplyToRow="True" FieldName="" Expression="[DSTOP] Between(#1900-01-01#, Today())">
-                                    <dx:Format Background="#FFFF9B98" />
-                                </dxg:FormatCondition>
-                            </dxg:TableView.FormatConditions>
-                            <dxg:TableView.RowCellMenuCustomizations>
-                                <dxb:BarButtonItem x:Name="ViewFilesItem" IsEnabled="False"  Content="Просмотреть файл(ы)" ItemClick="Files_ItemClick"/>
-                            </dxg:TableView.RowCellMenuCustomizations>
-                        </dxg:TableView>
-
-
-                    </dxg:GridControl.View>
-                </dxg:GridControl>
+                                <dxg:TableView.FormatConditions>
+                                    <dxg:FormatCondition Expression="[UNLOAD] = True" FieldName="" ApplyToRow="True">
+                                        <dx:Format Background="#FF9BBB59" />
+                                    </dxg:FormatCondition>
+                                    <dxg:FormatCondition ApplyToRow="True" FieldName="" Expression="[DSTOP] Between(#1900-01-01#, Today())">
+                                        <dx:Format Background="#FFFF9B98" />
+                                    </dxg:FormatCondition>
+                                </dxg:TableView.FormatConditions>
+                                <dxg:TableView.RowCellMenuCustomizations>
+                                    <dxb:BarButtonItem x:Name="ViewFilesItem" IsEnabled="False"  Content="Просмотреть файл(ы)" ItemClick="Files_ItemClick"/>
+                                </dxg:TableView.RowCellMenuCustomizations>
+                            </dxg:TableView>
 
 
-                <dxg:GridControl x:Name="inform_grid1" AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True" Margin="10,10,10,8" MaxHeight="200" OpacityMask="#FF9BD8DB"  SelectionMode="Row">
-                    <dxg:GridControl.GroupSummary>
-                        <dxg:GridSummaryItem SummaryType="Count" />
-                    </dxg:GridControl.GroupSummary>
+                        </dxg:GridControl.View>
+                    </dxg:GridControl>
 
-                    <dxg:GridControl.TotalSummary>
-                        <dxg:GridSummaryItem SummaryType="Count" />
-                    </dxg:GridControl.TotalSummary>
-                    <dxg:GridControl.View>
-                        <dxg:TableView FilterEditorShowOperandTypeIcon="True" WaitIndicatorType="Panel"  ShowTotalSummary="True" ShowCheckBoxSelectorColumn="True"  CheckBoxSelectorColumnWidth="50"
+
+                    <dxg:GridControl x:Name="inform_grid1" AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True" Margin="10,10,10,8" MaxHeight="200" OpacityMask="#FF9BD8DB"  SelectionMode="Row">
+                        <dxg:GridControl.GroupSummary>
+                            <dxg:GridSummaryItem SummaryType="Count" />
+                        </dxg:GridControl.GroupSummary>
+
+                        <dxg:GridControl.TotalSummary>
+                            <dxg:GridSummaryItem SummaryType="Count" />
+                        </dxg:GridControl.TotalSummary>
+                        <dxg:GridControl.View>
+                            <dxg:TableView FilterEditorShowOperandTypeIcon="True" WaitIndicatorType="Panel"  ShowTotalSummary="True" ShowCheckBoxSelectorColumn="True"  CheckBoxSelectorColumnWidth="50"
                                RetainSelectionOnClickOutsideCheckBoxSelector="False" ShowAutoFilterRow="True" AllowConditionalFormattingMenu="True" AllowFixedColumnMenu="True" ColumnFilterPopupMode="Excel" 
                                ShowCriteriaInAutoFilterRow="False" EditFormShowMode="Dialog" EditFormPostConfirmation="YesNo" ShowEditFormUpdateCancelButtons="False" ShowEditFormOnEnterKey="False" EditFormColumnCount="1" 
                                EditFormPostMode="Cached" MergedGroupingMode="Always" AllowMergedGrouping="True" Margin="0,0,-2,0" AutoWidth="True" MaxHeight="400">
 
-                            <dxg:TableView.FormatConditions>
-                                <dxg:FormatCondition Expression="[UNLOAD] = True" FieldName="" ApplyToRow="True">
-                                    <dx:Format Background="#FF9BBB59" />
-                                </dxg:FormatCondition>
-                                <dxg:FormatCondition ApplyToRow="True" FieldName="" Expression="[DSTOP] Between(#1900-01-01#, Today())">
-                                    <dx:Format Background="#FFFF9B98" />
-                                </dxg:FormatCondition>
-                            </dxg:TableView.FormatConditions>
-                        </dxg:TableView>
+                                <dxg:TableView.FormatConditions>
+                                    <dxg:FormatCondition Expression="[UNLOAD] = True" FieldName="" ApplyToRow="True">
+                                        <dx:Format Background="#FF9BBB59" />
+                                    </dxg:FormatCondition>
+                                    <dxg:FormatCondition ApplyToRow="True" FieldName="" Expression="[DSTOP] Between(#1900-01-01#, Today())">
+                                        <dx:Format Background="#FFFF9B98" />
+                                    </dxg:FormatCondition>
+                                </dxg:TableView.FormatConditions>
+                            </dxg:TableView>
 
 
-                    </dxg:GridControl.View>
-                </dxg:GridControl>
-            </StackPanel>
-          </ScrollViewer>
+                        </dxg:GridControl.View>
+                    </dxg:GridControl>
+                </StackPanel>
+            </ScrollViewer>
         </StackPanel>
-        
+
     </Grid>
 </Window>

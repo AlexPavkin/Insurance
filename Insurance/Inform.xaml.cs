@@ -88,13 +88,13 @@ namespace Insurance
                     im_p4.DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_im", Properties.Settings.Default.DocExchangeConnectionString);
                     ot_p4.DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_ot", Properties.Settings.Default.DocExchangeConnectionString);
                     MKB.DataContext = MyReader.MySelect<MKB>(@"SELECT IDDS,DSNAME,NameWithID  FROM M001_KSG", Properties.Settings.Default.DocExchangeConnectionString);
-                    Theme_p3.DataContext = MyReader.MySelect<THEME_INFORM_P3>(@"SELECT ID ,Name  FROM THEME_INFORM_P3", Properties.Settings.Default.DocExchangeConnectionString);
+                    Theme_p3.DataContext = MyReader.MySelect<THEME_INFORM_P3>(@"SELECT ID ,Name,NameWithID  FROM THEME_INFORM_P3", Properties.Settings.Default.DocExchangeConnectionString);
                     Sposob_p3.DataContext = MyReader.MySelect<SPOSOB_INFORM>(@"SELECT ID ,Name  FROM SPOSOB_INFORM", Properties.Settings.Default.DocExchangeConnectionString);
                     Result_p3.DataContext = MyReader.MySelect<RESULT_INFORM_P3>(@"SELECT ID ,Name  FROM RESULT_INFORM_P3", Properties.Settings.Default.DocExchangeConnectionString);
                     Vid_meropr_p3.DataContext = MyReader.MySelect<VID_MEROPR_INFORM_P3>(@"SELECT ID ,Name  FROM VID_MEROPR_INFORM_P3", Properties.Settings.Default.DocExchangeConnectionString);
                     Tema_yved_p4.DataContext = MyReader.MySelect<THEME_INFORM_P4>(@"SELECT ID ,Name  FROM THEME_INFORM_P4", Properties.Settings.Default.DocExchangeConnectionString);
                     Sposob_p4.DataContext = MyReader.MySelect<SPOSOB_INFORM>(@"SELECT ID ,Name  FROM SPOSOB_INFORM", Properties.Settings.Default.DocExchangeConnectionString);
-                    Result_p4.DataContext = MyReader.MySelect<SPOSOB_INFORM>(@"SELECT TOP(4) ID ,Name  FROM RESULT_INFORM_P3", Properties.Settings.Default.DocExchangeConnectionString);
+                    Result_p4.DataContext = MyReader.MySelect<RESULT_INFORM_P4>(@"SELECT TOP(4) ID ,Name  FROM RESULT_INFORM_P3", Properties.Settings.Default.DocExchangeConnectionString);
 
 
                     //Adder.Visibility = Visibility.Visible;
@@ -278,15 +278,40 @@ select *from(select
         {
            this.Close();
         }
+        private string SELECTVAIN(string selectcmd, string connstring)
+        {
+            object UNLOAD = "";
+            using (SqlConnection connection = new SqlConnection(connstring))
+            {
+                connection.Open();
+                SqlCommand command = new SqlCommand(selectcmd, connection);
+                SqlDataReader reader = command.ExecuteReader();
+
+                if (reader.HasRows) // если есть данные
+                {
+                    while (reader.Read()) // построчно считываем данные
+                    {
+                        UNLOAD = reader.GetValue(0);
+
+                    }
+                }
+
+                reader.Close();
+            }
+
+            return UNLOAD.ToString();
+        }
 
         private void Adder_Click(object sender, RoutedEventArgs e)
         {
-          
-                Vars.IDSZ = Funcs.MyIds(inform_grid1.GetSelectedRowHandles(), inform_grid1);
-         
-                var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
+            var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
+            Vars.IDSZ = Funcs.MyIds(inform_grid.GetSelectedRowHandles(), inform_grid);
+            string idguid = SELECTVAIN($@"SELECT IDGUID  FROM POL_PERSONS where id = '{Vars.IDSZ}'", connectionString);
+           
+            
+   
                 var con = new SqlConnection(connectionString);
-                SqlCommand com = new SqlCommand($@"INSERT INTO POL_PERSONS_INFORM (PERSON_ID,PERSONGUID,Month_P3,Year_P3,Theme_P3,Date_P3,SPOSOB_P3,RESULT_P3,VID_P3,PRIMECH) VALUES ({Vars.IDSZ},NEWID(),{month_p3.EditValue},{Year_p3.EditValue},'{Theme_p3.Text}','{Date_evd_p3.DateTime.ToString("yyyy-MM-dd")}','{Sposob_p3.Text}','{Result_p3.Text}','{Vid_meropr_p3.Text}','{Primech_p3.EditValue}')", con);
+                SqlCommand com = new SqlCommand($@"INSERT INTO POL_PERSONS_INFORM (PERSON_ID,PERSONGUID,Month_P3,Year_P3,Theme_P3,Date_P3,SPOSOB_P3,RESULT_P3,VID_P3,PRIMECH) VALUES ({Vars.IDSZ},'{idguid}',{month_p3.EditValue},{Year_p3.EditValue},{((Insurance_SPR.THEME_INFORM_P3)Theme_p3.EditValue).ID},'{Date_evd_p3.DateTime.ToString("yyyy-MM-dd")}',{((Insurance_SPR.SPOSOB_INFORM)Sposob_p3.EditValue).ID},{((Insurance_SPR.RESULT_INFORM_P3)Result_p3.EditValue).ID},{((Insurance_SPR.VID_MEROPR_INFORM_P3)Vid_meropr_p3.EditValue).ID},'{Primech_p3.EditValue}')", con);
                 con.Open();
                 com.ExecuteNonQuery();
                 con.Close();
@@ -295,22 +320,7 @@ select *from(select
                 int b = 1;
                 Message me = new Message(m, t, b);
                 me.ShowDialog();
-            
-          
-                Vars.IDSZ = Funcs.MyIds(inform_grid.GetSelectedRowHandles(), inform_grid);
-                var connectionString1 = Properties.Settings.Default.DocExchangeConnectionString;
-                var con1 = new SqlConnection(connectionString);
-                SqlCommand com1= new SqlCommand($@"INSERT INTO POL_PERSONS_INFORM (PERSON_ID,PERSONGUID,Year_P4,Month_1_P4,Month_2_P4,Month_3_P4,Month_4_P4,Theme_P4,Date_P4,SPOSOB_P4,RESULT_P4,SOGLASIE_P4,MKB_P4) VALUES ({Vars.IDSZ},NEWID(),{Year_p4.EditValue},{Month1.Text},{Month2.Text},{Month3.Text},{Month4.Text},'{Tema_yved_p4.Text}','{dateyved_p4.DateTime.ToString("yyyy-MM-dd")}','{Sposob_p4.Text}','{Result_p4.Text}','{Soglasie.EditValue}','{MKB.EditValue.ToString()}')", con);
-                //var ll = MKB_combo.EditValue.ToString();
-                con.Open();
-                com.ExecuteNonQuery();
-                con.Close();
-                string m1 = "ЗЛ успешно проинформированы! Приложение 4";
-                string t1 = "Сообщение!";
-                int b1 = 1;
-                Message me1 = new Message(m1, t1, b1);
-                me.ShowDialog();
-            
+                      
         }
         private void Del_file_btn_Click(object sender, RoutedEventArgs e)
         {            
@@ -848,10 +858,61 @@ select *from(select
 
         private void TableView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+
+
             var id = inform_grid.GetFocusedRowCellValue("ID");
             var peopleList = MyReader.MySelect<INFORM_ALL>($@"select*from pol_persons_inform where person_id={id}", Properties.Settings.Default.DocExchangeConnectionString);
             inform_grid1.ItemsSource = peopleList;
             inform_grid1.View.FocusedRowHandle = -1;
+
+        }
+
+        private void Adder_Copy_Click(object sender, RoutedEventArgs e)
+        {
+          
+
+
+        }
+
+        private void Adder_Copy4_Click(object sender, RoutedEventArgs e)
+        {
+            var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
+            Vars.IDSZ = Funcs.MyIds(inform_grid.GetSelectedRowHandles(), inform_grid);
+            string idguid = SELECTVAIN($@"SELECT IDGUID  FROM POL_PERSONS where id = '{Vars.IDSZ}'", connectionString);
+
+
+
+            var con = new SqlConnection(connectionString);
+            SqlCommand com = new SqlCommand($@"INSERT INTO POL_PERSONS_INFORM (PERSON_ID,PERSONGUID,Year_P4,Month_1_P4,Month_2_P4,Month_3_P4,Month_4_P4,Theme_P4,Date_P4,SPOSOB_P4,RESULT_P4,SOGLASIE_P4,MKB_P4) VALUES ({Vars.IDSZ},'{idguid}',{Year_p4.EditValue},{Month1.EditValue},{Month2.EditValue},{Month3.EditValue},{Month4.EditValue},{((Insurance_SPR.THEME_INFORM_P4)Tema_yved_p4.EditValue).ID},'{dateyved_p4.DateTime.ToString("yyyy-MM-dd")}',{((Insurance_SPR.SPOSOB_INFORM)Sposob_p4.EditValue).ID},{((Insurance_SPR.RESULT_INFORM_P4)Result_p4.EditValue).ID},{Soglasie.EditValue.ToString().ToUpper().Replace("TRUE","1").Replace("FALSE","2")},'{((Insurance_SPR.MKB)MKB.EditValue).IDDS}')", con);
+            con.Open();
+            com.ExecuteNonQuery();
+            con.Close();
+            string m = "ЗЛ успешно проинформированы! Приложение 4";
+            string t = "Сообщение!";
+            int b = 1;
+            Message me = new Message(m, t, b);
+            me.ShowDialog();
+        }
+
+        private void TableView_CanSelectRow(object sender, DevExpress.Xpf.Grid.CanSelectRowEventArgs e)
+        {
+          
+        }
+
+        private void TableView_RowDoubleClick(object sender, DevExpress.Xpf.Grid.RowDoubleClickEventArgs e)
+        {
+
+         
+        }
+
+        private void Month_p3_GotFocus(object sender, RoutedEventArgs e)
+        {
+            fam_p3.Text = inform_grid.GetFocusedRowCellValue("FAM").ToString();
+            fam_p4.Text = inform_grid.GetFocusedRowCellValue("FAM").ToString();
+            im_p3.Text = inform_grid.GetFocusedRowCellValue("IM").ToString();
+            im_p4.Text = inform_grid.GetFocusedRowCellValue("IM").ToString();
+            ot_p3.Text = inform_grid.GetFocusedRowCellValue("OT").ToString();
+            ot_p4.Text = inform_grid.GetFocusedRowCellValue("OT").ToString();
         }
     }
     

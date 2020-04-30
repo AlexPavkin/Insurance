@@ -381,6 +381,11 @@ namespace Insurance_SPR
         public int ID { get; set; }
         public string Name { get; set; }
     }
+    public class RESULT_INFORM_P4
+    {
+        public int ID { get; set; }
+        public string Name { get; set; }
+    }
     public class SPOSOB_INFORM
     {
         public int ID { get; set; }
@@ -390,6 +395,7 @@ namespace Insurance_SPR
     {
         public int ID { get; set; }
         public string Name { get; set; }
+        public string NameWithID { get; set; }
     }
     public class THEME_INFORM_P4
     {
