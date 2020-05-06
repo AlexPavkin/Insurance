@@ -1298,14 +1298,14 @@ where PERSON_ID=pp.ID and pin.id=(select max(id) from POL_PERSONS_INFORM where P
 
         private void Poisk1_Copy_Click(object sender, RoutedEventArgs e)
         {
-            POISKVLADIK.FAM_TFOMS = FAM_TFOMS.Text;
-            POISKVLADIK.IM_TFOMS = IM_TFOMS.Text;
-            POISKVLADIK.OT_TFOMS = OT_TFOMS.Text;
-            POISKVLADIK.DR_TFOMS = DR_TFOMS.Text;
+            POISKVLADIK.FAM_TFOMS = FAM_TFOMS.Text.Trim();
+            POISKVLADIK.IM_TFOMS = IM_TFOMS.Text.Trim();
+            POISKVLADIK.OT_TFOMS = OT_TFOMS.Text.Trim();
+            POISKVLADIK.DR_TFOMS = DR_TFOMS.Text.Trim();
             POISKVLADIK.VIDPOLIS_TFOMS = VIDPOLIS_TFOMS.Text;
             POISKVLADIK.SNILS_TFOMS = SNILS_TFOMS.Text;
             POISKVLADIK.POLIS_TFOMS = POLIS_TFOMS.Text;
-            POISKVLADIK.ENP_TFOMS = ENP_TFOMS.Text;
+            POISKVLADIK.ENP_TFOMS = ENP_TFOMS.Text.Trim();
             POISKVLADIK.MR_TFOMS = MR_TFOMS.Text;
             POISKVLADIK.POLIKLIN_TFOMS = POLIKLIN_TFOMS.Text;
             POISKVLADIK.DATE_PRIKREP_TFOMS = DATE_PRIKREP_TFOMS.Text;

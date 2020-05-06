@@ -745,6 +745,9 @@
                                                     <dxlc:LayoutItem Label="Имя" LabelHorizontalAlignment="Right">
                                                         <dxe:ComboBoxEdit CharacterCasing="Upper" x:Name="im" NullValueButtonPlacement="EditBox" ImmediatePopup="True" AutoComplete="False" FilterCondition="Contains" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding}" EditValue="IM" DisplayMember="IM" ValidateOnTextInput="False" IncrementalFiltering="True" ProcessNewValue="Im_ProcessNewValue" />
                                                     </dxlc:LayoutItem>
+                                                    <dxlc:LayoutItem Label="Отчество" LabelHorizontalAlignment="Right">
+                                                        <dxe:ComboBoxEdit CharacterCasing="Upper" x:Name="ot" NullValueButtonPlacement="EditBox" ImmediatePopup="True" AutoComplete="False" FilterCondition="Contains" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding}" EditValue="OT" DisplayMember="OT" ValidateOnTextInput="False" IncrementalFiltering="True" LostFocus="Ot_LostFocus" ProcessNewValue="Ot_ProcessNewValue" />
+                                                    </dxlc:LayoutItem>
                                                     <dxlc:LayoutItem Label="Дата рождения" LabelHorizontalAlignment="Right" FontWeight="Bold">
                                                         <dxe:DateEdit x:Name="dr" NullValueButtonPlacement="EditBox" MaskType="DateTimeAdvancingCaret" LostFocus="Dr_LostFocus" PreviewKeyDown="Dr_PreviewKeyDown" />
                                                     </dxlc:LayoutItem>
@@ -769,9 +772,7 @@
                                                     <dxlc:LayoutItem Label="Кем выдан" LabelHorizontalAlignment="Right" FontWeight="Bold">
                                                         <dxe:ComboBoxEdit CharacterCasing="Upper" x:Name="kem_vid" NullValueButtonPlacement="EditBox" ImmediatePopup="True" AutoComplete="False" FilterCondition="Contains" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding}" EditValue="NAME" DisplayMember="NAME" ValidateOnTextInput="False" IncrementalFiltering="True" ProcessNewValue="Kem_vid_ProcessNewValue" />
                                                     </dxlc:LayoutItem>
-                                                    <dxlc:LayoutItem Label="Отчество" LabelHorizontalAlignment="Right">
-                                                        <dxe:ComboBoxEdit CharacterCasing="Upper" x:Name="ot" NullValueButtonPlacement="EditBox" ImmediatePopup="True" AutoComplete="False" FilterCondition="Contains" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding}" EditValue="OT" DisplayMember="OT" ValidateOnTextInput="False" IncrementalFiltering="True" LostFocus="Ot_LostFocus" ProcessNewValue="Ot_ProcessNewValue" />
-                                                    </dxlc:LayoutItem>
+                                                 
                                                 </dxlc:LayoutGroup>
                                                 <dxlc:LayoutGroup dx:ScrollViewerTouchBehavior.IsEnabled="True" Orientation="Vertical" Serialization:SerializableItem.TypeName="LayoutGroup">
                                                     <dxlc:LayoutItem Label="Код подразделения" LabelHorizontalAlignment="Right">
