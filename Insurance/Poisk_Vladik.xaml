@@ -70,11 +70,11 @@
     </Window.Resources>
     <Grid Background="#FF5F7B8B">
 
-        <dxe:TextEdit x:Name="fam" HorizontalAlignment="Left" Margin="4,32,0,0" VerticalAlignment="Top" Width="150" />
+        <dxe:TextEdit x:Name="fam" CharacterCasing="Upper" HorizontalAlignment="Left" Margin="4,32,0,0" VerticalAlignment="Top" Width="150" />
         <Label Content="Фамилия" HorizontalAlignment="Left" Margin="4,10,0,0" VerticalAlignment="Top" Width="150" Foreground="#FFF3F4F8" HorizontalContentAlignment="Center"/>
-        <dxe:TextEdit x:Name="im" HorizontalAlignment="Left" Margin="159,32,0,0" VerticalAlignment="Top" Width="150"/>
+        <dxe:TextEdit x:Name="im" CharacterCasing="Upper" HorizontalAlignment="Left" Margin="159,32,0,0" VerticalAlignment="Top" Width="150"/>
         <Label Content="Имя" HorizontalAlignment="Left" Margin="159,10,0,0" VerticalAlignment="Top" Width="150" Foreground="#FFF3F4F8" HorizontalContentAlignment="Center"/>
-        <dxe:TextEdit x:Name="ot" HorizontalAlignment="Left" Margin="314,32,0,0" VerticalAlignment="Top" Width="150"/>
+        <dxe:TextEdit x:Name="ot" CharacterCasing="Upper" HorizontalAlignment="Left" Margin="314,32,0,0" VerticalAlignment="Top" Width="150"/>
         <Label Content="Отчество" HorizontalAlignment="Left" Margin="314,10,0,0" VerticalAlignment="Top" Width="150" Foreground="#FFF3F4F8" HorizontalContentAlignment="Center"/>
         <dxe:DateEdit x:Name="dr" HorizontalAlignment="Left" Margin="469,32,0,0" VerticalAlignment="Top" Width="150" NullValueButtonPlacement="EditBox"/>
         <Label Content="Дата рождения" HorizontalAlignment="Left" Margin="469,10,0,0" VerticalAlignment="Top" Width="150" Foreground="#FFF3F4F8" HorizontalContentAlignment="Center"/>
@@ -121,13 +121,13 @@
             <dxlc:LayoutGroup Header="Данные из ТФОМС                                                                                      Закреплен(а) за" View="GroupBox" Margin="-2,-2,-2,-297" >
                 <dxlc:LayoutGroup Orientation="Vertical">
                     <dxlc:LayoutItem Label="Фамилия" Foreground="White">
-                        <dxe:TextEdit Name="FAM_TFOMS" IsReadOnly="True"/>
+                        <dxe:TextEdit CharacterCasing="Upper" Name="FAM_TFOMS" IsReadOnly="True"/>
                     </dxlc:LayoutItem>
                     <dxlc:LayoutItem Label="Имя" Foreground="White">
-                        <dxe:TextEdit Name="IM_TFOMS" IsReadOnly="True"/>
+                        <dxe:TextEdit CharacterCasing="Upper" Name="IM_TFOMS" IsReadOnly="True"/>
                     </dxlc:LayoutItem>
                     <dxlc:LayoutItem Label="Отчество" Foreground="White">
-                        <dxe:TextEdit Name="OT_TFOMS" IsReadOnly="True"/>
+                        <dxe:TextEdit CharacterCasing="Upper" Name="OT_TFOMS" IsReadOnly="True"/>
                     </dxlc:LayoutItem>
                     <dxlc:LayoutItem Label="Дата рождения" Foreground="White">
                         <dxe:DateEdit IsReadOnly="True" x:Name="DR_TFOMS"/>
@@ -186,13 +186,13 @@
             <dxlc:LayoutGroup Header="Данные из нашей базы                                                                                      Закреплен(а) за" View="GroupBox" Margin="-2,-2,-2,-297" >
                 <dxlc:LayoutGroup Orientation="Vertical">
                     <dxlc:LayoutItem Label="Фамилия" Foreground="White">
-                        <dxe:TextEdit x:Name="FAM_B" IsReadOnly="True"/>
+                        <dxe:TextEdit CharacterCasing="Upper" x:Name="FAM_B" IsReadOnly="True"/>
                     </dxlc:LayoutItem>
                     <dxlc:LayoutItem Label="Имя" Foreground="White">
-                        <dxe:TextEdit x:Name="IM_B" IsReadOnly="True"/>
+                        <dxe:TextEdit CharacterCasing="Upper" x:Name="IM_B" IsReadOnly="True"/>
                     </dxlc:LayoutItem>
                     <dxlc:LayoutItem Label="Отчество" Foreground="White">
-                        <dxe:TextEdit x:Name="OT_B" IsReadOnly="True"/>
+                        <dxe:TextEdit CharacterCasing="Upper" x:Name="OT_B" IsReadOnly="True"/>
                     </dxlc:LayoutItem>
                     <dxlc:LayoutItem Label="Дата рождения" Foreground="White">
                         <dxe:DateEdit x:Name="DR_B" IsReadOnly="True"/>

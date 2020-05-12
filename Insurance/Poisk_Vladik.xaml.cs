@@ -142,11 +142,8 @@ namespace Insurance
                     }
                     
 
-                    string load_pers_grid = $@" SELECT top(1) pp.SROKDOVERENOSTI,pp.ID,pp.ACTIVE,op.przcod,pe.UNLOAD,ENP ,FAM , IM  , OT ,W ,DR ,MO,oks.CAPTION as C_OKSM,r.NameWithID , pp.COMMENT,pe.DVIZIT, pp.DATEVIDACHI, pp.PRIZNAKVIDACHI,
-            SS  ,VPOLIS,SPOLIS ,NPOLIS,DBEG ,DEND ,DSTOP ,BLANK ,DRECEIVED,f.NameWithId as MO_NameWithId,op.filename,pp.phone,p.AGENT, pp.CYCLE,(select pr.namewithid  from POL_PERSONS_INFORM pin
-left join PRICHINA_INFORMIROVANIYA pr
-on pin.PRICHINA_INFORM=pr.ID
-where PERSON_ID=pp.ID and pin.id=(select max(id) from POL_PERSONS_INFORM where PERSON_ID=pp.ID)) as inform, st.namewithkod as STOP_REASON, pe.id as EVENT_ID
+                    string load_pers_grid = $@" SELECT TOP(1) pp.SROKDOVERENOSTI,pp.ID,pp.ACTIVE,op.przcod,pe.UNLOAD,ENP ,FAM , IM  , OT ,W ,DR ,MO,oks.CAPTION as C_OKSM,r.NameWithID , pp.COMMENT,pe.DVIZIT, pp.DATEVIDACHI, pp.PRIZNAKVIDACHI,
+            SS  ,VPOLIS,SPOLIS ,NPOLIS,DBEG ,DEND ,DSTOP ,BLANK ,DRECEIVED,f.NameWithId as MO_NameWithId,op.filename,pp.phone,p.AGENT, pp.CYCLE, st.namewithkod as STOP_REASON, pe.id as EVENT_ID
               FROM [dbo].[POL_PERSONS] pp left join 
             pol_events pe on pp.event_guid=pe.idguid
          	LEFT JOIN POL_PRZ_AGENTS p
@@ -175,6 +172,8 @@ where PERSON_ID=pp.ID and pin.id=(select max(id) from POL_PERSONS_INFORM where P
                         IM_B.Text = List[0].IM;
                         OT_B.Text = List[0].OT;
                         DR_B.EditValue = List[0].DR;
+                        Vars.IdP = List[0].ID.ToString();
+                        Vars.Btn = "2";
                         if (List[0].VPOLIS == 1)
                         {
                             VIDPOLISA_B.Text = "Полис ОМС старого образца";
@@ -303,11 +302,8 @@ where PERSON_ID=pp.ID and pin.id=(select max(id) from POL_PERSONS_INFORM where P
                     }
 
 
-                    string load_pers_grid = $@" SELECT top(1) pp.SROKDOVERENOSTI,pp.ID,pp.ACTIVE,op.przcod,pe.UNLOAD,ENP ,FAM , IM  , OT ,W ,DR ,MO,oks.CAPTION as C_OKSM,r.NameWithID , pp.COMMENT,pe.DVIZIT, pp.DATEVIDACHI, pp.PRIZNAKVIDACHI,
-            SS  ,VPOLIS,SPOLIS ,NPOLIS,DBEG ,DEND ,DSTOP ,BLANK ,DRECEIVED,f.NameWithId as MO_NameWithId,op.filename,pp.phone,p.AGENT, pp.CYCLE,(select pr.namewithid  from POL_PERSONS_INFORM pin
-left join PRICHINA_INFORMIROVANIYA pr
-on pin.PRICHINA_INFORM=pr.ID
-where PERSON_ID=pp.ID and pin.id=(select max(id) from POL_PERSONS_INFORM where PERSON_ID=pp.ID)) as inform, st.namewithkod as STOP_REASON, pe.id as EVENT_ID
+                    string load_pers_grid = $@"SELECT TOP(1) pp.SROKDOVERENOSTI,pp.ID,pp.ACTIVE,op.przcod,pe.UNLOAD,ENP ,FAM , IM  , OT ,W ,DR ,MO,oks.CAPTION as C_OKSM,r.NameWithID , pp.COMMENT,pe.DVIZIT, pp.DATEVIDACHI, pp.PRIZNAKVIDACHI,
+            SS  ,VPOLIS,SPOLIS ,NPOLIS,DBEG ,DEND ,DSTOP ,BLANK ,DRECEIVED,f.NameWithId as MO_NameWithId,op.filename,pp.phone,p.AGENT, pp.CYCLE, st.namewithkod as STOP_REASON, pe.id as EVENT_ID
               FROM [dbo].[POL_PERSONS] pp left join 
             pol_events pe on pp.event_guid=pe.idguid
          	LEFT JOIN POL_PRZ_AGENTS p
@@ -336,6 +332,8 @@ where PERSON_ID=pp.ID and pin.id=(select max(id) from POL_PERSONS_INFORM where P
                         IM_B.Text = List[0].IM;
                         OT_B.Text = List[0].OT;
                         DR_B.EditValue = List[0].DR;
+                        Vars.IdP = List[0].ID.ToString();
+                        Vars.Btn = "2";
                         if (List[0].VPOLIS == 1)
                         {
                             VIDPOLISA_B.Text = "Полис ОМС старого образца";
@@ -463,11 +461,8 @@ where PERSON_ID=pp.ID and pin.id=(select max(id) from POL_PERSONS_INFORM where P
                     {
                         DATE_DEAD_TFOMS.Background = Brushes.Red;
                     }
-                    string load_pers_grid = $@" SELECT top(1) pp.SROKDOVERENOSTI,pp.ID,pp.ACTIVE,op.przcod,pe.UNLOAD,ENP ,FAM , IM  , OT ,W ,DR ,MO,oks.CAPTION as C_OKSM,r.NameWithID , pp.COMMENT,pe.DVIZIT, pp.DATEVIDACHI, pp.PRIZNAKVIDACHI,
-            SS  ,VPOLIS,SPOLIS ,NPOLIS,DBEG ,DEND ,DSTOP ,BLANK ,DRECEIVED,f.NameWithId as MO_NameWithId,op.filename,pp.phone,p.AGENT, pp.CYCLE,(select pr.namewithid  from POL_PERSONS_INFORM pin
-left join PRICHINA_INFORMIROVANIYA pr
-on pin.PRICHINA_INFORM=pr.ID
-where PERSON_ID=pp.ID and pin.id=(select max(id) from POL_PERSONS_INFORM where PERSON_ID=pp.ID)) as inform, st.namewithkod as STOP_REASON, pe.id as EVENT_ID
+                    string load_pers_grid = $@" SELECT TOP(1) pp.SROKDOVERENOSTI,pp.ID,pp.ACTIVE,op.przcod,pe.UNLOAD,ENP ,FAM , IM  , OT ,W ,DR ,MO,oks.CAPTION as C_OKSM,r.NameWithID , pp.COMMENT,pe.DVIZIT, pp.DATEVIDACHI, pp.PRIZNAKVIDACHI,
+            SS  ,VPOLIS,SPOLIS ,NPOLIS,DBEG ,DEND ,DSTOP ,BLANK ,DRECEIVED,f.NameWithId as MO_NameWithId,op.filename,pp.phone,p.AGENT, pp.CYCLE, st.namewithkod as STOP_REASON, pe.id as EVENT_ID
               FROM [dbo].[POL_PERSONS] pp left join 
             pol_events pe on pp.event_guid=pe.idguid
          	LEFT JOIN POL_PRZ_AGENTS p
@@ -496,6 +491,8 @@ where PERSON_ID=pp.ID and pin.id=(select max(id) from POL_PERSONS_INFORM where P
                         IM_B.Text = List[0].IM;
                         OT_B.Text = List[0].OT;
                         DR_B.EditValue = List[0].DR;
+                        Vars.IdP = List[0].ID.ToString();
+                        Vars.Btn = "2";
                         if (List[0].VPOLIS == 1)
                         {
                             VIDPOLISA_B.Text = "Полис ОМС старого образца";
@@ -629,11 +626,8 @@ where PERSON_ID=pp.ID and pin.id=(select max(id) from POL_PERSONS_INFORM where P
                     {
                         DATE_DEAD_TFOMS.Background = Brushes.Red;
                     }
-                    string load_pers_grid = $@" SELECT top(1) pp.SROKDOVERENOSTI,pp.ID,pp.ACTIVE,op.przcod,pe.UNLOAD,ENP ,FAM , IM  , OT ,W ,DR ,MO,oks.CAPTION as C_OKSM,r.NameWithID , pp.COMMENT,pe.DVIZIT, pp.DATEVIDACHI, pp.PRIZNAKVIDACHI,
-            SS  ,VPOLIS,SPOLIS ,NPOLIS,DBEG ,DEND ,DSTOP ,BLANK ,DRECEIVED,f.NameWithId as MO_NameWithId,op.filename,pp.phone,p.AGENT, pp.CYCLE,(select pr.namewithid  from POL_PERSONS_INFORM pin
-left join PRICHINA_INFORMIROVANIYA pr
-on pin.PRICHINA_INFORM=pr.ID
-where PERSON_ID=pp.ID and pin.id=(select max(id) from POL_PERSONS_INFORM where PERSON_ID=pp.ID)) as inform, st.namewithkod as STOP_REASON, pe.id as EVENT_ID
+                    string load_pers_grid = $@"SELECT TOP(1) pp.SROKDOVERENOSTI,pp.ID,pp.ACTIVE,op.przcod,pe.UNLOAD,ENP ,FAM , IM  , OT ,W ,DR ,MO,oks.CAPTION as C_OKSM,r.NameWithID , pp.COMMENT,pe.DVIZIT, pp.DATEVIDACHI, pp.PRIZNAKVIDACHI,
+            SS  ,VPOLIS,SPOLIS ,NPOLIS,DBEG ,DEND ,DSTOP ,BLANK ,DRECEIVED,f.NameWithId as MO_NameWithId,op.filename,pp.phone,p.AGENT, pp.CYCLE, st.namewithkod as STOP_REASON, pe.id as EVENT_ID
               FROM [dbo].[POL_PERSONS] pp left join 
             pol_events pe on pp.event_guid=pe.idguid
          	LEFT JOIN POL_PRZ_AGENTS p
@@ -662,6 +656,8 @@ where PERSON_ID=pp.ID and pin.id=(select max(id) from POL_PERSONS_INFORM where P
                         IM_B.Text = List[0].IM;
                         OT_B.Text = List[0].OT;
                         DR_B.EditValue = List[0].DR;
+                        Vars.IdP = List[0].ID.ToString();
+                        Vars.Btn = "2";
                         if (List[0].VPOLIS == 1)
                         {
                             VIDPOLISA_B.Text = "Полис ОМС старого образца";
@@ -789,11 +785,8 @@ where PERSON_ID=pp.ID and pin.id=(select max(id) from POL_PERSONS_INFORM where P
                     {
                         DATE_DEAD_TFOMS.Background = Brushes.Red;
                     }
-                    string load_pers_grid = $@" SELECT top(1) pp.SROKDOVERENOSTI,pp.ID,pp.ACTIVE,op.przcod,pe.UNLOAD,ENP ,FAM , IM  , OT ,W ,DR ,MO,oks.CAPTION as C_OKSM,r.NameWithID , pp.COMMENT,pe.DVIZIT, pp.DATEVIDACHI, pp.PRIZNAKVIDACHI,
-            SS  ,VPOLIS,SPOLIS ,NPOLIS,DBEG ,DEND ,DSTOP ,BLANK ,DRECEIVED,f.NameWithId as MO_NameWithId,op.filename,pp.phone,p.AGENT, pp.CYCLE,(select pr.namewithid  from POL_PERSONS_INFORM pin
-left join PRICHINA_INFORMIROVANIYA pr
-on pin.PRICHINA_INFORM=pr.ID
-where PERSON_ID=pp.ID and pin.id=(select max(id) from POL_PERSONS_INFORM where PERSON_ID=pp.ID)) as inform, st.namewithkod as STOP_REASON, pe.id as EVENT_ID
+                    string load_pers_grid = $@"SELECT TOP(1) pp.SROKDOVERENOSTI,pp.ID,pp.ACTIVE,op.przcod,pe.UNLOAD,ENP ,FAM , IM  , OT ,W ,DR ,MO,oks.CAPTION as C_OKSM,r.NameWithID , pp.COMMENT,pe.DVIZIT, pp.DATEVIDACHI, pp.PRIZNAKVIDACHI,
+            SS  ,VPOLIS,SPOLIS ,NPOLIS,DBEG ,DEND ,DSTOP ,BLANK ,DRECEIVED,f.NameWithId as MO_NameWithId,op.filename,pp.phone,p.AGENT, pp.CYCLE, st.namewithkod as STOP_REASON, pe.id as EVENT_ID
               FROM [dbo].[POL_PERSONS] pp left join 
             pol_events pe on pp.event_guid=pe.idguid
          	LEFT JOIN POL_PRZ_AGENTS p
@@ -822,6 +815,8 @@ where PERSON_ID=pp.ID and pin.id=(select max(id) from POL_PERSONS_INFORM where P
                         IM_B.Text = List[0].IM;
                         OT_B.Text = List[0].OT;
                         DR_B.EditValue = List[0].DR;
+                        Vars.IdP = List[0].ID.ToString();
+                        Vars.Btn = "2";
                         if (List[0].VPOLIS == 1)
                         {
                             VIDPOLISA_B.Text = "Полис ОМС старого образца";
@@ -951,11 +946,8 @@ where PERSON_ID=pp.ID and pin.id=(select max(id) from POL_PERSONS_INFORM where P
                     {
                         DATE_DEAD_TFOMS.Background = Brushes.Red;
                     }
-                    string load_pers_grid = $@" SELECT top(1) pp.SROKDOVERENOSTI,pp.ID,pp.ACTIVE,op.przcod,pe.UNLOAD,ENP ,FAM , IM  , OT ,W ,DR ,MO,oks.CAPTION as C_OKSM,r.NameWithID , pp.COMMENT,pe.DVIZIT, pp.DATEVIDACHI, pp.PRIZNAKVIDACHI,
-            SS  ,VPOLIS,SPOLIS ,NPOLIS,DBEG ,DEND ,DSTOP ,BLANK ,DRECEIVED,f.NameWithId as MO_NameWithId,op.filename,pp.phone,p.AGENT, pp.CYCLE,(select pr.namewithid  from POL_PERSONS_INFORM pin
-left join PRICHINA_INFORMIROVANIYA pr
-on pin.PRICHINA_INFORM=pr.ID
-where PERSON_ID=pp.ID and pin.id=(select max(id) from POL_PERSONS_INFORM where PERSON_ID=pp.ID)) as inform, st.namewithkod as STOP_REASON, pe.id as EVENT_ID
+                    string load_pers_grid = $@"SELECT TOP(1) pp.SROKDOVERENOSTI,pp.ID,pp.ACTIVE,op.przcod,pe.UNLOAD,ENP ,FAM , IM  , OT ,W ,DR ,MO,oks.CAPTION as C_OKSM,r.NameWithID , pp.COMMENT,pe.DVIZIT, pp.DATEVIDACHI, pp.PRIZNAKVIDACHI,
+            SS  ,VPOLIS,SPOLIS ,NPOLIS,DBEG ,DEND ,DSTOP ,BLANK ,DRECEIVED,f.NameWithId as MO_NameWithId,op.filename,pp.phone,p.AGENT, pp.CYCLE, st.namewithkod as STOP_REASON, pe.id as EVENT_ID
               FROM [dbo].[POL_PERSONS] pp left join 
             pol_events pe on pp.event_guid=pe.idguid
          	LEFT JOIN POL_PRZ_AGENTS p
@@ -984,6 +976,8 @@ where PERSON_ID=pp.ID and pin.id=(select max(id) from POL_PERSONS_INFORM where P
                         IM_B.Text = List[0].IM;
                         OT_B.Text = List[0].OT;
                         DR_B.EditValue = List[0].DR;
+                        Vars.IdP = List[0].ID.ToString();
+                        Vars.Btn = "2";
                         if (List[0].VPOLIS == 1)
                         {
                             VIDPOLISA_B.Text = "Полис ОМС старого образца";
@@ -1126,11 +1120,8 @@ where PERSON_ID=pp.ID and pin.id=(select max(id) from POL_PERSONS_INFORM where P
                     {
                         DATE_DEAD_TFOMS.Background = Brushes.Red;
                     }
-                    string load_pers_grid = $@" SELECT top(1) pp.SROKDOVERENOSTI,pp.ID,pp.ACTIVE,op.przcod,pe.UNLOAD,ENP ,FAM , IM  , OT ,W ,DR ,MO,oks.CAPTION as C_OKSM,r.NameWithID , pp.COMMENT,pe.DVIZIT, pp.DATEVIDACHI, pp.PRIZNAKVIDACHI,
-            SS  ,VPOLIS,SPOLIS ,NPOLIS,DBEG ,DEND ,DSTOP ,BLANK ,DRECEIVED,f.NameWithId as MO_NameWithId,op.filename,pp.phone,p.AGENT, pp.CYCLE,(select pr.namewithid  from POL_PERSONS_INFORM pin
-left join PRICHINA_INFORMIROVANIYA pr
-on pin.PRICHINA_INFORM=pr.ID
-where PERSON_ID=pp.ID and pin.id=(select max(id) from POL_PERSONS_INFORM where PERSON_ID=pp.ID)) as inform, st.namewithkod as STOP_REASON, pe.id as EVENT_ID
+                    string load_pers_grid = $@"SELECT TOP(1) pp.SROKDOVERENOSTI,pp.ID,pp.ACTIVE,op.przcod,pe.UNLOAD,ENP ,FAM , IM  , OT ,W ,DR ,MO,oks.CAPTION as C_OKSM,r.NameWithID , pp.COMMENT,pe.DVIZIT, pp.DATEVIDACHI, pp.PRIZNAKVIDACHI,
+            SS  ,VPOLIS,SPOLIS ,NPOLIS,DBEG ,DEND ,DSTOP ,BLANK ,DRECEIVED,f.NameWithId as MO_NameWithId,op.filename,pp.phone,p.AGENT, pp.CYCLE, st.namewithkod as STOP_REASON, pe.id as EVENT_ID
               FROM [dbo].[POL_PERSONS] pp left join 
             pol_events pe on pp.event_guid=pe.idguid
          	LEFT JOIN POL_PRZ_AGENTS p
@@ -1159,6 +1150,8 @@ where PERSON_ID=pp.ID and pin.id=(select max(id) from POL_PERSONS_INFORM where P
                         IM_B.Text = List[0].IM;
                         OT_B.Text = List[0].OT;
                         DR_B.EditValue = List[0].DR;
+                        Vars.IdP = List[0].ID.ToString();
+                        Vars.Btn = "2";
                         if (List[0].VPOLIS == 1)
                         {
                             VIDPOLISA_B.Text = "Полис ОМС старого образца";
@@ -1204,9 +1197,9 @@ where PERSON_ID=pp.ID and pin.id=(select max(id) from POL_PERSONS_INFORM where P
             }
 
 
-            POISKVLADIK.FAM_TFOMS = FAM_TFOMS.Text;
-            POISKVLADIK.IM_TFOMS = IM_TFOMS.Text;
-            POISKVLADIK.OT_TFOMS = OT_TFOMS.Text;
+            POISKVLADIK.FAM_TFOMS = FAM_TFOMS.Text.Trim().ToUpper();
+            POISKVLADIK.IM_TFOMS = IM_TFOMS.Text.Trim().ToUpper();
+            POISKVLADIK.OT_TFOMS = OT_TFOMS.Text.Trim().ToUpper();
             POISKVLADIK.DR_TFOMS = DR_TFOMS.Text;
             POISKVLADIK.VIDPOLIS_TFOMS = VIDPOLIS_TFOMS.Text;
             POISKVLADIK.SNILS_TFOMS = SNILS_TFOMS.Text;
@@ -1298,9 +1291,9 @@ where PERSON_ID=pp.ID and pin.id=(select max(id) from POL_PERSONS_INFORM where P
 
         private void Poisk1_Copy_Click(object sender, RoutedEventArgs e)
         {
-            POISKVLADIK.FAM_TFOMS = FAM_TFOMS.Text.Trim();
-            POISKVLADIK.IM_TFOMS = IM_TFOMS.Text.Trim();
-            POISKVLADIK.OT_TFOMS = OT_TFOMS.Text.Trim();
+            POISKVLADIK.FAM_TFOMS = FAM_TFOMS.Text.Trim().ToUpper();
+            POISKVLADIK.IM_TFOMS = IM_TFOMS.Text.Trim().ToUpper();
+            POISKVLADIK.OT_TFOMS = OT_TFOMS.Text.Trim().ToUpper();
             POISKVLADIK.DR_TFOMS = DR_TFOMS.Text.Trim();
             POISKVLADIK.VIDPOLIS_TFOMS = VIDPOLIS_TFOMS.Text;
             POISKVLADIK.SNILS_TFOMS = SNILS_TFOMS.Text;

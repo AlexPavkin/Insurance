@@ -1078,83 +1078,94 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
         {
             if (POISKVLADIK.Load_ZL == true)
             {
-
-                Tab_ZL.Visibility = Visibility.Visible;
-                MainTab.SelectedIndex = 1;
-                try
+             
+                if (Vars.IdP != null || Vars.IdP !="")
                 {
-                    fam.Text = POISKVLADIK.FAM_TFOMS;
-                }
-                catch
-                {
+                    Tab_ZL.Visibility = Visibility.Visible;
+                    MainTab.SelectedIndex = 1;
+                    Window_Loaded(this, e);
 
                 }
-                try
+                else
                 {
-                    im.Text = POISKVLADIK.IM_TFOMS;
-                }
-                catch
-                {
-
-                }
-                try
-                {
-                    ot.Text = POISKVLADIK.OT_TFOMS;
-                }
-                catch
-                {
-
-                }
-                try
-                {
-                    dr.Text = POISKVLADIK.DR_TFOMS;
-                }
-                catch
-                {
-
-                }
-                try
-                {
-                    if (POISKVLADIK.VIDPOLIS_TFOMS == "Полис до 2011г.")
+                    Tab_ZL.Visibility = Visibility.Visible;
+                    MainTab.SelectedIndex = 1;
+                    try
                     {
-                        type_policy.Text = "2    Временное свидетельство, подтверждающее оформление полиса обязательного медицинского страхования";
+                        fam.Text = POISKVLADIK.FAM_TFOMS;
+                        MessageBox.Show(POISKVLADIK.FAM_TFOMS);
+                
                     }
-                    else
+                    catch
                     {
-                        type_policy.Text = "2    Временное свидетельство, подтверждающее оформление полиса обязательного медицинского страхования";
+
+                    }
+                    try
+                    {
+                        im.Text = POISKVLADIK.IM_TFOMS;
+                    }
+                    catch
+                    {
+
+                    }
+                    try
+                    {
+                        ot.Text = POISKVLADIK.OT_TFOMS;
+                    }
+                    catch
+                    {
+
+                    }
+                    try
+                    {
+                        dr.Text = POISKVLADIK.DR_TFOMS;
+                    }
+                    catch
+                    {
+
+                    }
+                    try
+                    {
+                        if (POISKVLADIK.VIDPOLIS_TFOMS == "Полис до 2011г.")
+                        {
+                            type_policy.Text = "2    Временное свидетельство, подтверждающее оформление полиса обязательного медицинского страхования";
+                        }
+                        else
+                        {
+                            type_policy.Text = "2    Временное свидетельство, подтверждающее оформление полиса обязательного медицинского страхования";
+                        }
+                    }
+                    catch
+                    {
+
+                    }
+                    try
+                    {
+                        snils.Text = POISKVLADIK.SNILS_TFOMS;
+                    }
+                    catch
+                    {
+
+                    }
+
+                    try
+                    {
+                        num_blank.Text = POISKVLADIK.POLIS_TFOMS;
+                        enp.Text = POISKVLADIK.ENP_TFOMS;
+                        mr2.Text = POISKVLADIK.MR_TFOMS;
+                        mo_cmb.Text = POISKVLADIK.POLIKLIN_TFOMS;
+                        date_mo.Text = POISKVLADIK.DATE_PRIKREP_TFOMS;
+                        date_vid1.Text = POISKVLADIK.DATE_START_TFOMS;
+                        dost1.Text = POISKVLADIK.SPOSOB_TFOMS;
+                        date_end.Text = POISKVLADIK.DATE_END_TFOMS;
+                        fakt_prekr.Text = POISKVLADIK.SMO_TFOMS;
+                        ddeath.Text = POISKVLADIK.DATE_DEAD_TFOMS;
+                    }
+                    catch
+                    {
+
                     }
                 }
-                catch
-                {
-
-                }
-                try
-                {
-                    snils.Text = POISKVLADIK.SNILS_TFOMS;
-                }
-                catch
-                {
-
-                }
-
-                try
-                {
-                    num_blank.Text = POISKVLADIK.POLIS_TFOMS;
-                    enp.Text = POISKVLADIK.ENP_TFOMS;
-                    mr2.Text = POISKVLADIK.MR_TFOMS;
-                    mo_cmb.Text = POISKVLADIK.POLIKLIN_TFOMS;
-                    date_mo.Text = POISKVLADIK.DATE_PRIKREP_TFOMS;
-                    date_vid1.Text = POISKVLADIK.DATE_START_TFOMS;
-                    dost1.Text = POISKVLADIK.SPOSOB_TFOMS;
-                    date_end.Text = POISKVLADIK.DATE_END_TFOMS;
-                    fakt_prekr.Text = POISKVLADIK.SMO_TFOMS;
-                    ddeath.Text = POISKVLADIK.DATE_DEAD_TFOMS;
-                }
-                catch
-                {
-
-                }
-
 
 
 
@@ -5719,11 +5730,8 @@ where e.person_guid='{rper}' and main=1", con);
             {
 
             }
-
-
-
-
         }
+
 
         private void zl_podp_PreviewKeyDown(object sender, KeyEventArgs e)
         {
@@ -9192,9 +9200,11 @@ join POL_POLISES pp on p.EVENT_GUID = pp.EVENT_GUID", con);
             }
         }
 
-
-
-
+        private void Obnovit_ItemClick(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
+        {
+            G_layuot.save_Layout(Properties.Settings.Default.DocExchangeConnectionString, pers_grid, pers_grid_2);
+            G_layuot.restore_Layout(Properties.Settings.Default.DocExchangeConnectionString, pers_grid, pers_grid_2);
+        }
 
 
         //        private void Reload_tick(object sender, EventArgs e)
