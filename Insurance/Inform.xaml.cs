@@ -18,6 +18,7 @@ using System.Xml;
 using System.Xml.Linq;
 using System.IO;
 using System.Data;
+using Microsoft.Win32;
 
 namespace Insurance
 {
@@ -909,6 +910,159 @@ sps.Name as sposob_4,rp4.Name as result_4,PRIMECH as prim_4
  where p.PERSON_ID={id})T1 on t0.id=T1.id ", Properties.Settings.Default.DocExchangeConnectionString);
             inform_grid1.ItemsSource = peopleList;
             inform_grid1.View.FocusedRowHandle = -1;
+        }
+
+        private void Unload_3_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog SF = new SaveFileDialog();
+            SF.DefaultExt = ".dbf";
+            SF.Filter = "Файлы DBF (.dbf)|*.dbf";
+            bool res = SF.ShowDialog().Value;
+
+            if (res == true)
+            {
+                var inf = MyReader.MySelect<P3_INFORM>($@"select pp.id as ID_TFOMS,fam as SURNAME,im as NAME,ot as SECNAME,
+pp.dr as DR, w as POL, pp.SS as SNILS,1 as SCOMP,pol.VPOLIS as DPFS,ENP as SN_POL,VID_P3 as VIDPROF, 
+DATEPART(yy,Date_P3) as DYEAR, DATEPART(MM,Date_P3) as DMONTH, Theme_P3 as Tema,Date_P3 as DATE_UV,
+SPOSOB_P3 as sposob,RESULT_P3 as result,PRIMECH as prim, l.kod as KOD_POL, l.kod1 as KOD_POL1,'39001' as SMO
+ from POL_PERSONS_INFORM p
+ join POL_PERSONS pp on p.PERSONGUID=pp.IDGUID
+ left join lpu_39 l on pp.MO=l.MCOD
+ left join POL_POLISES pol on pp.EVENT_GUID=pol.EVENT_GUID
+  where p.id=5", Properties.Settings.Default.DocExchangeConnectionString);
+                //DataTable dt = new DataTable();
+                string dbffile = SF.FileName;
+                using (Stream fos = File.Open(dbffile, FileMode.Create, FileAccess.ReadWrite))
+                {
+
+                    var writer = new DotNetDBF.DBFWriter(fos);
+                    writer.CharEncoding = Encoding.GetEncoding(866);
+                    writer.Signature = DotNetDBF.DBFSignature.DBase3;
+                    writer.LanguageDriver = 0x26; // кодировка 866
+                    writer.Fields = new[]{
+                        new DotNetDBF.DBFField("ID_TFOMS", DotNetDBF.NativeDbType.Numeric, 5, 0),
+                        new DotNetDBF.DBFField("SURNAME", DotNetDBF.NativeDbType.Char, 40),
+                        new DotNetDBF.DBFField("NAME", DotNetDBF.NativeDbType.Char, 40),
+                        new DotNetDBF.DBFField("SECNAME", DotNetDBF.NativeDbType.Char, 40),
+                        new DotNetDBF.DBFField("DR", DotNetDBF.NativeDbType.Date),
+                        new DotNetDBF.DBFField("POL", DotNetDBF.NativeDbType.Numeric, 1,0),
+                        new DotNetDBF.DBFField("SNILS", DotNetDBF.NativeDbType.Char, 20),
+                        new DotNetDBF.DBFField("SCOMP", DotNetDBF.NativeDbType.Numeric, 2,0),
+                        new DotNetDBF.DBFField("DPFS", DotNetDBF.NativeDbType.Numeric, 1, 0),
+                        new DotNetDBF.DBFField("SN_POL", DotNetDBF.NativeDbType.Char, 16),
+                        new DotNetDBF.DBFField("VIDPROF", DotNetDBF.NativeDbType.Numeric, 1,0),
+                        new DotNetDBF.DBFField("DYEAR", DotNetDBF.NativeDbType.Numeric, 4,0),
+                        new DotNetDBF.DBFField("DMONTH", DotNetDBF.NativeDbType.Numeric, 2,0),
+                        new DotNetDBF.DBFField("Tema", DotNetDBF.NativeDbType.Numeric, 1, 0),
+                        new DotNetDBF.DBFField("DATE_UV", DotNetDBF.NativeDbType.Date),
+                        new DotNetDBF.DBFField("SPOSOB", DotNetDBF.NativeDbType.Numeric, 2, 0),
+                        new DotNetDBF.DBFField("RESULT", DotNetDBF.NativeDbType.Numeric, 1, 0),
+                        new DotNetDBF.DBFField("prim", DotNetDBF.NativeDbType.Char, 250),
+                        new DotNetDBF.DBFField("KOD_POL", DotNetDBF.NativeDbType.Numeric, 5,0),
+                        new DotNetDBF.DBFField("KOD_POL1", DotNetDBF.NativeDbType.Numeric, 2,0),
+                        new DotNetDBF.DBFField("SMO", DotNetDBF.NativeDbType.Char, 5),
+
+                    };
+
+                    for (int i = 0; i < inf.Count; i++)
+                    {
+                        writer.WriteRecord(inf[i].ID_TFOMS, inf[i].SURNAME, inf[i].NAME, inf[i].SECNAME, inf[i].DR,
+                             inf[i].POL, inf[i].SNILS, inf[i].SCOMP, inf[i].DPFS, inf[i].SN_POL, inf[i].VIDPROF,
+                             inf[i].DYEAR, inf[i].DMONTH, inf[i].Tema, inf[i].DATE_UV, inf[i].SPOSOB, inf[i].RESULT,
+                             inf[i].prim, inf[i].KOD_POL, inf[i].KOD_POL1, inf[i].SMO
+                           // добавляем поля в набор
+                           );
+
+                    }
+
+
+                }
+            }
+        }
+
+        private void Unload_4_Click(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog SF = new SaveFileDialog();
+            SF.DefaultExt = ".dbf";
+            SF.Filter = "Файлы DBF (.dbf)|*.dbf";
+            bool res = SF.ShowDialog().Value;
+
+            if (res == true)
+            {
+                var inf = MyReader.MySelect<P4_INFORM>($@"select fam as SURNAME,im as NAME,ot as SECNAME,
+pp.dr as DR, w as POL, pp.SS as SNILS,1 as SCOMP,ENP as SN_POL, l.kod as KOD_POL, l.kod1 as KOD_POL1, mkb_p4 as KMKB,
+DATEPART(yy,Date_P4) as DYEAR, Month_1_P4 as PM1, Month_2_P4 as PM2, Month_3_P4 as PM3, Month_4_P4 as PM4,
+PERSON_ID as ID_TFOMS,'39001' as SMO, pol.VPOLIS as DPFS, soglasie_p4 as sogl, Theme_P4 as tema,Date_P4 as Date_uv,
+SPOSOB_P4 as sposob,RESULT_P4 as result,PRIMECH as prim
+
+ from POL_PERSONS_INFORM p
+ join POL_PERSONS pp on p.PERSONGUID=pp.IDGUID
+ left join lpu_39 l on pp.MO=l.MCOD
+ left join POL_POLISES pol on pp.EVENT_GUID=pol.EVENT_GUID
+ 
+ where p.id=8", Properties.Settings.Default.DocExchangeConnectionString);
+                //DataTable dt = new DataTable();
+                string dbffile = SF.FileName;
+                using (Stream fos = File.Open(dbffile, FileMode.Create, FileAccess.ReadWrite))
+                {
+
+                    var writer = new DotNetDBF.DBFWriter(fos);
+                    writer.CharEncoding = Encoding.GetEncoding(866);
+                    writer.Signature = DotNetDBF.DBFSignature.DBase3;
+                    writer.LanguageDriver = 0x26; // кодировка 866
+                    writer.Fields = new[]{
+                        new DotNetDBF.DBFField("SURNAME", DotNetDBF.NativeDbType.Char, 40),
+                        new DotNetDBF.DBFField("NAME", DotNetDBF.NativeDbType.Char, 40),
+                        new DotNetDBF.DBFField("SECNAME", DotNetDBF.NativeDbType.Char, 40),
+                        new DotNetDBF.DBFField("DR", DotNetDBF.NativeDbType.Date),
+                        new DotNetDBF.DBFField("POL", DotNetDBF.NativeDbType.Numeric, 1,0),
+                        new DotNetDBF.DBFField("SNILS", DotNetDBF.NativeDbType.Char, 20),
+                        new DotNetDBF.DBFField("SCOMP", DotNetDBF.NativeDbType.Numeric, 2,0),
+                        new DotNetDBF.DBFField("SN_POL", DotNetDBF.NativeDbType.Char, 16),
+                        new DotNetDBF.DBFField("KOD_POL", DotNetDBF.NativeDbType.Numeric, 5,0),
+                        new DotNetDBF.DBFField("KOD_POL1", DotNetDBF.NativeDbType.Numeric, 2,0),
+                        new DotNetDBF.DBFField("KMKB", DotNetDBF.NativeDbType.Char, 7),
+                        new DotNetDBF.DBFField("DYEAR", DotNetDBF.NativeDbType.Numeric, 4,0),
+                        new DotNetDBF.DBFField("PM1", DotNetDBF.NativeDbType.Numeric, 2,0),
+                        new DotNetDBF.DBFField("PM2", DotNetDBF.NativeDbType.Numeric, 2,0),
+                        new DotNetDBF.DBFField("PM3", DotNetDBF.NativeDbType.Numeric, 2,0),
+                        new DotNetDBF.DBFField("PM4", DotNetDBF.NativeDbType.Numeric, 2,0),
+                        new DotNetDBF.DBFField("ID_TFOMS", DotNetDBF.NativeDbType.Numeric, 5, 0),
+                        new DotNetDBF.DBFField("SMO", DotNetDBF.NativeDbType.Char, 5),
+                        new DotNetDBF.DBFField("DPFS", DotNetDBF.NativeDbType.Numeric, 1, 0),
+                        new DotNetDBF.DBFField("sogl", DotNetDBF.NativeDbType.Numeric, 1, 0),
+                        new DotNetDBF.DBFField("tema", DotNetDBF.NativeDbType.Numeric, 1, 0),
+                        new DotNetDBF.DBFField("Date_uv", DotNetDBF.NativeDbType.Date),
+                        new DotNetDBF.DBFField("sposob", DotNetDBF.NativeDbType.Numeric, 2, 0),
+                        new DotNetDBF.DBFField("result", DotNetDBF.NativeDbType.Numeric, 1, 0),
+                        new DotNetDBF.DBFField("prim", DotNetDBF.NativeDbType.Char, 250),
+                        //var field9 = new DotNetDBF.DBFField("DMONTH", DotNetDBF.NativeDbType.Char, 20);
+                        //var field10 = new DotNetDBF.DBFField("DYEAR", DotNetDBF.NativeDbType.Char, 20);
+                        //var field11 = new DotNetDBF.DBFField("TEMA", DotNetDBF.NativeDbType.Char, 20);
+                        //new DotNetDBF.DBFField("ID_TFOMS", DotNetDBF.NativeDbType.Numeric, 5, 0),
+                        //new DotNetDBF.DBFField("DATE_UV", DotNetDBF.NativeDbType.Date)
+                    };
+
+                    //writer.Fields = new DotNetDBF.DBFWriter(fos).Fields;
+
+                    for (int i = 0; i < inf.Count; i++)
+                    {
+                        writer.WriteRecord(inf[i].SURNAME, inf[i].NAME, inf[i].SECNAME, inf[i].DR,
+                             inf[i].POL, inf[i].SNILS, inf[i].SCOMP, inf[i].SN_POL, inf[i].KOD_POL, inf[i].KOD_POL1, inf[i].KMKB,
+                             inf[i].DYEAR, inf[i].PM1, inf[i].PM2, inf[i].PM3, inf[i].PM4, inf[i].ID_TFOMS, inf[i].SMO, inf[i].DPFS,
+                             inf[i].sogl, inf[i].tema, inf[i].Date_uv, inf[i].sposob, inf[i].result, inf[i].prim
+                           // добавляем поля в набор
+                           );
+
+                    }
+
+                    //writer.Write(fos);
+
+                    //var dbf = new DotNetDBF.DBFReader(fos);
+
+                    //var cnt = dbf.RecordCount;
+                }
+            }
         }
     }
     

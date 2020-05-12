@@ -141,8 +141,44 @@
                         </StackPanel>
                     
                 </Button>
+                <Button x:Name="Unload_3"  HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="5,0" Width="197" Height="50" Foreground="White"  Style="{StaticResource myButtonStyle1}" Click="Unload_3_Click">
 
-                
+                    <StackPanel  Orientation="Horizontal" Width="197" >
+                        <!--Margin="5,0"-->
+                        <Image Source="Insurance_icons/export.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
+                            <Image.OpacityMask>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="Black" Offset="0"/>
+                                    <GradientStop Color="White" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Image.OpacityMask>
+
+                        </Image>
+                        <TextBlock  Text="Выгрузить информ. 3" VerticalAlignment="Center"  TextAlignment="Center" Margin="0,0" Width="160"  Foreground="White" FontWeight="Bold" FontSize="12"   />
+
+                    </StackPanel>
+
+                </Button>
+                <Button x:Name="Unload_4"  HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="5,0" Width="197" Height="50" Foreground="White"  Style="{StaticResource myButtonStyle1}" Click="Unload_4_Click">
+
+                    <StackPanel  Orientation="Horizontal" Width="197" >
+                        <!--Margin="5,0"-->
+                        <Image Source="Insurance_icons/export.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
+                            <Image.OpacityMask>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="Black" Offset="0"/>
+                                    <GradientStop Color="White" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Image.OpacityMask>
+
+                        </Image>
+                        <TextBlock  Text="Выгрузить информ. 4" VerticalAlignment="Center"  TextAlignment="Center" Margin="0,0" Width="160"  Foreground="White" FontWeight="Bold" FontSize="12"   />
+
+                    </StackPanel>
+
+                </Button>
+
+
             </StackPanel>
             <StackPanel x:Name="del_file_panel" Orientation="Horizontal">
 

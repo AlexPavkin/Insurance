@@ -772,7 +772,6 @@
                                                     <dxlc:LayoutItem Label="Кем выдан" LabelHorizontalAlignment="Right" FontWeight="Bold">
                                                         <dxe:ComboBoxEdit CharacterCasing="Upper" x:Name="kem_vid" NullValueButtonPlacement="EditBox" ImmediatePopup="True" AutoComplete="False" FilterCondition="Contains" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding}" EditValue="NAME" DisplayMember="NAME" ValidateOnTextInput="False" IncrementalFiltering="True" ProcessNewValue="Kem_vid_ProcessNewValue" />
                                                     </dxlc:LayoutItem>
-                                                 
                                                 </dxlc:LayoutGroup>
                                                 <dxlc:LayoutGroup dx:ScrollViewerTouchBehavior.IsEnabled="True" Orientation="Vertical" Serialization:SerializableItem.TypeName="LayoutGroup">
                                                     <dxlc:LayoutItem Label="Код подразделения" LabelHorizontalAlignment="Right">
