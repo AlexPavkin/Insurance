@@ -914,6 +914,7 @@ sps.Name as sposob_4,rp4.Name as result_4,PRIMECH as prim_4
 
         private void Unload_3_Click(object sender, RoutedEventArgs e)
         {
+            var id = inform_grid.GetFocusedRowCellValue("ID");
             SaveFileDialog SF = new SaveFileDialog();
             SF.DefaultExt = ".dbf";
             SF.Filter = "Файлы DBF (.dbf)|*.dbf";
@@ -929,7 +930,7 @@ SPOSOB_P3 as sposob,RESULT_P3 as result,PRIMECH as prim, l.kod as KOD_POL, l.kod
  join POL_PERSONS pp on p.PERSONGUID=pp.IDGUID
  left join lpu_39 l on pp.MO=l.MCOD
  left join POL_POLISES pol on pp.EVENT_GUID=pol.EVENT_GUID
-  where p.id=5", Properties.Settings.Default.DocExchangeConnectionString);
+  where pp.id={id}", Properties.Settings.Default.DocExchangeConnectionString);
                 //DataTable dt = new DataTable();
                 string dbffile = SF.FileName;
                 using (Stream fos = File.Open(dbffile, FileMode.Create, FileAccess.ReadWrite))
@@ -982,6 +983,7 @@ SPOSOB_P3 as sposob,RESULT_P3 as result,PRIMECH as prim, l.kod as KOD_POL, l.kod
 
         private void Unload_4_Click(object sender, RoutedEventArgs e)
         {
+            var id = inform_grid.GetFocusedRowCellValue("ID");
             SaveFileDialog SF = new SaveFileDialog();
             SF.DefaultExt = ".dbf";
             SF.Filter = "Файлы DBF (.dbf)|*.dbf";
@@ -1000,7 +1002,7 @@ SPOSOB_P4 as sposob,RESULT_P4 as result,PRIMECH as prim
  left join lpu_39 l on pp.MO=l.MCOD
  left join POL_POLISES pol on pp.EVENT_GUID=pol.EVENT_GUID
  
- where p.id=8", Properties.Settings.Default.DocExchangeConnectionString);
+ where p.id={id}", Properties.Settings.Default.DocExchangeConnectionString);
                 //DataTable dt = new DataTable();
                 string dbffile = SF.FileName;
                 using (Stream fos = File.Open(dbffile, FileMode.Create, FileAccess.ReadWrite))
