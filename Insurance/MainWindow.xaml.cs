@@ -2481,6 +2481,7 @@ from pol_prz_agents where prz_code like'%{prz.EditValue.ToString()}%'", Properti
             {
                 Poisk_Vladik w4 = new Poisk_Vladik();
                 w4.ShowDialog();
+                Vladik();
             }
             else if(Vars.SMO.Substring(0, 2) == "46")
             {
