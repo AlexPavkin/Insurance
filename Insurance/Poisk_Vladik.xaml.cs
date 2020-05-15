@@ -209,7 +209,7 @@ namespace Insurance
                         int b = 1;
                         Message me = new Message(m, t, b);
                         me.ShowDialog();
-
+                        Vars.Btn = "1";
                         return;
 
                     }
@@ -369,7 +369,7 @@ namespace Insurance
                         int b = 1;
                         Message me = new Message(m, t, b);
                         me.ShowDialog();
-
+                        Vars.Btn = "1";
                         return;
 
                     }
@@ -527,7 +527,7 @@ namespace Insurance
                         int b = 1;
                         Message me = new Message(m, t, b);
                         me.ShowDialog();
-
+                        Vars.Btn = "1";
                         return;
 
                     }
@@ -693,7 +693,7 @@ namespace Insurance
                         int b = 1;
                         Message me = new Message(m, t, b);
                         me.ShowDialog();
-
+                        Vars.Btn = "1";
                         return;
 
                     }
@@ -852,7 +852,7 @@ namespace Insurance
                         int b = 1;
                         Message me = new Message(m, t, b);
                         me.ShowDialog();
-
+                        Vars.Btn = "1";
                         return;
 
                     }
@@ -1013,7 +1013,7 @@ namespace Insurance
                         int b = 1;
                         Message me = new Message(m, t, b);
                         me.ShowDialog();
-
+                        Vars.Btn = "1";
                         return;
 
                     }
@@ -1187,7 +1187,7 @@ namespace Insurance
                         int b = 1;
                         Message me = new Message(m, t, b);
                         me.ShowDialog();
-
+                        Vars.Btn = "1";
                         return;
 
                     }

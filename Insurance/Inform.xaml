@@ -159,7 +159,7 @@
                     </StackPanel>
 
                 </Button>
-                <Button x:Name="Unload_4"  HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="5,0" Width="197" Height="50" Foreground="White"  Style="{StaticResource myButtonStyle1}" Click="Unload_4_Click">
+                <Button x:Name="Unload_4"  HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="5,0" Width="181" Height="50" Foreground="White"  Style="{StaticResource myButtonStyle1}" Click="Unload_4_Click">
 
                     <StackPanel  Orientation="Horizontal" Width="197" >
                         <!--Margin="5,0"-->
@@ -177,6 +177,10 @@
                     </StackPanel>
 
                 </Button>
+                <Label Content="С:" Margin="5,15" Foreground="White" FontWeight="Bold" Width="13" Height="22" HorizontalContentAlignment="Right" VerticalAlignment="Top" Visibility="Visible"/>
+                <dxe:DateEdit x:Name="start_d_Copy"  NullValueButtonPlacement="EditBox" MaskType="DateTimeAdvancingCaret" Margin="5,15" Height="22" Width="90" VerticalAlignment="Top"/>
+                <Label Content="По:" Margin="5,15" Foreground="White" FontWeight="Bold" Width="22" Height="22" HorizontalContentAlignment="Right" VerticalAlignment="Top" Visibility="Visible"/>
+                <dxe:DateEdit x:Name="end_d_Copy" NullValueButtonPlacement="EditBox" MaskType="DateTimeAdvancingCaret" Margin="5,15" Height="22" Width="87" VerticalAlignment="Top"/>
 
 
             </StackPanel>

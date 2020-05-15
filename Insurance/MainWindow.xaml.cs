@@ -1076,11 +1076,14 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
 
         public void Vladik()
         {
+            
             if (POISKVLADIK.Load_ZL == true)
             {
-             
-                if (Vars.IdP != null || Vars.IdP !="")
+               
+
+                if (Vars.IdP != null)
                 {
+                   
                     Tab_ZL.Visibility = Visibility.Visible;
                     MainTab.SelectedIndex = 1;
                     Window_Loaded(this, e);
@@ -1088,12 +1091,14 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
                 }
                 else
                 {
+                
                     Tab_ZL.Visibility = Visibility.Visible;
                     MainTab.SelectedIndex = 1;
+                    
                     try
                     {
                         fam.Text = POISKVLADIK.FAM_TFOMS;
-                        MessageBox.Show(POISKVLADIK.FAM_TFOMS);
+                      
                 
                     }
                     catch
@@ -1150,7 +1155,7 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
 
                     try
                     {
-                        num_blank.Text = POISKVLADIK.POLIS_TFOMS;
+                        //num_blank.Text = POISKVLADIK.POLIS_TFOMS;
                         enp.Text = POISKVLADIK.ENP_TFOMS;
                         mr2.Text = POISKVLADIK.MR_TFOMS;
                         mo_cmb.Text = POISKVLADIK.POLIKLIN_TFOMS;
@@ -1178,7 +1183,7 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
 
         private void w_main_Activated(object sender, EventArgs e)
         {
-            Vladik();
+         
             DispatcherTimer timer = new DispatcherTimer();  // если надо, то в скобках указываем приоритет, например DispatcherPriority.Render
             timer.Interval = TimeSpan.FromSeconds(1);
             timer.Tick += new EventHandler(Ot_tick);
@@ -1509,7 +1514,7 @@ select @num", con);
 
         private void upload_Click(object sender, RoutedEventArgs e)
         {
-            if (SPR.Premmissions != "Admin")
+            if (SPR.Premmissions == "User")
             {
                 string m = "У вас недостаточно прав для данной операции!";
                 string t = "Ошибка!";
@@ -2481,6 +2486,7 @@ from pol_prz_agents where prz_code like'%{prz.EditValue.ToString()}%'", Properti
             {
                 Poisk_Vladik w4 = new Poisk_Vladik();
                 w4.ShowDialog();
+                Vladik();
             }
             else if(Vars.SMO.Substring(0, 2) == "46")
             {
@@ -9178,7 +9184,7 @@ join POL_POLISES pp on p.EVENT_GUID = pp.EVENT_GUID", con);
                 sg_rows_zl = sgr_zl;
             }
             sg_rows_zl = sg_rows_zl.Substring(0, sg_rows_zl.Length - 1);
-            string m1 = "Вы действительно хотите проставить комментарий 'ОК!' выбрвнным ЗЛ?";
+            string m1 = "Вы действительно хотите проставить комментарий 'ОК!' выбранным ЗЛ?";
             string t1 = "Внимание!";
             int b1 = 2;
             Message me1 = new Message(m1, t1, b1);
@@ -9204,6 +9210,54 @@ join POL_POLISES pp on p.EVENT_GUID = pp.EVENT_GUID", con);
         {
             G_layuot.save_Layout(Properties.Settings.Default.DocExchangeConnectionString, pers_grid, pers_grid_2);
             G_layuot.restore_Layout(Properties.Settings.Default.DocExchangeConnectionString, pers_grid, pers_grid_2);
+            if (SPR.Premmissions == "User")
+            {
+
+                var peopleList = MyReader.MySelect<Events>(SPR.MyReader.load_pers_grid + strf_usr, Properties.Settings.Default.DocExchangeConnectionString);
+                pers_grid.ItemsSource = peopleList;
+                pers_grid.View.FocusedRowHandle = -1;
+
+            }
+            else
+            {
+                var peopleList = MyReader.MySelect<Events>(SPR.MyReader.load_pers_grid + strf_adm, Properties.Settings.Default.DocExchangeConnectionString);
+                pers_grid.ItemsSource = peopleList;
+                pers_grid.View.FocusedRowHandle = -1;
+            }
+
+        }
+
+        private void Otmena_pogash_ItemClick(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
+        {
+            string sg_rows_zl = " ";
+            int[] rt = pers_grid.GetSelectedRowHandles();
+            for (int i = 0; i < rt.Count(); i++)
+            {
+                var ddd_zl = pers_grid.GetCellValue(rt[i], "ID");
+                var sgr_zl = sg_rows_zl.Insert(sg_rows_zl.Length, ddd_zl.ToString()) + ",";
+                sg_rows_zl = sgr_zl;
+            }
+            sg_rows_zl = sg_rows_zl.Substring(0, sg_rows_zl.Length - 1);
+            string m1 = "Вы действительно хотите отменить погашение выбранным ЗЛ?";
+            string t1 = "Внимание!";
+            int b1 = 2;
+            Message me1 = new Message(m1, t1, b1);
+            me1.ShowDialog();
+
+            if (Vars.mes_res == 1)
+            {
+                var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
+                SqlConnection con = new SqlConnection(connectionString);
+                SqlCommand comm = new SqlCommand($@"update pol_persons set comment=null, active=1  where id in({sg_rows_zl})
+                update POL_POLISES  set STOP_REASON=null,DEND=null,DSTOP=null  where PERSON_GUID in(select idguid from pol_persons where id in({sg_rows_zl}))", con);
+                con.Open();
+                comm.ExecuteNonQuery();
+                con.Close();
+            }
+            else
+            {
+                return;
+            }
         }
 
 

@@ -453,6 +453,8 @@
                                     <dxb:BarButtonItem Name="load_flk_zl" Content="Загрузить ФЛК для ЗЛ" ItemClick="Load_flk_zl_ItemClick" />
                                     <dxb:BarItemSeparator/>
                                     <dxb:BarButtonItem Name="load_OK" Content="Проставить комментарий 'ОК!' для ЗЛ" ItemClick="Load_OK_ItemClick" />
+                                    <dxb:BarItemSeparator/>
+                                    <dxb:BarButtonItem Name ="Otmena_pogash" Content="Отменить погашение (для выбранных)" ItemClick="Otmena_pogash_ItemClick"/>
                                 </dxg:TableView.RowCellMenuCustomizations>
 
                             </dxg:TableView>
