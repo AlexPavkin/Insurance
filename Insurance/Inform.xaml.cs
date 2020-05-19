@@ -300,7 +300,7 @@ select *from(select
             SqlCommand com = new SqlCommand($@"INSERT INTO POL_PERSONS_INFORM (PERSON_ID,PERSONGUID,Month_P3,Year_P3,Theme_P3,Date_P3,SPOSOB_P3,RESULT_P3,VID_P3,PRIMECH) 
 VALUES ({id},(select idguid from pol_persons where id={id}),{month_p3.EditValue??"null"},{Year_p3.EditValue},'{Theme_p3.EditValue ?? "null"}',
 '{Date_evd_p3.EditValue ?? "null"}','{Sposob_p3.EditValue ?? "null"}','{Result_p3.EditValue ?? "null"}','{Vid_meropr_p3.EditValue ?? "null"}','{Primech_p3.Text}')", con);
-
+            
             con.Open();
                 com.ExecuteNonQuery();
                 con.Close();
