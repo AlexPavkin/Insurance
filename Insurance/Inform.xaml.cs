@@ -854,7 +854,7 @@ select *from(select
             Vars.IDSZ = Funcs.MyIds(inform_grid.GetSelectedRowHandles(), inform_grid);
             var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
             var con = new SqlConnection(connectionString);
-            SqlCommand com = new SqlCommand($@"delete from POL_PERSONS_INFORM where id = {Vars.IDSZ}", con);
+            SqlCommand com = new SqlCommand($@"delete from POL_PERSONS_INFORM where person_id in({Vars.IDSZ})", con);
             //var ll = MKB_combo.EditValue.ToString();
             con.Open();
             com.ExecuteNonQuery();
@@ -929,7 +929,7 @@ SPOSOB_P3 as sposob,RESULT_P3 as result,PRIMECH as prim, l.kod as KOD_POL, l.kod
  join POL_PERSONS pp on p.PERSONGUID=pp.IDGUID
  left join lpu_39 l on pp.MO=l.MCOD
  left join POL_POLISES pol on pp.EVENT_GUID=pol.EVENT_GUID
-  where pp.id={id} and Date_P3  BETWEEN '{start_d_Copy.DateTime.Year + "-" + start_d_Copy.DateTime.Day + "-" + start_d_Copy.DateTime.Month}' AND '{end_d_Copy.DateTime.Year + "-" + end_d_Copy.DateTime.Day + "-" + end_d_Copy.DateTime.Month}'", Properties.Settings.Default.DocExchangeConnectionString);
+  where pp.id={id} and Date_P3  BETWEEN '{start_d_Copy.EditValue}' AND '{end_d_Copy.EditValue}'", Properties.Settings.Default.DocExchangeConnectionString);
                 //DataTable dt = new DataTable();
                 string dbffile = SF.FileName;
                 using (Stream fos = File.Open(dbffile, FileMode.Create, FileAccess.ReadWrite))
@@ -1001,7 +1001,7 @@ SPOSOB_P4 as sposob,RESULT_P4 as result,PRIMECH as prim
  left join lpu_39 l on pp.MO=l.MCOD
  left join POL_POLISES pol on pp.EVENT_GUID=pol.EVENT_GUID
  
- where p.id={id} and Date_P4  BETWEEN '{start_d_Copy.DateTime.Year + "-" + start_d_Copy.DateTime.Day + "-" + start_d_Copy.DateTime.Month}' AND '{end_d_Copy.DateTime.Year + "-" + end_d_Copy.DateTime.Day + "-" + end_d_Copy.DateTime.Month}'", Properties.Settings.Default.DocExchangeConnectionString);
+ where p.id={id} and Date_P4  BETWEEN '{start_d_Copy.EditValue}' AND '{end_d_Copy.EditValue}'", Properties.Settings.Default.DocExchangeConnectionString);
                 //DataTable dt = new DataTable();
                 string dbffile = SF.FileName;
                 using (Stream fos = File.Open(dbffile, FileMode.Create, FileAccess.ReadWrite))

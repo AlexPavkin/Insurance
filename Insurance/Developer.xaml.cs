@@ -105,6 +105,7 @@ namespace Insurance
 
 
         public ObservableCollection<ATTACHED_MO> Attache_mo = new ObservableCollection<ATTACHED_MO>();
+        
         public Developer()
         {
             InitializeComponent();
@@ -822,6 +823,412 @@ SPOSOB_P3 as sposob,RESULT_P3 as result,PRIMECH as prim, l.kod as KOD_POL, l.kod
                     
                 }
             }
+        }
+
+        private void K_file_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog OPF = new OpenFileDialog();
+
+            OPF.Multiselect = true;
+            bool res = OPF.ShowDialog().Value;
+            string[] files = OPF.FileNames;
+            string[] shfiles = OPF.SafeFileNames;
+
+            int y = 0;
+            if (res == true)
+            {
+                foreach (string file in files)
+                {
+                    FileInfo fi = new FileInfo(file);
+
+                    XmlDocument xDoc = new XmlDocument();
+                    xDoc.Load(file);
+                    string rfile = shfiles[y];            
+
+                    XmlElement xRoot = xDoc.DocumentElement;
+                    //var x = xDoc.GetElementsByTagName("INSURANCE");
+                    foreach(XmlNode n in xDoc.GetElementsByTagName("INSURANCE"))
+                    {
+                        if(n.ChildNodes.Count>1)
+                        {
+                            
+                            for (int i =0;i<= n.ChildNodes.Count-1; i++)
+                            {
+                                var c = n.ChildNodes[i];
+                                n.RemoveChild(n.FirstChild);
+                            }
+
+                        }
+                        
+                        
+                    }
+                    
+                    //var xx = xDoc.ChildNodes[1].ChildNodes[0].Attributes.GetNamedItem("N_REC").Value.ToString();
+                    //XmlNode xxx = xDoc.GetElementsByTagName("RECLIST");
+                    //var xxxx = xxx.ch;
+                    var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
+                        SqlConnection con = new SqlConnection(connectionString);
+                        SqlCommand com = new SqlCommand($@"exec [Load_flk] @xml = '{xDoc.LastChild.OuterXml.Replace((char)39, (char)32)}', @fname='{rfile}'", con);
+                        con.Open();
+                        com.ExecuteNonQuery();
+                        con.Close();
+
+                   
+                    y = y + 1;
+                }
+                string m = "Изменения данных от ТФОМС успешно загружены!";
+                string t = "Сообщение";
+                int b = 1;
+                Message me = new Message(m, t, b);
+                me.ShowDialog();
+
+
+            }
+        }
+
+        private void Load_zah_data_Click(object sender, RoutedEventArgs e)
+        {
+            string[] file_names = {"dict_doc.dbf","lnsi21.dbf","lnsi22.dbf","lnsi23.dbf","lpu.dbf","statpol.dbf",
+             "polis.dbf","polisext.dbf","polisprd.dbf","polissvd.dbf"};
+            string ConnectionString1 = Properties.Settings.Default.DocExchangeConnectionString;
+            WFR.FolderBrowserDialog OF = new WFR.FolderBrowserDialog();
+            //OF.Filter= "Файлы DBF (.dbf)|*.dbf";
+            OF.Description = "Выберите папку с программой захарова";
+            if(OF.ShowDialog() == WFR.DialogResult.OK)            
+            {
+                
+                DirectoryInfo dir = new DirectoryInfo(OF.SelectedPath);
+                foreach (var item in dir.GetDirectories())
+                {
+                    if(item.Name=="DBF" || item.Name=="DEFAULT")
+                    {
+                       var spr = item.GetFiles("*.dbf");
+                        foreach(var f in spr)
+                        {
+                            if(file_names.Contains(f.Name))
+                            {
+                                //string ConnectionString1 = Properties.Settings.Default.DocExchangeConnectionString;
+                                DataTable dt = new DataTable();
+                                using (Stream fos = File.Open(f.FullName, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+                                {
+                                    var dbf = new DotNetDBF.DBFReader(fos);
+                                    dbf.CharEncoding = Encoding.GetEncoding(866);
+                                    var cnt = dbf.RecordCount;
+                                    var fields = dbf.Fields;
+                                    for (int ii = 0; ii < fields.Count(); ii++)
+                                    {
+                                        DataColumn workCol = dt.Columns.Add(fields[ii].Name, fields[ii].Type);
+                                        workCol.AllowDBNull = true;
+                                        workCol.DefaultValue = DBNull.Value;
+                                    }
+
+                                    for (int ii = 0; ii < dbf.RecordCount; ii++)
+                                    {
+                                        var rtt = dbf.NextRecord();
+
+                                        if (rtt != null)
+                                        {
+                                            for (int i = 0; i < rtt.Count(); i++)
+                                            {
+                                                if (rtt[i] == null)
+                                                {
+                                                    rtt[i] = null;
+                                                }
+                                                else
+                                                if (rtt[i].ToString() == "")
+                                                {
+                                                    rtt[i] = null;
+                                                }
+                                            }
+                                            dt.LoadDataRow(rtt, true);
+
+                                        }
+
+                                    }
+
+                                }
+                                                               
+                                string sqltable = f.Name.Replace(".dbf", "");                                
+                                MyReader.LoadFromTable<DataTable>(ConnectionString1 ,dt,sqltable);
+                            }
+                        }
+                    }
+                    
+
+                }                
+                foreach (var item in dir.GetDirectories())
+                {
+                    if (item.Name == "DEFAULT")
+                    {
+                        DirectoryInfo dir1 = new DirectoryInfo(item.FullName);
+                        foreach(var item1 in dir1.GetDirectories())
+                        {
+                            if(item1.Name=="Photo" || item1.Name=="Sign")
+                            {
+                                DataTable dt1 = new DataTable();
+                                dt1.Columns.Add("N_REG", typeof(decimal));
+                                dt1.Columns.Add("Photo", typeof(string));
+                                
+
+                                foreach (var item2 in item1.GetFiles("*.jpg"))
+                                {
+                                    byte[] buf = File.ReadAllBytes(item2.FullName);
+                                    object[] r = { item2.Name.Replace(".jpg",""), Convert.ToBase64String(buf) };
+                                    dt1.LoadDataRow(r,LoadOption.OverwriteChanges);
+                                    
+                                }
+                                MyReader.LoadFromTable<DataTable>(ConnectionString1,dt1, item1.Name);
+
+                            }
+                            SqlConnection con = new SqlConnection(ConnectionString1);
+                            SqlCommand com = new SqlCommand($@"if not exists (select * from INFORMATION_SCHEMA.COLUMNS where COLUMN_NAME='Podp' and TABLE_NAME='Photo')
+                                                              alter table photo add Podp nvarchar(max)
+                                                              IF exists (select * from sys.tables where name='sign')
+                                                              Update photo set photo.podp=s.photo from [sign] s
+                                                              where photo.n_reg=s.n_reg
+                                                              IF exists (select * from sys.tables where name='sign')
+                                                              drop table [sign]", con);
+                            com.CommandTimeout = 0;
+                            con.Open();
+                            com.ExecuteNonQuery();
+                            con.Close();
+                        }
+
+                    }
+                }
+                
+            }
+            
+
+        }
+
+        private void From_excel_column_tostr_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog OF = new OpenFileDialog();
+
+            OF.Multiselect = false;
+            bool res = OF.ShowDialog().Value;
+            string ex_path = OF.FileName;
+            string cell = "";
+            tb = new DataTable();
+                    if (ex_path.Contains(".xls") || ex_path.Contains(".xlsx"))
+                    {
+                        Spreadsheet excel = new Spreadsheet();                        
+                        excel.LoadFromFile(ex_path);
+                        var r= excel.Worksheet(0).NotEmptyRowMax;
+                        for (int i=0; i<=excel.Worksheet(0).NotEmptyRowMax;i++)
+                        {
+                           var cc=excel.Worksheet(0).Cell(i, 0).Value.ToString();
+                           cell = cell+(char)34 + cc + (char)34 + ",";
+                        }
+                        text_b.Text=cell.Substring(0, cell.Length - 1);
+                        tb = excel.ExportToDataTable();
+                        
+                    }
+                    else
+                    {
+                        string filename = ex_path;
+                        string[] attache = File.ReadAllLines(filename);                        
+                        var cls0 = attache[0].Split(';');
+                        for (int i = 0; i < cls0.Count(); i++)
+                        {
+                            tb.Columns.Add("Column" + i.ToString(), typeof(string));
+                        }
+                        
+                        foreach (string row in attache)
+                        {
+                            // получаем все ячейки строки
+
+                            var cls = row.Split('|');
+
+                            tb.LoadDataRow(cls, LoadOption.Upsert);
+                            cell = (char)34 + cell + (char)34 + ",";
+                        }
+                        cell=cell.Substring(0, cell.Length - 1);
+                        text_b.Text = cell;
+                    }
+                    pol_zagr.ItemsSource = tb;
+                    
+        }
+        private string[,] adr1;
+        private void Move_zah_data__Click(object sender, RoutedEventArgs e)
+        {
+            var ad = (fias_d.adres.Text ??"").Split(',');
+            
+            fias_d.reg.EditValue = null; fias_d.reg_rn.EditValue = null; fias_d.reg_town.EditValue = null; fias_d.reg_np.EditValue = null;
+            fias_d.reg_ul.EditValue = null; fias_d.reg_dom.EditValue = null;
+            Guid reg=Guid.Empty; Guid rn= Guid.Empty; Guid town= Guid.Empty; Guid np= Guid.Empty; Guid ul= Guid.Empty; Guid dom = Guid.Empty;
+
+            SqlConnection con_f = new SqlConnection(Properties.Settings.Default.FIASConnectionString);
+            SqlCommand com_f1 = new SqlCommand($@"select aoguid from AddressObjects where AOLEVEL=1 and dbo.Translit('{ad[1]}') like char(37)+dbo.Translit(FORMALNAME)+char(37) and ACTSTATUS=1", con_f);
+            using (FIASContext fdb = new FIASContext())
+            {
+                fdb.Database.Log = Console.Write;
+                //string ad1 = ad[1].Replace("ё", "е").Replace(" ", "").Trim(' ');
+                //string ad2 = ad[2].Replace("ё", "е").Replace(" ", "").Trim(' ');
+                //string ad3 = ad[3].Replace("ё", "е").Replace(" ", "").Trim(' ');
+                //string ad4 = ad[4].Replace("ё", "е").Replace(" ", "").Trim(' ');
+                //string ad5 = ad[5].Replace("ё", "е").Replace(" ", "").Trim(' ');
+                //string ad6 = ad[6].Replace(" ", "").Trim(' ');
+                //string ad7 = ad[7].Replace(" ", "").Trim(' ');
+                string ad1 = ad[1] == "" ? "" : ad[1].Replace("ё", "е").Substring(0,ad[1].Length - new string(ad[1].ToCharArray().Reverse().ToArray()).IndexOf(' ')).Trim(' ');
+                string ad2 = ad[2] == "" ? "" : ad[2].Replace("ё", "е").Substring(0, ad[2].Length - new string(ad[2].ToCharArray().Reverse().ToArray()).IndexOf(' ')).Trim(' ');
+                string ad3 = ad[3] == "" ? "" : ad[3].Replace("ё", "е").Substring(0, ad[3].Length - new string(ad[3].ToCharArray().Reverse().ToArray()).IndexOf(' ')).Trim(' ');
+                string ad4 = ad[4] == "" ? "" : ad[4].Replace("ё", "е").Substring(0, ad[4].Length - new string(ad[4].ToCharArray().Reverse().ToArray()).IndexOf(' ')).Trim(' ');
+                string ad5 = ad[5] == "" ? "" : ad[5].Replace("ё", "е").Substring(0, ad[5].Length - new string(ad[5].ToCharArray().Reverse().ToArray()).IndexOf(' ')).Trim(' ');
+                string ad6 = ad[6].Replace(" ", "").Trim(' ');
+                string ad7 = ad[7].Replace(" ", "").Trim(' ');
+                reg = fdb.AddressObjects.Where(x=>x.AOLEVEL==1 && x.FORMALNAME.Replace("ё","е") == ad1 && x.ACTSTATUS==1).Select(x=>x.AOGUID).FirstOrDefault();
+                
+                rn = fdb.AddressObjects.Where(x => x.AOLEVEL == 3 && x.FORMALNAME.Replace("ё", "е") == ad2 && x.PARENTGUID == reg && x.ACTSTATUS == 1).Select(x => x.AOGUID).FirstOrDefault();
+                
+                town = fdb.AddressObjects.Where(x => x.AOLEVEL == 4 && x.FORMALNAME.Replace("ё", "е") == ad3 && x.PARENTGUID == rn && x.ACTSTATUS == 1).Select(x => x.AOGUID).FirstOrDefault();
+
+                if(town == Guid.Empty)
+                {
+                    town = fdb.AddressObjects.Where(x => x.AOLEVEL == 4 && x.FORMALNAME.Replace("ё", "е") == ad3 && x.PARENTGUID == reg && x.ACTSTATUS == 1).Select(x => x.AOGUID).FirstOrDefault();
+                    if(town==Guid.Empty && "Москва,Санкт-Петербург,Севастополь,Байконур".Contains(ad1))
+                    {
+                        town = reg;
+                    }
+                } 
+
+                np = fdb.AddressObjects.Where(x => x.AOLEVEL == 6 && x.FORMALNAME.Replace("ё", "е") == ad4 && x.PARENTGUID == rn  && x.ACTSTATUS == 1).Select(x => x.AOGUID).FirstOrDefault();
+
+                if(np==Guid.Empty)
+                {
+                    np = fdb.AddressObjects.Where(x => x.AOLEVEL == 6 && x.FORMALNAME.Replace("ё", "е") == ad4 && x.PARENTGUID == town && x.ACTSTATUS == 1).Select(x => x.AOGUID).FirstOrDefault();
+                }
+
+                ul = fdb.AddressObjects.Where(x => x.AOLEVEL == 7 && x.FORMALNAME.Replace("ё","е")==ad5 && x.PARENTGUID == town && x.ACTSTATUS == 1).Select(x => x.AOGUID).FirstOrDefault();
+
+                if(ul==Guid.Empty)
+                {
+                    ul = fdb.AddressObjects.Where(x => x.AOLEVEL == 7 && x.FORMALNAME.Replace("ё", "е") == ad5 && x.PARENTGUID == np && x.ACTSTATUS == 1).Select(x => x.AOGUID).FirstOrDefault();
+                }
+
+                dom = fdb.Houses.Where(x => x.AOGUID == ul && ((x.HOUSENUM == ad6 && x.BUILDNUM == ad7) || x.HOUSENUM + x.BUILDNUM == ad6 || x.HOUSENUM == ad6) && x.ENDDATE > DateTime.Today).Select(x => x.HOUSEGUID).FirstOrDefault();
+
+                if (dom == Guid.Empty)
+                {
+                    dom = fdb.Houses.Where(x => x.AOGUID == np && (x.HOUSENUM == ad6 || x.HOUSENUM + x.BUILDNUM == ad6 /*|| x.HOUSENUM.StartsWith(ad6.Substring(0, (ad6.Length < 2 ? ad6.Length : ad6.Length - 1))))*/) && x.ENDDATE > DateTime.Today).Select(x => x.HOUSEGUID).FirstOrDefault();
+                    if (dom == Guid.Empty)
+                    {
+                        dom = fdb.Houses.Where(x => x.AOGUID == town && (x.HOUSENUM == ad6 || x.HOUSENUM + x.BUILDNUM == ad6 /*|| x.HOUSENUM.StartsWith(ad6.Substring(0, (ad6.Length < 2 ? ad6.Length : ad6.Length - 1))))*/) && x.ENDDATE > DateTime.Today).Select(x => x.HOUSEGUID).FirstOrDefault();
+                        
+                    }
+                }
+                else
+                {
+
+                }                
+
+            }
+//                com_f1.CommandTimeout = 0;
+//            con_f.Open();
+//            if (ad[1] == "") return;
+//            reg = (Guid)com_f1.ExecuteScalar();
+//            if (ad[2] == "")
+//            {
+//                SqlCommand com_f3 = new SqlCommand($@"select aoguid from AddressObjects where dbo.Translit('{ad[3]}') like char(37)+dbo.Translit(FORMALNAME)+char(37) and ACTSTATUS=1
+//and PARENTGUID ='{reg}'and  AOLEVEL in(3,4)", con_f);
+//                town = (Guid)com_f3.ExecuteScalar();
+//            }
+//            else
+//            {
+//                SqlCommand com_f3 = new SqlCommand($@"select aoguid from AddressObjects where dbo.Translit('{ad[2]}') like char(37)+dbo.Translit(FORMALNAME)+char(37) and ACTSTATUS=1
+//and PARENTGUID ='{reg}'and  AOLEVEL in(3)", con_f);
+//                rn = (Guid)com_f3.ExecuteScalar();                
+//            }
+//            if (ad[3] == "")
+//            {
+//                SqlCommand com_f4 = new SqlCommand($@"select aoguid from AddressObjects where dbo.Translit('{ad[4]}') like char(37)+dbo.Translit(FORMALNAME)+char(37) and ACTSTATUS=1
+//and PARENTGUID ='{rn}'and  AOLEVEL in(4,6)", con_f);
+//                np = (Guid)com_f4.ExecuteScalar();
+//            }
+//            else
+//            {
+//                SqlCommand com_f4 = new SqlCommand($@"select aoguid from AddressObjects where dbo.Translit('{ad[3]}') like char(37)+dbo.Translit(FORMALNAME)+char(37) and ACTSTATUS=1
+//and PARENTGUID ='{(rn==Guid.Empty?reg:rn)}'and  AOLEVEL in(3,4)", con_f);
+//                town = (Guid)com_f4.ExecuteScalar();
+//            }
+//            if (ad[4] == "")
+//            {
+//                SqlCommand com_f5 = new SqlCommand($@"select aoguid from AddressObjects where dbo.Translit('{ad[5]}') like char(37)+dbo.Translit(FORMALNAME)+char(37) and ACTSTATUS=1
+//and PARENTGUID ='{town}'and  AOLEVEL in(7,90,91)", con_f);
+//                ul = (Guid)com_f5.ExecuteScalar();
+//            }
+//            else
+//            {
+//                SqlCommand com_f5 = new SqlCommand($@"select aoguid from AddressObjects where dbo.Translit('{ad[4]}') like char(37)+dbo.Translit(FORMALNAME)+char(37) and ACTSTATUS=1
+//and PARENTGUID ='{rn}'and  AOLEVEL in(6)", con_f);
+//                np = (Guid)com_f5.ExecuteScalar();
+//            }
+//            if (ad[5] == "")
+//            {
+////                SqlCommand com_f5 = new SqlCommand($@"select aoguid from AddressObjects where '{ad[5]}' like char(37)+FORMALNAME+char(37) and ACTSTATUS=1
+////and PARENTGUID ='{town}'and  AOLEVEL in(7,90,91)", con_f);
+////                ul = (Guid)com_f5.ExecuteScalar();
+//            }
+//            else
+//            {
+//                SqlCommand com_f5 = new SqlCommand($@"select aoguid from AddressObjects where dbo.Translit('{ad[5]}') like char(37)+dbo.Translit(FORMALNAME)+char(37) and ACTSTATUS=1
+//and PARENTGUID ='{(town.ToString()== "00000000-0000-0000-0000-000000000000" ? np:town)}'and  AOLEVEL in(7)", con_f);
+//                ul = (Guid)com_f5.ExecuteScalar();
+//            }
+//            if (ad[6] == "")
+//            {
+//                SqlCommand com_f6 = new SqlCommand($@"select houseguid from houses 
+//                                                   where ('{ad[7]}' = strucnum ) and enddate>'{DateTime.Today}'
+//and AOGUID ='{(ul.ToString() == "00000000-0000-0000-0000-000000000000" ? np : ul)}'", con_f);
+//                dom = (Guid)com_f6.ExecuteScalar();
+//            }
+//            else
+//            {
+//                SqlCommand com_f6 = new SqlCommand($@"select top(1) houseguid from houses 
+//                                                   where (('{ad[6]}' = housenum and '{ad[7]}'=buildnum) or '{ad[6]}'+'{ad[7]}' = housenum or housenum like'{ad[6].Substring(0,ad[6].Length-1)}%') and enddate>'{DateTime.Today}'
+//and AOGUID ='{(ul.ToString() == "00000000-0000-0000-0000-000000000000" ? np : ul)}'", con_f);
+//                dom = (Guid)com_f6.ExecuteScalar();
+//            }
+
+
+            con_f.Close();
+            fias_d.reg.EditValue = reg;
+            if (rn != Guid.Empty) fias_d.reg_rn.EditValue = rn;
+            if (town != Guid.Empty) fias_d.reg_town.EditValue = town; 
+            if (np != Guid.Empty) fias_d.reg_np.EditValue = np; 
+            if (ul != Guid.Empty) fias_d.reg_ul.EditValue = ul;
+            if (dom != Guid.Empty) fias_d.reg_dom.EditValue = dom;
+            fias_d.reg_korp.Text = ad[7];
+            fias_d.reg_kv.Text = ad[8];
+
+
+        }
+
+        private void Pol_zagr_SelectionChanged(object sender, DevExpress.Xpf.Grid.GridSelectionChangedEventArgs e)
+        {
+            fias_d.adres.Text = pol_zagr.GetFocusedRowCellValue(pol_zagr.Columns[1]).ToString();
+        }
+
+        private void Load_zah_adres_Click(object sender, RoutedEventArgs e)
+        {
+            Dictionary<string, string> adr = new Dictionary<string, string>();
+            SqlConnection con = new SqlConnection(Properties.Settings.Default.DocExchangeConnectionString);
+            SqlCommand com = new SqlCommand($@"select n_reg,adres from polis", con);
+            com.CommandTimeout = 0;
+            con.Open();
+            SqlDataReader dr = com.ExecuteReader();
+            while (dr.Read())
+            {
+                int i = 0;
+                adr.Add(dr["n_reg"].ToString(), dr["adres"].ToString());
+
+            }
+
+            //com.ExecuteNonQuery();
+            dr.Close();
+            con.Close();
+            pol_zagr.ItemsSource = adr;
         }
     }
     public class Class_params : IComparable<Class_params>

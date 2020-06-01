@@ -72,12 +72,19 @@ namespace Insurance
                     //}
                     dateP.DateTime = DateTime.Now;
 
-                    tb = new DataTable();
+                    DataTable tb = new DataTable();
                     Spreadsheet excel = new Spreadsheet();
                     
                     excel.LoadFromFile(ex_path[0]);
                     
+                    //for (int y = 5; y < excel.Worksheet(0).Rows.LastFormatedRow; y++)
+                    //{
+                    //    excel.Worksheet(0).Cell(y, 3).ValueDataTypeByNumberFormatString =Bytescout.Spreadsheet.Constants.NumberFormatType.Text;
+                        
+                    //}
+                    //excel.SaveAs(ex_path[0].Replace(".xls","_1.xls"));
                     tb = excel.ExportToDataTable(excel.Worksheets[0].Name,true);
+                    
                     //string filename = ex_path[0];
                     //string ConStr = String.Format("Provider=Microsoft.ACE.OLEDB.12.0; Data Source={0}; Extended Properties=Excel 12.0;", filename);
                     //System.Data.DataSet ds = new System.Data.DataSet("EXCEL");
