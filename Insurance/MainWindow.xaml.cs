@@ -33,6 +33,7 @@ using Bytescout.Spreadsheet;
 using Ionic.Zip;
 using System.Xml;
 using Insurance.Classes;
+using System.Data.SqlTypes;
 
 namespace Insurance
 {
@@ -230,6 +231,125 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
             
 
            
+        }
+        public static void LoadFromTable<T>(string connectionString, DataTable dt,string sqltable)
+        {
+            string[] rezervsql = { "ADD", "ALL", "ALTER", "AND", "ANY", "AS", "ASC", "AUTHORIZATION", "BACKUP", "BEGIN", "BETWEEN",
+                "BREAK", "BROWSE", "BULK", "BY", "CASCADE", "CASE", "CHECK", "CHECKPOINT", "CLOSE", "CLUSTERED", "COALESCE", "COLLATE",
+                "COLUMN", "COMMIT", "COMPUTE", "CONSTRAINT", "CONTAINS", "CONTAINSTABLE", "CONTINUE", "CONVERT", "CREATE", "CROSS",
+                "CURRENT", "CURRENT_DATE", "CURRENT_TIME", "CURRENT_TIMESTAMP", "CURRENT_USER", "CURSOR", "DATABASE", "DBCC",
+                "DEALLOCATE", "DECLARE", "DEFAULT", "DELETE", "DENY", "DESC", "DISK;", "DISTINCT", "DISTRIBUTED", "DOUBLE", "DROP",
+                "DUMP;", "ELSE", "END", "ERRLVL", "ESCAPE", "EXCEPT", "EXEC", "EXECUTE", "EXISTS", "EXIT", "EXTERNAL", "FETCH", "FILE",
+                "FILLFACTOR", "FOR", "FOREIGN", "FREETEXT", "FREETEXTTABLE", "FROM", "FULL", "FUNCTION", "GOTO", "GRANT", "GROUP",
+                "HAVING", "HOLDLOCK", "IDENTITY", "IDENTITY_INSERT", "IDENTITYCOL", "IF", "IN", "INDEX", "INNER", "INSERT", "INTERSECT",
+                "INTO", "IS", "JOIN", "KEY", "KILL", "LEFT", "LIKE", "LINENO", "LOAD", "MERGE", "NATIONAL", "NOCHECK", "NONCLUSTERED",
+                "NOT", "NULL", "NULLIF", "OF", "OFF", "OFFSETS", "ON", "OPEN", "OPENDATASOURCE", "OPENQUERY", "OPENROWSET", "OPENXML",
+                "OPTION", "OR", "ORDER", "OUTER", "OVER", "PERCENT", "PIVOT", "PLAN", "PRECISION", "PRIMARY", "PRINT", "PROC",
+                "PROCEDURE", "PUBLIC", "RAISERROR", "READ", "READTEXT", "RECONFIGURE", "REFERENCES", "РЕПЛИКАЦИЯ", "RESTORE", "RESTRICT",
+                "RETURN", "REVERT", "REVOKE", "RIGHT", "ROLLBACK", "ROWCOUNT", "ROWGUIDCOL", "RULE", "SAVE", "SCHEMA", "SECURITYAUDIT",
+                "SELECT", "SEMANTICKEYPHRASETABLE", "SEMANTICSIMILARITYDETAILSTABLE", "SEMANTICSIMILARITYTABLE", "SESSION_USER", "SET",
+                "SETUSER", "SHUTDOWN", "SOME", "STATISTICS", "SYSTEM_USER", "TABLE", "TABLESAMPLE", "TEXTSIZE", "THEN", "TO", "В начало",
+                "TRAN", "TRANSACTION", "TRIGGER", "TRUNCATE", "TRY_CONVERT", "TSEQUAL", "UNION", "UNIQUE", "UNPIVOT", "UPDATE",
+                "UPDATETEXT", "USE", "Пользователь", "VALUES", "VARYING", "VIEW", "WAITFOR", "WHEN", "WHERE", "WHILE", "WITH",
+                "WITHIN GROUP", "WRITETEXT" };
+            string sqltype = "";
+            string sqlcolumns = "";
+            foreach (DataColumn dc in dt.Columns)
+            {
+                //dt.Columns.Add(d.NAME,d.TYPE);
+                string s;
+                switch (dc.DataType.Name.ToString())
+                {
+                    case "Int32":
+                        s = "int";
+                        break;
+                    case "String":
+                        s = "nvarchar(max)";
+                        break;
+                    case "Guid":
+                        s = "uniqueidentifier";
+                        break;
+                    case "Boolean":
+                        s = "bit";
+                        break;
+                    case "DateTime":
+                        s = "DateTime2";
+                        break;
+                    case "Decimal":
+                        s = "numeric(20,2)";
+                        break;
+                    default:
+                        s = dc.DataType.Name.ToString();
+                        break;
+                }
+
+                
+                if(rezervsql.Contains(dc.ColumnName))
+                {
+                    sqltype = sqltype +"["+dc.ColumnName+"]"+ " " + s + ",";
+                    sqlcolumns = sqlcolumns +"["+ dc.ColumnName+"]" + ",";
+                }
+                else
+                {
+                    sqltype = sqltype + dc.ColumnName + " " + s + ",";
+                    sqlcolumns = sqlcolumns + dc.ColumnName + ",";
+                }
+                
+            }
+            string sqltype0 = sqltype.Substring(0, sqltype.Length - 1);
+            string sqlcolumns0 = sqlcolumns.Substring(0, sqlcolumns.Length - 1);
+            if (sqltable=="polis")
+            {
+                sqltype = sqltype+ "idguid uniqueidentifier,prguid uniqueidentifier";
+                sqlcolumns = sqlcolumns+ "idguid,prguid";
+            }
+            else if(sqltable == "polisprd")
+            {
+                sqltype = sqltype + "idguid uniqueidentifier";
+                sqlcolumns = sqlcolumns + "idguid";
+            }
+            else
+            {
+                sqltype = sqltype.Substring(0, sqltype.Length - 1);
+                sqlcolumns = sqlcolumns.Substring(0, sqlcolumns.Length - 1);
+            }
+            
+            //foreach (var item in ids)
+            //{
+
+            //    dt.Rows.Add(item);
+
+            //}
+
+            SqlConnection con = new SqlConnection(connectionString);
+
+            SqlCommand cmd0 = new SqlCommand($@" IF exists (select * from sys.table_types where name='ForUpdate')  
+                                                 DROP TYPE dbo.ForUpdate   
+                                                 CREATE TYPE ForUpdate AS TABLE ({sqltype0})
+                                                 IF exists (select * from sys.tables where name='{sqltable}') 
+                                                 DROP table dbo.{sqltable}  
+                                                 CREATE TABLE dbo.{sqltable} ({sqltype})", con);
+
+            SqlCommand cmd = new SqlCommand($@"insert into dbo.{sqltable}({sqlcolumns0})
+                                                select {sqlcolumns0} from @dt", con);
+
+            var t = new SqlParameter("@dt", SqlDbType.Structured);
+            t.TypeName = "dbo.ForUpdate";
+            t.Value = dt;
+            cmd.Parameters.Add(t);
+            //SqlParameter t = cmd.Parameters.AddWithValue("@t", dt);
+            //t.SqlDbType = SqlDbType.Structured;
+            //t.TypeName = "dbo.ForUpdate";
+
+            cmd.CommandTimeout = 0;
+            con.Open();
+            cmd0.ExecuteNonQuery();
+            int str = cmd.ExecuteNonQuery();
+            int isrt = str;
+            con.Close();
+
+
+
         }
         public static DataTable ToDataTable<T>(List<T> items)
 
@@ -434,6 +554,7 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
 
     public partial class MainWindow : Window
     {
+        
         RoutedCommand newCmd = new RoutedCommand();
         public static ObservableCollection<Events> events_g1;
         bool tttab;
@@ -669,6 +790,7 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
                 }));
 
             InitializeComponent();
+            
 
             DispatcherTimer timer = new DispatcherTimer();  // если надо, то в скобках указываем приоритет, например DispatcherPriority.Render
             //timer.Interval = TimeSpan.FromSeconds(15);
@@ -4258,7 +4380,7 @@ where event_guid=(select event_guid from pol_persons where id=@id) and main=0 an
                         ddser.Text = docser.ToString();
                         ddnum.Text = docnum.ToString();
                         dddate.DateTime = Convert.ToDateTime(docdate);
-                        if (docexp == null)
+                        if(docexp == null)
                         {
                             docexp1.EditValue = null;
                         }
@@ -4266,7 +4388,7 @@ where event_guid=(select event_guid from pol_persons where id=@id) and main=0 an
                         {
                             docexp1.EditValue = Convert.ToDateTime(docexp);
                         }
-
+                        
                         ddkemv.Text = name_vp.ToString();
 
                         dop_doc = 1;
@@ -4283,7 +4405,7 @@ from POL_EVENTS where IDGUID=(select event_guid from pol_persons where id=@id) a
                     con.Open();
                     SqlDataReader reader10 = comm10.ExecuteReader();
 
-                    while (reader10.Read()) // построчно считываем данные 
+                    while (reader10.Read()) // построчно считываем данные
                     {
                         object doctype = reader10["DOCTYPE"];
                         object docser = reader10["DOCSER"];
