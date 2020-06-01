@@ -299,9 +299,9 @@ select *from(select
                 var con = new SqlConnection(connectionString);
             SqlCommand com = new SqlCommand($@"INSERT INTO POL_PERSONS_INFORM (PERSON_ID,PERSONGUID,Month_P3,Year_P3,Theme_P3,Date_P3,SPOSOB_P3,RESULT_P3,VID_P3,PRIMECH) 
 VALUES ({id},(select idguid from pol_persons where id={id}),{month_p3.EditValue??"null"},{Year_p3.EditValue},'{Theme_p3.EditValue ?? "null"}',
-'{Date_evd_p3.EditValue ?? "null"}','{Sposob_p3.EditValue ?? "null"}','{Result_p3.EditValue ?? "null"}','{Vid_meropr_p3.EditValue ?? "null"}','{Primech_p3.Text}')", con);
-            
-            con.Open();
+CAST('{Date_evd_p3.EditValue ?? "null"}' AS DATE),'{Sposob_p3.EditValue ?? "null"}','{Result_p3.EditValue ?? "null"}','{Vid_meropr_p3.EditValue ?? "null"}','{Primech_p3.Text}')", con);
+           
+                con.Open();
                 com.ExecuteNonQuery();
                 con.Close();
                 string m = "ЗЛ успешно проинформированы! Приложение 3";
@@ -309,7 +309,6 @@ VALUES ({id},(select idguid from pol_persons where id={id}),{month_p3.EditValue?
                 int b = 1;
                 Message me = new Message(m, t, b);
                 me.ShowDialog();
-            
             
         }
         private void Adder_Click_4(object sender, RoutedEventArgs e)
@@ -320,7 +319,7 @@ VALUES ({id},(select idguid from pol_persons where id={id}),{month_p3.EditValue?
             var con = new SqlConnection(connectionString);
             SqlCommand com = new SqlCommand($@"INSERT INTO POL_PERSONS_INFORM (PERSON_ID,PERSONGUID,Year_P4,Month_1_P4,Month_2_P4,Month_3_P4,Month_4_P4,Theme_P4,Date_P4,SPOSOB_P4,RESULT_P4,SOGLASIE_P4,MKB_P4,PRIMECH) 
 VALUES ({id},(select idguid from pol_persons where id={id}),{Year_p4.EditValue},{Month1.EditValue??"null"},{Month2.EditValue??"null"},
-{Month3.EditValue??"null"},{Month4.EditValue??"null"},{Tema_yved_p4.EditValue??"null"},'{dateyved_p4.EditValue??"null"}',{Sposob_p4.EditValue??"null"},
+{Month3.EditValue??"null"},{Month4.EditValue??"null"},{Tema_yved_p4.EditValue??"null"},CAST('{dateyved_p4.EditValue??"null"}' AS DATE),{Sposob_p4.EditValue??"null"},
 '{Result_p4.EditValue??"null"}',{Convert.ToInt32(Soglasie.EditValue)},'{MKB.EditValue??"null"}','{Primech_p4.Text}')", con);
             //var ll = MKB_combo.EditValue.ToString();
             con.Open();
@@ -930,7 +929,7 @@ SPOSOB_P3 as sposob,RESULT_P3 as result,PRIMECH as prim, l.kod as KOD_POL, l.kod
  join POL_PERSONS pp on p.PERSONGUID=pp.IDGUID
  left join lpu_39 l on pp.MO=l.MCOD
  left join POL_POLISES pol on pp.EVENT_GUID=pol.EVENT_GUID
-  where pp.id={id}", Properties.Settings.Default.DocExchangeConnectionString);
+  where pp.id={id} and Date_P3  BETWEEN '{start_d_Copy.DateTime.Year + "-" + start_d_Copy.DateTime.Day + "-" + start_d_Copy.DateTime.Month}' AND '{end_d_Copy.DateTime.Year + "-" + end_d_Copy.DateTime.Day + "-" + end_d_Copy.DateTime.Month}'", Properties.Settings.Default.DocExchangeConnectionString);
                 //DataTable dt = new DataTable();
                 string dbffile = SF.FileName;
                 using (Stream fos = File.Open(dbffile, FileMode.Create, FileAccess.ReadWrite))
@@ -1002,7 +1001,7 @@ SPOSOB_P4 as sposob,RESULT_P4 as result,PRIMECH as prim
  left join lpu_39 l on pp.MO=l.MCOD
  left join POL_POLISES pol on pp.EVENT_GUID=pol.EVENT_GUID
  
- where p.id={id}", Properties.Settings.Default.DocExchangeConnectionString);
+ where p.id={id} and Date_P4  BETWEEN '{start_d_Copy.DateTime.Year + "-" + start_d_Copy.DateTime.Day + "-" + start_d_Copy.DateTime.Month}' AND '{end_d_Copy.DateTime.Year + "-" + end_d_Copy.DateTime.Day + "-" + end_d_Copy.DateTime.Month}'", Properties.Settings.Default.DocExchangeConnectionString);
                 //DataTable dt = new DataTable();
                 string dbffile = SF.FileName;
                 using (Stream fos = File.Open(dbffile, FileMode.Create, FileAccess.ReadWrite))

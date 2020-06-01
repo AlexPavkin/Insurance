@@ -1,7 +1,7 @@
 ﻿<Window x:Name="w_main" x:Class="Insurance.MainWindow" mc:Ignorable="d"  Height="948.4" Width="1666.987" Background="#FF0063FF" Activated="w_main_Activated" Loaded="w_main_Loaded" Closed="W_main_Closed" control:EnterKeyTraversal.IsEnabled="True"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:dxbt="http://schemas.devexpress.com/winfx/2008/xaml/bars/themekeys"
@@ -453,6 +453,8 @@
                                     <dxb:BarButtonItem Name="load_flk_zl" Content="Загрузить ФЛК для ЗЛ" ItemClick="Load_flk_zl_ItemClick" />
                                     <dxb:BarItemSeparator/>
                                     <dxb:BarButtonItem Name="load_OK" Content="Проставить комментарий 'ОК!' для ЗЛ" ItemClick="Load_OK_ItemClick" />
+                                    <dxb:BarItemSeparator/>
+                                    <dxb:BarButtonItem Name ="Otmena_pogash" Content="Отменить погашение (для выбранных)" ItemClick="Otmena_pogash_ItemClick"/>
                                 </dxg:TableView.RowCellMenuCustomizations>
 
                             </dxg:TableView>
