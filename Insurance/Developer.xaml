@@ -9,6 +9,7 @@
         xmlns:control="clr-namespace:Yamed.Control;assembly=Yamed.Control"
     xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
     xmlns:Editors="clr-namespace:Yamed.Control.Editors"
+    xmlns:Editors1="clr-namespace:DevExpress.Xpf.Editors;assembly=DevExpress.Xpf.Core.v16.2"
     x:Class="Insurance.Developer"
         mc:Ignorable="d"
         Title="Функции для разработчика" Height="943.34" Width="1602.532" Background="#FF5F7B8B">
@@ -44,6 +45,7 @@
             </dxlc:LayoutGroup>
         </dxlc:LayoutControl>
         <Button x:Name="load_zah_adres" Content="Загрузить захаровские адреса в грид" HorizontalAlignment="Left" Margin="10,229,0,0" VerticalAlignment="Top" Width="379"  Height="31" FontWeight="Bold" TabIndex="3" Click="Load_zah_adres_Click"/>
+        
     </Grid>
 
 </Window>

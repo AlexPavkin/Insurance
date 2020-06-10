@@ -232,6 +232,88 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
 
            
         }
+        public static void UpdateFromTable<T>(string com, string connectionString, DataTable dt, bool deltype)
+        {
+            string sqltype = "";
+
+
+            foreach (DataColumn dc in dt.Columns)
+            {
+                //dt.Columns.Add(d.NAME,d.TYPE);
+                string s;
+                switch (dc.DataType.Name.ToString())
+                {
+                    case "Int32":
+                        s = "int";
+                        break;
+                    case "String":
+                        s = "nvarchar(500)";
+                        break;
+                    case "Guid":
+                        s = "uniqueidentifier";
+                        break;
+                    case "Boolean":
+                        s = "bit";
+                        break;
+                    case "DateTime":
+                        s = "DateTime2";
+                        break;
+                    case "Decimal":
+                        s = "numeric(10,2)";
+                        break;
+                    default:
+                        s = dc.DataType.Name.ToString();
+                        break;
+                }
+
+                sqltype = sqltype + dc.ColumnName + " " + s + ",";
+
+            }
+            sqltype = sqltype.Substring(0, sqltype.Length - 1);
+            //foreach (var item in ids)
+            //{
+
+            //    dt.Rows.Add(item);
+
+            //}
+
+            SqlConnection con = new SqlConnection(connectionString);
+            SqlCommand cmd0 = new SqlCommand($@" 
+IF exists (select * from sys.table_types where name='ForUpdate')  
+DROP TYPE dbo.ForUpdate   
+CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
+            
+            
+
+            SqlCommand cmd = new SqlCommand(com, con);
+
+            var t = new SqlParameter("@dt", SqlDbType.Structured);
+            t.TypeName = "dbo.ForUpdate";
+            t.Value = dt;
+            cmd.Parameters.Add(t);
+            //SqlParameter t = cmd.Parameters.AddWithValue("@t", dt);
+            //t.SqlDbType = SqlDbType.Structured;
+            //t.TypeName = "dbo.ForUpdate";
+
+            cmd.CommandTimeout = 0;
+            con.Open();
+            if(deltype)
+            {
+                cmd0.ExecuteNonQuery();
+                int str = cmd.ExecuteNonQuery();
+                int isrt = str;
+            }
+            else
+            {
+                int str = cmd.ExecuteNonQuery();
+                int isrt = str;
+            }
+            
+            con.Close();
+
+
+
+        }
         public static void LoadFromTable<T>(string connectionString, DataTable dt,string sqltable)
         {
             string[] rezervsql = { "ADD", "ALL", "ALTER", "AND", "ANY", "AS", "ASC", "AUTHORIZATION", "BACKUP", "BEGIN", "BETWEEN",
@@ -264,7 +346,7 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
                         s = "int";
                         break;
                     case "String":
-                        s = "nvarchar(max)";
+                        s = $"nvarchar({dc.MaxLength})";
                         break;
                     case "Guid":
                         s = "uniqueidentifier";
@@ -499,6 +581,22 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
             sg_rows = sg_rows.Substring(0, sg_rows.Length - 1);
             return sg_rows;
         }
+        public static DataTable MyIdsTable(int[] ids,string field, DevExpress.Xpf.Grid.GridControl grid)
+        {
+            DataTable dt = new DataTable();
+            dt.Columns.Add(field, typeof(int));
+            List<int> idd = new List<int>();
+            
+            for (int i=0; i<ids.Count();i++)
+            {
+                //idd.Add((int)grid.GetCellValue(ids[i],field));
+                dt.LoadDataRow(new object[] {(int)grid.GetCellValue(ids[i], field)},true);
+            }
+            
+            
+               
+            return dt;
+        }
 
         public static string MyFields(string[] fields)
         {
@@ -506,7 +604,6 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
             string sg_rows = "";
             string[] rt = fields;
             for (int i = 0; i < rt.Count(); i++)
-
             {
                 var ddd = rt[i];
                 var sgr = sg_rows.Insert(sg_rows.Length, ddd.ToString()) + ",";
@@ -549,6 +646,7 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
 
 
         }
+        
 
     }
 
@@ -972,6 +1070,10 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
         //public string[] events_list;
         private void new_obr_Click(object sender, RoutedEventArgs e)
         {
+            //var r = Funcs.MyIdsTable(pers_grid.GetSelectedRowHandles(), "ID", pers_grid);
+            //string command0 = $@"exec [dels] @dt";
+            //MyReader.UpdateFromTable<DataTable>(command0, Properties.Settings.Default.DocExchangeConnectionString, r,false);
+
             fio_col = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_fam", Properties.Settings.Default.DocExchangeConnectionString);
             im_DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_im", Properties.Settings.Default.DocExchangeConnectionString);
             ot_DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_ot", Properties.Settings.Default.DocExchangeConnectionString);
