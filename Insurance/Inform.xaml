@@ -236,7 +236,7 @@
                             <dxe:TextEdit x:Name="month_p3" CharacterCasing="Upper" />
                         </dxlc:LayoutItem>
                         <dxlc:LayoutItem Label="Год" Foreground="White">
-                            <dxe:TextEdit x:Name="Year_p3" CharacterCasing="Upper" />
+                            <dxe:TextEdit x:Name="Year_p3" CharacterCasing="Upper" Mask="c2" MaskType="Numeric" />
                         </dxlc:LayoutItem>
                     </dxlc:LayoutGroup>
                     <dxlc:LayoutGroup dx:ScrollViewerTouchBehavior.IsEnabled="True" Orientation="Vertical" Serialization:SerializableItem.TypeName="LayoutGroup">

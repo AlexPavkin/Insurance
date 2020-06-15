@@ -17,6 +17,7 @@ using DevExpress;
 using System.Xml;
 using System.Xml.Linq;
 using System.IO;
+using Bytescout.Spreadsheet;
 using System.Data;
 using Microsoft.Win32;
 
@@ -909,6 +910,17 @@ sps.Name as sposob_4,rp4.Name as result_4,PRIMECH as prim_4
  where p.PERSON_ID={id})T1 on t0.id=T1.id ", Properties.Settings.Default.DocExchangeConnectionString);
             inform_grid1.ItemsSource = peopleList;
             inform_grid1.View.FocusedRowHandle = -1;
+
+            //------------------------------------------------------
+
+
+            var dt = MyReader.ToDataTable(peopleList);
+            Spreadsheet excel = new Spreadsheet();
+            var wb=excel.Workbook;
+            var wsh = wb.Worksheets[0];            
+            excel.ImportFromDataTable(dt,0);
+            excel.ImportFromDataTable(dt, 0);
+            excel.SaveAsXLS("c:\\Temt\\ttt.xlx");
         }
 
         private void Unload_3_Click(object sender, RoutedEventArgs e)
@@ -982,6 +994,7 @@ SPOSOB_P3 as sposob,RESULT_P3 as result,PRIMECH as prim, l.kod as KOD_POL, l.kod
 
         private void Unload_4_Click(object sender, RoutedEventArgs e)
         {
+            
             var id = inform_grid.GetFocusedRowCellValue("ID");
             SaveFileDialog SF = new SaveFileDialog();
             SF.DefaultExt = ".dbf";
@@ -1064,6 +1077,19 @@ SPOSOB_P4 as sposob,RESULT_P4 as result,PRIMECH as prim
                     //var cnt = dbf.RecordCount;
                 }
             }
+        }
+        private void Probnik()
+        {
+
+            
+            //DataTable dtt = new DataTable();
+            //foreach (var pl in peopleList)
+            //{
+            //    dtt.Columns.Add(pl, typeof(string));
+            //}
+            //dtt.ImportRow(peopleList[0]);
+            //dtt.Load(peopleList, LoadOption.OverwriteChanges);
+            //
         }
     }
     
