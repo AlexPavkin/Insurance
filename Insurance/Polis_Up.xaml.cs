@@ -22,7 +22,7 @@ using System.Collections.ObjectModel;
 using Insurance_SPR;
 using Bytescout.Spreadsheet;
 using WFR = System.Windows.Forms;
-
+using Bytescout.Spreadsheet.Constants;
 
 namespace Insurance
 {
@@ -57,7 +57,10 @@ namespace Insurance
         
         public Polis_Up(string[] path_ex, string[] Polis_upp_file, string call)
         {
-
+            //DevExpress.SpreadsheetSource.ISpreadsheetSourceOptions=sou
+            //DevExpress.SpreadsheetSource.Xls.XlsSpreadsheetSource exs = new DevExpress.SpreadsheetSource.Xls.XlsSpreadsheetSource(ex_path[0], DevExpress.SpreadsheetSource.ISpreadsheetSourceOptions);
+            //DevExpress.SpreadsheetSource.Xls.XlsSourceDataReader edr = new DevExpress.SpreadsheetSource.Xls.XlsSourceDataReader();
+            //pol_zagr.ItemsSource=DevExpress.SpreadsheetSource.Xls.XlsSourceDataReader
             Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Background,
                 new Action(delegate ()
                 {
@@ -71,19 +74,44 @@ namespace Insurance
                     //    sh = "Sheet";
                     //}
                     dateP.DateTime = DateTime.Now;
-
+                    
                     DataTable tb = new DataTable();
                     Spreadsheet excel = new Spreadsheet();
                     
                     excel.LoadFromFile(ex_path[0]);
-                    
+                    NumberFormatType formatType = excel.Worksheet(0).Cell(7, 2).ValueDataTypeByNumberFormatString;
+                    //var adr = excel.Worksheet(0).Columns[2]..Address();
+                    //excel.Worksheet(0).Range(7, 2, excel.Worksheet(0).NotEmptyRowMax, 3).CopyInto(7, 4);
+                    excel.Worksheet(0).Range("$C$7:$D$18").NumberFormatString =  "дд.мм.гггг";
+                    //excel.Worksheet(0).Range(7, 2, excel.Worksheet(0).NotEmptyRowMax, 3).Formula = $"=ТЕКСТ(H5;{(char)34}дд.мм.гггг{(char)34})";
+                    //excel.Worksheets[0].Range("C1:D100000").NumberFormatString = "MM.DD.YYYY";
+                    //excel.Worksheet(0).Columns[2].NumberFormat= "m/d/yyyy";
+                    //for (int i = 1; i < excel.Worksheets[0].NotEmptyRowMax; i++)
+                    //{
+                    //    // Установить номер
+
+
+                    //    // Установить текущую ячейку
+                    //    Cell currentCell = excel.Worksheets[0].Cell(i, 3);
+
+                    //    // Установить дату. Это дни с 01.01.1900
+                    //    // Вы также можете конвертировать число в дату, используя функцию: DateTime.FromOADate (double d)
+                    //    ////currentCell.Value = 30000 + i * 1000;
+
+                    //    // Установить формат даты
+                    //    currentCell.NumberFormatString = "dd.mm.yyyy";
+                    //}
+                    //excel.Worksheet(0).Columns[3].CellFormat = ExtendedFormat//"dd:mm:yy";
+                    //excel.Worksheet(0).Range("C1:D100000").NumberFormatString= "dd.mm.yyyy hh:mm:ss";
+                    //excel.Worksheet(0).Cell(0, 0).Value = "???";
                     //for (int y = 5; y < excel.Worksheet(0).Rows.LastFormatedRow; y++)
                     //{
                     //    excel.Worksheet(0).Cell(y, 3).ValueDataTypeByNumberFormatString =Bytescout.Spreadsheet.Constants.NumberFormatType.Text;
-                        
+
                     //}
                     //excel.SaveAs(ex_path[0].Replace(".xls","_1.xls"));
-                    tb = excel.ExportToDataTable(excel.Worksheets[0].Name,true);
+
+                    tb = excel.ExportToDataTable(0,true);
                     
                     //string filename = ex_path[0];
                     //string ConStr = String.Format("Provider=Microsoft.ACE.OLEDB.12.0; Data Source={0}; Extended Properties=Excel 12.0;", filename);
@@ -101,7 +129,7 @@ namespace Insurance
                     //tb = ds.Tables[0];
                     rows_count = tb.Rows.Count;
                     //cn.Close();
-
+                    
                     pol_zagr.ItemsSource = tb;
                     pol_zagr.GetRowsAsync(0, 10);
                     ////if (call_=="attache")

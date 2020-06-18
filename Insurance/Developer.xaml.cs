@@ -239,7 +239,7 @@ namespace Insurance
                 pol_zagr.View.ShowColumnHeaders = true;
 
             }
-
+            
 
         }
 

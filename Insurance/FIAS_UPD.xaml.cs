@@ -286,7 +286,7 @@ namespace Insurance
                                         MyReader.UpdateFromTable<DataTable>(command0, ConnectionString1, dt);
                                         MyReader.UpdateFromTable<DataTable>(command, ConnectionString1, dt);
                                     }
-                                    catch (Exception ex)
+                                    catch(Exception ex)
                                     {
                                         string m = ex.ToString();
                                         string t = "Ошибка!";

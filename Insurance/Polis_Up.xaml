@@ -75,9 +75,9 @@
 
         </Style>
     </Window.Resources>
-    
+
     <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible">
-        
+
         <Grid Background="#FF5F7B8B">
             <!--<dx:WaitIndicator Content="Loading..." DeferedVisibility="{Binding IsWaitIndicatorVisible}">
                 <dx:WaitIndicator.ContentTemplate>
@@ -90,7 +90,7 @@
                 </dx:WaitIndicator.ContentTemplate>
             </dx:WaitIndicator>-->
 
-            <dxg:GridControl x:Name="pol_zagr" AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True" HorizontalAlignment="Stretch" Margin="10,65,10,0" VerticalAlignment="Top"  SelectionMode="Row" Height="874" Loaded="Pol_zagr_Loaded"  >
+            <dxg:GridControl x:Name="pol_zagr" AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True" HorizontalAlignment="Stretch" Margin="10,65,10,0" VerticalAlignment="Top"  SelectionMode="Row" Height="893" Loaded="Pol_zagr_Loaded"  >
                 <dxg:GridControl.View>
                     <dxg:TableView  AllowPerPixelScrolling="True" AllowBestFit="True"  BestFitMode="AllRows" BestFitArea="Rows"   ShowTotalSummary="True" ColumnFilterPopupMode="Excel" ShowAutoFilterRow="True" HorizontalScrollbarVisibility="Visible" FilterEditorShowOperandTypeIcon="True"  SnapsToDevicePixels="True"  ShowCheckBoxSelectorColumn="True" AutoWidth="True"/>
                 </dxg:GridControl.View>
