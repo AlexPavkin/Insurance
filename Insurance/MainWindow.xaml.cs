@@ -790,8 +790,8 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
             SplashScreen splash = new SplashScreen("Insurance_icons\\polis.jpg");
             splash.Show(false, true);
             splash.Close(TimeSpan.FromSeconds(5));
-            
-            
+
+
 
             Thread t0 = new Thread(delegate ()
             {
