@@ -271,7 +271,7 @@ namespace Insurance
                                         [CITYCODE]=dt.CITYCODE,[CTARCODE]=dt.CTARCODE,[PLACECODE]=dt.PLACECODE,[STREETCODE]=dt.STREETCODE,[EXTRCODE]=dt.EXTRCODE,[SEXTCODE]=dt.SEXTCODE,[OFFNAME]=dt.OFFNAME,
                                         [POSTALCODE]=dt.POSTALCODE,[IFNSFL]=dt.IFNSFL,[TERRIFNSFL]=dt.TERRIFNSFL,[IFNSUL]=dt.IFNSUL,[TERRIFNSUL]=dt.TERRIFNSUL,[OKATO]=dt.OKATO,[OKTMO]=dt.OKTMO,[UPDATEDATE]=dt.UPDATEDATE,
                                         [SHORTNAME]=dt.SHORTNAME,[AOLEVEL]=dt.AOLEVEL,[PARENTGUID]=CAST(dt.PARENTGUID as uniqueidentifier),[AOID]=CAST(dt.AOID as uniqueidentifier),[PREVID]=cast(dt.PREVID as UNIQUEIDENTIFIER),
-                                        [NEXTID]=CAST(dt.NEXTID as uniqueidentifier),[CODE]=dt.CODE,[PLAINCODE]=dt.PLAINCODE,[ACTSTATUS]=dt.ACTSTATUS,[CENTSTATUS]=dt.CENTSTATUS,[OPERSTATUS]=dt.OPERSTATUS,[CURRSTATUS]=dt.CURRSTATUS,
+                                        [NEXTID]=CAST(dt.NEXTID as uniqueidentifier),[CODE]=dt.CODE,[PLAINCODE]=dt.PLAINCODE,[ACTSTATUS]=dt.ACTSTATUS,[CENTSTATUS]=dt.CENTSTATUS,[OPERSTATUS]=dt.OPERSTATUS,[CURRSTATUS]=isnull(dt.CURRSTATUS,0),
                                         [STARTDATE]=dt.STARTDATE,[ENDDATE]=dt.ENDDATE, [NORMDOC]=cast(dt.NORMDOC as uniqueidentifier),[LIVESTATUS]=dt.LIVESTATUS
                                         from @dt dt where AddressObjects.aoid=CAST(dt.AOID as uniqueidentifier)";
 
@@ -280,14 +280,19 @@ namespace Insurance
                                         [NEXTID],[CODE],[PLAINCODE],[ACTSTATUS],[CENTSTATUS],[OPERSTATUS],[CURRSTATUS],[STARTDATE],[ENDDATE],[NORMDOC],[LIVESTATUS])  
                                         select CAST(dt.AOGUID as UNIQUEIDENTIFIER),dt.FORMALNAME,dt.REGIONCODE,dt.AUTOCODE,dt.AREACODE,dt.CITYCODE,dt.CTARCODE,dt.PLACECODE,dt.STREETCODE,dt.EXTRCODE,dt.SEXTCODE,dt.OFFNAME,dt.POSTALCODE,
                                         dt.IFNSFL,dt.TERRIFNSFL,dt.IFNSUL,dt.TERRIFNSUL,dt.OKATO,dt.OKTMO,dt.UPDATEDATE,dt.SHORTNAME,dt.AOLEVEL,CAST(dt.PARENTGUID as uniqueidentifier),CAST(dt.AOID as uniqueidentifier),
-                                        cast(dt.PREVID as UNIQUEIDENTIFIER),CAST(dt.NEXTID as uniqueidentifier),dt.CODE,dt.PLAINCODE,dt.ACTSTATUS,dt.CENTSTATUS,dt.OPERSTATUS,dt.CURRSTATUS,dt.STARTDATE,dt.ENDDATE,
+                                        cast(dt.PREVID as UNIQUEIDENTIFIER),CAST(dt.NEXTID as uniqueidentifier),dt.CODE,dt.PLAINCODE,dt.ACTSTATUS,dt.CENTSTATUS,dt.OPERSTATUS,isnull(dt.CURRSTATUS,0),dt.STARTDATE,dt.ENDDATE,
                                         cast(dt.NORMDOC as uniqueidentifier),dt.LIVESTATUS from @dt dt
                                         left join AddressObjects ao on CAST(dt.AOID as uniqueidentifier) =ao.aoid where ao.aoguid is null";
                                         MyReader.UpdateFromTable<DataTable>(command0, ConnectionString1, dt);
                                         MyReader.UpdateFromTable<DataTable>(command, ConnectionString1, dt);
                                     }
-                                    catch
+                                    catch(Exception ex)
                                     {
+                                        string m = ex.ToString();
+                                        string t = "Ошибка!";
+                                        int b = 1;
+                                        Message me = new Message(m, t, b);
+                                        me.ShowDialog();
                                     }
 
                                 }
@@ -400,7 +405,7 @@ namespace Insurance
                                         [CITYCODE]=dt.CITYCODE,[CTARCODE]=dt.CTARCODE,[PLACECODE]=dt.PLACECODE,[STREETCODE]=dt.STREETCODE,[EXTRCODE]=dt.EXTRCODE,[SEXTCODE]=dt.SEXTCODE,[OFFNAME]=dt.OFFNAME,
                                         [POSTALCODE]=dt.POSTALCODE,[IFNSFL]=dt.IFNSFL,[TERRIFNSFL]=dt.TERRIFNSFL,[IFNSUL]=dt.IFNSUL,[TERRIFNSUL]=dt.TERRIFNSUL,[OKATO]=dt.OKATO,[OKTMO]=dt.OKTMO,[UPDATEDATE]=dt.UPDATEDATE,
                                         [SHORTNAME]=dt.SHORTNAME,[AOLEVEL]=dt.AOLEVEL,[PARENTGUID]=CAST(dt.PARENTGUID as uniqueidentifier),[AOID]=CAST(dt.AOID as uniqueidentifier),[PREVID]=cast(dt.PREVID as UNIQUEIDENTIFIER),
-                                        [NEXTID]=CAST(dt.NEXTID as uniqueidentifier),[CODE]=dt.CODE,[PLAINCODE]=dt.PLAINCODE,[ACTSTATUS]=dt.ACTSTATUS,[CENTSTATUS]=dt.CENTSTATUS,[OPERSTATUS]=dt.OPERSTATUS,[CURRSTATUS]=dt.CURRSTATUS,
+                                        [NEXTID]=CAST(dt.NEXTID as uniqueidentifier),[CODE]=dt.CODE,[PLAINCODE]=dt.PLAINCODE,[ACTSTATUS]=dt.ACTSTATUS,[CENTSTATUS]=dt.CENTSTATUS,[OPERSTATUS]=dt.OPERSTATUS,[CURRSTATUS]=isnull(dt.CURRSTATUS,0),
                                         [STARTDATE]=dt.STARTDATE,[ENDDATE]=dt.ENDDATE, [NORMDOC]=cast(dt.NORMDOC as uniqueidentifier),[LIVESTATUS]=dt.LIVESTATUS
                                         from @dt dt where AddressObjects.aoid=CAST(dt.AOID as uniqueidentifier)";
 
@@ -409,7 +414,7 @@ namespace Insurance
                                         [NEXTID],[CODE],[PLAINCODE],[ACTSTATUS],[CENTSTATUS],[OPERSTATUS],[CURRSTATUS],[STARTDATE],[ENDDATE],[NORMDOC],[LIVESTATUS])  
                                         select CAST(dt.AOGUID as UNIQUEIDENTIFIER),dt.FORMALNAME,dt.REGIONCODE,dt.AUTOCODE,dt.AREACODE,dt.CITYCODE,dt.CTARCODE,dt.PLACECODE,dt.STREETCODE,dt.EXTRCODE,dt.SEXTCODE,dt.OFFNAME,dt.POSTALCODE,
                                         dt.IFNSFL,dt.TERRIFNSFL,dt.IFNSUL,dt.TERRIFNSUL,dt.OKATO,dt.OKTMO,dt.UPDATEDATE,dt.SHORTNAME,dt.AOLEVEL,CAST(dt.PARENTGUID as uniqueidentifier),CAST(dt.AOID as uniqueidentifier),
-                                        cast(dt.PREVID as UNIQUEIDENTIFIER),CAST(dt.NEXTID as uniqueidentifier),dt.CODE,dt.PLAINCODE,dt.ACTSTATUS,dt.CENTSTATUS,dt.OPERSTATUS,dt.CURRSTATUS,dt.STARTDATE,dt.ENDDATE,
+                                        cast(dt.PREVID as UNIQUEIDENTIFIER),CAST(dt.NEXTID as uniqueidentifier),dt.CODE,dt.PLAINCODE,dt.ACTSTATUS,dt.CENTSTATUS,dt.OPERSTATUS,isnull(dt.CURRSTATUS,0),dt.STARTDATE,dt.ENDDATE,
                                         cast(dt.NORMDOC as uniqueidentifier),dt.LIVESTATUS from @dt dt
                                         left join AddressObjects ao on CAST(dt.AOID as uniqueidentifier) =ao.aoid where ao.aoguid is null";
                                 

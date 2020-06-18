@@ -8967,7 +8967,7 @@ where vpolis=2 and blank=1 and DBEG is null)", con);
 
 
                 string fname = SF.FileName;
-                pers_grid.View.ExportToXls(fname);
+                pers_grid.View.ExportToXlsx(fname);
 
                 //pers_grid.View.ShowPrintPreview(this);
                 string m = $@"Файл успешно сохранен и находится в папке:

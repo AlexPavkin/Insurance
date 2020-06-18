@@ -20,6 +20,7 @@ using System.IO;
 using Bytescout.Spreadsheet;
 using System.Data;
 using Microsoft.Win32;
+using System.Diagnostics;
 
 namespace Insurance
 {
@@ -82,6 +83,7 @@ namespace Insurance
             //dateP.Visibility = Visibility.Collapsed;
 
         }
+        private List<Events> pip;
         private void Informed_Loaded(object sender, RoutedEventArgs e)
         {
             Cursor = Cursors.Wait;
@@ -119,7 +121,7 @@ namespace Insurance
                     var peopleList = MyReader.MySelect<Events>(SPR.MyReader.load_pers_grid + "order by pe.ID DESC", Properties.Settings.Default.DocExchangeConnectionString);
                     inform_grid.ItemsSource = peopleList;
                     inform_grid.View.FocusedRowHandle = -1;
-
+                    pip = peopleList;
 
                     inform_grid.Visibility = Visibility.Visible;
                     //Del_file_btn.Visibility = Visibility.Hidden;
@@ -914,13 +916,24 @@ sps.Name as sposob_4,rp4.Name as result_4,PRIMECH as prim_4
             //------------------------------------------------------
 
 
-            var dt = MyReader.ToDataTable(peopleList);
-            Spreadsheet excel = new Spreadsheet();
-            var wb=excel.Workbook;
-            var wsh = wb.Worksheets[0];            
-            excel.ImportFromDataTable(dt,0);
-            excel.ImportFromDataTable(dt, 0);
-            excel.SaveAsXLS("c:\\Temt\\ttt.xlx");
+            //var dt = MyReader.ToDataTable(peopleList);
+            
+            //var dt1 = MyReader.ToDataTable(pip.Take(100).ToList());
+            //Spreadsheet excel = new Spreadsheet();
+            //var wb=excel.Workbook;
+            //wb.Worksheets.Add("first");
+            //wb.Worksheets.Add("second");
+            //excel.ImportFromDataTable(dt,"first");
+            //excel.ImportFromDataTable(dt1,"second");
+            //Range range = wb.Worksheets.ByName("second").Range($"A1:{wb.Worksheets.ByName("second").NotEmptyColumnMax}{wb.Worksheets.ByName("second").NotEmptyRowMax}");
+            //range.co()
+            ////wb.Worksheets.Delete("first");
+            ////wb.Worksheets.Delete("second");
+            //excel.SaveAsXLS("c:\\Temp\\ttt.xls");
+            //excel.Close();
+
+            //// открыть сгенерированный документ XLS в программе по умолчанию
+            //Process.Start("c:\\Temp\\ttt.xls");
         }
 
         private void Unload_3_Click(object sender, RoutedEventArgs e)
