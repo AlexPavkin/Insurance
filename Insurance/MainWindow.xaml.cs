@@ -4418,10 +4418,8 @@ on t0.idguid = t3.person_guid", con);
                     comm16.Parameters.AddWithValue("@id", Vars.IdP);
                     con.Open();
                     SqlDataReader reader16 = comm16.ExecuteReader();
-                    if (reader16.HasRows == false)
-                    {
-                        doc_type1.EditValue = 14;
-                    }
+
+
 
                     while (reader16.Read()) // построчно считываем данные
                     {
@@ -4434,9 +4432,19 @@ on t0.idguid = t3.person_guid", con);
                         object docmr_1 = reader16["DOCMR"];
                         object str_vid_1 = reader16["OKSM"];
                         object idguid_ = reader16["IDGUID"];
+                       
+                
 
 
-                        doc_type1.EditValue = doctype_1;
+                        if (doctype_1.ToString()=="")
+                        {
+                             doc_type1.EditValue = 14;
+                        }
+                        else
+                        {
+                            doc_type1.EditValue = doctype_1;
+
+                        }
                         old_doc = 1;
                         old_doc_guid = idguid_.ToString();
 
@@ -6812,7 +6820,7 @@ update pol_documents set PREVDOCGUID=(select idguid from pol_documents where id=
         private void Doc_type1_Loaded(object sender, RoutedEventArgs e)
         {
 
-            doc_type1.SelectedIndex = 13;
+            //doc_type1.SelectedIndex = 13;
 
         }
 
@@ -7292,13 +7300,16 @@ on t0.idguid = t3.person_guid", con);
                         object docmr_1 = reader16["DOCMR"];
                         object str_vid_1 = reader16["OKSM"];
 
+
+
                         if (doctype_1.ToString() == "")
                         {
-
+                            doc_type1.EditValue = 14;
                         }
                         else
                         {
                             doc_type1.EditValue = doctype_1;
+
                         }
 
                         doc_ser1.Text = docser_1.ToString();
