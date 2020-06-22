@@ -25,6 +25,9 @@ using Ionic.Zip;
 using System.Windows.Threading;
 using WFR = System.Windows.Forms;
 using System.Threading;
+//using SevenZip;
+
+
 
 namespace Insurance
 {
@@ -1245,6 +1248,19 @@ SPOSOB_P3 as sposob,RESULT_P3 as result,PRIMECH as prim, l.kod as KOD_POL, l.kod
         {
             //Spreadsheet excel = new Spreadsheet();
             //excel.ImportFromDataTable();
+
+        }
+
+        private void Arj_Click(object sender, RoutedEventArgs e)
+        {
+            //OpenFileDialog OF = new OpenFileDialog();
+            //OF.ShowDialog();
+            //var path = OF.FileName.Replace(OF.SafeFileName, "");
+            //using (var extractor = new SevenZipExtractor(OF.FileName))
+            //{
+            //    // extract all
+            //    extractor.ExtractArchive(path);
+            //}
 
         }
     }

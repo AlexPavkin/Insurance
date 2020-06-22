@@ -45,7 +45,8 @@
             </dxlc:LayoutGroup>
         </dxlc:LayoutControl>
         <Button x:Name="load_zah_adres" Content="Загрузить захаровские адреса в грид" HorizontalAlignment="Left" Margin="10,229,0,0" VerticalAlignment="Top" Width="379"  Height="31" FontWeight="Bold" TabIndex="3" Click="Load_zah_adres_Click"/>
-        
+        <Button x:Name="arj" Content="Работа с ARJ" HorizontalAlignment="Left" Margin="409,301,0,0" VerticalAlignment="Top" Width="379"  Height="31" FontWeight="Bold" Click="Arj_Click"  />
+
     </Grid>
 
 </Window>
