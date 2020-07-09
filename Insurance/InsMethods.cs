@@ -5155,11 +5155,11 @@ dstart=@date_mo where idguid='{perguid}'", con);
                 comm2.Parameters.AddWithValue("@bomg", 1);
                 comm2.Parameters.AddWithValue("@addr_g", 1);
                 comm2.Parameters.AddWithValue("@addr_p", 1);
-                comm2.Parameters.AddWithValue("@addr_p1", 0);
-                comm2.Parameters.AddWithValue("@addr_g1", 0);
+                comm2.Parameters.AddWithValue("@addr_p1", 1);
+                comm2.Parameters.AddWithValue("@addr_g1", 1);
 
             }
-            else
+            else 
             {
                 comm2.Parameters.AddWithValue("@bomg", 0);
                 comm2.Parameters.AddWithValue("@addr_g", 1);
@@ -11122,7 +11122,10 @@ dstart=@date_mo where idguid='{perguid}'", con);
             if (PD.fias.bomj.IsChecked == true)
             {
                 comm2.Parameters.AddWithValue("@bomg", 1);
-                comm2.Parameters.AddWithValue("@addr_g", 0);
+                comm2.Parameters.AddWithValue("@addr_g", 1);
+                comm2.Parameters.AddWithValue("@addr_p", 1);
+                comm2.Parameters.AddWithValue("@addr_p1", 1);
+                comm2.Parameters.AddWithValue("@addr_g1", 1);
 
             }
             else
