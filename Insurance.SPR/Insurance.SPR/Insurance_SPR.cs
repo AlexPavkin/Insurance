@@ -110,7 +110,7 @@ namespace Insurance_SPR
     }
     public class INFORM_ALL
     {
-       
+        public int ID { get; set; }
         public string SURNAME { get; set; }
         public string NAME { get; set; }
         public string SECNAME { get; set; }
