@@ -3945,22 +3945,22 @@ DEALLOCATE MY_CURSOR
 
             }
 
-            var connectionString1 = Properties.Settings.Default.DocExchangeConnectionString;
-            if (SPR.Premmissions == "User")
-            {
-                var peopleList = MyReader.MySelect<Events>(SPR.MyReader.load_pers_grid + strf_usr, connectionString1);
-                pers_grid.ItemsSource = peopleList;
-                pers_grid.View.FocusedRowHandle = -1;
+            //var connectionString1 = Properties.Settings.Default.DocExchangeConnectionString;
+            //if (SPR.Premmissions == "User")
+            //{
+            //    var peopleList = MyReader.MySelect<Events>(SPR.MyReader.load_pers_grid + strf_usr, connectionString1);
+            //    pers_grid.ItemsSource = peopleList;
+            //    pers_grid.View.FocusedRowHandle = -1;
 
-            }
-            else
-            {
-                var peopleList = MyReader.MySelect<Events>(SPR.MyReader.load_pers_grid + strf_adm, connectionString1);
-                pers_grid.ItemsSource = peopleList;
-                pers_grid.View.FocusedRowHandle = -1;
+            //}
+            //else
+            //{
+            //    var peopleList = MyReader.MySelect<Events>(SPR.MyReader.load_pers_grid + strf_adm, connectionString1);
+            //    pers_grid.ItemsSource = peopleList;
+            //    pers_grid.View.FocusedRowHandle = -1;
 
 
-            }
+            //}
         }
 
         public ObservableCollection<string> list0 = new ObservableCollection<string>();
@@ -5825,7 +5825,7 @@ where e.person_guid='{rper}' and main=1", con);
 
         private void enp_EditValueChanged(object sender, EditValueChangedEventArgs e)
         {
-            if (enp.EditValue == "")
+            if (enp.EditValue.ToString() == "")
             {
 
             }
