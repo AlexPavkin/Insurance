@@ -25,7 +25,7 @@ using Ionic.Zip;
 using System.Windows.Threading;
 using WFR = System.Windows.Forms;
 using System.Threading;
-
+using xNet;
 namespace Insurance
 {
     /// <summary>
@@ -74,15 +74,15 @@ namespace Insurance
         {
             public int ID { get; set; }
             public string FAM { get; set; }
-            
+
             public string IM { get; set; }
-            
+
             public string OT { get; set; }
-           
+
             public int W { get; set; }
-           
+
             public DateTime? DR { get; set; }
-            
+
             public string ENP { get; set; }
             public string C_OKSM { get; set; }
             public Guid EVENT_GUID { get; set; }
@@ -95,17 +95,17 @@ namespace Insurance
             public int ID { get; set; }
             public Guid IDGUID { get; set; }
 
-            public string TIP_OP { get; set; }           
+            public string TIP_OP { get; set; }
 
             public int FPOLIS { get; set; }
 
             public DateTime? DVIZIT { get; set; }
-            
+
         }
 
 
         public ObservableCollection<ATTACHED_MO> Attache_mo = new ObservableCollection<ATTACHED_MO>();
-        
+
         public Developer()
         {
             InitializeComponent();
@@ -143,6 +143,8 @@ namespace Insurance
                         Spreadsheet excel = new Spreadsheet();
                         excel.LoadFromFile(ex_path);
                         tb = excel.ExportToDataTable();
+                        MyReader.LoadFromTable<DataTable>(Properties.Settings.Default.DocExchangeConnectionString, tb, "ONETAB");
+
                     }
                     else
                     {
@@ -150,7 +152,8 @@ namespace Insurance
                         string[] attache = File.ReadAllLines(filename);
 
                         //var cls0 = attache[0].Split('|');
-                        var cls0 = attache[0].Split(';');
+                        var cls0 = attache[0].Split(',');
+                        cls0 = cls0.Where(x => x != "").ToArray();
                         for (int i = 0; i < cls0.Count(); i++)
                         {
                             tb.Columns.Add("Column" + i.ToString(), typeof(string));
@@ -159,9 +162,9 @@ namespace Insurance
                         foreach (string row in attache)
                         {
                             // получаем все ячейки строки
-
-                            var cls = row.Split('|');
-
+                            var row1 = row.Substring(0, row.Length - 1);
+                            var cls = row1.Split(',');
+                            //cls = cls.Where(x => x != "").ToArray();
                             tb.LoadDataRow(cls, LoadOption.Upsert);
                             //Attache_mo.Add(new ATTACHED_MO { GUID = cls[0], OKATO = cls[1], SMO = cls[2], DPFS = cls[3], SER = cls[4], NUM = cls[5], ENP = cls[6], MO = cls[7] });
                         }
@@ -239,7 +242,7 @@ namespace Insurance
                 pol_zagr.View.ShowColumnHeaders = true;
 
             }
-            
+
 
         }
 
@@ -337,19 +340,19 @@ join POL_POLISES pp on p.EVENT_GUID = pp.EVENT_GUID", con);
             OF.DefaultExt = ".dbf";
             //OF.Filter = "Файлы DBF (.dbf)|*.dbf";
             OF.Multiselect = true;
-            
+
             bool res = OF.ShowDialog().Value;
-           
+
             if (res == true)
             {
-                
+
                 string[] files = OF.FileNames;
                 string[] names = OF.SafeFileNames;
 
-                for(int y=0;y<files.Count();y++)
+                for (int y = 0; y < files.Count(); y++)
                 {
                     //var dir=Directory.CreateDirectory(files[y].Replace(".arj", "\\").Replace(".ARJ", "\\"));
-                    new ZipFile(files[y]).ExtractAll(files[y].Replace(".arj","").Replace(".ARJ",""),ExtractExistingFileAction.OverwriteSilently);
+                    new ZipFile(files[y]).ExtractAll(files[y].Replace(".arj", "").Replace(".ARJ", ""), ExtractExistingFileAction.OverwriteSilently);
                     DataTable dt = new DataTable();
                     string dbffile = files[0];//OF.FileName;
                     using (Stream fos = File.Open(dbffile, FileMode.OpenOrCreate, FileAccess.ReadWrite))
@@ -418,71 +421,71 @@ join POL_POLISES pp on p.EVENT_GUID = pp.EVENT_GUID", con);
 
                     }
                 }
-//                //var peopleList =
-//                //MyReader.MySelect<Events>(SPR.MyReader.load_pers_grid + " order by pe.ID DESC", Properties.Settings.Default.DocExchangeConnectionString);
-//                ev = MyReader.MySelect<Events>($@"SELECT top(20000) pp.SROKDOVERENOSTI, pp.ID, pp.ACTIVE, op.przcod, pe.UNLOAD, ENP, FAM, IM, OT, W, DR, MO, oks.CAPTION as C_OKSM, r.NameWithID, pp.COMMENT, pe.DVIZIT, pp.DATEVIDACHI, pp.PRIZNAKVIDACHI,
-//            SS, VPOLIS, SPOLIS, NPOLIS, DBEG, DEND, DSTOP, BLANK, DRECEIVED, f.NameWithId as MO_NameWithId, op.filename, pp.phone, p.AGENT, pp.CYCLE, (select pr.namewithid  from POL_PERSONS_INFORM pin
-//      left
-//                                                                                                                                                            join PRICHINA_INFORMIROVANIYA pr
-//                                                                                                                                                       on pin.PRICHINA_INFORM = pr.ID
-//where PERSON_ID = pp.ID and pin.id = (select max(id) from POL_PERSONS_INFORM where PERSON_ID = pp.ID)) as inform, st.namewithkod as STOP_REASON, pe.id as EVENT_ID
-//              FROM[dbo].[POL_PERSONS] pp left join
-//           pol_events pe on pp.event_guid = pe.idguid
+                //                //var peopleList =
+                //                //MyReader.MySelect<Events>(SPR.MyReader.load_pers_grid + " order by pe.ID DESC", Properties.Settings.Default.DocExchangeConnectionString);
+                //                ev = MyReader.MySelect<Events>($@"SELECT top(20000) pp.SROKDOVERENOSTI, pp.ID, pp.ACTIVE, op.przcod, pe.UNLOAD, ENP, FAM, IM, OT, W, DR, MO, oks.CAPTION as C_OKSM, r.NameWithID, pp.COMMENT, pe.DVIZIT, pp.DATEVIDACHI, pp.PRIZNAKVIDACHI,
+                //            SS, VPOLIS, SPOLIS, NPOLIS, DBEG, DEND, DSTOP, BLANK, DRECEIVED, f.NameWithId as MO_NameWithId, op.filename, pp.phone, p.AGENT, pp.CYCLE, (select pr.namewithid  from POL_PERSONS_INFORM pin
+                //      left
+                //                                                                                                                                                            join PRICHINA_INFORMIROVANIYA pr
+                //                                                                                                                                                       on pin.PRICHINA_INFORM = pr.ID
+                //where PERSON_ID = pp.ID and pin.id = (select max(id) from POL_PERSONS_INFORM where PERSON_ID = pp.ID)) as inform, st.namewithkod as STOP_REASON, pe.id as EVENT_ID
+                //              FROM[dbo].[POL_PERSONS] pp left join
+                //           pol_events pe on pp.event_guid = pe.idguid
 
-//             LEFT JOIN POL_PRZ_AGENTS p
+                //             LEFT JOIN POL_PRZ_AGENTS p
 
-//            on p.ID = pe.AGENT
+                //            on p.ID = pe.AGENT
 
-//            left join pol_polises ps
-//            on pp.EVENT_GUID = ps.EVENT_GUID
-//            left join pol_oplist op
-//            on pp.EVENT_GUID = op.EVENT_GUID
-//            left join r001 r
-//            on pe.tip_op = r.kod
-//            left join f003 f
-//            on pp.MO = f.mcod
-//            left join SPR_STOP st
-//            on ps.STOP_REASON = st.kod
+                //            left join pol_polises ps
+                //            on pp.EVENT_GUID = ps.EVENT_GUID
+                //            left join pol_oplist op
+                //            on pp.EVENT_GUID = op.EVENT_GUID
+                //            left join r001 r
+                //            on pe.tip_op = r.kod
+                //            left join f003 f
+                //            on pp.MO = f.mcod
+                //            left join SPR_STOP st
+                //            on ps.STOP_REASON = st.kod
 
-//            left join SPR_79_OKSM oks
+                //            left join SPR_79_OKSM oks
 
-//            on pp.C_OKSM = oks.A3", Properties.Settings.Default.DocExchangeConnectionString);
-//                //erp = MyReader.MySelect<PEOPLES>("select top 100 * from pol_persons", Properties.Settings.Default.DocExchangeConnectionString);
-//                //var ere = MyReader.MySelect<EVENT_S>("select*from pol_events", Properties.Settings.Default.DocExchangeConnectionString);
-//                //var err = MyReader.MySelect<R001>("select*from R001", Properties.Settings.Default.DocExchangeConnectionString);
-//                //var result = (from p in erp
-//                //              join pe in ere
-//                //              on p.EVENT_GUID equals pe.IDGUID
-//                //              from pr in err
-//                //              .Where(pr => pr.Kod == pe.TIP_OP)
-//                //              .DefaultIfEmpty()
+                //            on pp.C_OKSM = oks.A3", Properties.Settings.Default.DocExchangeConnectionString);
+                //                //erp = MyReader.MySelect<PEOPLES>("select top 100 * from pol_persons", Properties.Settings.Default.DocExchangeConnectionString);
+                //                //var ere = MyReader.MySelect<EVENT_S>("select*from pol_events", Properties.Settings.Default.DocExchangeConnectionString);
+                //                //var err = MyReader.MySelect<R001>("select*from R001", Properties.Settings.Default.DocExchangeConnectionString);
+                //                //var result = (from p in erp
+                //                //              join pe in ere
+                //                //              on p.EVENT_GUID equals pe.IDGUID
+                //                //              from pr in err
+                //                //              .Where(pr => pr.Kod == pe.TIP_OP)
+                //                //              .DefaultIfEmpty()
 
-//                //              select new { pe.ID,p.FAM, p.IM, p.OT, p.DR, p.W, NameWithID = (pr == null ? String.Empty : pr.NameWithID), pe.DVIZIT, pe.FPOLIS }).OrderByDescending(a=>a.ID);
+                //                //              select new { pe.ID,p.FAM, p.IM, p.OT, p.DR, p.W, NameWithID = (pr == null ? String.Empty : pr.NameWithID), pe.DVIZIT, pe.FPOLIS }).OrderByDescending(a=>a.ID);
 
-//                //List<object> lst = new List<object>();
-//                //using (SqlConnection con = new SqlConnection(Properties.Settings.Default.DocExchangeConnectionString))
-//                //{
+                //                //List<object> lst = new List<object>();
+                //                //using (SqlConnection con = new SqlConnection(Properties.Settings.Default.DocExchangeConnectionString))
+                //                //{
 
-//                //    using (SqlCommand cmd = new SqlCommand("select*from pol_persons", con))
-//                //    {
-//                //        con.Open();
-//                //        cmd.CommandTimeout = 0;
-//                //        SqlDataReader dr = cmd.ExecuteReader();
-//                //        while (dr.Read())
-//                //        {
-//                //            lst.Add(dr);
-//                //        }
-//                //        dr.Close();
-//                //    }
+                //                //    using (SqlCommand cmd = new SqlCommand("select*from pol_persons", con))
+                //                //    {
+                //                //        con.Open();
+                //                //        cmd.CommandTimeout = 0;
+                //                //        SqlDataReader dr = cmd.ExecuteReader();
+                //                //        while (dr.Read())
+                //                //        {
+                //                //            lst.Add(dr);
+                //                //        }
+                //                //        dr.Close();
+                //                //    }
 
-//                //    con.Close();
-//                //}
-//                //var sss = lst[25685];
-//                pol_zagr.ItemsSource = ev.OrderByDescending(a=>a.ID);
-                
-                
+                //                //    con.Close();
+                //                //}
+                //                //var sss = lst[25685];
+                //                pol_zagr.ItemsSource = ev.OrderByDescending(a=>a.ID);
+
+
             }
-            
+
 
         }
 
@@ -492,20 +495,20 @@ join POL_POLISES pp on p.EVENT_GUID = pp.EVENT_GUID", con);
             //Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Background,
             //    new Action(delegate ()
             //    {
-                    //var pl = new PEOPLES {ID=400002, FAM="КУКУЕВА",IM="ИНГА",OT="ПЕТРОВНА",W=2,DR=DateTime.Today.AddYears(-15),ENP="1234567891234567"};
-                    //erp.Add(pl);
-                    //pol_zagr.ItemsSource = erp.OrderByDescending(a => a.ID);
-                    //pol_zagr.RefreshData();
-                    //var r1 = erp.Select(x => x.ID);
+            //var pl = new PEOPLES {ID=400002, FAM="КУКУЕВА",IM="ИНГА",OT="ПЕТРОВНА",W=2,DR=DateTime.Today.AddYears(-15),ENP="1234567891234567"};
+            //erp.Add(pl);
+            //pol_zagr.ItemsSource = erp.OrderByDescending(a => a.ID);
+            //pol_zagr.RefreshData();
+            //var r1 = erp.Select(x => x.ID);
 
-                    //Type type = erp.GetType();
+            //Type type = erp.GetType();
 
-                    //var props = type.GetProperties();
-                    //foreach (var propertyInfo in props)
-                    //{
+            //var props = type.GetProperties();
+            //foreach (var propertyInfo in props)
+            //{
 
-                    //}
-                    string com = $@"SELECT top(20000) sss.id , pp.SROKDOVERENOSTI, pp.ID, pp.ACTIVE, op.przcod, pe.UNLOAD, pp.ENP, pp.FAM, pp.IM, pp.OT, pp.W,pp. DR, MO, oks.CAPTION as C_OKSM, r.NameWithID , pp.COMMENT, pe.DVIZIT, pp.DATEVIDACHI, pp.PRIZNAKVIDACHI,
+            //}
+            string com = $@"SELECT top(20000) sss.id , pp.SROKDOVERENOSTI, pp.ID, pp.ACTIVE, op.przcod, pe.UNLOAD, pp.ENP, pp.FAM, pp.IM, pp.OT, pp.W,pp. DR, MO, oks.CAPTION as C_OKSM, r.NameWithID , pp.COMMENT, pe.DVIZIT, pp.DATEVIDACHI, pp.PRIZNAKVIDACHI,
             pp.SS, ps.VPOLIS, ps.SPOLIS, ps.NPOLIS, ps.DBEG, ps.DEND, ps.DSTOP, BLANK, ps.DRECEIVED, f.NameWithId as MO_NameWithId , op.filename, pp.phone, p.AGENT, pp.CYCLE, (select pr.namewithid  from POL_PERSONS_INFORM pin
       left join PRICHINA_INFORMIROVANIYA pr
       on pin.PRICHINA_INFORM = pr.ID
@@ -534,20 +537,20 @@ where PERSON_ID = pp.ID and pin.id = (select max(id) from POL_PERSONS_INFORM whe
 			left join @t sss
 			on sss.ID=pp.ID
 			where sss.id is null";
-                    //string com = $@"select * from  @t order by id desc";
+            //string com = $@"select * from  @t order by id desc";
 
-                    ev1 = MyReader.MySelect<Events>(com, Properties.Settings.Default.DocExchangeConnectionString, ev);
-                    ev.AddRange(ev1);
-                    //foreach (var item in erp1)
-                    //{
-                    //    if (erp.Where(c => c.ID == item.ID).Count() == 0)
-                    //    {
-                    //        erp.Add(item);
-                    //    }
-                    //}
-                    pol_zagr.RefreshData();
-                //}));
-            
+            ev1 = MyReader.MySelect<Events>(com, Properties.Settings.Default.DocExchangeConnectionString, ev);
+            ev.AddRange(ev1);
+            //foreach (var item in erp1)
+            //{
+            //    if (erp.Where(c => c.ID == item.ID).Count() == 0)
+            //    {
+            //        erp.Add(item);
+            //    }
+            //}
+            pol_zagr.RefreshData();
+            //}));
+
         }
         private RoutedEventArgs re;
         private void Reload_tick(object sender, EventArgs e)
@@ -583,19 +586,19 @@ where PERSON_ID = pp.ID and pin.id = (select max(id) from POL_PERSONS_INFORM whe
                 string ex_path = OF.SelectedPath;
                 DirectoryInfo Dinfo = new DirectoryInfo(ex_path);
                 var dirs = Dinfo.GetDirectories();
-            
-                foreach(var d in dirs)
+
+                foreach (var d in dirs)
                 {
                     int i = 0;
                     var fls = d.GetFiles();
-                    foreach(var f in fls)
+                    foreach (var f in fls)
                     {
                         if (!Directory.Exists(System.IO.Path.Combine(ex_path, DateTime.Today.ToShortDateString())))
-                        Directory.CreateDirectory(System.IO.Path.Combine(ex_path, DateTime.Today.ToShortDateString()));
-                        
-                           
+                            Directory.CreateDirectory(System.IO.Path.Combine(ex_path, DateTime.Today.ToShortDateString()));
+
+
                         i = i + 1;
-                        f.CopyTo(System.IO.Path.Combine(ex_path,DateTime.Today.ToShortDateString(),i.ToString()+d+f));
+                        f.CopyTo(System.IO.Path.Combine(ex_path, DateTime.Today.ToShortDateString(), i.ToString() + d + f));
                     }
                 }
             }
@@ -632,14 +635,14 @@ where PERSON_ID = pp.ID and pin.id = (select max(id) from POL_PERSONS_INFORM whe
 			on sss.ID=pp.ID
 			where sss.id is null";
             //string com = $@"select * from  @t order by id desc";
-            
+
             try
             {
                 ev1 = MyReader.MySelect<Events>(com, Properties.Settings.Default.DocExchangeConnectionString, ev);
             }
             catch (Exception e)
-            {    
-                
+            {
+
                 this.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
                 (ThreadStart)delegate ()
                 {
@@ -651,7 +654,7 @@ where PERSON_ID = pp.ID and pin.id = (select max(id) from POL_PERSONS_INFORM whe
                 );
                 return;
             }
-            
+
             ev.AddRange(ev1);
             //foreach (var item in erp1)
             //{
@@ -663,20 +666,20 @@ where PERSON_ID = pp.ID and pin.id = (select max(id) from POL_PERSONS_INFORM whe
             this.Dispatcher.BeginInvoke(DispatcherPriority.Normal,
                 (ThreadStart)delegate ()
                 {
-                    
+
                     pol_zagr.RefreshData();
                 }
             );
-            
+
         }
 
         private void Text_b_TextChanged(object sender, TextChangedEventArgs e)
         {
             DataTable dt = new DataTable();
-            
+
             int[] rrr;
             var r = pol_zagr.SelectedItems;
-            
+
             dt = null;
 
         }
@@ -688,7 +691,7 @@ where PERSON_ID = pp.ID and pin.id = (select max(id) from POL_PERSONS_INFORM whe
             SF.DefaultExt = ".dbf";
             SF.Filter = "Файлы DBF (.dbf)|*.dbf";
             bool res = SF.ShowDialog().Value;
-            
+
             if (res == true)
             {
                 var inf = MyReader.MySelect<P4_INFORM>($@"select fam as SURNAME,im as NAME,ot as SECNAME,
@@ -707,19 +710,19 @@ SPOSOB_P4 as sposob,RESULT_P4 as result,PRIMECH as prim
                 string dbffile = SF.FileName;
                 using (Stream fos = File.Open(dbffile, FileMode.Create, FileAccess.ReadWrite))
                 {
-                    
+
                     var writer = new DotNetDBF.DBFWriter(fos);
                     writer.CharEncoding = Encoding.GetEncoding(866);
                     writer.Signature = DotNetDBF.DBFSignature.DBase3;
-                    writer.LanguageDriver =  0x26; // кодировка 866
-                    writer.Fields =new[]{
+                    writer.LanguageDriver = 0x26; // кодировка 866
+                    writer.Fields = new[]{
                         new DotNetDBF.DBFField("SURNAME", DotNetDBF.NativeDbType.Char, 40),
                         new DotNetDBF.DBFField("NAME", DotNetDBF.NativeDbType.Char, 40),
                         new DotNetDBF.DBFField("SECNAME", DotNetDBF.NativeDbType.Char, 40),
                         new DotNetDBF.DBFField("DR", DotNetDBF.NativeDbType.Date),
                         new DotNetDBF.DBFField("POL", DotNetDBF.NativeDbType.Numeric, 1,0),
                         new DotNetDBF.DBFField("SNILS", DotNetDBF.NativeDbType.Char, 20),
-                        new DotNetDBF.DBFField("SCOMP", DotNetDBF.NativeDbType.Numeric, 2,0),                        
+                        new DotNetDBF.DBFField("SCOMP", DotNetDBF.NativeDbType.Numeric, 2,0),
                         new DotNetDBF.DBFField("SN_POL", DotNetDBF.NativeDbType.Char, 16),
                         new DotNetDBF.DBFField("KOD_POL", DotNetDBF.NativeDbType.Numeric, 5,0),
                         new DotNetDBF.DBFField("KOD_POL1", DotNetDBF.NativeDbType.Numeric, 2,0),
@@ -751,11 +754,11 @@ SPOSOB_P4 as sposob,RESULT_P4 as result,PRIMECH as prim
                     {
                         writer.WriteRecord(inf[i].SURNAME, inf[i].NAME, inf[i].SECNAME, inf[i].DR,
                              inf[i].POL, inf[i].SNILS, inf[i].SCOMP, inf[i].SN_POL, inf[i].KOD_POL, inf[i].KOD_POL1, inf[i].KMKB,
-                             inf[i].DYEAR, inf[i].PM1, inf[i].PM2, inf[i].PM3, inf[i].PM4,inf[i].ID_TFOMS, inf[i].SMO, inf[i].DPFS, 
-                             inf[i].sogl, inf[i].tema, inf[i].Date_uv,inf[i].sposob, inf[i].result, inf[i].prim
+                             inf[i].DYEAR, inf[i].PM1, inf[i].PM2, inf[i].PM3, inf[i].PM4, inf[i].ID_TFOMS, inf[i].SMO, inf[i].DPFS,
+                             inf[i].sogl, inf[i].tema, inf[i].Date_uv, inf[i].sposob, inf[i].result, inf[i].prim
                            // добавляем поля в набор
                            );
-                        
+
                     }
 
                     //writer.Write(fos);
@@ -815,22 +818,22 @@ SPOSOB_P3 as sposob,RESULT_P3 as result,PRIMECH as prim, l.kod as KOD_POL, l.kod
                         new DotNetDBF.DBFField("prim", DotNetDBF.NativeDbType.Char, 250),
                         new DotNetDBF.DBFField("KOD_POL", DotNetDBF.NativeDbType.Numeric, 5,0),
                         new DotNetDBF.DBFField("KOD_POL1", DotNetDBF.NativeDbType.Numeric, 2,0),
-                        new DotNetDBF.DBFField("SMO", DotNetDBF.NativeDbType.Char, 5),                        
-                        
+                        new DotNetDBF.DBFField("SMO", DotNetDBF.NativeDbType.Char, 5),
+
                     };
 
                     for (int i = 0; i < inf.Count; i++)
                     {
                         writer.WriteRecord(inf[i].ID_TFOMS, inf[i].SURNAME, inf[i].NAME, inf[i].SECNAME, inf[i].DR,
                              inf[i].POL, inf[i].SNILS, inf[i].SCOMP, inf[i].DPFS, inf[i].SN_POL, inf[i].VIDPROF,
-                             inf[i].DYEAR, inf[i].DMONTH, inf[i].Tema, inf[i].DATE_UV, inf[i].SPOSOB, inf[i].RESULT, 
+                             inf[i].DYEAR, inf[i].DMONTH, inf[i].Tema, inf[i].DATE_UV, inf[i].SPOSOB, inf[i].RESULT,
                              inf[i].prim, inf[i].KOD_POL, inf[i].KOD_POL1, inf[i].SMO
                            // добавляем поля в набор
                            );
 
                     }
 
-                    
+
                 }
             }
         }
@@ -853,37 +856,37 @@ SPOSOB_P3 as sposob,RESULT_P3 as result,PRIMECH as prim, l.kod as KOD_POL, l.kod
 
                     XmlDocument xDoc = new XmlDocument();
                     xDoc.Load(file);
-                    string rfile = shfiles[y];            
+                    string rfile = shfiles[y];
 
                     XmlElement xRoot = xDoc.DocumentElement;
                     //var x = xDoc.GetElementsByTagName("INSURANCE");
-                    foreach(XmlNode n in xDoc.GetElementsByTagName("INSURANCE"))
+                    foreach (XmlNode n in xDoc.GetElementsByTagName("INSURANCE"))
                     {
-                        if(n.ChildNodes.Count>1)
+                        if (n.ChildNodes.Count > 1)
                         {
-                            
-                            for (int i =0;i<= n.ChildNodes.Count-1; i++)
+
+                            for (int i = 0; i <= n.ChildNodes.Count - 1; i++)
                             {
                                 var c = n.ChildNodes[i];
                                 n.RemoveChild(n.FirstChild);
                             }
 
                         }
-                        
-                        
+
+
                     }
-                    
+
                     //var xx = xDoc.ChildNodes[1].ChildNodes[0].Attributes.GetNamedItem("N_REC").Value.ToString();
                     //XmlNode xxx = xDoc.GetElementsByTagName("RECLIST");
                     //var xxxx = xxx.ch;
                     var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
-                        SqlConnection con = new SqlConnection(connectionString);
-                        SqlCommand com = new SqlCommand($@"exec [Load_flk] @xml = '{xDoc.LastChild.OuterXml.Replace((char)39, (char)32)}', @fname='{rfile}'", con);
-                        con.Open();
-                        com.ExecuteNonQuery();
-                        con.Close();
+                    SqlConnection con = new SqlConnection(connectionString);
+                    SqlCommand com = new SqlCommand($@"exec [Load_flk] @xml = '{xDoc.LastChild.OuterXml.Replace((char)39, (char)32)}', @fname='{rfile}'", con);
+                    con.Open();
+                    com.ExecuteNonQuery();
+                    con.Close();
 
-                   
+
                     y = y + 1;
                 }
                 string m = "Изменения данных от ТФОМС успешно загружены!";
@@ -904,18 +907,18 @@ SPOSOB_P3 as sposob,RESULT_P3 as result,PRIMECH as prim, l.kod as KOD_POL, l.kod
             WFR.FolderBrowserDialog OF = new WFR.FolderBrowserDialog();
             //OF.Filter= "Файлы DBF (.dbf)|*.dbf";
             OF.Description = "Выберите папку с программой захарова";
-            if(OF.ShowDialog() == WFR.DialogResult.OK)            
+            if (OF.ShowDialog() == WFR.DialogResult.OK)
             {
-                
+
                 DirectoryInfo dir = new DirectoryInfo(OF.SelectedPath);
                 foreach (var item in dir.GetDirectories())
                 {
-                    if(item.Name=="DBF" || item.Name=="DEFAULT")
+                    if (item.Name == "DBF" || item.Name == "DEFAULT")
                     {
-                       var spr = item.GetFiles("*.dbf");
-                        foreach(var f in spr)
+                        var spr = item.GetFiles("*.dbf");
+                        foreach (var f in spr)
                         {
-                            if(file_names.Contains(f.Name))
+                            if (file_names.Contains(f.Name))
                             {
                                 //string ConnectionString1 = Properties.Settings.Default.DocExchangeConnectionString;
                                 DataTable dt = new DataTable();
@@ -958,37 +961,37 @@ SPOSOB_P3 as sposob,RESULT_P3 as result,PRIMECH as prim, l.kod as KOD_POL, l.kod
                                     }
 
                                 }
-                                                               
-                                string sqltable = f.Name.Replace(".dbf", "");                                
-                                MyReader.LoadFromTable<DataTable>(ConnectionString1 ,dt,sqltable);
+
+                                string sqltable = f.Name.Replace(".dbf", "");
+                                MyReader.LoadFromTable<DataTable>(ConnectionString1, dt, sqltable);
                             }
                         }
                     }
-                    
 
-                }                
+
+                }
                 foreach (var item in dir.GetDirectories())
                 {
                     if (item.Name == "DEFAULT")
                     {
                         DirectoryInfo dir1 = new DirectoryInfo(item.FullName);
-                        foreach(var item1 in dir1.GetDirectories())
+                        foreach (var item1 in dir1.GetDirectories())
                         {
-                            if(item1.Name=="Photo" || item1.Name=="Sign")
+                            if (item1.Name == "Photo" || item1.Name == "Sign")
                             {
                                 DataTable dt1 = new DataTable();
                                 dt1.Columns.Add("N_REG", typeof(decimal));
                                 dt1.Columns.Add("Photo", typeof(string));
-                                
+
 
                                 foreach (var item2 in item1.GetFiles("*.jpg"))
                                 {
                                     byte[] buf = File.ReadAllBytes(item2.FullName);
-                                    object[] r = { item2.Name.Replace(".jpg",""), Convert.ToBase64String(buf) };
-                                    dt1.LoadDataRow(r,LoadOption.OverwriteChanges);
-                                    
+                                    object[] r = { item2.Name.Replace(".jpg", ""), Convert.ToBase64String(buf) };
+                                    dt1.LoadDataRow(r, LoadOption.OverwriteChanges);
+
                                 }
-                                MyReader.LoadFromTable<DataTable>(ConnectionString1,dt1, item1.Name);
+                                MyReader.LoadFromTable<DataTable>(ConnectionString1, dt1, item1.Name);
 
                             }
                             SqlConnection con = new SqlConnection(ConnectionString1);
@@ -1007,9 +1010,9 @@ SPOSOB_P3 as sposob,RESULT_P3 as result,PRIMECH as prim, l.kod as KOD_POL, l.kod
 
                     }
                 }
-                
+
             }
-            
+
 
         }
 
@@ -1022,53 +1025,53 @@ SPOSOB_P3 as sposob,RESULT_P3 as result,PRIMECH as prim, l.kod as KOD_POL, l.kod
             string ex_path = OF.FileName;
             string cell = "";
             tb = new DataTable();
-                    if (ex_path.Contains(".xls") || ex_path.Contains(".xlsx"))
-                    {
-                        Spreadsheet excel = new Spreadsheet();                        
-                        excel.LoadFromFile(ex_path);
-                        var r= excel.Worksheet(0).NotEmptyRowMax;
-                        for (int i=0; i<=excel.Worksheet(0).NotEmptyRowMax;i++)
-                        {
-                           var cc=excel.Worksheet(0).Cell(i, 0).Value.ToString();
-                           cell = cell+(char)34 + cc + (char)34 + ",";
-                        }
-                        text_b.Text=cell.Substring(0, cell.Length - 1);
-                        tb = excel.ExportToDataTable();
-                        
-                    }
-                    else
-                    {
-                        string filename = ex_path;
-                        string[] attache = File.ReadAllLines(filename);                        
-                        var cls0 = attache[0].Split(';');
-                        for (int i = 0; i < cls0.Count(); i++)
-                        {
-                            tb.Columns.Add("Column" + i.ToString(), typeof(string));
-                        }
-                        
-                        foreach (string row in attache)
-                        {
-                            // получаем все ячейки строки
+            if (ex_path.Contains(".xls") || ex_path.Contains(".xlsx"))
+            {
+                Spreadsheet excel = new Spreadsheet();
+                excel.LoadFromFile(ex_path);
+                var r = excel.Worksheet(0).NotEmptyRowMax;
+                for (int i = 0; i <= excel.Worksheet(0).NotEmptyRowMax; i++)
+                {
+                    var cc = excel.Worksheet(0).Cell(i, 0).Value.ToString();
+                    cell = cell + (char)34 + cc + (char)34 + ",";
+                }
+                text_b.Text = cell.Substring(0, cell.Length - 1);
+                tb = excel.ExportToDataTable();
 
-                            var cls = row.Split('|');
+            }
+            else
+            {
+                string filename = ex_path;
+                string[] attache = File.ReadAllLines(filename);
+                var cls0 = attache[0].Split(';');
+                for (int i = 0; i < cls0.Count(); i++)
+                {
+                    tb.Columns.Add("Column" + i.ToString(), typeof(string));
+                }
 
-                            tb.LoadDataRow(cls, LoadOption.Upsert);
-                            cell = (char)34 + cell + (char)34 + ",";
-                        }
-                        cell=cell.Substring(0, cell.Length - 1);
-                        text_b.Text = cell;
-                    }
-                    pol_zagr.ItemsSource = tb;
-                    
+                foreach (string row in attache)
+                {
+                    // получаем все ячейки строки
+
+                    var cls = row.Split('|');
+
+                    tb.LoadDataRow(cls, LoadOption.Upsert);
+                    cell = (char)34 + cell + (char)34 + ",";
+                }
+                cell = cell.Substring(0, cell.Length - 1);
+                text_b.Text = cell;
+            }
+            pol_zagr.ItemsSource = tb;
+
         }
         private string[,] adr1;
         private void Move_zah_data__Click(object sender, RoutedEventArgs e)
         {
-            var ad = (fias_d.adres.Text ??"").Split(',');
-            
+            var ad = (fias_d.adres.Text ?? "").Split(',');
+
             fias_d.reg.EditValue = null; fias_d.reg_rn.EditValue = null; fias_d.reg_town.EditValue = null; fias_d.reg_np.EditValue = null;
             fias_d.reg_ul.EditValue = null; fias_d.reg_dom.EditValue = null;
-            Guid reg=Guid.Empty; Guid rn= Guid.Empty; Guid town= Guid.Empty; Guid np= Guid.Empty; Guid ul= Guid.Empty; Guid dom = Guid.Empty;
+            Guid reg = Guid.Empty; Guid rn = Guid.Empty; Guid town = Guid.Empty; Guid np = Guid.Empty; Guid ul = Guid.Empty; Guid dom = Guid.Empty;
 
             SqlConnection con_f = new SqlConnection(Properties.Settings.Default.FIASConnectionString);
             SqlCommand com_f1 = new SqlCommand($@"select aoguid from AddressObjects where AOLEVEL=1 and dbo.Translit('{ad[1]}') like char(37)+dbo.Translit(FORMALNAME)+char(37) and ACTSTATUS=1", con_f);
@@ -1082,38 +1085,38 @@ SPOSOB_P3 as sposob,RESULT_P3 as result,PRIMECH as prim, l.kod as KOD_POL, l.kod
                 //string ad5 = ad[5].Replace("ё", "е").Replace(" ", "").Trim(' ');
                 //string ad6 = ad[6].Replace(" ", "").Trim(' ');
                 //string ad7 = ad[7].Replace(" ", "").Trim(' ');
-                string ad1 = ad[1] == "" ? "" : ad[1].Replace("ё", "е").Substring(0,ad[1].Length - new string(ad[1].ToCharArray().Reverse().ToArray()).IndexOf(' ')).Trim(' ');
+                string ad1 = ad[1] == "" ? "" : ad[1].Replace("ё", "е").Substring(0, ad[1].Length - new string(ad[1].ToCharArray().Reverse().ToArray()).IndexOf(' ')).Trim(' ');
                 string ad2 = ad[2] == "" ? "" : ad[2].Replace("ё", "е").Substring(0, ad[2].Length - new string(ad[2].ToCharArray().Reverse().ToArray()).IndexOf(' ')).Trim(' ');
                 string ad3 = ad[3] == "" ? "" : ad[3].Replace("ё", "е").Substring(0, ad[3].Length - new string(ad[3].ToCharArray().Reverse().ToArray()).IndexOf(' ')).Trim(' ');
                 string ad4 = ad[4] == "" ? "" : ad[4].Replace("ё", "е").Substring(0, ad[4].Length - new string(ad[4].ToCharArray().Reverse().ToArray()).IndexOf(' ')).Trim(' ');
                 string ad5 = ad[5] == "" ? "" : ad[5].Replace("ё", "е").Substring(0, ad[5].Length - new string(ad[5].ToCharArray().Reverse().ToArray()).IndexOf(' ')).Trim(' ');
                 string ad6 = ad[6].Replace(" ", "").Trim(' ');
                 string ad7 = ad[7].Replace(" ", "").Trim(' ');
-                reg = fdb.AddressObjects.Where(x=>x.AOLEVEL==1 && x.FORMALNAME.Replace("ё","е") == ad1 && x.ACTSTATUS==1).Select(x=>x.AOGUID).FirstOrDefault();
-                
+                reg = fdb.AddressObjects.Where(x => x.AOLEVEL == 1 && x.FORMALNAME.Replace("ё", "е") == ad1 && x.ACTSTATUS == 1).Select(x => x.AOGUID).FirstOrDefault();
+
                 rn = fdb.AddressObjects.Where(x => x.AOLEVEL == 3 && x.FORMALNAME.Replace("ё", "е") == ad2 && x.PARENTGUID == reg && x.ACTSTATUS == 1).Select(x => x.AOGUID).FirstOrDefault();
-                
+
                 town = fdb.AddressObjects.Where(x => x.AOLEVEL == 4 && x.FORMALNAME.Replace("ё", "е") == ad3 && x.PARENTGUID == rn && x.ACTSTATUS == 1).Select(x => x.AOGUID).FirstOrDefault();
 
-                if(town == Guid.Empty)
+                if (town == Guid.Empty)
                 {
                     town = fdb.AddressObjects.Where(x => x.AOLEVEL == 4 && x.FORMALNAME.Replace("ё", "е") == ad3 && x.PARENTGUID == reg && x.ACTSTATUS == 1).Select(x => x.AOGUID).FirstOrDefault();
-                    if(town==Guid.Empty && "Москва,Санкт-Петербург,Севастополь,Байконур".Contains(ad1))
+                    if (town == Guid.Empty && "Москва,Санкт-Петербург,Севастополь,Байконур".Contains(ad1))
                     {
                         town = reg;
                     }
-                } 
+                }
 
-                np = fdb.AddressObjects.Where(x => x.AOLEVEL == 6 && x.FORMALNAME.Replace("ё", "е") == ad4 && x.PARENTGUID == rn  && x.ACTSTATUS == 1).Select(x => x.AOGUID).FirstOrDefault();
+                np = fdb.AddressObjects.Where(x => x.AOLEVEL == 6 && x.FORMALNAME.Replace("ё", "е") == ad4 && x.PARENTGUID == rn && x.ACTSTATUS == 1).Select(x => x.AOGUID).FirstOrDefault();
 
-                if(np==Guid.Empty)
+                if (np == Guid.Empty)
                 {
                     np = fdb.AddressObjects.Where(x => x.AOLEVEL == 6 && x.FORMALNAME.Replace("ё", "е") == ad4 && x.PARENTGUID == town && x.ACTSTATUS == 1).Select(x => x.AOGUID).FirstOrDefault();
                 }
 
-                ul = fdb.AddressObjects.Where(x => x.AOLEVEL == 7 && x.FORMALNAME.Replace("ё","е")==ad5 && x.PARENTGUID == town && x.ACTSTATUS == 1).Select(x => x.AOGUID).FirstOrDefault();
+                ul = fdb.AddressObjects.Where(x => x.AOLEVEL == 7 && x.FORMALNAME.Replace("ё", "е") == ad5 && x.PARENTGUID == town && x.ACTSTATUS == 1).Select(x => x.AOGUID).FirstOrDefault();
 
-                if(ul==Guid.Empty)
+                if (ul == Guid.Empty)
                 {
                     ul = fdb.AddressObjects.Where(x => x.AOLEVEL == 7 && x.FORMALNAME.Replace("ё", "е") == ad5 && x.PARENTGUID == np && x.ACTSTATUS == 1).Select(x => x.AOGUID).FirstOrDefault();
                 }
@@ -1126,88 +1129,88 @@ SPOSOB_P3 as sposob,RESULT_P3 as result,PRIMECH as prim, l.kod as KOD_POL, l.kod
                     if (dom == Guid.Empty)
                     {
                         dom = fdb.Houses.Where(x => x.AOGUID == town && (x.HOUSENUM == ad6 || x.HOUSENUM + x.BUILDNUM == ad6 /*|| x.HOUSENUM.StartsWith(ad6.Substring(0, (ad6.Length < 2 ? ad6.Length : ad6.Length - 1))))*/) && x.ENDDATE > DateTime.Today).Select(x => x.HOUSEGUID).FirstOrDefault();
-                        
+
                     }
                 }
                 else
                 {
 
-                }                
+                }
 
             }
-//                com_f1.CommandTimeout = 0;
-//            con_f.Open();
-//            if (ad[1] == "") return;
-//            reg = (Guid)com_f1.ExecuteScalar();
-//            if (ad[2] == "")
-//            {
-//                SqlCommand com_f3 = new SqlCommand($@"select aoguid from AddressObjects where dbo.Translit('{ad[3]}') like char(37)+dbo.Translit(FORMALNAME)+char(37) and ACTSTATUS=1
-//and PARENTGUID ='{reg}'and  AOLEVEL in(3,4)", con_f);
-//                town = (Guid)com_f3.ExecuteScalar();
-//            }
-//            else
-//            {
-//                SqlCommand com_f3 = new SqlCommand($@"select aoguid from AddressObjects where dbo.Translit('{ad[2]}') like char(37)+dbo.Translit(FORMALNAME)+char(37) and ACTSTATUS=1
-//and PARENTGUID ='{reg}'and  AOLEVEL in(3)", con_f);
-//                rn = (Guid)com_f3.ExecuteScalar();                
-//            }
-//            if (ad[3] == "")
-//            {
-//                SqlCommand com_f4 = new SqlCommand($@"select aoguid from AddressObjects where dbo.Translit('{ad[4]}') like char(37)+dbo.Translit(FORMALNAME)+char(37) and ACTSTATUS=1
-//and PARENTGUID ='{rn}'and  AOLEVEL in(4,6)", con_f);
-//                np = (Guid)com_f4.ExecuteScalar();
-//            }
-//            else
-//            {
-//                SqlCommand com_f4 = new SqlCommand($@"select aoguid from AddressObjects where dbo.Translit('{ad[3]}') like char(37)+dbo.Translit(FORMALNAME)+char(37) and ACTSTATUS=1
-//and PARENTGUID ='{(rn==Guid.Empty?reg:rn)}'and  AOLEVEL in(3,4)", con_f);
-//                town = (Guid)com_f4.ExecuteScalar();
-//            }
-//            if (ad[4] == "")
-//            {
-//                SqlCommand com_f5 = new SqlCommand($@"select aoguid from AddressObjects where dbo.Translit('{ad[5]}') like char(37)+dbo.Translit(FORMALNAME)+char(37) and ACTSTATUS=1
-//and PARENTGUID ='{town}'and  AOLEVEL in(7,90,91)", con_f);
-//                ul = (Guid)com_f5.ExecuteScalar();
-//            }
-//            else
-//            {
-//                SqlCommand com_f5 = new SqlCommand($@"select aoguid from AddressObjects where dbo.Translit('{ad[4]}') like char(37)+dbo.Translit(FORMALNAME)+char(37) and ACTSTATUS=1
-//and PARENTGUID ='{rn}'and  AOLEVEL in(6)", con_f);
-//                np = (Guid)com_f5.ExecuteScalar();
-//            }
-//            if (ad[5] == "")
-//            {
-////                SqlCommand com_f5 = new SqlCommand($@"select aoguid from AddressObjects where '{ad[5]}' like char(37)+FORMALNAME+char(37) and ACTSTATUS=1
-////and PARENTGUID ='{town}'and  AOLEVEL in(7,90,91)", con_f);
-////                ul = (Guid)com_f5.ExecuteScalar();
-//            }
-//            else
-//            {
-//                SqlCommand com_f5 = new SqlCommand($@"select aoguid from AddressObjects where dbo.Translit('{ad[5]}') like char(37)+dbo.Translit(FORMALNAME)+char(37) and ACTSTATUS=1
-//and PARENTGUID ='{(town.ToString()== "00000000-0000-0000-0000-000000000000" ? np:town)}'and  AOLEVEL in(7)", con_f);
-//                ul = (Guid)com_f5.ExecuteScalar();
-//            }
-//            if (ad[6] == "")
-//            {
-//                SqlCommand com_f6 = new SqlCommand($@"select houseguid from houses 
-//                                                   where ('{ad[7]}' = strucnum ) and enddate>'{DateTime.Today}'
-//and AOGUID ='{(ul.ToString() == "00000000-0000-0000-0000-000000000000" ? np : ul)}'", con_f);
-//                dom = (Guid)com_f6.ExecuteScalar();
-//            }
-//            else
-//            {
-//                SqlCommand com_f6 = new SqlCommand($@"select top(1) houseguid from houses 
-//                                                   where (('{ad[6]}' = housenum and '{ad[7]}'=buildnum) or '{ad[6]}'+'{ad[7]}' = housenum or housenum like'{ad[6].Substring(0,ad[6].Length-1)}%') and enddate>'{DateTime.Today}'
-//and AOGUID ='{(ul.ToString() == "00000000-0000-0000-0000-000000000000" ? np : ul)}'", con_f);
-//                dom = (Guid)com_f6.ExecuteScalar();
-//            }
+            //                com_f1.CommandTimeout = 0;
+            //            con_f.Open();
+            //            if (ad[1] == "") return;
+            //            reg = (Guid)com_f1.ExecuteScalar();
+            //            if (ad[2] == "")
+            //            {
+            //                SqlCommand com_f3 = new SqlCommand($@"select aoguid from AddressObjects where dbo.Translit('{ad[3]}') like char(37)+dbo.Translit(FORMALNAME)+char(37) and ACTSTATUS=1
+            //and PARENTGUID ='{reg}'and  AOLEVEL in(3,4)", con_f);
+            //                town = (Guid)com_f3.ExecuteScalar();
+            //            }
+            //            else
+            //            {
+            //                SqlCommand com_f3 = new SqlCommand($@"select aoguid from AddressObjects where dbo.Translit('{ad[2]}') like char(37)+dbo.Translit(FORMALNAME)+char(37) and ACTSTATUS=1
+            //and PARENTGUID ='{reg}'and  AOLEVEL in(3)", con_f);
+            //                rn = (Guid)com_f3.ExecuteScalar();                
+            //            }
+            //            if (ad[3] == "")
+            //            {
+            //                SqlCommand com_f4 = new SqlCommand($@"select aoguid from AddressObjects where dbo.Translit('{ad[4]}') like char(37)+dbo.Translit(FORMALNAME)+char(37) and ACTSTATUS=1
+            //and PARENTGUID ='{rn}'and  AOLEVEL in(4,6)", con_f);
+            //                np = (Guid)com_f4.ExecuteScalar();
+            //            }
+            //            else
+            //            {
+            //                SqlCommand com_f4 = new SqlCommand($@"select aoguid from AddressObjects where dbo.Translit('{ad[3]}') like char(37)+dbo.Translit(FORMALNAME)+char(37) and ACTSTATUS=1
+            //and PARENTGUID ='{(rn==Guid.Empty?reg:rn)}'and  AOLEVEL in(3,4)", con_f);
+            //                town = (Guid)com_f4.ExecuteScalar();
+            //            }
+            //            if (ad[4] == "")
+            //            {
+            //                SqlCommand com_f5 = new SqlCommand($@"select aoguid from AddressObjects where dbo.Translit('{ad[5]}') like char(37)+dbo.Translit(FORMALNAME)+char(37) and ACTSTATUS=1
+            //and PARENTGUID ='{town}'and  AOLEVEL in(7,90,91)", con_f);
+            //                ul = (Guid)com_f5.ExecuteScalar();
+            //            }
+            //            else
+            //            {
+            //                SqlCommand com_f5 = new SqlCommand($@"select aoguid from AddressObjects where dbo.Translit('{ad[4]}') like char(37)+dbo.Translit(FORMALNAME)+char(37) and ACTSTATUS=1
+            //and PARENTGUID ='{rn}'and  AOLEVEL in(6)", con_f);
+            //                np = (Guid)com_f5.ExecuteScalar();
+            //            }
+            //            if (ad[5] == "")
+            //            {
+            ////                SqlCommand com_f5 = new SqlCommand($@"select aoguid from AddressObjects where '{ad[5]}' like char(37)+FORMALNAME+char(37) and ACTSTATUS=1
+            ////and PARENTGUID ='{town}'and  AOLEVEL in(7,90,91)", con_f);
+            ////                ul = (Guid)com_f5.ExecuteScalar();
+            //            }
+            //            else
+            //            {
+            //                SqlCommand com_f5 = new SqlCommand($@"select aoguid from AddressObjects where dbo.Translit('{ad[5]}') like char(37)+dbo.Translit(FORMALNAME)+char(37) and ACTSTATUS=1
+            //and PARENTGUID ='{(town.ToString()== "00000000-0000-0000-0000-000000000000" ? np:town)}'and  AOLEVEL in(7)", con_f);
+            //                ul = (Guid)com_f5.ExecuteScalar();
+            //            }
+            //            if (ad[6] == "")
+            //            {
+            //                SqlCommand com_f6 = new SqlCommand($@"select houseguid from houses 
+            //                                                   where ('{ad[7]}' = strucnum ) and enddate>'{DateTime.Today}'
+            //and AOGUID ='{(ul.ToString() == "00000000-0000-0000-0000-000000000000" ? np : ul)}'", con_f);
+            //                dom = (Guid)com_f6.ExecuteScalar();
+            //            }
+            //            else
+            //            {
+            //                SqlCommand com_f6 = new SqlCommand($@"select top(1) houseguid from houses 
+            //                                                   where (('{ad[6]}' = housenum and '{ad[7]}'=buildnum) or '{ad[6]}'+'{ad[7]}' = housenum or housenum like'{ad[6].Substring(0,ad[6].Length-1)}%') and enddate>'{DateTime.Today}'
+            //and AOGUID ='{(ul.ToString() == "00000000-0000-0000-0000-000000000000" ? np : ul)}'", con_f);
+            //                dom = (Guid)com_f6.ExecuteScalar();
+            //            }
 
 
             con_f.Close();
             fias_d.reg.EditValue = reg;
             if (rn != Guid.Empty) fias_d.reg_rn.EditValue = rn;
-            if (town != Guid.Empty) fias_d.reg_town.EditValue = town; 
-            if (np != Guid.Empty) fias_d.reg_np.EditValue = np; 
+            if (town != Guid.Empty) fias_d.reg_town.EditValue = town;
+            if (np != Guid.Empty) fias_d.reg_np.EditValue = np;
             if (ul != Guid.Empty) fias_d.reg_ul.EditValue = ul;
             if (dom != Guid.Empty) fias_d.reg_dom.EditValue = dom;
             fias_d.reg_korp.Text = ad[7];
@@ -1247,6 +1250,50 @@ SPOSOB_P3 as sposob,RESULT_P3 as result,PRIMECH as prim, l.kod as KOD_POL, l.kod
             //excel.ImportFromDataTable();
 
         }
+
+        private void FIAS_ONLINE_Click(object sender, RoutedEventArgs e)
+        {
+            using (var request = new HttpRequest
+            {
+                IgnoreProtocolErrors = true,
+                AllowAutoRedirect = true,
+                KeepAlive = true
+
+            })
+            {
+                List<string> Rayon = new List<string>();
+
+            }
+        }
+
+        private void FIAS_ONLINE_Click_1(object sender, RoutedEventArgs e)
+        {
+            List<string> RegionZ = new List<string>();
+            using (var request = new HttpRequest
+            {
+                IgnoreProtocolErrors = true,
+                AllowAutoRedirect = true,
+                KeepAlive = true
+
+            })
+            {
+                request.Cookies = new CookieDictionary();
+                request.AddHeader("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9");
+     
+                request.AddHeader("accept-language", "ru,en;q=0.9");
+                request.AddHeader("cache-control", "max-age=0");
+                request.AddHeader("sec-fetch-dest", "document");
+                request.AddHeader("sec-fetch-mode", "navigate");
+                request.AddHeader("sec-fetch-site", "none");
+                request.AddHeader("sec-fetch-user", "?1");
+                request.AddHeader("upgrade-insecure-requests", "1");
+                request.AddHeader("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 YaBrowser/20.6.2.195 Yowser/2.5 Safari/537.36");
+
+                var Region = request.Get("https://фиас.онлайн/").ToString();
+                RegionZ = Request.RegexParses(Region, "<a href=\"", "<");
+
+            }
+            }
     }
     public class Class_params : IComparable<Class_params>
     {

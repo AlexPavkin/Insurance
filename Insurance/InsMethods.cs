@@ -1510,16 +1510,19 @@ dstart=@date_mo where idguid='{perguid}'", con);
                 comm.Parameters.AddWithValue("@FIAS_L6", PD.fias.reg_np.EditValue);
             }
 
-            if (PD.fias.bomj.IsChecked == true)
-            {
-                comm.Parameters.AddWithValue("@bomg", 1);
-                comm.Parameters.AddWithValue("@addr_g", 0);
-            }
-            else
-            {
-                comm.Parameters.AddWithValue("@bomg", 0);
-                comm.Parameters.AddWithValue("@addr_g", 1);
-            }
+            //if (PD.fias.bomj.IsChecked == true)
+            //{
+            //    comm.Parameters.AddWithValue("@bomg", 1);
+            //    comm.Parameters.AddWithValue("@addr_g", 0);
+            //}
+            //else
+            //{
+            //    comm.Parameters.AddWithValue("@bomg", 0);
+            //    comm.Parameters.AddWithValue("@addr_g", 1);
+            //}
+            comm.Parameters.AddWithValue("@bomg", 1);
+            comm.Parameters.AddWithValue("@addr_g", 1);
+            comm.Parameters.AddWithValue("@addr_p", 1);
 
             if (PD.fias.reg_dr.EditValue == null)
             {
@@ -1536,7 +1539,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
             //}
             //else
             //{
-            comm.Parameters.AddWithValue("@addr_p", 0);
+            //comm.Parameters.AddWithValue("@addr_p", 0);
             //}
 
 
@@ -1866,17 +1869,19 @@ dstart=@date_mo where idguid='{perguid}'", con);
                 comm.Parameters.AddWithValue("@FIAS_L6", PD.fias.reg_np.EditValue);
             }
 
-            if (PD.fias.bomj.IsChecked == true)
-            {
-                comm.Parameters.AddWithValue("@bomg", 1);
-                comm.Parameters.AddWithValue("@addr_g", 0);
-            }
-            else
-            {
-                comm.Parameters.AddWithValue("@bomg", 0);
-                comm.Parameters.AddWithValue("@addr_g", 1);
-            }
-
+            //if (PD.fias.bomj.IsChecked == true)
+            //{
+            //    comm.Parameters.AddWithValue("@bomg", 1);
+            //    comm.Parameters.AddWithValue("@addr_g", 0);
+            //}
+            //else
+            //{
+            //    comm.Parameters.AddWithValue("@bomg", 0);
+            //    comm.Parameters.AddWithValue("@addr_g", 1);
+            //}
+            comm.Parameters.AddWithValue("@bomg", 1);
+            comm.Parameters.AddWithValue("@addr_g", 1);
+            comm.Parameters.AddWithValue("@addr_p", 1);
             if (PD.fias.reg_dr.EditValue == null)
             {
                 comm.Parameters.AddWithValue("@dreg", DBNull.Value);
@@ -1892,7 +1897,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
             //}
             //else
             //{
-            comm.Parameters.AddWithValue("@addr_p", 0);
+            //comm.Parameters.AddWithValue("@addr_p", 0);
             //}
 
 
@@ -2220,17 +2225,19 @@ dstart=@date_mo where idguid='{perguid}'", con);
                 comm.Parameters.AddWithValue("@FIAS_L6", PD.fias.reg_np.EditValue);
             }
 
-            if (PD.fias.bomj.IsChecked == true)
-            {
+            //if (PD.fias.bomj.IsChecked == true)
+            //{
+            //    comm.Parameters.AddWithValue("@bomg", 1);
+            //    comm.Parameters.AddWithValue("@addr_g", 0);
+            //}
+            //else
+            //{
+            //    comm.Parameters.AddWithValue("@bomg", 0);
+            //    comm.Parameters.AddWithValue("@addr_g", 1);
+            //}
                 comm.Parameters.AddWithValue("@bomg", 1);
-                comm.Parameters.AddWithValue("@addr_g", 0);
-            }
-            else
-            {
-                comm.Parameters.AddWithValue("@bomg", 0);
                 comm.Parameters.AddWithValue("@addr_g", 1);
-            }
-
+                comm.Parameters.AddWithValue("@addr_p", 1);
             if (PD.fias.reg_dr.EditValue == null)
             {
                 comm.Parameters.AddWithValue("@dreg", DBNull.Value);
@@ -2246,7 +2253,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
             //}
             //else
             //{
-            comm.Parameters.AddWithValue("@addr_p", 0);
+            //comm.Parameters.AddWithValue("@addr_p", 0);
             //}
 
 
@@ -5155,8 +5162,8 @@ dstart=@date_mo where idguid='{perguid}'", con);
                 comm2.Parameters.AddWithValue("@bomg", 1);
                 comm2.Parameters.AddWithValue("@addr_g", 1);
                 comm2.Parameters.AddWithValue("@addr_p", 1);
-                comm2.Parameters.AddWithValue("@addr_p1", 0);
-                comm2.Parameters.AddWithValue("@addr_g1", 0);
+                comm2.Parameters.AddWithValue("@addr_p1", 1);
+                comm2.Parameters.AddWithValue("@addr_g1", 1);
 
             }
             else
@@ -5177,6 +5184,8 @@ dstart=@date_mo where idguid='{perguid}'", con);
                 }
 
             }
+
+
 
             if (PD.fias.reg_dr.EditValue == null)
             {
@@ -6086,7 +6095,8 @@ NAME_VP='{PD.kem_vid1.Text}', NAME_VP_CODE='{PD.kod_podr1.Text}', active=0,main=
             if (PD.fias.bomj.IsChecked == true)
             {
                 comm.Parameters.AddWithValue("@bomg", 1);
-                comm.Parameters.AddWithValue("@addr_g", 0);
+                comm.Parameters.AddWithValue("@addr_g", 1);
+                comm.Parameters.AddWithValue("@addr_p", 1);
             }
             else
             {
