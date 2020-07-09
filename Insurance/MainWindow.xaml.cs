@@ -963,7 +963,7 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
             G_layuot.restore_Layout(Properties.Settings.Default.DocExchangeConnectionString, pers_grid, pers_grid_2);
             //LoadingDecorator1.IsSplashScreenShown = false;
             WindowState = WindowState.Maximized;
-            Vars.MainTitle = "Insurance(полисная часть) v1.018";
+            Vars.MainTitle = "Insurance(полисная часть) v1.019";
             Title = Vars.MainTitle;
             prz.SelectedIndex = -1;
             //if (SPR.Premmissions == "User")
@@ -2035,7 +2035,7 @@ select @num", con);
         {
             upd_click = true;
             WebClient webcl = new WebClient();
-            webcl.DownloadFile(@"http://elmedweb.ru/INSURANCE/Updater Inshurance.exe", @"Updater Inshurance.exe");
+            webcl.DownloadFile(@"http://elmedicine.ru/INSURANCE/Updater Inshurance.exe", @"Updater Inshurance.exe");
             Version_Check();
             //FIAS_SEARCH fs = new FIAS_SEARCH();
             //fs.Show();

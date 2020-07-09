@@ -938,15 +938,19 @@ sps.Name as sposob_4,rp4.Name as result_4,PRIMECH as prim_4
 
         private void Unload_3_Click(object sender, RoutedEventArgs e)
         {
-            var id = inform_grid.GetFocusedRowCellValue("ID");
+         
             SaveFileDialog SF = new SaveFileDialog();
             SF.DefaultExt = ".dbf";
             SF.Filter = "Файлы DBF (.dbf)|*.dbf";
             bool res = SF.ShowDialog().Value;
-
+            List<P3_INFORM> inf = new List<P3_INFORM>();
             if (res == true)
             {
-                var inf = MyReader.MySelect<P3_INFORM>($@"select pp.id as ID_TFOMS,fam as SURNAME,im as NAME,ot as SECNAME,
+
+                if (INFDATE.IsChecked == false)
+                {
+                    var id = inform_grid.GetFocusedRowCellValue("ID");
+                    inf = MyReader.MySelect<P3_INFORM>($@"select pp.id as ID_TFOMS,fam as SURNAME,im as NAME,ot as SECNAME,
 pp.dr as DR, w as POL, pp.SS as SNILS,1 as SCOMP,pol.VPOLIS as DPFS,ENP as SN_POL,VID_P3 as VIDPROF, 
 DATEPART(yy,Date_P3) as DYEAR, DATEPART(MM,Date_P3) as DMONTH, Theme_P3 as Tema,Date_P3 as DATE_UV,
 SPOSOB_P3 as sposob,RESULT_P3 as result,PRIMECH as prim, l.kod as KOD_POL, l.kod1 as KOD_POL1,'39001' as SMO
@@ -955,6 +959,19 @@ SPOSOB_P3 as sposob,RESULT_P3 as result,PRIMECH as prim, l.kod as KOD_POL, l.kod
  left join lpu_39 l on pp.MO=l.MCOD
  left join POL_POLISES pol on pp.EVENT_GUID=pol.EVENT_GUID
   where pp.id={id} and Date_P3  BETWEEN '{start_d_Copy.EditValue}' AND '{end_d_Copy.EditValue}'", Properties.Settings.Default.DocExchangeConnectionString);
+                }
+                else
+                {
+                    inf = MyReader.MySelect<P3_INFORM>($@"select pp.id as ID_TFOMS,fam as SURNAME,im as NAME,ot as SECNAME,
+pp.dr as DR, w as POL, pp.SS as SNILS,1 as SCOMP,pol.VPOLIS as DPFS,ENP as SN_POL,VID_P3 as VIDPROF, 
+DATEPART(yy,Date_P3) as DYEAR, DATEPART(MM,Date_P3) as DMONTH, Theme_P3 as Tema,Date_P3 as DATE_UV,
+SPOSOB_P3 as sposob,RESULT_P3 as result,PRIMECH as prim, l.kod as KOD_POL, l.kod1 as KOD_POL1,'39001' as SMO
+ from POL_PERSONS_INFORM p
+ join POL_PERSONS pp on p.PERSONGUID=pp.IDGUID
+ left join lpu_39 l on pp.MO=l.MCOD
+ left join POL_POLISES pol on pp.EVENT_GUID=pol.EVENT_GUID
+  where Date_P3  BETWEEN '{start_d_Copy.EditValue}' AND '{end_d_Copy.EditValue}'", Properties.Settings.Default.DocExchangeConnectionString);
+                }
                 //DataTable dt = new DataTable();
                 string dbffile = SF.FileName;
                 using (Stream fos = File.Open(dbffile, FileMode.Create, FileAccess.ReadWrite))
@@ -1003,20 +1020,28 @@ SPOSOB_P3 as sposob,RESULT_P3 as result,PRIMECH as prim, l.kod as KOD_POL, l.kod
 
                 }
             }
+            string m = "Информирование успешно выгружено по Приложению №3!";
+            string t = "Сообщение!";
+            int b = 1;
+            Message me = new Message(m, t, b);
+            me.ShowDialog();
         }
 
         private void Unload_4_Click(object sender, RoutedEventArgs e)
         {
             
-            var id = inform_grid.GetFocusedRowCellValue("ID");
+         
             SaveFileDialog SF = new SaveFileDialog();
             SF.DefaultExt = ".dbf";
             SF.Filter = "Файлы DBF (.dbf)|*.dbf";
             bool res = SF.ShowDialog().Value;
-
+            List<P4_INFORM> inf = new List<P4_INFORM>();
             if (res == true)
             {
-                var inf = MyReader.MySelect<P4_INFORM>($@"select fam as SURNAME,im as NAME,ot as SECNAME,
+                if (INFDATE.IsChecked == false)
+                {
+                    var id = inform_grid.GetFocusedRowCellValue("ID");
+                    inf = MyReader.MySelect<P4_INFORM>($@"select fam as SURNAME,im as NAME,ot as SECNAME,
 pp.dr as DR, w as POL, pp.SS as SNILS,1 as SCOMP,ENP as SN_POL, l.kod as KOD_POL, l.kod1 as KOD_POL1, mkb_p4 as KMKB,
 DATEPART(yy,Date_P4) as DYEAR, Month_1_P4 as PM1, Month_2_P4 as PM2, Month_3_P4 as PM3, Month_4_P4 as PM4,
 PERSON_ID as ID_TFOMS,'39001' as SMO, pol.VPOLIS as DPFS, soglasie_p4 as sogl, Theme_P4 as tema,Date_P4 as Date_uv,
@@ -1028,6 +1053,22 @@ SPOSOB_P4 as sposob,RESULT_P4 as result,PRIMECH as prim
  left join POL_POLISES pol on pp.EVENT_GUID=pol.EVENT_GUID
  
  where p.id={id} and Date_P4  BETWEEN '{start_d_Copy.EditValue}' AND '{end_d_Copy.EditValue}'", Properties.Settings.Default.DocExchangeConnectionString);
+                }
+                else
+                {
+                    inf = MyReader.MySelect<P4_INFORM>($@"select fam as SURNAME,im as NAME,ot as SECNAME,
+pp.dr as DR, w as POL, pp.SS as SNILS,1 as SCOMP,ENP as SN_POL, l.kod as KOD_POL, l.kod1 as KOD_POL1, mkb_p4 as KMKB,
+DATEPART(yy,Date_P4) as DYEAR, Month_1_P4 as PM1, Month_2_P4 as PM2, Month_3_P4 as PM3, Month_4_P4 as PM4,
+PERSON_ID as ID_TFOMS,'39001' as SMO, pol.VPOLIS as DPFS, soglasie_p4 as sogl, Theme_P4 as tema,Date_P4 as Date_uv,
+SPOSOB_P4 as sposob,RESULT_P4 as result,PRIMECH as prim
+
+ from POL_PERSONS_INFORM p
+ join POL_PERSONS pp on p.PERSONGUID=pp.IDGUID
+ left join lpu_39 l on pp.MO=l.MCOD
+ left join POL_POLISES pol on pp.EVENT_GUID=pol.EVENT_GUID
+ 
+ where  Date_P4  BETWEEN '{start_d_Copy.EditValue}' AND '{end_d_Copy.EditValue}'", Properties.Settings.Default.DocExchangeConnectionString);
+                }
                 //DataTable dt = new DataTable();
                 string dbffile = SF.FileName;
                 using (Stream fos = File.Open(dbffile, FileMode.Create, FileAccess.ReadWrite))
@@ -1090,6 +1131,11 @@ SPOSOB_P4 as sposob,RESULT_P4 as result,PRIMECH as prim
                     //var cnt = dbf.RecordCount;
                 }
             }
+            string m = "Информирование успешно выгружено по Приложению №4!";
+            string t = "Сообщение!";
+            int b = 1;
+            Message me = new Message(m, t, b);
+            me.ShowDialog();
         }
         private void Probnik()
         {

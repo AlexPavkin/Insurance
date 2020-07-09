@@ -9,7 +9,7 @@
     xmlns:Serialization="clr-namespace:DevExpress.Xpf.LayoutControl.Serialization;assembly=DevExpress.Xpf.LayoutControl.v17.2" 
     xmlns:System="clr-namespace:System;assembly=mscorlib" x:Name="Informed"
     x:Class="Insurance.Inform"
-    Title="Информирование ЗЛ" Height="768.334" Width="1258.032" Loaded="Informed_Loaded" Closed="Informed_Closed" 
+    Title="Информирование ЗЛ" Height="768.334" Width="1554.032" Loaded="Informed_Loaded" Closed="Informed_Closed" 
     >
     <Window.Resources>
         <Style x:Key="myButtonStyle1" TargetType="{x:Type Button}">
@@ -88,58 +88,58 @@
         <StackPanel  Orientation="Vertical" Height="{Binding}">
             <StackPanel x:Name="inform_file_panel" Orientation="Horizontal">
                 <Button x:Name="Adder_3"  HorizontalAlignment="Left"  VerticalAlignment="Top" Width="190" Height="50" Foreground="White" Click="Adder_Click_3" Style="{StaticResource myButtonStyle1}">
-                    
-                        <StackPanel x:Name="stack_btns3" Orientation="Horizontal" Width="178" >
-                            <!--Margin="5,0"-->
-                            <Image Source="Insurance_icons/Inform.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
-                                <Image.OpacityMask>
-                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                        <GradientStop Color="Black" Offset="0"/>
-                                        <GradientStop Color="White" Offset="1"/>
-                                    </LinearGradientBrush>
-                                </Image.OpacityMask>
 
-                            </Image>
-                            <TextBlock x:Name="btn_load_txt3" Text="Информировать по пр.3" VerticalAlignment="Center"  TextAlignment="Center" Margin="0,0" Width="149"  Foreground="White" FontWeight="Bold" FontSize="12"   />
+                    <StackPanel x:Name="stack_btns3" Orientation="Horizontal" Width="178" >
+                        <!--Margin="5,0"-->
+                        <Image Source="Insurance_icons/Inform.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
+                            <Image.OpacityMask>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="Black" Offset="0"/>
+                                    <GradientStop Color="White" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Image.OpacityMask>
 
-                        </StackPanel>
-                    
+                        </Image>
+                        <TextBlock x:Name="btn_load_txt3" Text="Информировать по пр.3" VerticalAlignment="Center"  TextAlignment="Center" Margin="0,0" Width="149"  Foreground="White" FontWeight="Bold" FontSize="12"   />
+
+                    </StackPanel>
+
                 </Button>
                 <Button x:Name="Adder_4"  HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="5,0" Width="190" Height="50" Foreground="White" Click="Adder_Click_4" Style="{StaticResource myButtonStyle1}">
-                    
-                        <StackPanel x:Name="stack_btns4" Orientation="Horizontal" Width="178" >
-                            <!--Margin="5,0"-->
-                            <Image Source="Insurance_icons/Inform.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
-                                <Image.OpacityMask>
-                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                        <GradientStop Color="Black" Offset="0"/>
-                                        <GradientStop Color="White" Offset="1"/>
-                                    </LinearGradientBrush>
-                                </Image.OpacityMask>
 
-                            </Image>
-                            <TextBlock x:Name="btn_load_txt4" Text="Информировать по пр.4" VerticalAlignment="Center"  TextAlignment="Center" Margin="0,0" Width="149"  Foreground="White" FontWeight="Bold" FontSize="12"   />
+                    <StackPanel x:Name="stack_btns4" Orientation="Horizontal" Width="178" >
+                        <!--Margin="5,0"-->
+                        <Image Source="Insurance_icons/Inform.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
+                            <Image.OpacityMask>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="Black" Offset="0"/>
+                                    <GradientStop Color="White" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Image.OpacityMask>
 
-                        </StackPanel>
-                    
+                        </Image>
+                        <TextBlock x:Name="btn_load_txt4" Text="Информировать по пр.4" VerticalAlignment="Center"  TextAlignment="Center" Margin="0,0" Width="149"  Foreground="White" FontWeight="Bold" FontSize="12"   />
+
+                    </StackPanel>
+
                 </Button>
                 <Button x:Name="Adder_Copy1"  HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="5,0" Width="197" Height="50" Foreground="White" Click="Adder_Copy1_Click" Style="{StaticResource myButtonStyle1}">
-                    
-                        <StackPanel x:Name="stack_btns2" Orientation="Horizontal" Width="197" >
-                            <!--Margin="5,0"-->
-                            <Image Source="Insurance_icons/delete_1.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
-                                <Image.OpacityMask>
-                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                        <GradientStop Color="Black" Offset="0"/>
-                                        <GradientStop Color="White" Offset="1"/>
-                                    </LinearGradientBrush>
-                                </Image.OpacityMask>
 
-                            </Image>
-                            <TextBlock x:Name="btn_load_txt2" Text="Удалить информирование" VerticalAlignment="Center"  TextAlignment="Center" Margin="0,0" Width="160"  Foreground="White" FontWeight="Bold" FontSize="12"   />
+                    <StackPanel x:Name="stack_btns2" Orientation="Horizontal" Width="197" >
+                        <!--Margin="5,0"-->
+                        <Image Source="Insurance_icons/delete_1.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
+                            <Image.OpacityMask>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="Black" Offset="0"/>
+                                    <GradientStop Color="White" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Image.OpacityMask>
 
-                        </StackPanel>
-                    
+                        </Image>
+                        <TextBlock x:Name="btn_load_txt2" Text="Удалить информирование" VerticalAlignment="Center"  TextAlignment="Center" Margin="0,0" Width="160"  Foreground="White" FontWeight="Bold" FontSize="12"   />
+
+                    </StackPanel>
+
                 </Button>
                 <Button x:Name="Unload_3"  HorizontalAlignment="Left"  VerticalAlignment="Top" Margin="5,0" Width="197" Height="50" Foreground="White"  Style="{StaticResource myButtonStyle1}" Click="Unload_3_Click">
 
@@ -181,6 +181,7 @@
                 <dxe:DateEdit x:Name="start_d_Copy"  NullValueButtonPlacement="EditBox" MaskType="DateTimeAdvancingCaret" Margin="5,15" Height="22" Width="90" VerticalAlignment="Top"/>
                 <Label Content="По:" Margin="5,15" Foreground="White" FontWeight="Bold" Width="22" Height="22" HorizontalContentAlignment="Right" VerticalAlignment="Top" Visibility="Visible"/>
                 <dxe:DateEdit x:Name="end_d_Copy" NullValueButtonPlacement="EditBox" MaskType="DateTimeAdvancingCaret" Margin="5,15" Height="22" Width="87" VerticalAlignment="Top"/>
+                <CheckBox x:Name="INFDATE" Content="По дате" Height="24" Foreground="White" FontSize="14" Width="77"/>
 
 
             </StackPanel>
@@ -317,72 +318,72 @@
 
             </dxlc:LayoutControl>
 
-            
-          <ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" >
-            <StackPanel Orientation="Vertical" Margin="0,0" Height="400">
-                <dxg:GridControl x:Name="inform_grid" AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True" Margin="10,10,10,0" VerticalAlignment="Top" OpacityMask="#FF9BD8DB" HorizontalAlignment="Stretch"  SelectionMode="Row" MaxHeight="200" MinHeight="200" >
-                    <!--dx:DXSerializer.StoreLayoutMode="UI" dx:DXSerializer.SerializationID="inform_grid_inf" AutoGeneratedColumns="inform_grid_AutoGeneratedColumns"-->
-                    <dxg:GridControl.GroupSummary>
-                        <dxg:GridSummaryItem SummaryType="Count" />
-                    </dxg:GridControl.GroupSummary>
 
-                    <dxg:GridControl.TotalSummary>
-                        <dxg:GridSummaryItem SummaryType="Count" />
-                    </dxg:GridControl.TotalSummary>
-                    <dxg:GridControl.View>
-                        <dxg:TableView FilterEditorShowOperandTypeIcon="True" WaitIndicatorType="Panel"  ShowTotalSummary="True" ShowCheckBoxSelectorColumn="True"  CheckBoxSelectorColumnWidth="50"
+            <ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" >
+                <StackPanel Orientation="Vertical" Margin="0,0" Height="400">
+                    <dxg:GridControl x:Name="inform_grid" AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True" Margin="10,10,10,0" VerticalAlignment="Top" OpacityMask="#FF9BD8DB" HorizontalAlignment="Stretch"  SelectionMode="Row" MaxHeight="200" MinHeight="200" >
+                        <!--dx:DXSerializer.StoreLayoutMode="UI" dx:DXSerializer.SerializationID="inform_grid_inf" AutoGeneratedColumns="inform_grid_AutoGeneratedColumns"-->
+                        <dxg:GridControl.GroupSummary>
+                            <dxg:GridSummaryItem SummaryType="Count" />
+                        </dxg:GridControl.GroupSummary>
+
+                        <dxg:GridControl.TotalSummary>
+                            <dxg:GridSummaryItem SummaryType="Count" />
+                        </dxg:GridControl.TotalSummary>
+                        <dxg:GridControl.View>
+                            <dxg:TableView FilterEditorShowOperandTypeIcon="True" WaitIndicatorType="Panel"  ShowTotalSummary="True" ShowCheckBoxSelectorColumn="True"  CheckBoxSelectorColumnWidth="50"
                                RetainSelectionOnClickOutsideCheckBoxSelector="False" ShowAutoFilterRow="True" AllowConditionalFormattingMenu="True" AllowFixedColumnMenu="True" ColumnFilterPopupMode="Excel" 
                                ShowCriteriaInAutoFilterRow="False" EditFormShowMode="Dialog" EditFormPostConfirmation="YesNo" ShowEditFormUpdateCancelButtons="False" ShowEditFormOnEnterKey="False" EditFormColumnCount="1" 
                                EditFormPostMode="Cached" MergedGroupingMode="Always" AllowMergedGrouping="True" Margin="0,0,-2,-2" AutoWidth="False" MouseDoubleClick="TableView_MouseDoubleClick" ShowEditFormOnF2Key="True" ShowEditFormOnDoubleClick="False">
 
-                            <dxg:TableView.FormatConditions>
-                                <dxg:FormatCondition Expression="[UNLOAD] = True" FieldName="" ApplyToRow="True">
-                                    <dx:Format Background="#FF9BBB59" />
-                                </dxg:FormatCondition>
-                                <dxg:FormatCondition ApplyToRow="True" FieldName="" Expression="[DSTOP] Between(#1900-01-01#, Today())">
-                                    <dx:Format Background="#FFFF9B98" />
-                                </dxg:FormatCondition>
-                            </dxg:TableView.FormatConditions>
-                            <dxg:TableView.RowCellMenuCustomizations>
-                                <dxb:BarButtonItem x:Name="ViewFilesItem" IsEnabled="False"  Content="Просмотреть файл(ы)" ItemClick="Files_ItemClick"/>
-                            </dxg:TableView.RowCellMenuCustomizations>
-                        </dxg:TableView>
+                                <dxg:TableView.FormatConditions>
+                                    <dxg:FormatCondition Expression="[UNLOAD] = True" FieldName="" ApplyToRow="True">
+                                        <dx:Format Background="#FF9BBB59" />
+                                    </dxg:FormatCondition>
+                                    <dxg:FormatCondition ApplyToRow="True" FieldName="" Expression="[DSTOP] Between(#1900-01-01#, Today())">
+                                        <dx:Format Background="#FFFF9B98" />
+                                    </dxg:FormatCondition>
+                                </dxg:TableView.FormatConditions>
+                                <dxg:TableView.RowCellMenuCustomizations>
+                                    <dxb:BarButtonItem x:Name="ViewFilesItem" IsEnabled="False"  Content="Просмотреть файл(ы)" ItemClick="Files_ItemClick"/>
+                                </dxg:TableView.RowCellMenuCustomizations>
+                            </dxg:TableView>
 
 
-                    </dxg:GridControl.View>
-                </dxg:GridControl>
+                        </dxg:GridControl.View>
+                    </dxg:GridControl>
 
 
-                <dxg:GridControl x:Name="inform_grid1" AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True" Margin="10,10,10,8" MaxHeight="200" OpacityMask="#FF9BD8DB"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionMode="Row">
-                    <dxg:GridControl.GroupSummary>
-                        <dxg:GridSummaryItem SummaryType="Count" />
-                    </dxg:GridControl.GroupSummary>
+                    <dxg:GridControl x:Name="inform_grid1" AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True" Margin="10,10,10,8" MaxHeight="200" OpacityMask="#FF9BD8DB"  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionMode="Row">
+                        <dxg:GridControl.GroupSummary>
+                            <dxg:GridSummaryItem SummaryType="Count" />
+                        </dxg:GridControl.GroupSummary>
 
-                    <dxg:GridControl.TotalSummary>
-                        <dxg:GridSummaryItem SummaryType="Count" />
-                    </dxg:GridControl.TotalSummary>
-                    <dxg:GridControl.View>
-                        <dxg:TableView FilterEditorShowOperandTypeIcon="True" WaitIndicatorType="Panel"  ShowTotalSummary="True" ShowCheckBoxSelectorColumn="True"  CheckBoxSelectorColumnWidth="50"
+                        <dxg:GridControl.TotalSummary>
+                            <dxg:GridSummaryItem SummaryType="Count" />
+                        </dxg:GridControl.TotalSummary>
+                        <dxg:GridControl.View>
+                            <dxg:TableView FilterEditorShowOperandTypeIcon="True" WaitIndicatorType="Panel"  ShowTotalSummary="True" ShowCheckBoxSelectorColumn="True"  CheckBoxSelectorColumnWidth="50"
                                RetainSelectionOnClickOutsideCheckBoxSelector="False" ShowAutoFilterRow="True" AllowConditionalFormattingMenu="True" AllowFixedColumnMenu="True" ColumnFilterPopupMode="Excel" 
                                ShowCriteriaInAutoFilterRow="False" EditFormShowMode="Dialog" EditFormPostConfirmation="YesNo" ShowEditFormUpdateCancelButtons="False" ShowEditFormOnEnterKey="False" EditFormColumnCount="1" 
                                EditFormPostMode="Cached" MergedGroupingMode="Always" AllowMergedGrouping="True" Margin="0,0,-2,0" AutoWidth="True" MaxHeight="400">
 
-                            <dxg:TableView.FormatConditions>
-                                <dxg:FormatCondition Expression="[UNLOAD] = True" FieldName="" ApplyToRow="True">
-                                    <dx:Format Background="#FF9BBB59" />
-                                </dxg:FormatCondition>
-                                <dxg:FormatCondition ApplyToRow="True" FieldName="" Expression="[DSTOP] Between(#1900-01-01#, Today())">
-                                    <dx:Format Background="#FFFF9B98" />
-                                </dxg:FormatCondition>
-                            </dxg:TableView.FormatConditions>
-                        </dxg:TableView>
+                                <dxg:TableView.FormatConditions>
+                                    <dxg:FormatCondition Expression="[UNLOAD] = True" FieldName="" ApplyToRow="True">
+                                        <dx:Format Background="#FF9BBB59" />
+                                    </dxg:FormatCondition>
+                                    <dxg:FormatCondition ApplyToRow="True" FieldName="" Expression="[DSTOP] Between(#1900-01-01#, Today())">
+                                        <dx:Format Background="#FFFF9B98" />
+                                    </dxg:FormatCondition>
+                                </dxg:TableView.FormatConditions>
+                            </dxg:TableView>
 
 
-                    </dxg:GridControl.View>
-                </dxg:GridControl>
-            </StackPanel>
-          </ScrollViewer>
+                        </dxg:GridControl.View>
+                    </dxg:GridControl>
+                </StackPanel>
+            </ScrollViewer>
         </StackPanel>
-        
+
     </Grid>
 </Window>
