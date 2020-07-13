@@ -11,16 +11,16 @@
     xmlns:Editors1="clr-namespace:DevExpress.Xpf.Editors;assembly=DevExpress.Xpf.Core.v17.2"
     x:Class="Insurance.Developer"
         mc:Ignorable="d"
-        Title="Функции для разработчика" Height="943.34" Width="1602.532" Background="#FF5F7B8B">
+        Title="Функции для разработчика" Height="1289.49" Width="1602.532" Background="#FF5F7B8B" HorizontalAlignment="Center" VerticalAlignment="Center">
     <Grid>
 
-        <dxg:GridControl x:Name="pol_zagr" AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True" HorizontalAlignment="Stretch" Margin="10,396,10,10" VerticalAlignment="Stretch" SelectionMode="Row" Height="{Binding}" 
-                         SelectionChanged="Pol_zagr_SelectionChanged">
+        <dxg:GridControl x:Name="pol_zagr" AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True" HorizontalAlignment="Stretch" Margin="10,586,10,10" VerticalAlignment="Stretch" SelectionMode="Row" Height="{Binding}" 
+                         SelectionChanged="Pol_zagr_SelectionChanged" ScrollViewer.HorizontalScrollBarVisibility="Visible" >
             <dxg:GridControl.View>
-                <dxg:TableView AllowPerPixelScrolling="True" AllowBestFit="True" BestFitMode="AllRows" BestFitArea="Rows" ShowTotalSummary="True" 
-                                ColumnFilterPopupMode="Excel" ShowAutoFilterRow="True" HorizontalScrollbarVisibility="Visible" ShowDataNavigator="True" NavigationStyle="Row"
-                                FilterEditorShowOperandTypeIcon="True" SnapsToDevicePixels="True" RetainSelectionOnClickOutsideCheckBoxSelector="False" ShowCheckBoxSelectorColumn="True" AutoWidth="True" Margin="0,0,0,0"
-                                EditFormColumnCount="1" ShowEditFormOnDoubleClick="True" />
+                <dxg:TableView FilterEditorShowOperandTypeIcon="True" WaitIndicatorType="Panel" ShowTotalSummary="True" ShowCheckBoxSelectorColumn="True" RetainSelectionOnClickOutsideCheckBoxSelector="False" ShowAutoFilterRow="True"
+                                           AllowConditionalFormattingMenu="True" AllowFixedColumnMenu="True" ColumnFilterPopupMode="Excel" ShowCriteriaInAutoFilterRow="False" EditFormShowMode="Dialog" EditFormPostConfirmation="YesNo" ShowEditFormUpdateCancelButtons="False" 
+                                           ShowEditFormOnEnterKey="False" EditFormColumnCount="1" EditFormPostMode="Cached" 
+                                           AllowMergedGrouping="True"/>
             </dxg:GridControl.View>
         </dxg:GridControl>
         <Button x:Name="from_excel_btn" Content="Прикрепление из CSV для Барнаула (просмотр) " HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="379" Height="31" FontWeight="Bold" TabIndex="3" Click="From_excel_btn_Click" />
@@ -44,7 +44,11 @@
             </dxlc:LayoutGroup>
         </dxlc:LayoutControl>
         <Button x:Name="load_zah_adres" Content="Загрузить захаровские адреса в грид" HorizontalAlignment="Left" Margin="10,229,0,0" VerticalAlignment="Top" Width="379" Height="31" FontWeight="Bold" TabIndex="3" Click="Load_zah_adres_Click" />
-        <Button x:Name="arj" Content="Работа с ARJ" HorizontalAlignment="Left" Margin="409,301,0,0" VerticalAlignment="Top" Width="379" Height="31" FontWeight="Bold" Click="Arj_Click" />
+        <Button x:Name="arj" Content="Работа с ARJ" HorizontalAlignment="Left" Margin="409,301,0,0" VerticalAlignment="Top" Width="379" Height="31" FontWeight="Bold" />
+        <Button x:Name="SCR_EXECUTE" Content="Выполнить скрипт" HorizontalAlignment="Left" Margin="10,301,0,0" VerticalAlignment="Top" Width="379" Height="31" FontWeight="Bold" TabIndex="3" Click="SCR_EXECUTE_Click" />
+        <TextBox x:Name="Script" HorizontalAlignment="Left" Height="186" Margin="10,384,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="1499" TextChanged="TextBox_TextChanged"/>
+        <Label x:Name="SCR" Content="SCRIPT" HorizontalAlignment="Left" Margin="10,352,0,0" VerticalAlignment="Top" FontSize="16" FontWeight="Bold" Foreground="White"/>
+        <Button x:Name="move_zah_data__Copy1" Content="Просмотр скрипта" HorizontalAlignment="Left" Margin="409,337,0,0" VerticalAlignment="Top" Width="379" Height="31" FontWeight="Bold" TabIndex="3" Click="Move_zah_data__Copy1_Click" />
 
     </Grid>
 

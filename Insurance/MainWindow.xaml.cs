@@ -963,7 +963,7 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
             G_layuot.restore_Layout(Properties.Settings.Default.DocExchangeConnectionString, pers_grid, pers_grid_2);
             //LoadingDecorator1.IsSplashScreenShown = false;
             WindowState = WindowState.Maximized;
-            Vars.MainTitle = "Insurance(полисная часть) v1.019";
+            Vars.MainTitle = "Insurance(полисная часть) v1.023";
             Title = Vars.MainTitle;
             prz.SelectedIndex = -1;
             //if (SPR.Premmissions == "User")
@@ -4205,6 +4205,7 @@ on t0.idguid = t3.person_guid", con);
                         object dvisit_ = reader1["dvizit"];
                         object srok_doverenosti_ = reader1["SROKDOVERENOSTI"];
                         object prev_persguid_ = reader1["prev_persguid"];
+                        object DOP_COMMENT = reader1["DOP_COMMENT"];
 
                         prev_persguid = prev_persguid_.ToString() == "" ? Guid.Empty : (Guid)prev_persguid_;
                         rper = idguid_.ToString() == "" ? Guid.Empty : (Guid)idguid_;
@@ -4228,7 +4229,7 @@ on t0.idguid = t3.person_guid", con);
                         str_r.EditValue = birthoksm.ToString();
                         gr.EditValue = coksm.ToString();
                         enp.Text = enp_.ToString();
-
+                        Dop_comments.Text = DOP_COMMENT.ToString();
                         srok_doverenosti.EditValue = srok_doverenosti_;
 
                         if (datevidachi_.ToString() == "")
@@ -4362,7 +4363,7 @@ on t0.idguid = t3.person_guid", con);
                             }
                             else
                             {
-                                status_p2.SelectedIndex = Convert.ToInt32(prelation);
+                                status_p2.SelectedIndex = Convert.ToInt32(prelation)-1;
                             }
 
                         }
@@ -7236,7 +7237,7 @@ on t0.idguid = t3.person_guid", con);
                            }
                            else
                            {
-                               status_p2.SelectedIndex = Convert.ToInt32(prelation);
+                               status_p2.SelectedIndex = Convert.ToInt32(prelation)-1;
                            }
 
                        }

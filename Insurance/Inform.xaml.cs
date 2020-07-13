@@ -942,6 +942,7 @@ sps.Name as sposob_4,rp4.Name as result_4,PRIMECH as prim_4
             SaveFileDialog SF = new SaveFileDialog();
             SF.DefaultExt = ".dbf";
             SF.Filter = "Файлы DBF (.dbf)|*.dbf";
+            SF.FileName = "INF390001.dbf";
             bool res = SF.ShowDialog().Value;
             List<P3_INFORM> inf = new List<P3_INFORM>();
             if (res == true)
@@ -1034,6 +1035,7 @@ SPOSOB_P3 as sposob,RESULT_P3 as result,PRIMECH as prim, l.kod as KOD_POL, l.kod
             SaveFileDialog SF = new SaveFileDialog();
             SF.DefaultExt = ".dbf";
             SF.Filter = "Файлы DBF (.dbf)|*.dbf";
+            SF.FileName = "DINF390001.dbf";
             bool res = SF.ShowDialog().Value;
             List<P4_INFORM> inf = new List<P4_INFORM>();
             if (res == true)

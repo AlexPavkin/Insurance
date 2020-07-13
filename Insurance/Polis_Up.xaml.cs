@@ -74,64 +74,72 @@ namespace Insurance
                     //    sh = "Sheet";
                     //}
                     dateP.DateTime = DateTime.Now;
-                    
-                    DataTable tb = new DataTable();
-                    Spreadsheet excel = new Spreadsheet();
-                    
-                    excel.LoadFromFile(ex_path[0]);
-                    NumberFormatType formatType = excel.Worksheet(0).Cell(7, 2).ValueDataTypeByNumberFormatString;
-                    //var adr = excel.Worksheet(0).Columns[2]..Address();
-                    //excel.Worksheet(0).Range(7, 2, excel.Worksheet(0).NotEmptyRowMax, 3).CopyInto(7, 4);
-                    excel.Worksheet(0).Range("$C$7:$D$18").NumberFormatString =  "дд.мм.гггг";
-                    //excel.Worksheet(0).Range(7, 2, excel.Worksheet(0).NotEmptyRowMax, 3).Formula = $"=ТЕКСТ(H5;{(char)34}дд.мм.гггг{(char)34})";
-                    //excel.Worksheets[0].Range("C1:D100000").NumberFormatString = "MM.DD.YYYY";
-                    //excel.Worksheet(0).Columns[2].NumberFormat= "m/d/yyyy";
-                    //for (int i = 1; i < excel.Worksheets[0].NotEmptyRowMax; i++)
-                    //{
-                    //    // Установить номер
+
+                    if (Vars.SMO == "39001")
+                    {
+                        var dt = SPR.MyReader.LoadFromCSV(path_ex[0]);
+                        pol_zagr.ItemsSource = dt;
+                    }
+                    else
+                    {
+                        DataTable tb = new DataTable();
+                        Spreadsheet excel = new Spreadsheet();
+
+                        excel.LoadFromFile(ex_path[0]);
+                        NumberFormatType formatType = excel.Worksheet(0).Cell(7, 2).ValueDataTypeByNumberFormatString;
+                        //var adr = excel.Worksheet(0).Columns[2]..Address();
+                        //excel.Worksheet(0).Range(7, 2, excel.Worksheet(0).NotEmptyRowMax, 3).CopyInto(7, 4);
+                        excel.Worksheet(0).Range("$C$7:$D$18").NumberFormatString = "дд.мм.гггг";
+                        //excel.Worksheet(0).Range(7, 2, excel.Worksheet(0).NotEmptyRowMax, 3).Formula = $"=ТЕКСТ(H5;{(char)34}дд.мм.гггг{(char)34})";
+                        //excel.Worksheets[0].Range("C1:D100000").NumberFormatString = "MM.DD.YYYY";
+                        //excel.Worksheet(0).Columns[2].NumberFormat= "m/d/yyyy";
+                        //for (int i = 1; i < excel.Worksheets[0].NotEmptyRowMax; i++)
+                        //{
+                        //    // Установить номер
 
 
-                    //    // Установить текущую ячейку
-                    //    Cell currentCell = excel.Worksheets[0].Cell(i, 3);
+                        //    // Установить текущую ячейку
+                        //    Cell currentCell = excel.Worksheets[0].Cell(i, 3);
 
-                    //    // Установить дату. Это дни с 01.01.1900
-                    //    // Вы также можете конвертировать число в дату, используя функцию: DateTime.FromOADate (double d)
-                    //    ////currentCell.Value = 30000 + i * 1000;
+                        //    // Установить дату. Это дни с 01.01.1900
+                        //    // Вы также можете конвертировать число в дату, используя функцию: DateTime.FromOADate (double d)
+                        //    ////currentCell.Value = 30000 + i * 1000;
 
-                    //    // Установить формат даты
-                    //    currentCell.NumberFormatString = "dd.mm.yyyy";
-                    //}
-                    //excel.Worksheet(0).Columns[3].CellFormat = ExtendedFormat//"dd:mm:yy";
-                    //excel.Worksheet(0).Range("C1:D100000").NumberFormatString= "dd.mm.yyyy hh:mm:ss";
-                    //excel.Worksheet(0).Cell(0, 0).Value = "???";
-                    //for (int y = 5; y < excel.Worksheet(0).Rows.LastFormatedRow; y++)
-                    //{
-                    //    excel.Worksheet(0).Cell(y, 3).ValueDataTypeByNumberFormatString =Bytescout.Spreadsheet.Constants.NumberFormatType.Text;
+                        //    // Установить формат даты
+                        //    currentCell.NumberFormatString = "dd.mm.yyyy";
+                        //}
+                        //excel.Worksheet(0).Columns[3].CellFormat = ExtendedFormat//"dd:mm:yy";
+                        //excel.Worksheet(0).Range("C1:D100000").NumberFormatString= "dd.mm.yyyy hh:mm:ss";
+                        //excel.Worksheet(0).Cell(0, 0).Value = "???";
+                        //for (int y = 5; y < excel.Worksheet(0).Rows.LastFormatedRow; y++)
+                        //{
+                        //    excel.Worksheet(0).Cell(y, 3).ValueDataTypeByNumberFormatString =Bytescout.Spreadsheet.Constants.NumberFormatType.Text;
 
-                    //}
-                    //excel.SaveAs(ex_path[0].Replace(".xls","_1.xls"));
+                        //}
+                        //excel.SaveAs(ex_path[0].Replace(".xls","_1.xls"));
 
-                    tb = excel.ExportToDataTable(0,true);
-                    
-                    //string filename = ex_path[0];
-                    //string ConStr = String.Format("Provider=Microsoft.ACE.OLEDB.12.0; Data Source={0}; Extended Properties=Excel 12.0;", filename);
-                    //System.Data.DataSet ds = new System.Data.DataSet("EXCEL");
-                    //OleDbConnection cn = new OleDbConnection(ConStr);
-                    //cn.Open();
-                    //DataTable schemaTable = cn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, new object[] { null, null, null, "TABLE" });
-                    //string sheet1 = (string)schemaTable.Rows[0].ItemArray[2];
-                    //string select = String.Format("SELECT * FROM [{0}]", sheet1);
-                    //OleDbDataAdapter ad = new OleDbDataAdapter(select, cn);
-                    //Cursor = Cursors.Wait;
-                    //ad.Fill(ds);
-                    //Cursor = Cursors.Arrow;
-                    ////Cursor = Cursors.Arrow;
-                    //tb = ds.Tables[0];
-                    rows_count = tb.Rows.Count;
-                    //cn.Close();
-                    
-                    pol_zagr.ItemsSource = tb;
-                    pol_zagr.GetRowsAsync(0, 10);
+                        tb = excel.ExportToDataTable(0, true);
+
+                        //string filename = ex_path[0];
+                        //string ConStr = String.Format("Provider=Microsoft.ACE.OLEDB.12.0; Data Source={0}; Extended Properties=Excel 12.0;", filename);
+                        //System.Data.DataSet ds = new System.Data.DataSet("EXCEL");
+                        //OleDbConnection cn = new OleDbConnection(ConStr);
+                        //cn.Open();
+                        //DataTable schemaTable = cn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, new object[] { null, null, null, "TABLE" });
+                        //string sheet1 = (string)schemaTable.Rows[0].ItemArray[2];
+                        //string select = String.Format("SELECT * FROM [{0}]", sheet1);
+                        //OleDbDataAdapter ad = new OleDbDataAdapter(select, cn);
+                        //Cursor = Cursors.Wait;
+                        //ad.Fill(ds);
+                        //Cursor = Cursors.Arrow;
+                        ////Cursor = Cursors.Arrow;
+                        //tb = ds.Tables[0];
+                        rows_count = tb.Rows.Count;
+                        //cn.Close();
+
+                        pol_zagr.ItemsSource = tb;
+                        pol_zagr.GetRowsAsync(0, 10);
+                    }
                     ////if (call_=="attache")
                     ////{
                     ////    pol_zagr.SelectAll();
@@ -783,24 +791,46 @@ delete from POL_PERSONS where fam = 'f'
             //            }
             if (call_ == "attache")
             {
-                var con_str = Properties.Settings.Default.DocExchangeConnectionString;
-                SqlConnection con = new SqlConnection(con_str);
-                SqlCommand com = new SqlCommand($@"create table [dbo].[Attache](
+                if (Vars.SMO == "39001")
+                {
+                    int[] rt = pol_zagr.GetSelectedRowHandles();
+
+                    for (int i = 0; i < rt.Count(); i++)
+                    {
+                        //20200706
+                        var dateDay = pol_zagr.GetCellValue(rt[i], "dp").ToString().Substring(6,2);
+                        var dateMonth = pol_zagr.GetCellValue(rt[i], "dp").ToString().Substring(4, 2);
+                        var dateYear = pol_zagr.GetCellValue(rt[i], "dp").ToString().Substring(0, 4);
+                        var con_str = Properties.Settings.Default.DocExchangeConnectionString;
+                        SqlConnection con = new SqlConnection(con_str); //17
+                        SqlCommand com = new SqlCommand($@"update POL_PERSONS set mo="+ pol_zagr.GetCellValue(rt[i], "lpu") + ",DSTART='"+ dateDay+"-"+dateMonth+"-"+dateYear+ " 00:00:00.000'" + " where ENP = '"+ pol_zagr.GetCellValue(rt[i], "enp") + "'", con);
+                        con.Open();
+                        com.ExecuteNonQuery();
+                        con.Close();
+                    }
+
+                }
+                else
+                {
+                    var con_str = Properties.Settings.Default.DocExchangeConnectionString;
+                    SqlConnection con = new SqlConnection(con_str);
+                    SqlCommand com = new SqlCommand($@"create table [dbo].[Attache](
 	[ENP] [nvarchar](16) NULL,
 	[MO] [nvarchar](6) NULL) ON [PRIMARY]", con);
-                SqlCommand com1 = new SqlCommand($@"update POL_PERSONS  set mo=a.mo,DSTART=GETDATE() 
+                    SqlCommand com1 = new SqlCommand($@"update POL_PERSONS  set mo=a.mo,DSTART=GETDATE() 
   from Attache a
   where POL_PERSONS.enp=a.enp 
 drop table [dbo].[Attache]", con);
-                con.Open();
-                com.ExecuteNonQuery();
-                SqlBulkCopy bulk = new SqlBulkCopy(con);
-                bulk.DestinationTableName = "dbo.Attache";
-                bulk.BulkCopyTimeout = 0;
-                bulk.BatchSize = 100000;
-                bulk.WriteToServer(tb);
-                com1.ExecuteNonQuery();
-                con.Close();
+                    con.Open();
+                    com.ExecuteNonQuery();
+                    SqlBulkCopy bulk = new SqlBulkCopy(con);
+                    bulk.DestinationTableName = "dbo.Attache";
+                    bulk.BulkCopyTimeout = 0;
+                    bulk.BatchSize = 100000;
+                    bulk.WriteToServer(tb);
+                    com1.ExecuteNonQuery();
+                    con.Close();
+                }
                 
             }
 
