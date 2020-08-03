@@ -141,13 +141,13 @@ on pp.IDGUID=d.PERSON_GUID and d.MAIN=1 and d.ACTIVE=1
             }
 
 
-            public static DataTable LoadFromCSV(string ex_path)
+            public static DataTable LoadFromCSV(string ex_path, char column_razd =';', char rows_razd = ';')
             {
                 string filename = ex_path;
                 string[] attache = File.ReadAllLines(filename, Encoding.GetEncoding(1251));
                 DataTable tb = new DataTable();
                 //var cls0 = attache[0].Split('|');
-                var cls0 = attache[0].Split(';');
+                var cls0 = attache[0].Split(column_razd);
                 cls0 = cls0.Where(x => x != "").ToArray();
                 for (int i = 0; i < cls0.Count(); i++)
                 {
@@ -159,7 +159,7 @@ on pp.IDGUID=d.PERSON_GUID and d.MAIN=1 and d.ACTIVE=1
                 {
                     // получаем все ячейки строки
                     var row1 = attache[i].Substring(0, attache[i].Length - 1).Replace("\"", "");
-                    var cls = row1.Split(';');
+                    var cls = row1.Split(rows_razd);
                     //var row1 = row.Substring(0, row.Length - 1);
                     //var cls = row1.Split(';');
                     //cls = cls.Where(x => x != "").ToArray();

@@ -963,7 +963,7 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
             G_layuot.restore_Layout(Properties.Settings.Default.DocExchangeConnectionString, pers_grid, pers_grid_2);
             //LoadingDecorator1.IsSplashScreenShown = false;
             WindowState = WindowState.Maximized;
-            Vars.MainTitle = "Insurance(полисная часть) v1.023";
+            Vars.MainTitle = "Insurance(полисная часть) v1.026";
             Title = Vars.MainTitle;
             prz.SelectedIndex = -1;
             //if (SPR.Premmissions == "User")
@@ -3224,7 +3224,18 @@ DEALLOCATE MY_CURSOR
 
         private void dalee_Click_1(object sender, RoutedEventArgs e)
         {
-            if(ddnum.Text!="" && (int)type_policy.EditValue==2 && fakt_prekr.EditValue==null)
+            if (kem_vid.Text.Length > 100)
+            {
+                string m = "Длинна \"Кем выдан документ превышает\" 100 символов!";
+                string t = "Ошибка!";
+                int b = 1;
+                Message me = new Message(m, t, b);
+                me.ShowDialog();
+
+                return;
+            }
+
+            if (ddnum.Text!="" && (int)type_policy.EditValue==2 && fakt_prekr.EditValue==null)
             {
                 string m = "Дата прекращения ВС не может быть пустой у иностранца!";
                 string t = "Ошибка!";
@@ -3234,9 +3245,10 @@ DEALLOCATE MY_CURSOR
                 
                 return;
             }
-            else if(ddnum.Text != "" && (int)type_policy.EditValue == 2 )
+            else if(ddnum.Text != "" && (int)type_policy.EditValue == 2)
             {
-                if(docexp1.EditValue==null && (int)ddtype.EditValue != 11)
+          
+                if (docexp1.EditValue==null && (int)ddtype.EditValue != 11)
                 {
                     string m = "Дата окончания ДД может быть пустой только у бессрочного вида на жительство!";
                     string t = "Ошибка!";
@@ -4491,7 +4503,7 @@ where event_guid=(select event_guid from pol_persons where id=@id) and main=0 an
                         ddser.Text = docser.ToString();
                         ddnum.Text = docnum.ToString();
                         dddate.DateTime = Convert.ToDateTime(docdate);
-                        if(docexp == null)
+                        if(docexp.ToString() == "")
                         {
                             docexp1.EditValue = null;
                         }

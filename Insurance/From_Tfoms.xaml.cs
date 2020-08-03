@@ -30,10 +30,10 @@ namespace Insurance
         {
             InitializeComponent();
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            if(Vars.SMO!="46004")
-            {
-                attache.Visibility = Visibility.Hidden;
-            }
+            //if(Vars.SMO!="46004" )
+            //{
+            //    attache.Visibility = Visibility.Hidden;
+            //}
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

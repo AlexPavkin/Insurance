@@ -78,6 +78,7 @@ namespace Insurance
                     if (Vars.SMO == "39001")
                     {
                         var dt = SPR.MyReader.LoadFromCSV(path_ex[0]);
+               
                         pol_zagr.ItemsSource = dt;
                     }
                     else
