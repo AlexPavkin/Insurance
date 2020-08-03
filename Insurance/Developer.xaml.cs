@@ -149,22 +149,24 @@ namespace Insurance
                     else
                     {
                         string filename = ex_path;
-                        string[] attache = File.ReadAllLines(filename,Encoding.GetEncoding("Windows-1251"));
+                        string[] attache = File.ReadAllLines(filename,Encoding.GetEncoding(1251));
 
                         //var cls0 = attache[0].Split('|');
                         var cls0 = attache[0].Split(';');
                         cls0 = cls0.Where(x => x != "").ToArray();
                         for (int i = 0; i < cls0.Count(); i++)
                         {
-                            tb.Columns.Add("Column" + i.ToString(), typeof(string));
+                            tb.Columns.Add(/*"Column" + */cls0[i].ToString().Replace("\"", ""), typeof(string));
                         }
                         //tb.Columns.AddRange();
-                        for (int i=1; i<attache.Count();i++)
+                        //foreach (string row in attache)
+                        for (int i = 1; i < attache.Count(); i++)
                         {
                             // получаем все ячейки строки
-                            var row1 = attache[i].Substring(0, attache[i].Length - 1);
-                            row1 = row1.Replace($"{(char)34}", "");
+                            var row1 = attache[i].Substring(0, attache[i].Length - 1).Replace("\"","");
                             var cls = row1.Split(';');
+                            //var row1 = row.Substring(0, row.Length - 1);
+                            //var cls = row1.Split(';');
                             //cls = cls.Where(x => x != "").ToArray();
                             tb.LoadDataRow(cls, LoadOption.Upsert);
                             //Attache_mo.Add(new ATTACHED_MO { GUID = cls[0], OKATO = cls[1], SMO = cls[2], DPFS = cls[3], SER = cls[4], NUM = cls[5], ENP = cls[6], MO = cls[7] });
@@ -1295,6 +1297,42 @@ SPOSOB_P3 as sposob,RESULT_P3 as result,PRIMECH as prim, l.kod as KOD_POL, l.kod
 
             }
             }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void SCR_EXECUTE_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string connstring = Properties.Settings.Default.DocExchangeConnectionString;
+                SqlConnection connect = new SqlConnection(connstring);
+                SqlCommand comm3 =
+                    new SqlCommand(Script.Text, connect);
+                connect.Open();
+                comm3.CommandTimeout = 0;
+                comm3.ExecuteScalar();
+                connect.Close();
+                string m = "Скрипт успешно выполнен!";
+                string t = "Сообщение!";
+                int b = 1;
+                Message me = new Message(m, t, b);
+                me.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private void Move_zah_data__Copy1_Click(object sender, RoutedEventArgs e)
+        {
+            string connstring = Properties.Settings.Default.DocExchangeConnectionString;
+           // pol_zagr.DataContext = MyReader.MySelect<string>(Script.Text, Properties.Settings.Default.DocExchangeConnectionString);
+            pol_zagr.ItemsSource = SPR.MyReader.Query(Script.Text, Properties.Settings.Default.DocExchangeConnectionString);
+        }
     }
     public class Class_params : IComparable<Class_params>
     {

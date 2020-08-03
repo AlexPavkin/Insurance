@@ -155,7 +155,7 @@ where PARENTGUID = '{
 join [dbo].[AddressObjectTypes]
         aot on ao.SHORTNAME = aot.SCNAME and ao.AOLEVEL = aot.[LEVEL]
 where PARENTGUID = '{
-                        id}' AND LIVESTATUS = 1 and AOLEVEL = 6
+                        id}' AND LIVESTATUS = 1 and AOLEVEL in (6,65)
   order by formalname", _connectionString);
             reg_np.DataContext = nasPunktnList;
             reg_np.NullText = $"Населенный пункт: {nasPunktnList.Count}";

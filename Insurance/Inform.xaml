@@ -383,6 +383,11 @@
                                         <dx:Format Background="#FFFF9B98" />
                                     </dxg:FormatCondition>
                                 </dxg:TableView.FormatConditions>
+
+                                <dxg:TableView.RowCellMenuCustomizations>
+                                    <dxb:BarButtonItem Name="del_inform" Content="Удалить Информирование" ItemClick="Del_inform_ItemClick" />
+                                    <dxb:BarItemSeparator/>
+                                    </dxg:TableView.RowCellMenuCustomizations>
                             </dxg:TableView>
 
 

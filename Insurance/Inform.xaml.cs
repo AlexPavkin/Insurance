@@ -884,7 +884,7 @@ select *from(select
             ot_p4.Text = inform_grid.GetFocusedRowCellValue("OT").ToString();
 
             var id = inform_grid.GetFocusedRowCellValue("ID");
-            var peopleList = MyReader.MySelect<INFORM_ALL>($@"  select t0.ID_TFOMS,SURNAME,NAME,SECNAME,DR,POL,SNILS,DPFS_3,SN_POL_3,VIDPROF_3,Tema_3,DATE_UV_3,sposob_3,result_3,prim_3,
+            var peopleList = MyReader.MySelect<INFORM_ALL>($@"  select t0.id,t0.ID_TFOMS,SURNAME,NAME,SECNAME,DR,POL,SNILS,DPFS_3,SN_POL_3,VIDPROF_3,Tema_3,DATE_UV_3,sposob_3,result_3,prim_3,
 KMKB, PM1,  PM2,  PM3,  PM4, DPFS_4,SN_POL_4,  sogl_4,  tema_4,Date_uv_4, sposob_4, result_4, prim_4 
  from (select p.id, pp.id as ID_TFOMS,fam as SURNAME,im as NAME,ot as SECNAME,
 pp.dr as DR, w as POL, pp.SS as SNILS,pol.VPOLIS as DPFS_3,
@@ -947,6 +947,7 @@ sps.Name as sposob_4,rp4.Name as result_4,PRIMECH as prim_4
             SaveFileDialog SF = new SaveFileDialog();
             SF.DefaultExt = ".dbf";
             SF.Filter = "Файлы DBF (.dbf)|*.dbf";
+            SF.FileName = "INF390001.dbf";
             bool res = SF.ShowDialog().Value;
             List<P3_INFORM> inf = new List<P3_INFORM>();
             if (res == true)
@@ -1039,13 +1040,15 @@ SPOSOB_P3 as sposob,RESULT_P3 as result,PRIMECH as prim, l.kod as KOD_POL, l.kod
             SaveFileDialog SF = new SaveFileDialog();
             SF.DefaultExt = ".dbf";
             SF.Filter = "Файлы DBF (.dbf)|*.dbf";
+            SF.FileName = "DINF390001.dbf";
             bool res = SF.ShowDialog().Value;
             List<P4_INFORM> inf = new List<P4_INFORM>();
             if (res == true)
             {
                 if (INFDATE.IsChecked == false)
                 {
-                    var id = inform_grid.GetFocusedRowCellValue("ID");
+                    //var id = inform_grid.GetFocusedRowCellValue("ID");
+                    var id = Funcs.MyIds(inform_grid.GetSelectedRowHandles(), inform_grid);
                     inf = MyReader.MySelect<P4_INFORM>($@"select fam as SURNAME,im as NAME,ot as SECNAME,
 pp.dr as DR, w as POL, pp.SS as SNILS,1 as SCOMP,ENP as SN_POL, l.kod as KOD_POL, l.kod1 as KOD_POL1, mkb_p4 as KMKB,
 DATEPART(yy,Date_P4) as DYEAR, Month_1_P4 as PM1, Month_2_P4 as PM2, Month_3_P4 as PM3, Month_4_P4 as PM4,
@@ -1057,7 +1060,7 @@ SPOSOB_P4 as sposob,RESULT_P4 as result,PRIMECH as prim
  left join lpu_39 l on pp.MO=l.MCOD
  left join POL_POLISES pol on pp.EVENT_GUID=pol.EVENT_GUID
  
- where p.id={id} and Date_P4  BETWEEN '{start_d_Copy.EditValue}' AND '{end_d_Copy.EditValue}'", Properties.Settings.Default.DocExchangeConnectionString);
+ where p.id in({id})", Properties.Settings.Default.DocExchangeConnectionString);
                 }
                 else
                 {
@@ -1154,6 +1157,22 @@ SPOSOB_P4 as sposob,RESULT_P4 as result,PRIMECH as prim
             //dtt.ImportRow(peopleList[0]);
             //dtt.Load(peopleList, LoadOption.OverwriteChanges);
             //
+        }
+
+        private void Del_inform_ItemClick(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
+        {
+            var id = Funcs.MyIds(inform_grid1.GetSelectedRowHandles(), inform_grid1);
+            var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
+            SqlConnection con = new SqlConnection(connectionString);
+            SqlCommand comm = new SqlCommand($@"delete from POL_PERSONS_INFORM where id in({id})", con);
+            con.Open();
+            comm.ExecuteNonQuery();
+            con.Close();
+            string m = "Информирование успешно удалено!";
+            string t = "Сообщение!";
+            int b = 1;
+            Message me = new Message(m, t, b);
+            me.ShowDialog();
         }
     }
     

@@ -849,6 +849,10 @@
                                                     <dxlc:LayoutItem Label="Категория ЗЛ" LabelHorizontalAlignment="Right" FontWeight="Bold">
                                                         <dxe:ComboBoxEdit x:Name="kat_zl" DisplayMember="NameWithID" ItemsSource="{Binding}" ValueMember="IDKAT" EditValue="IDKAT" FilterCondition="StartsWith" AutoComplete="True" NullValueButtonPlacement="EditBox" HorizontalScrollBarVisibility="Disabled" PreviewKeyDown="kat_zl_PreviewKeyDown" />
                                                     </dxlc:LayoutItem>
+                                                    <dxlc:LayoutItem Label="Доп. Комментарий" LabelHorizontalAlignment="Right" >
+                                                        <dxe:TextEdit x:Name="Dop_comments" CharacterCasing="Upper" />
+                                                    </dxlc:LayoutItem>
+
                                                     <dxlc:DataLayoutItem>
                                                         <Button x:Name="prev_doc_btn" Content="Предыдущие перс. данные" Style="{StaticResource myButtonStyle2}" HorizontalAlignment="Right" Height="25" VerticalAlignment="Top" Width="187" Click="prev_doc_btn_Click" />
                                                     </dxlc:DataLayoutItem>

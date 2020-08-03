@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-
+using System.Windows;
 
 namespace Insurance_SPR
 {
@@ -116,8 +117,57 @@ on pp.IDGUID=d.PERSON_GUID and d.MAIN=1 and d.ACTIVE=1
 
                 return UNLOAD.ToString();
             }
+            public static DataTable Query(string query, string connstring)
+            {
+                SqlConnection connect = new SqlConnection(connstring);
+                DataTable result = new DataTable();
+                try
+                {
+                    connect.Open();
+                    SqlCommand command = new SqlCommand (query, connect);
+                    SqlDataAdapter adapter = new SqlDataAdapter(command);
+                    adapter.Fill(result);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+                finally
+                {
+                    if (connect.State != ConnectionState.Closed)
+                        connect.Close();
+                }
+                return result;
+            }
 
 
+            public static DataTable LoadFromCSV(string ex_path)
+            {
+                string filename = ex_path;
+                string[] attache = File.ReadAllLines(filename, Encoding.GetEncoding(1251));
+                DataTable tb = new DataTable();
+                //var cls0 = attache[0].Split('|');
+                var cls0 = attache[0].Split(';');
+                cls0 = cls0.Where(x => x != "").ToArray();
+                for (int i = 0; i < cls0.Count(); i++)
+                {
+                    tb.Columns.Add(/*"Column" + */cls0[i].ToString().Replace("\"", ""), typeof(string));
+                }
+                //tb.Columns.AddRange();
+                //foreach (string row in attache)
+                for (int i = 1; i < attache.Count(); i++)
+                {
+                    // получаем все ячейки строки
+                    var row1 = attache[i].Substring(0, attache[i].Length - 1).Replace("\"", "");
+                    var cls = row1.Split(';');
+                    //var row1 = row.Substring(0, row.Length - 1);
+                    //var cls = row1.Split(';');
+                    //cls = cls.Where(x => x != "").ToArray();
+                    tb.LoadDataRow(cls, LoadOption.Upsert);
+                    //Attache_mo.Add(new ATTACHED_MO { GUID = cls[0], OKATO = cls[1], SMO = cls[2], DPFS = cls[3], SER = cls[4], NUM = cls[5], ENP = cls[6], MO = cls[7] });
+                }
+                return tb;
+            }
             public static List<T> MySelect<T>(string selectCmd, string connectionString)
             {
                 List<T> list;
