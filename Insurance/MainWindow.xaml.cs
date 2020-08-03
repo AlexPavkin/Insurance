@@ -963,7 +963,7 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
             G_layuot.restore_Layout(Properties.Settings.Default.DocExchangeConnectionString, pers_grid, pers_grid_2);
             //LoadingDecorator1.IsSplashScreenShown = false;
             WindowState = WindowState.Maximized;
-            Vars.MainTitle = "Insurance(полисная часть) v1.030";
+            Vars.MainTitle = "Insurance(полисная часть) v1.026";
             Title = Vars.MainTitle;
             prz.SelectedIndex = -1;
             //if (SPR.Premmissions == "User")
@@ -3224,7 +3224,18 @@ DEALLOCATE MY_CURSOR
 
         private void dalee_Click_1(object sender, RoutedEventArgs e)
         {
-            if(ddnum.Text!="" && (int)type_policy.EditValue==2 && fakt_prekr.EditValue==null)
+            if (kem_vid.Text.Length > 100)
+            {
+                string m = "Длинна \"Кем выдан документ превышает\" 100 символов!";
+                string t = "Ошибка!";
+                int b = 1;
+                Message me = new Message(m, t, b);
+                me.ShowDialog();
+
+                return;
+            }
+
+            if (ddnum.Text!="" && (int)type_policy.EditValue==2 && fakt_prekr.EditValue==null)
             {
                 string m = "Дата прекращения ВС не может быть пустой у иностранца!";
                 string t = "Ошибка!";
@@ -3234,9 +3245,10 @@ DEALLOCATE MY_CURSOR
                 
                 return;
             }
-            else if(ddnum.Text != "" && (int)type_policy.EditValue == 2 )
+            else if(ddnum.Text != "" && (int)type_policy.EditValue == 2)
             {
-                if(docexp1.EditValue==null && (int)ddtype.EditValue != 11)
+          
+                if (docexp1.EditValue==null && (int)ddtype.EditValue != 11)
                 {
                     string m = "Дата окончания ДД может быть пустой только у бессрочного вида на жительство!";
                     string t = "Ошибка!";
@@ -4205,6 +4217,7 @@ on t0.idguid = t3.person_guid", con);
                         object dvisit_ = reader1["dvizit"];
                         object srok_doverenosti_ = reader1["SROKDOVERENOSTI"];
                         object prev_persguid_ = reader1["prev_persguid"];
+                        object DOP_COMMENT = reader1["DOP_COMMENT"];
 
                         prev_persguid = prev_persguid_.ToString() == "" ? Guid.Empty : (Guid)prev_persguid_;
                         rper = idguid_.ToString() == "" ? Guid.Empty : (Guid)idguid_;
@@ -4228,7 +4241,7 @@ on t0.idguid = t3.person_guid", con);
                         str_r.EditValue = birthoksm.ToString();
                         gr.EditValue = coksm.ToString();
                         enp.Text = enp_.ToString();
-
+                        Dop_comments.Text = DOP_COMMENT.ToString();
                         srok_doverenosti.EditValue = srok_doverenosti_;
 
                         if (datevidachi_.ToString() == "")
@@ -4362,7 +4375,7 @@ on t0.idguid = t3.person_guid", con);
                             }
                             else
                             {
-                                status_p2.SelectedIndex = Convert.ToInt32(prelation);
+                                status_p2.SelectedIndex = Convert.ToInt32(prelation)-1;
                             }
 
                         }
@@ -7236,7 +7249,7 @@ on t0.idguid = t3.person_guid", con);
                            }
                            else
                            {
-                               status_p2.SelectedIndex = Convert.ToInt32(prelation);
+                               status_p2.SelectedIndex = Convert.ToInt32(prelation)-1;
                            }
 
                        }
