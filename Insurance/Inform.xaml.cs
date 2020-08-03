@@ -45,7 +45,9 @@ namespace Insurance
                 //inform_grid.VerticalAlignment = VerticalAlignment.Stretch;
                 del_file_panel.Visibility = Visibility.Visible;
                 inform_file_panel.Visibility = Visibility.Collapsed;
-
+                mainGrid.RowDefinitions[1].Height = GridLength.Auto;
+                mainGrid.RowDefinitions[2].Height = GridLength.Auto;
+                inform_grid.Height = 800;
                 if (call_ == "unload_history")
                 {
                     ViewFilesItem.IsEnabled = true;
@@ -59,6 +61,9 @@ namespace Insurance
                 //inform_grid.VerticalAlignment = VerticalAlignment.Stretch;
                 del_file_panel.Visibility = Visibility.Collapsed;
                 inform_file_panel.Visibility = Visibility.Collapsed;
+                mainGrid.RowDefinitions[1].Height = GridLength.Auto;
+                mainGrid.RowDefinitions[2].Height = GridLength.Auto;
+                inform_grid.Height = 800;
             }
             else
             {

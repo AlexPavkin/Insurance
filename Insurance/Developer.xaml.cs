@@ -149,21 +149,22 @@ namespace Insurance
                     else
                     {
                         string filename = ex_path;
-                        string[] attache = File.ReadAllLines(filename);
+                        string[] attache = File.ReadAllLines(filename,Encoding.GetEncoding("Windows-1251"));
 
                         //var cls0 = attache[0].Split('|');
-                        var cls0 = attache[0].Split(',');
+                        var cls0 = attache[0].Split(';');
                         cls0 = cls0.Where(x => x != "").ToArray();
                         for (int i = 0; i < cls0.Count(); i++)
                         {
                             tb.Columns.Add("Column" + i.ToString(), typeof(string));
                         }
                         //tb.Columns.AddRange();
-                        foreach (string row in attache)
+                        for (int i=1; i<attache.Count();i++)
                         {
                             // получаем все ячейки строки
-                            var row1 = row.Substring(0, row.Length - 1);
-                            var cls = row1.Split(',');
+                            var row1 = attache[i].Substring(0, attache[i].Length - 1);
+                            row1 = row1.Replace($"{(char)34}", "");
+                            var cls = row1.Split(';');
                             //cls = cls.Where(x => x != "").ToArray();
                             tb.LoadDataRow(cls, LoadOption.Upsert);
                             //Attache_mo.Add(new ATTACHED_MO { GUID = cls[0], OKATO = cls[1], SMO = cls[2], DPFS = cls[3], SER = cls[4], NUM = cls[5], ENP = cls[6], MO = cls[7] });

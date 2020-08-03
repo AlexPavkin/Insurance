@@ -20,6 +20,7 @@ using Yamed.Server;
 using System.Windows.Threading;
 using System.Collections.ObjectModel;
 using Insurance_SPR;
+using ExcelDataReader;
 using Bytescout.Spreadsheet;
 using WFR = System.Windows.Forms;
 using Bytescout.Spreadsheet.Constants;
@@ -54,90 +55,92 @@ namespace Insurance
         public string[] ex_path;
         public string[] polis_up_file_;
         private string call_;
-        
+        RoutedEventArgs eva;
         public Polis_Up(string[] path_ex, string[] Polis_upp_file, string call)
         {
-            //DevExpress.SpreadsheetSource.ISpreadsheetSourceOptions=sou
-            //DevExpress.SpreadsheetSource.Xls.XlsSpreadsheetSource exs = new DevExpress.SpreadsheetSource.Xls.XlsSpreadsheetSource(ex_path[0], DevExpress.SpreadsheetSource.ISpreadsheetSourceOptions);
-            //DevExpress.SpreadsheetSource.Xls.XlsSourceDataReader edr = new DevExpress.SpreadsheetSource.Xls.XlsSourceDataReader();
-            //pol_zagr.ItemsSource=DevExpress.SpreadsheetSource.Xls.XlsSourceDataReader
-            Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Background,
-                new Action(delegate ()
-                {
-                    //string sh;
-                    //if (call_ == "attache")
-                    //{
-                    //    sh = "Лист1";
-                    //}
-                    //else
-                    //{
-                    //    sh = "Sheet";
-                    //}
-                    dateP.DateTime = DateTime.Now;
-                    
-                    DataTable tb = new DataTable();
-                    Spreadsheet excel = new Spreadsheet();
-                    
-                    excel.LoadFromFile(ex_path[0]);
-                    NumberFormatType formatType = excel.Worksheet(0).Cell(7, 2).ValueDataTypeByNumberFormatString;
-                    //var adr = excel.Worksheet(0).Columns[2]..Address();
-                    //excel.Worksheet(0).Range(7, 2, excel.Worksheet(0).NotEmptyRowMax, 3).CopyInto(7, 4);
-                    excel.Worksheet(0).Range("$C$7:$D$18").NumberFormatString =  "дд.мм.гггг";
-                    //excel.Worksheet(0).Range(7, 2, excel.Worksheet(0).NotEmptyRowMax, 3).Formula = $"=ТЕКСТ(H5;{(char)34}дд.мм.гггг{(char)34})";
-                    //excel.Worksheets[0].Range("C1:D100000").NumberFormatString = "MM.DD.YYYY";
-                    //excel.Worksheet(0).Columns[2].NumberFormat= "m/d/yyyy";
-                    //for (int i = 1; i < excel.Worksheets[0].NotEmptyRowMax; i++)
-                    //{
-                    //    // Установить номер
 
 
-                    //    // Установить текущую ячейку
-                    //    Cell currentCell = excel.Worksheets[0].Cell(i, 3);
+            ////DevExpress.SpreadsheetSource.ISpreadsheetSourceOptions=sou
+            ////DevExpress.SpreadsheetSource.Xls.XlsSpreadsheetSource exs = new DevExpress.SpreadsheetSource.Xls.XlsSpreadsheetSource(ex_path[0], DevExpress.SpreadsheetSource.ISpreadsheetSourceOptions);
+            ////DevExpress.SpreadsheetSource.Xls.XlsSourceDataReader edr = new DevExpress.SpreadsheetSource.Xls.XlsSourceDataReader();
+            ////pol_zagr.ItemsSource=DevExpress.SpreadsheetSource.Xls.XlsSourceDataReader
+            //Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Background,
+            //    new Action(delegate ()
+            //    {
+            //                //string sh;
+            //                //if (call_ == "attache")
+            //                //{
+            //                //    sh = "Лист1";
+            //                //}
+            //                //else
+            //                //{
+            //                //    sh = "Sheet";
+            //                //}
+            //                dateP.DateTime = DateTime.Now;
 
-                    //    // Установить дату. Это дни с 01.01.1900
-                    //    // Вы также можете конвертировать число в дату, используя функцию: DateTime.FromOADate (double d)
-                    //    ////currentCell.Value = 30000 + i * 1000;
+            //        DataTable tb = new DataTable();
+            //        Spreadsheet excel = new Spreadsheet();
 
-                    //    // Установить формат даты
-                    //    currentCell.NumberFormatString = "dd.mm.yyyy";
-                    //}
-                    //excel.Worksheet(0).Columns[3].CellFormat = ExtendedFormat//"dd:mm:yy";
-                    //excel.Worksheet(0).Range("C1:D100000").NumberFormatString= "dd.mm.yyyy hh:mm:ss";
-                    //excel.Worksheet(0).Cell(0, 0).Value = "???";
-                    //for (int y = 5; y < excel.Worksheet(0).Rows.LastFormatedRow; y++)
-                    //{
-                    //    excel.Worksheet(0).Cell(y, 3).ValueDataTypeByNumberFormatString =Bytescout.Spreadsheet.Constants.NumberFormatType.Text;
+            //        excel.LoadFromFile(ex_path[0]);
+            //        NumberFormatType formatType = excel.Worksheet(0).Cell(7, 2).ValueDataTypeByNumberFormatString;
+            //                //var adr = excel.Worksheet(0).Columns[2]..Address();
+            //                //excel.Worksheet(0).Range(7, 2, excel.Worksheet(0).NotEmptyRowMax, 3).CopyInto(7, 4);
+            //                excel.Worksheet(0).Range("$C$7:$D$18").NumberFormatString = "дд.мм.гггг";
+            //                //excel.Worksheet(0).Range(7, 2, excel.Worksheet(0).NotEmptyRowMax, 3).Formula = $"=ТЕКСТ(H5;{(char)34}дд.мм.гггг{(char)34})";
+            //                //excel.Worksheets[0].Range("C1:D100000").NumberFormatString = "MM.DD.YYYY";
+            //                //excel.Worksheet(0).Columns[2].NumberFormat= "m/d/yyyy";
+            //                //for (int i = 1; i < excel.Worksheets[0].NotEmptyRowMax; i++)
+            //                //{
+            //                //    // Установить номер
 
-                    //}
-                    //excel.SaveAs(ex_path[0].Replace(".xls","_1.xls"));
 
-                    tb = excel.ExportToDataTable(0,true);
-                    
-                    //string filename = ex_path[0];
-                    //string ConStr = String.Format("Provider=Microsoft.ACE.OLEDB.12.0; Data Source={0}; Extended Properties=Excel 12.0;", filename);
-                    //System.Data.DataSet ds = new System.Data.DataSet("EXCEL");
-                    //OleDbConnection cn = new OleDbConnection(ConStr);
-                    //cn.Open();
-                    //DataTable schemaTable = cn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, new object[] { null, null, null, "TABLE" });
-                    //string sheet1 = (string)schemaTable.Rows[0].ItemArray[2];
-                    //string select = String.Format("SELECT * FROM [{0}]", sheet1);
-                    //OleDbDataAdapter ad = new OleDbDataAdapter(select, cn);
-                    //Cursor = Cursors.Wait;
-                    //ad.Fill(ds);
-                    //Cursor = Cursors.Arrow;
-                    ////Cursor = Cursors.Arrow;
-                    //tb = ds.Tables[0];
-                    rows_count = tb.Rows.Count;
-                    //cn.Close();
-                    
-                    pol_zagr.ItemsSource = tb;
-                    pol_zagr.GetRowsAsync(0, 10);
-                    ////if (call_=="attache")
-                    ////{
-                    ////    pol_zagr.SelectAll();
-                    ////}
+            //                //    // Установить текущую ячейку
+            //                //    Cell currentCell = excel.Worksheets[0].Cell(i, 3);
 
-                }));
+            //                //    // Установить дату. Это дни с 01.01.1900
+            //                //    // Вы также можете конвертировать число в дату, используя функцию: DateTime.FromOADate (double d)
+            //                //    ////currentCell.Value = 30000 + i * 1000;
+
+            //                //    // Установить формат даты
+            //                //    currentCell.NumberFormatString = "dd.mm.yyyy";
+            //                //}
+            //                //excel.Worksheet(0).Columns[3].CellFormat = ExtendedFormat//"dd:mm:yy";
+            //                //excel.Worksheet(0).Range("C1:D100000").NumberFormatString= "dd.mm.yyyy hh:mm:ss";
+            //                //excel.Worksheet(0).Cell(0, 0).Value = "???";
+            //                //for (int y = 5; y < excel.Worksheet(0).Rows.LastFormatedRow; y++)
+            //                //{
+            //                //    excel.Worksheet(0).Cell(y, 3).ValueDataTypeByNumberFormatString =Bytescout.Spreadsheet.Constants.NumberFormatType.Text;
+
+            //                //}
+            //                //excel.SaveAs(ex_path[0].Replace(".xls","_1.xls"));
+
+            //                tb = excel.ExportToDataTable(0, true);
+
+            //                //string filename = ex_path[0];
+            //                //string ConStr = String.Format("Provider=Microsoft.ACE.OLEDB.12.0; Data Source={0}; Extended Properties=Excel 12.0;", filename);
+            //                //System.Data.DataSet ds = new System.Data.DataSet("EXCEL");
+            //                //OleDbConnection cn = new OleDbConnection(ConStr);
+            //                //cn.Open();
+            //                //DataTable schemaTable = cn.GetOleDbSchemaTable(OleDbSchemaGuid.Tables, new object[] { null, null, null, "TABLE" });
+            //                //string sheet1 = (string)schemaTable.Rows[0].ItemArray[2];
+            //                //string select = String.Format("SELECT * FROM [{0}]", sheet1);
+            //                //OleDbDataAdapter ad = new OleDbDataAdapter(select, cn);
+            //                //Cursor = Cursors.Wait;
+            //                //ad.Fill(ds);
+            //                //Cursor = Cursors.Arrow;
+            //                ////Cursor = Cursors.Arrow;
+            //                //tb = ds.Tables[0];
+            //                rows_count = tb.Rows.Count;
+            //                //cn.Close();
+
+            //                pol_zagr.ItemsSource = tb;
+            //        pol_zagr.GetRowsAsync(0, 10);
+            //                ////if (call_=="attache")
+            //                ////{
+            //                ////    pol_zagr.SelectAll();
+            //                ////}
+
+            //            }));
             InitializeComponent();
             
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
@@ -166,7 +169,7 @@ namespace Insurance
                 //One_folder.Visibility = Visibility.Visible;
 
             }
-            
+            polises_in_Loaded(this, eva);
         }
         private int rows_count;
         private DataTable tb;
@@ -201,41 +204,69 @@ namespace Insurance
         }
         private void polises_in_Loaded(object sender, RoutedEventArgs e)
         {
-          
-       
-            ////StreamReader f = new StreamReader(ex_path);
-            ////string[] a = f.ReadToEnd().Split(',');
-            //var file = new FileInfo(ex_path);
 
-            //using (
-            //    var stream = File.Open(ex_path, FileMode.Open, FileAccess.Read))
-            //{
-            //    IExcelDataReader reader;
 
-            //    if (file.Extension.Equals(".xls"))
-            //        reader = ExcelDataReader.ExcelReaderFactory.CreateBinaryReader(stream);
-            //    else if (file.Extension.Equals(".xlsx"))
-            //        reader = ExcelDataReader.ExcelReaderFactory.CreateOpenXmlReader(stream);
-            //    else
-            //        throw new Exception("Invalid FileName");
+            //StreamReader f = new StreamReader(ex_path[0]);
+            //string[] a = f.ReadToEnd().Split(',');
+            var file = new FileInfo(ex_path[0]);
 
-            //    //// reader.IsFirstRowAsColumnNames
-            //    var conf = new ExcelDataSetConfiguration
-            //    {
-            //        ConfigureDataTable = _ => new ExcelDataTableConfiguration
-            //        {
-            //            UseHeaderRow = true
+            using (var stream = File.Open(ex_path[0], FileMode.Open, FileAccess.Read))
+            {
+                IExcelDataReader reader;
 
-            //        }
-            //    };
+                if (file.Extension.Equals(".xls"))
+                    reader = ExcelDataReader.ExcelReaderFactory.CreateBinaryReader(stream);
+                else if (file.Extension.Equals(".xlsx"))
+                    reader = ExcelDataReader.ExcelReaderFactory.CreateOpenXmlReader(stream);
+                else if (file.Extension.Equals(".csv"))
+                    goto csv;
+                else
+                    throw new Exception("Invalid FileName");
 
-            //    var dataSet = reader.AsDataSet(conf);
-            //    var dataTable = dataSet.Tables[0];
-            //    rows_count = dataTable.Rows.Count;
-            //    pol_zagr.ItemsSource = dataTable;
-            //    //pol_zagr1.ItemsSource = dataTable;
-            //    //pol_zagr.ItemsSource = a;
-            //}
+                //// reader.IsFirstRowAsColumnNames
+                var conf = new ExcelDataSetConfiguration
+                {
+                    ConfigureDataTable = _ => new ExcelDataTableConfiguration
+                    {
+                        UseHeaderRow = true
+
+                    }
+                };
+
+                var dataSet = reader.AsDataSet(conf);
+                var dataTable = dataSet.Tables[0];
+                rows_count = dataTable.Rows.Count;
+                pol_zagr.ItemsSource = dataTable;
+                //pol_zagr1.ItemsSource = dataTable;
+                //pol_zagr.ItemsSource = a;
+            }
+            csv:
+            if (file.Extension.Equals(".csv"))
+            {
+                tb = new DataTable();
+                string filename = file.FullName;
+                string[] attache = File.ReadAllLines(filename, Encoding.GetEncoding("Windows-1251"));
+
+                //var cls0 = attache[0].Split('|');
+                var cls0 = attache[0].Split(';');
+                cls0 = cls0.Where(x => x != "").ToArray();
+                for (int i = 0; i < cls0.Count(); i++)
+                {
+                    tb.Columns.Add(cls0[i].ToString().Replace($"{(char)34}", ""), typeof(string));
+                }
+                //tb.Columns.AddRange();
+                for (int i = 1; i < attache.Count(); i++)
+                {
+                    // получаем все ячейки строки
+                    var row1 = attache[i].Substring(0, attache[i].Length - 1);
+                    row1 = row1.Replace($"{(char)34}", "");
+                    var cls = row1.Split(';');
+                    //cls = cls.Where(x => x != "").ToArray();
+                    tb.LoadDataRow(cls, LoadOption.Upsert);
+                    //Attache_mo.Add(new ATTACHED_MO { GUID = cls[0], OKATO = cls[1], SMO = cls[2], DPFS = cls[3], SER = cls[4], NUM = cls[5], ENP = cls[6], MO = cls[7] });
+                    pol_zagr.ItemsSource = tb;
+                }
+            }
         }
         private static string Arr_toStr(object[] a)
         {
@@ -766,22 +797,43 @@ delete from POL_PERSONS where fam = 'f'
         }
         private void Zagr_2()
         {
-            //            int i = 0;
-            //            int[] checked_items = pol_zagr.GetSelectedRowHandles();
-            //            for (i = 0; i < checked_items.Count(); i++)
-            //            {
-            //                var uu = pol_zagr.GetCellValue(checked_items[i], "mo").ToString();
-            //                var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
-            //                SqlConnection con = new SqlConnection(connectionString);
-            //                SqlCommand com = new SqlCommand($@" update POL_PERSONS
-            //set mo='{pol_zagr.GetCellValue(checked_items[i], "mo").ToString()}', dstart=getdate() 
-            //where enp='{pol_zagr.GetCellValue(checked_items[i], "mo").ToString()}' ", con);
-            //                con.Open();
-            //                com.CommandTimeout = 0;
-            //                com.ExecuteNonQuery();
-            //                con.Close();
-            //            }
-            if (call_ == "attache")
+            if (call_ == "attache" && Vars.SMO.StartsWith("22")==false && Vars.SMO.StartsWith("39") == false)
+            {
+                int i = 0;
+                int[] checked_items = pol_zagr.GetSelectedRowHandles();
+                for (i = 0; i < checked_items.Count(); i++)
+                {
+                    var uu = pol_zagr.GetCellValue(checked_items[i], "mo").ToString();
+                    var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
+                    SqlConnection con = new SqlConnection(connectionString);
+                    SqlCommand com = new SqlCommand($@" update POL_PERSONS
+                set mo='{pol_zagr.GetCellValue(checked_items[i], "mo").ToString()}', dstart=getdate() 
+                where enp='{pol_zagr.GetCellValue(checked_items[i], "mo").ToString()}' ", con);
+                    con.Open();
+                    com.CommandTimeout = 0;
+                    com.ExecuteNonQuery();
+                    con.Close();
+                }
+            }
+            else if (call_ == "attache" && Vars.SMO.StartsWith("39") == true)
+            {
+                int i = 0;
+                int[] checked_items = pol_zagr.GetSelectedRowHandles();
+                for (i = 0; i < checked_items.Count(); i++)
+                {
+                    var uu = pol_zagr.GetCellValue(checked_items[i], "lpu").ToString();
+                    var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
+                    SqlConnection con = new SqlConnection(connectionString);
+                    SqlCommand com = new SqlCommand($@" update POL_PERSONS
+                set mo='{pol_zagr.GetCellValue(checked_items[i], "lpu").ToString()}', dstart=getdate() 
+                where enp='{pol_zagr.GetCellValue(checked_items[i], "enp").ToString()}' ", con);
+                    con.Open();
+                    com.CommandTimeout = 0;
+                    com.ExecuteNonQuery();
+                    con.Close();
+                }
+            }
+            else if (call_ == "attache" && Vars.SMO.StartsWith("22") == true)
             {
                 var con_str = Properties.Settings.Default.DocExchangeConnectionString;
                 SqlConnection con = new SqlConnection(con_str);

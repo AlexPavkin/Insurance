@@ -963,7 +963,7 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
             G_layuot.restore_Layout(Properties.Settings.Default.DocExchangeConnectionString, pers_grid, pers_grid_2);
             //LoadingDecorator1.IsSplashScreenShown = false;
             WindowState = WindowState.Maximized;
-            Vars.MainTitle = "Insurance(полисная часть) v1.019";
+            Vars.MainTitle = "Insurance(полисная часть) v1.030";
             Title = Vars.MainTitle;
             prz.SelectedIndex = -1;
             //if (SPR.Premmissions == "User")
@@ -4490,7 +4490,7 @@ where event_guid=(select event_guid from pol_persons where id=@id) and main=0 an
                         ddser.Text = docser.ToString();
                         ddnum.Text = docnum.ToString();
                         dddate.DateTime = Convert.ToDateTime(docdate);
-                        if(docexp == null)
+                        if(docexp.ToString() == "")
                         {
                             docexp1.EditValue = null;
                         }
