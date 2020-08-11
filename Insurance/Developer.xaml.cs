@@ -1305,33 +1305,33 @@ SPOSOB_P3 as sposob,RESULT_P3 as result,PRIMECH as prim, l.kod as KOD_POL, l.kod
 
         private void SCR_EXECUTE_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                string connstring = Properties.Settings.Default.DocExchangeConnectionString;
-                SqlConnection connect = new SqlConnection(connstring);
-                SqlCommand comm3 =
-                    new SqlCommand(Script.Text, connect);
-                connect.Open();
-                comm3.CommandTimeout = 0;
-                comm3.ExecuteScalar();
-                connect.Close();
-                string m = "Скрипт успешно выполнен!";
-                string t = "Сообщение!";
-                int b = 1;
-                Message me = new Message(m, t, b);
-                me.ShowDialog();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
+            //try
+            //{
+            //    string connstring = Properties.Settings.Default.DocExchangeConnectionString;
+            //    SqlConnection connect = new SqlConnection(connstring);
+            //    SqlCommand comm3 =
+            //        new SqlCommand(Script.Text, connect);
+            //    connect.Open();
+            //    comm3.CommandTimeout = 0;
+            //    comm3.ExecuteScalar();
+            //    connect.Close();
+            //    string m = "Скрипт успешно выполнен!";
+            //    string t = "Сообщение!";
+            //    int b = 1;
+            //    Message me = new Message(m, t, b);
+            //    me.ShowDialog();
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show(ex.ToString());
+            //}
         }
 
         private void Move_zah_data__Copy1_Click(object sender, RoutedEventArgs e)
         {
-            string connstring = Properties.Settings.Default.DocExchangeConnectionString;
-           // pol_zagr.DataContext = MyReader.MySelect<string>(Script.Text, Properties.Settings.Default.DocExchangeConnectionString);
-            pol_zagr.ItemsSource = SPR.MyReader.Query(Script.Text, Properties.Settings.Default.DocExchangeConnectionString);
+           // string connstring = Properties.Settings.Default.DocExchangeConnectionString;
+           //// pol_zagr.DataContext = MyReader.MySelect<string>(Script.Text, Properties.Settings.Default.DocExchangeConnectionString);
+           // pol_zagr.ItemsSource = SPR.MyReader.Query(Script.Text, Properties.Settings.Default.DocExchangeConnectionString);
         }
     }
     public class Class_params : IComparable<Class_params>

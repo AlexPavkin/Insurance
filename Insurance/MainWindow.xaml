@@ -1,4 +1,4 @@
-﻿<Window x:Name="w_main" x:Class="Insurance.MainWindow" mc:Ignorable="d"  Height="948.4" Width="1666.987" Background="#FF0063FF" Activated="w_main_Activated" Loaded="w_main_Loaded" Closed="W_main_Closed" control:EnterKeyTraversal.IsEnabled="True"
+﻿<Window x:Name="w_main" x:Class="Insurance.MainWindow" mc:Ignorable="d"  Height="948.4" Width="1666.987" Background="#FF0063FF" Activated="w_main_Activated" Loaded="w_main_Loaded" Closed="W_main_Closed" 
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -13,8 +13,8 @@
     xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
     xmlns:Serialization="clr-namespace:DevExpress.Xpf.LayoutControl.Serialization;assembly=DevExpress.Xpf.LayoutControl.v17.2" 
     xmlns:System="clr-namespace:System;assembly=mscorlib" 
-    xmlns:control="clr-namespace:Yamed.Control;assembly=Yamed.Control" 
-    xmlns:Editors="clr-namespace:Yamed.Control.Editors" Unloaded="W_main_Unloaded" Closing="W_main_Closing" PreviewKeyDown="W_main_PreviewKeyDown">
+    xmlns:spr="clr-namespace:Insurance_SPR;assembly=Insurance_SPR" 
+    xmlns:Editors="clr-namespace:Yamed.Control.Editors" Unloaded="W_main_Unloaded" Closing="W_main_Closing" PreviewKeyDown="W_main_PreviewKeyDown" spr:EnterKeyTraversal.IsEnabled="True">
     <Window.InputBindings>
         <KeyBinding Modifiers="Alt"
                     Key="L" 

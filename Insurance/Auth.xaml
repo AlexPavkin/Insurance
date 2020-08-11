@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Insurance"
         xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" x:Name="Auth_" x:Class="Insurance.Auth"
-        xmlns:control="clr-namespace:Yamed.Control;assembly=Yamed.Control" 
-        mc:Ignorable="d" control:EnterKeyTraversal.IsEnabled="True"
+        xmlns:spr="clr-namespace:Insurance_SPR;assembly=Insurance_SPR" 
+        mc:Ignorable="d" spr:EnterKeyTraversal.IsEnabled="True"
         Title="Авторизация" Height="250" Width="450" ResizeMode="NoResize" Topmost="True" Loaded="Auth__Loaded" Background="#FF5F7B8B" Closed="Auth__Closed" ShowInTaskbar="True">
     <Grid x:Name="Auth1" Background="#FF5F7B8B">
 

@@ -963,7 +963,7 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
             G_layuot.restore_Layout(Properties.Settings.Default.DocExchangeConnectionString, pers_grid, pers_grid_2);
             //LoadingDecorator1.IsSplashScreenShown = false;
             WindowState = WindowState.Maximized;
-            Vars.MainTitle = "Insurance(полисная часть) v1.026";
+            Vars.MainTitle = "Insurance(полисная часть) v1.030";
             Title = Vars.MainTitle;
             prz.SelectedIndex = -1;
             //if (SPR.Premmissions == "User")
@@ -4445,8 +4445,9 @@ on t0.idguid = t3.person_guid", con);
                         object docmr_1 = reader16["DOCMR"];
                         object str_vid_1 = reader16["OKSM"];
                         object idguid_ = reader16["IDGUID"];
-                       
-                
+                        object docexp_prev_ = reader16["docexp"];
+
+
 
 
                         if (doctype_1.ToString()=="")
@@ -4470,8 +4471,9 @@ on t0.idguid = t3.person_guid", con);
 
                         kem_vid1.Text = name_vp_1.ToString();
                         kod_podr1.Text = name_vp_code_1.ToString();
-                        prev_mr.Text = docmr_1.ToString();
+                        //prev_mr.Text = docmr_1.ToString();
                         str_vid1.EditValue = str_vid_1;
+                        docexp2.EditValue= Convert.ToDateTime(docexp_prev_);
 
 
 
@@ -8274,7 +8276,7 @@ where vpolis=2 and blank=1 and DBEG is null)", con);
             }
             else
             {
-                Yamed.Control.EnterKeyTraversal.SetIsEnabled(w_main, true);
+               EnterKeyTraversal.SetIsEnabled(w_main, true);
                 //Yamed.Control.EnterKeyTraversal.SetIsEnabled(im, false);
                 //return;
             }
