@@ -5,12 +5,12 @@
         xmlns:local="clr-namespace:Insurance"
         xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
         xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
-        xmlns:control="clr-namespace:Yamed.Control;assembly=Yamed.Control"
+        xmlns:spr="clr-namespace:Insurance_SPR;assembly=Insurance_SPR"
     xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
     xmlns:Editors="clr-namespace:Yamed.Control.Editors"
     xmlns:Editors1="clr-namespace:DevExpress.Xpf.Editors;assembly=DevExpress.Xpf.Core.v17.2"
     x:Class="Insurance.Developer"
-        mc:Ignorable="d"
+        mc:Ignorable="d" spr:EnterKeyTraversal.IsEnabled="True"
         Title="Функции для разработчика" Height="943.34" Width="1602.532" Background="#FF5F7B8B">
     <Grid>
 

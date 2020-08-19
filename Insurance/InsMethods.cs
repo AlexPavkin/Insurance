@@ -5099,7 +5099,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
             comm2.Parameters.AddWithValue("@docmr", PD.mr2.Text);
 
             comm2.Parameters.AddWithValue("@id_p", Vars.IdP);
-            if (PD.s == "" || PD.s == null)
+            if (PD.s == "" || PD.s == null || PD.dost1.EditValue==null)
             {
                 comm2.Parameters.AddWithValue("@dost", DBNull.Value);
             }
@@ -5414,10 +5414,10 @@ update pol_events set rperson_guid='{PD.rper}' where person_guid='{perguid}' and
             if (PD.old_doc == 0 && PD.doc_num1.Text != "")
             {
                 SqlConnection con = new SqlConnection(connectionString);
-                SqlCommand cmddoc = new SqlCommand($@"insert into POL_DOCUMENTS_OLD(IDGUID, PERSON_GUID, OKSM, DOCTYPE, DOCSER, DOCNUM, DOCDATE, NAME_VP, NAME_VP_CODE, event_guid)
+                SqlCommand cmddoc = new SqlCommand($@"insert into POL_DOCUMENTS_OLD(IDGUID, PERSON_GUID, OKSM, DOCTYPE, DOCSER, DOCNUM, DOCDATE, NAME_VP, NAME_VP_CODE, event_guid,docexp)
                                 values(newid(),(select idguid from pol_persons where id={Vars.IdP}),'{PD.str_vid1.EditValue}',{PD.doc_type1.EditValue},
 '{PD.doc_ser1.Text}','{PD.doc_num1.Text}','{PD.date_vid2.DateTime}','{PD.kem_vid1.Text}','{PD.kod_podr1.Text}',
-                                (select event_guid from pol_persons where id={Vars.IdP}))", con);
+                                (select event_guid from pol_persons where id={Vars.IdP}),'{PD.docexp2.EditValue}')", con);
                 con.Open();
                 cmddoc.ExecuteNonQuery();
                 con.Close();
@@ -5426,7 +5426,7 @@ update pol_events set rperson_guid='{PD.rper}' where person_guid='{perguid}' and
             else if (PD.old_doc != 0)
             {
                 SqlConnection con = new SqlConnection(connectionString);
-                SqlCommand cmddoc = new SqlCommand($@"update POL_DOCUMENTS_OLD set  OKSM='{PD.str_vid1.EditValue}', DOCTYPE={PD.doc_type1.EditValue}, DOCSER='{PD.doc_ser1.Text}', DOCNUM='{PD.doc_num1.Text}', DOCDATE='{PD.date_vid2.DateTime}', 
+                SqlCommand cmddoc = new SqlCommand($@"update POL_DOCUMENTS_OLD set  OKSM='{PD.str_vid1.EditValue}', DOCTYPE={PD.doc_type1.EditValue}, DOCSER='{PD.doc_ser1.Text}', DOCNUM='{PD.doc_num1.Text}', DOCDATE='{PD.date_vid2.DateTime}', DOCEXP='{PD.docexp2.EditValue}',
 NAME_VP='{PD.kem_vid1.Text}', NAME_VP_CODE='{PD.kod_podr1.Text}' where idguid='{PD.old_doc_guid}'", con);
                 con.Open();
                 cmddoc.ExecuteNonQuery();

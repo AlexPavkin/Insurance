@@ -4,11 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Insurance"
+        xmlns:spr="clr-namespace:Insurance_SPR;assembly=Insurance_SPR" 
         xmlns:Editors="clr-namespace:Yamed.Control.Editors"
         xmlns:control="clr-namespace:Yamed.Control;assembly=Yamed.Control"         
         xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" x:Class="Insurance.FIAS_SEARCH"
 
-        mc:Ignorable="d" control:EnterKeyTraversal.IsEnabled="True"
+        mc:Ignorable="d" spr:EnterKeyTraversal.IsEnabled="True"
         Title="Поиск номеров домов" Height="407.36" Width="1481.976">
     <Grid Margin="0,0,0,-1">
         <GroupBox Header="Поиск по FIAS&#xA;" HorizontalAlignment="Left" Height="303" Margin="37,26,0,0" VerticalAlignment="Top" Width="525">
