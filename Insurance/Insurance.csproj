@@ -78,8 +78,8 @@
   </PropertyGroup>
   <PropertyGroup />
   <ItemGroup>
-    <Reference Include="Bytescout.Spreadsheet, Version=3.6.0.1821, Culture=neutral, PublicKeyToken=f7dd1bd9d40a50eb, processorArchitecture=MSIL">
-      <HintPath>..\packages\Bytescout.Spreadsheet.3.6.0.1821\lib\net40\Bytescout.Spreadsheet.dll</HintPath>
+    <Reference Include="Bytescout.Spreadsheet, Version=3.9.0.1875, Culture=neutral, PublicKeyToken=f7dd1bd9d40a50eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\Bytescout.Spreadsheet.3.9.0.1875\lib\net40\Bytescout.Spreadsheet.dll</HintPath>
     </Reference>
     <Reference Include="DevExpress.Charts.v17.2.Core, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -123,8 +123,8 @@
     <Reference Include="DevExpress.XtraLayout.v17.2, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.XtraCharts.v17.2, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
     <Reference Include="DevExpress.CodeParser.v17.2, Version=17.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL" />
-    <Reference Include="DotNetDBF, Version=6.0.0.2, Culture=neutral, PublicKeyToken=9c071727b589770e, processorArchitecture=MSIL">
-      <HintPath>..\packages\DotNetDBF.6.0.0.2\lib\net35\DotNetDBF.dll</HintPath>
+    <Reference Include="DotNetDBF, Version=6.0.0.3, Culture=neutral, PublicKeyToken=9c071727b589770e, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetDBF.6.0.0.3\lib\net35\DotNetDBF.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net40\EntityFramework.dll</HintPath>
@@ -141,14 +141,17 @@
     <Reference Include="FastReport, Version=2018.4.15.0, Culture=neutral, PublicKeyToken=db7e5ce63278458c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\Program Files (x86)\FastReports\FastReport.Net\FastReport.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="FastReport.Bars, Version=2018.4.15.0, Culture=neutral, PublicKeyToken=db7e5ce63278458c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\Program Files (x86)\FastReports\FastReport.Net\FastReport.Bars.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="FastReport.Editor, Version=2018.4.15.0, Culture=neutral, PublicKeyToken=db7e5ce63278458c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\Program Files (x86)\FastReports\FastReport.Net\FastReport.Editor.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="FastReport.VSDesign, Version=1.0.0.0, Culture=neutral, PublicKeyToken=db7e5ce63278458c, processorArchitecture=MSIL">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\FastReports\FastReport.Net\Framework 4.0\FastReport.VSDesign.dll</HintPath>
@@ -263,6 +266,9 @@
       <DependentUpon>FIAS_UPD.xaml</DependentUpon>
     </Compile>
     <Compile Include="FIASContext.cs" />
+    <Compile Include="InuputForm.xaml.cs">
+      <DependentUpon>InuputForm.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Message.xaml.cs">
       <DependentUpon>Message.xaml</DependentUpon>
     </Compile>
@@ -363,6 +369,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="FIAS_UPD.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="InuputForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -574,6 +584,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Image1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Licenses.licx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

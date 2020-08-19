@@ -455,6 +455,8 @@
                                     <dxb:BarButtonItem Name="load_OK" Content="Проставить комментарий 'ОК!' для ЗЛ" ItemClick="Load_OK_ItemClick" />
                                     <dxb:BarItemSeparator/>
                                     <dxb:BarButtonItem Name ="Otmena_pogash" Content="Отменить погашение (для выбранных)" ItemClick="Otmena_pogash_ItemClick"/>
+                                    <dxb:BarItemSeparator/>
+                                    <dxb:BarButtonItem Name ="vignas" Content="Выгрузить Население(Калининград)" ItemClick="Vignas_ItemClick"/>
                                 </dxg:TableView.RowCellMenuCustomizations>
 
                             </dxg:TableView>
@@ -636,6 +638,20 @@
                                 </StackPanel>
                             </Button>
                             <TextBox x:Name="_10" HorizontalAlignment="Left" Height="32" Margin="10,1165,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="611" Visibility="Collapsed" />
+                            <Button x:Name="del_rper_btn_Copy" Style="{StaticResource myButtonStyle1}" ToolTip="Удаление выбранных записей" HorizontalAlignment="Left" Height="50" VerticalAlignment="Top"  TabIndex="9" Click="Del_rper_btn_Click">
+                                <StackPanel HorizontalAlignment="Center" Margin="5,0" Orientation="Horizontal">
+                                    <Image Source="Insurance_icons/delete_1.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
+                                        <Image.OpacityMask>
+                                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                <GradientStop Color="Black" Offset="0" />
+                                                <GradientStop Color="White" Offset="1" />
+                                            </LinearGradientBrush>
+                                        </Image.OpacityMask>
+
+                                    </Image>
+                                    <TextBlock Text="Удалить сведения&#xA;о представителе ЗЛ" VerticalAlignment="Center" Foreground="White" FontWeight="Bold" Margin="5" />
+                                </StackPanel>
+                            </Button>
                             <dxe:TextEdit x:Name="towntxt" HorizontalAlignment="Left" Margin="102,1277,0,0" VerticalAlignment="Top" Width="253" Visibility="Collapsed" />
                             <Button x:Name="print" Style="{StaticResource myButtonStyle1}" Margin="10,5,0,0" ToolTip="Печать заявления ЗЛ или временного свидетельства" Height="40" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="165" Click="print_Click_1">
                                 <StackPanel Orientation="Horizontal" Width="165">
@@ -667,9 +683,9 @@
                                     <TextBlock Text="Очистить все поля" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,0" Foreground="White" FontWeight="Bold" FontSize="12" />
                                 </StackPanel>
                             </Button>
-                            <Button x:Name="del_rper_btn" Style="{StaticResource myButtonStyle1}" ToolTip="Удаление выбранных записей" HorizontalAlignment="Left" Height="50" Margin="5,0" VerticalAlignment="Top"  TabIndex="9" Click="Del_rper_btn_Click">
+                            <Button x:Name="updtable2" Style="{StaticResource myButtonStyle1}" ToolTip="Обновление таблицы с представителями" HorizontalAlignment="Left" Height="50" Margin="5,0" VerticalAlignment="Top"  TabIndex="9" Click="Updtable2_Click">
                                 <StackPanel HorizontalAlignment="Center" Margin="5,0" Orientation="Horizontal">
-                                    <Image Source="Insurance_icons\delete_1.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
+                                    <Image Source="Insurance_icons/update.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
                                         <Image.OpacityMask>
                                             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                                 <GradientStop Color="Black" Offset="0" />
@@ -678,7 +694,7 @@
                                         </Image.OpacityMask>
 
                                     </Image>
-                                    <TextBlock Text="Удалить сведения&#10;о представителе ЗЛ" VerticalAlignment="Center" Foreground="White" FontWeight="Bold" Margin="5" />
+                                    <TextBlock Text="Обновить таблицу" VerticalAlignment="Center" Foreground="White" FontWeight="Bold" Margin="5" />
                                 </StackPanel>
                             </Button>
                         </StackPanel>
@@ -687,7 +703,11 @@
 
                             <dxg:GridControl.View>
                                 <dxg:TableView x:Name="tableView" ShowAutoFilterRow="True" AllowConditionalFormattingMenu="True" AllowPerPixelScrolling="True" ShowTotalSummary="True" FilterEditorShowOperandTypeIcon="True" ShowCheckBoxSelectorColumn="True" RetainSelectionOnClickOutsideCheckBoxSelector="False" EditFormPostConfirmation="YesNo" EditFormColumnCount="1" ShowEditFormOnDoubleClick="False" ShowEditFormUpdateCancelButtons="True" EditFormShowMode="None" ShowEditFormOnEnterKey="False"  />
+
                             </dxg:GridControl.View>
+
+
+
                             <dxg:GridControl.ToolTip>
                                 <ToolTip Background="#FFF02525" Placement="Mouse" VerticalOffset="10">
 

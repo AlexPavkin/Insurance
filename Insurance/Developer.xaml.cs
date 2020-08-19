@@ -1303,7 +1303,14 @@ SPOSOB_P3 as sposob,RESULT_P3 as result,PRIMECH as prim, l.kod as KOD_POL, l.kod
 
         }
 
-        private void SCR_EXECUTE_Click(object sender, RoutedEventArgs e)
+      
+
+        private void Move_zah_data__Copy1_Click(object sender, RoutedEventArgs e)
+        {
+        
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -1327,10 +1334,10 @@ SPOSOB_P3 as sposob,RESULT_P3 as result,PRIMECH as prim, l.kod as KOD_POL, l.kod
             }
         }
 
-        private void Move_zah_data__Copy1_Click(object sender, RoutedEventArgs e)
+        private void PROSM_Click(object sender, RoutedEventArgs e)
         {
             string connstring = Properties.Settings.Default.DocExchangeConnectionString;
-           // pol_zagr.DataContext = MyReader.MySelect<string>(Script.Text, Properties.Settings.Default.DocExchangeConnectionString);
+            // pol_zagr.DataContext = MyReader.MySelect<string>(Script.Text, Properties.Settings.Default.DocExchangeConnectionString);
             pol_zagr.ItemsSource = SPR.MyReader.Query(Script.Text, Properties.Settings.Default.DocExchangeConnectionString);
         }
     }

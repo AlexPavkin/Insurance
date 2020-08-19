@@ -196,6 +196,108 @@ namespace Insurance_SPR
         public string SMO { get; set; }
         
     }
+    public class NASELEN_KALININGRAD
+    {
+        public string surname { get; set; }
+        public string name { get; set; }
+        public string secname { get; set; }
+        public DateTime? dr { get; set; }
+        public int pol { get; set; }
+        public string s_polis { get; set; }
+        public string n_polis { get; set; }
+        public string mr { get; set; }
+        public DateTime? datp { get; set; }
+        public DateTime? date_e { get; set; }
+        public string tdok { get; set; }
+        public string s_pasp { get; set; }
+        public string n_pasp { get; set; }
+        public string tip_op { get; set; }
+
+        //public int scomp { get; set; }
+        //public int dogovor { get; set; }
+        //public int tdok { get; set; }
+        //public int tdok_i { get; set; }
+        //public string s_pasp { get; set; }
+        //public string s_pasp_i { get; set; }
+        //public int n_pasp { get; set; }
+        //public int n_pasp_i { get; set; }
+        //public DateTime? docdt { get; set; }
+        //public DateTime? docdt_i { get; set; }
+        //public DateTime? docdt_e { get; set; }
+        //public DateTime? docdt_e_i { get; set; }
+        //public string docorg { get; set; }
+        //public string cn { get; set; }
+        //public string surname { get; set; }
+        //public string name { get; set; }
+        //public string secname { get; set; }
+        //public int pol { get; set; }
+        //public int true_dr { get; set; }
+        //public DateTime? dr { get; set; }
+        //public string MR { get; set; }
+        //public string okato { get; set; }
+        //public string okato_f { get; set; }
+        //public string index { get; set; }
+        //public int rn { get; set; }
+        //public string city { get; set; }
+        //public string nasp { get; set; }
+        //public string lstreet { get; set; }
+        //public string street { get; set; }
+        //public int house { get; set; }
+        //public string lhouse { get; set; }
+        //public string corpus { get; set; }
+        //public int flat { get; set; }
+        //public string lflat { get; set; }
+        //public string comn { get; set; }
+        //public DateTime? dat_reg { get; set; }
+        //public string phone { get; set; }
+        //public string phone1 { get; set; }
+        //public string email { get; set; }
+        //public string index_f { get; set; }
+        //public int rn_f { get; set; }
+        //public string city_f { get; set; }
+        //public string nasp_f { get; set; }
+        //public string lstreet_f { get; set; }
+        //public string street_f { get; set; }
+        //public int house_f { get; set; }
+        //public string lhouse_f { get; set; }
+
+    }
+
+    public class RFILESMOLENSK
+    {
+        public string FAM { get; set; }
+        public string IM { get; set; }
+        public string OT { get; set; }
+        public DateTime? DR { get; set; }
+        public int W { get; set; }
+        public int VPOLIS { get; set; }
+        public string S_POL { get; set; }
+        public string N_POL { get; set; }
+        public string Q { get; set; }
+        public DateTime? DP { get; set; }
+        public DateTime? DENDP { get; set; }
+        public string DOCTYPE { get; set; }
+        public string SN_PASP { get; set; }
+        public string SNILS { get; set; }
+        public string OKATO { get; set; }
+        public string RNNAME { get; set; }
+        public string NPNAME { get; set; }
+        public string UL { get; set; }
+        public string ULCODE { get; set; }
+        public string DOM { get; set; }
+        public string KOR { get; set; }
+        public string STR { get; set; }
+        public string KV { get; set; }
+        public string TEL { get; set; }
+        public string MCOD { get; set; }
+        public DateTime? D_PR { get; set; }
+        public DateTime? D_OT { get; set; }
+        public int S_PR { get; set; }
+        public string SNILS_VR { get; set; }
+        
+
+    }
+    
     public class F003
     {
         public string mcod { get; set; }
