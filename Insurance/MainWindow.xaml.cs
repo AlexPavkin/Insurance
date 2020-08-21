@@ -7955,6 +7955,7 @@ event_guid=(select event_guid from pol_persons where id=@id)", con);
             Cursor = Cursors.Arrow;
         }
         public bool blank_polis;
+        public bool no_new_polis;
         private void Cel_vizita_EditValueChanged(object sender, EditValueChangedEventArgs e)
         {
             blank_polis = false;
@@ -7971,6 +7972,7 @@ event_guid=(select event_guid from pol_persons where id=@id)", con);
             }
             if (Vars.CelVisit == "П010" || Vars.CelVisit == "П034" || Vars.CelVisit == "П035" || Vars.CelVisit == "П036" || Vars.CelVisit == "П061" || Vars.CelVisit == "П062" || Vars.CelVisit == "П062" || Vars.CelVisit == "П063")
             {
+                no_new_polis = false;
                 if (Vars.Btn != "2")
                 {
                     type_policy.EditValue = 2;
@@ -8009,6 +8011,7 @@ where vpolis=2 and blank=1 and DBEG is null)", con);
             }
             else
             {
+                no_new_polis = true;
                 if (ddnum.Text != "")
                 {
                     type_policy.EditValue = 3;

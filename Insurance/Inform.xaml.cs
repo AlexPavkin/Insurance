@@ -985,8 +985,9 @@ SPOSOB_P3 as sposob,RESULT_P3 as result,PRIMECH as prim, l.kod as KOD_POL, l.kod
 
                     var writer = new DotNetDBF.DBFWriter(fos);
                     writer.CharEncoding = Encoding.GetEncoding(866);
-                    writer.Signature = DotNetDBF.DBFSignature.DBase3;
+                    writer.Signature = 0x43;//DotNetDBF.DBFSignature.DBase3;
                     writer.LanguageDriver = 0x26; // кодировка 866
+                    
                     writer.Fields = new[]{
                         new DotNetDBF.DBFField("ID_TFOMS", DotNetDBF.NativeDbType.Numeric, 5, 0),
                         new DotNetDBF.DBFField("SURNAME", DotNetDBF.NativeDbType.Char, 40),
