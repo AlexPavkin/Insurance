@@ -1,0 +1,17 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Insurance"
+        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" x:Class="Insurance.InuputForm"
+        mc:Ignorable="d"
+        Title="Введите значение" Height="71.5" Width="327.5">
+    <Grid>
+        <Button x:Name="OK" Content="ОК" HorizontalAlignment="Left" Margin="165,10,0,0" VerticalAlignment="Top" Width="46" Click="OK_Click"/>
+
+        <dxe:TextEdit x:Name="inputTEXT" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="150"/>
+        <Button x:Name="otmena" Content="Отменить" HorizontalAlignment="Left" Margin="216,10,0,0" VerticalAlignment="Top" Width="94" Click="Otmena_Click"/>
+
+    </Grid>
+</Window>

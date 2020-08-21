@@ -13,6 +13,7 @@ using System.IO;
 using System.Data;
 using System.Reflection;
 using DevExpress.Xpf.Grid;
+using DevExpress.Xpf.Core;
 using DevExpress.Data.Filtering;
 using System.Collections.ObjectModel;
 using System.Net;
@@ -34,7 +35,7 @@ using Ionic.Zip;
 using System.Xml;
 using Insurance.Classes;
 using System.Data.SqlTypes;
-
+using DevExpress.XtraEditors;
 namespace Insurance
 {
     /// <summary>
@@ -42,7 +43,7 @@ namespace Insurance
     /// </summary>
     /// 
 
-    
+
     public static class BusinessDays
     {
         public static System.DateTime AddBusinessDays(this System.DateTime source, int businessDays)
@@ -64,27 +65,27 @@ namespace Insurance
             return source.AddDays(businessDays + ((businessDays + dayOfWeek) / 5) * 2);
         }
     }
-    
+
     public class MyReader
-    {        
+    {
         public static List<T> MySelect<T>(string selectCmd, string connectionString)
         {
-                List<T> list;
-            
-                using (SqlConnection con = new SqlConnection(connectionString))
-                {
-                    using (SqlCommand cmd = new SqlCommand(selectCmd, con))
-                    {
-                        con.Open();
-                        cmd.CommandTimeout = 0;
-                        SqlDataReader dr = cmd.ExecuteReader();
-                        list = DataReaderMapToList<T>(dr);
-                        dr.Close();
-                    }
+            List<T> list;
 
-                    con.Close();
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand(selectCmd, con))
+                {
+                    con.Open();
+                    cmd.CommandTimeout = 0;
+                    SqlDataReader dr = cmd.ExecuteReader();
+                    list = DataReaderMapToList<T>(dr);
+                    dr.Close();
                 }
-            
+
+                con.Close();
+            }
+
             return list;
         }
         public static List<T> MySelect<T>(string com, string connectionString, List<T> ids)
@@ -95,15 +96,15 @@ namespace Insurance
             //dtc.Sort();
             string sqltype = "";
             dt = ToDataTable<T>(ids);
-            foreach(var d in dtc)
+            foreach (var d in dtc)
             {
                 //dt.Columns.Add(d.NAME,d.TYPE);
                 string s;
-                switch(d.TYPE.Name)
+                switch (d.TYPE.Name)
                 {
                     case "Int32":
-                         s = "int";
-                         break;
+                        s = "int";
+                        break;
                     case "String":
                         s = "nvarchar(500)";
                         break;
@@ -120,18 +121,18 @@ namespace Insurance
                         s = d.TYPE.Name;
                         break;
                 }
-                    
+
                 sqltype = sqltype + d.NAME + " " + s + ",";
-                
+
             }
             sqltype = sqltype.Substring(0, sqltype.Length - 1);
             //foreach (var item in ids)
             //{
-                
+
             //    dt.Rows.Add(item);
-                
+
             //}
-            
+
             using (SqlConnection con = new SqlConnection(connectionString))
             {
                 using (SqlCommand cmd0 = new SqlCommand($@" 
@@ -163,8 +164,8 @@ CREATE TYPE ForSelect AS TABLE ({sqltype})", con))
         public static void UpdateFromTable<T>(string com, string connectionString, DataTable dt)
         {
             string sqltype = "";
-           
-            
+
+
             foreach (DataColumn dc in dt.Columns)
             {
                 //dt.Columns.Add(d.NAME,d.TYPE);
@@ -204,33 +205,33 @@ CREATE TYPE ForSelect AS TABLE ({sqltype})", con))
             //    dt.Rows.Add(item);
 
             //}
-        
+
             SqlConnection con = new SqlConnection(connectionString);
-            
-              SqlCommand cmd0 = new SqlCommand($@" 
+
+            SqlCommand cmd0 = new SqlCommand($@" 
 IF exists (select * from sys.table_types where name='ForUpdate')  
 DROP TYPE dbo.ForUpdate   
-CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);     
-              
-            SqlCommand cmd = new SqlCommand(com, con);
-                
-                    var t = new SqlParameter("@dt", SqlDbType.Structured);
-                    t.TypeName = "dbo.ForUpdate";
-                    t.Value = dt;
-                    cmd.Parameters.Add(t);
-                    //SqlParameter t = cmd.Parameters.AddWithValue("@t", dt);
-                    //t.SqlDbType = SqlDbType.Structured;
-                    //t.TypeName = "dbo.ForUpdate";
-                    
-                        cmd.CommandTimeout = 0;
-                        con.Open();
-                        cmd0.ExecuteNonQuery();
-                        int str = cmd.ExecuteNonQuery();
-                        int isrt = str;
-                        con.Close();    
-            
+CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
 
-           
+            SqlCommand cmd = new SqlCommand(com, con);
+
+            var t = new SqlParameter("@dt", SqlDbType.Structured);
+            t.TypeName = "dbo.ForUpdate";
+            t.Value = dt;
+            cmd.Parameters.Add(t);
+            //SqlParameter t = cmd.Parameters.AddWithValue("@t", dt);
+            //t.SqlDbType = SqlDbType.Structured;
+            //t.TypeName = "dbo.ForUpdate";
+
+            cmd.CommandTimeout = 0;
+            con.Open();
+            cmd0.ExecuteNonQuery();
+            int str = cmd.ExecuteNonQuery();
+            int isrt = str;
+            con.Close();
+
+
+
         }
         public static void UpdateFromTable<T>(string com, string connectionString, DataTable dt, bool deltype)
         {
@@ -282,8 +283,8 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
 IF exists (select * from sys.table_types where name='ForUpdate')  
 DROP TYPE dbo.ForUpdate   
 CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
-            
-            
+
+
 
             SqlCommand cmd = new SqlCommand(com, con);
 
@@ -297,7 +298,7 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
 
             cmd.CommandTimeout = 0;
             con.Open();
-            if(deltype)
+            if (deltype)
             {
                 cmd0.ExecuteNonQuery();
                 int str = cmd.ExecuteNonQuery();
@@ -308,13 +309,13 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
                 int str = cmd.ExecuteNonQuery();
                 int isrt = str;
             }
-            
+
             con.Close();
 
 
 
         }
-        public static void LoadFromTable<T>(string connectionString, DataTable dt,string sqltable)
+        public static void LoadFromTable<T>(string connectionString, DataTable dt, string sqltable)
         {
             string[] rezervsql = { "ADD", "ALL", "ALTER", "AND", "ANY", "AS", "ASC", "AUTHORIZATION", "BACKUP", "BEGIN", "BETWEEN",
                 "BREAK", "BROWSE", "BULK", "BY", "CASCADE", "CASE", "CHECK", "CHECKPOINT", "CLOSE", "CLUSTERED", "COALESCE", "COLLATE",
@@ -365,27 +366,27 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
                         break;
                 }
 
-                
-                if(rezervsql.Contains(dc.ColumnName))
+
+                if (rezervsql.Contains(dc.ColumnName))
                 {
-                    sqltype = sqltype +"["+dc.ColumnName+"]"+ " " + s + ",";
-                    sqlcolumns = sqlcolumns +"["+ dc.ColumnName+"]" + ",";
+                    sqltype = sqltype + "[" + dc.ColumnName + "]" + " " + s + ",";
+                    sqlcolumns = sqlcolumns + "[" + dc.ColumnName + "]" + ",";
                 }
                 else
                 {
                     sqltype = sqltype + dc.ColumnName + " " + s + ",";
                     sqlcolumns = sqlcolumns + dc.ColumnName + ",";
                 }
-                
+
             }
             string sqltype0 = sqltype.Substring(0, sqltype.Length - 1);
             string sqlcolumns0 = sqlcolumns.Substring(0, sqlcolumns.Length - 1);
-            if (sqltable=="polis")
+            if (sqltable == "polis")
             {
-                sqltype = sqltype+ "idguid uniqueidentifier,prguid uniqueidentifier";
-                sqlcolumns = sqlcolumns+ "idguid,prguid";
+                sqltype = sqltype + "idguid uniqueidentifier,prguid uniqueidentifier";
+                sqlcolumns = sqlcolumns + "idguid,prguid";
             }
-            else if(sqltable == "polisprd")
+            else if (sqltable == "polisprd")
             {
                 sqltype = sqltype + "idguid uniqueidentifier";
                 sqlcolumns = sqlcolumns + "idguid";
@@ -395,7 +396,7 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
                 sqltype = sqltype.Substring(0, sqltype.Length - 1);
                 sqlcolumns = sqlcolumns.Substring(0, sqlcolumns.Length - 1);
             }
-            
+
             //foreach (var item in ids)
             //{
 
@@ -478,21 +479,21 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
             return dataTable;
 
         }
-        
+
         public static List<Class_params> Get_Fields_Dt<T>()
         {
-            List<Class_params> list= new List<Class_params>();
+            List<Class_params> list = new List<Class_params>();
             T obj = default(T);
             obj = Activator.CreateInstance<T>();
             Type type = obj.GetType();
             var props = type.GetProperties();
             foreach (var propertyInfo in props)
             {
-                list.Add(new Class_params {NAME= propertyInfo.Name,TYPE=propertyInfo.PropertyType.GetGenericArguments().Count()>0 ? propertyInfo.PropertyType.GetGenericArguments()[0] : propertyInfo.PropertyType });
+                list.Add(new Class_params { NAME = propertyInfo.Name, TYPE = propertyInfo.PropertyType.GetGenericArguments().Count() > 0 ? propertyInfo.PropertyType.GetGenericArguments()[0] : propertyInfo.PropertyType });
             }
             return list;
         }
-        
+
         public static List<T> DataReaderMapToList<T>(IDataReader dr)
         {
             List<T> list = new List<T>();
@@ -525,7 +526,7 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
                        Type.GetType("System.Byte[]")
                        );
         }
-        
+
         static public string MyExecuteWithResult(string command, string connectionString)
         {
             string res = "Done";
@@ -581,20 +582,20 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
             sg_rows = sg_rows.Substring(0, sg_rows.Length - 1);
             return sg_rows;
         }
-        public static DataTable MyIdsTable(int[] ids,string field, DevExpress.Xpf.Grid.GridControl grid)
+        public static DataTable MyIdsTable(int[] ids, string field, DevExpress.Xpf.Grid.GridControl grid)
         {
             DataTable dt = new DataTable();
             dt.Columns.Add(field, typeof(int));
             List<int> idd = new List<int>();
-            
-            for (int i=0; i<ids.Count();i++)
+
+            for (int i = 0; i < ids.Count(); i++)
             {
                 //idd.Add((int)grid.GetCellValue(ids[i],field));
-                dt.LoadDataRow(new object[] {(int)grid.GetCellValue(ids[i], field)},true);
+                dt.LoadDataRow(new object[] { (int)grid.GetCellValue(ids[i], field) }, true);
             }
-            
-            
-               
+
+
+
             return dt;
         }
 
@@ -615,11 +616,11 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
 
 
         }
-        public static string MyFieldValues(int[] ids, DevExpress.Xpf.Grid.GridControl grid,string field)
+        public static string MyFieldValues(int[] ids, DevExpress.Xpf.Grid.GridControl grid, string field)
         {
 
             string sg_rows = "";
-            int[] rt = ids.Where(x=>x>=0).ToArray();
+            int[] rt = ids.Where(x => x >= 0).ToArray();
             for (int i = 0; i < rt.Count(); i++)
 
             {
@@ -636,23 +637,23 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
         public static string[] MyFieldValuesArray(int[] ids, DevExpress.Xpf.Grid.GridControl grid, string field)
         {
             int[] rt = ids.Distinct().Where(x => x >= 0).ToArray();
-            string[] myArr = new string[rt.Count()];            
+            string[] myArr = new string[rt.Count()];
             for (int i = 0; i < rt.Count(); i++)
             {
-                myArr[i] = grid.GetCellValue(rt[i], field).ToString();                
+                myArr[i] = grid.GetCellValue(rt[i], field).ToString();
             }
-            
+
             return myArr;
 
 
         }
-        
+
 
     }
 
     public partial class MainWindow : Window
     {
-        
+
         RoutedCommand newCmd = new RoutedCommand();
         public static ObservableCollection<Events> events_g1;
         bool tttab;
@@ -702,17 +703,17 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
             G_layuot.save_Layout(Properties.Settings.Default.DocExchangeConnectionString, pers_grid, pers_grid_2);
             ////restore_Layout();
             ////layout_InUse();
-         List<F003> molist = MyReader.MySelect<F003>($@"SELECT mcod,namewithid from f003 order by mcod", Properties.Settings.Default.DocExchangeConnectionString);
-         List<V005> pol_DataContext = MyReader.MySelect<V005>(@"select IDPOL,NameWithID from SPR_79_V005", Properties.Settings.Default.DocExchangeConnectionString);
-         List<F011> doc_type_DataContext = MyReader.MySelect<F011>(@"select ID,NameWithID from SPR_79_F011", Properties.Settings.Default.DocExchangeConnectionString);
-         List<OKSM> str_vid_DataContext = MyReader.MySelect<OKSM>(@"select ID,CAPTION from SPR_79_OKSM", Properties.Settings.Default.DocExchangeConnectionString);
-         List<V013> kat_zl_DataContext = MyReader.MySelect<V013>(@"select IDKAT,NameWithID from V013", Properties.Settings.Default.DocExchangeConnectionString);
-         List<F008> type_policy_DataContext = MyReader.MySelect<F008>(@"select ID,NameWithID from SPR_79_F008", Properties.Settings.Default.DocExchangeConnectionString);
-         List<FIO> fio_col = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_fam", Properties.Settings.Default.DocExchangeConnectionString);
-         List<FIO> im_DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_im", Properties.Settings.Default.DocExchangeConnectionString);
-         List<FIO> ot_DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_ot", Properties.Settings.Default.DocExchangeConnectionString);
-         List<NAME_VP> kem_vid_DataContext = MyReader.MySelect<NAME_VP>(@"select id,name from spr_namevp", Properties.Settings.Default.DocExchangeConnectionString);
-    }
+            List<F003> molist = MyReader.MySelect<F003>($@"SELECT mcod,namewithid from f003 order by mcod", Properties.Settings.Default.DocExchangeConnectionString);
+            List<V005> pol_DataContext = MyReader.MySelect<V005>(@"select IDPOL,NameWithID from SPR_79_V005", Properties.Settings.Default.DocExchangeConnectionString);
+            List<F011> doc_type_DataContext = MyReader.MySelect<F011>(@"select ID,NameWithID from SPR_79_F011", Properties.Settings.Default.DocExchangeConnectionString);
+            List<OKSM> str_vid_DataContext = MyReader.MySelect<OKSM>(@"select ID,CAPTION from SPR_79_OKSM", Properties.Settings.Default.DocExchangeConnectionString);
+            List<V013> kat_zl_DataContext = MyReader.MySelect<V013>(@"select IDKAT,NameWithID from V013", Properties.Settings.Default.DocExchangeConnectionString);
+            List<F008> type_policy_DataContext = MyReader.MySelect<F008>(@"select ID,NameWithID from SPR_79_F008", Properties.Settings.Default.DocExchangeConnectionString);
+            List<FIO> fio_col = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_fam", Properties.Settings.Default.DocExchangeConnectionString);
+            List<FIO> im_DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_im", Properties.Settings.Default.DocExchangeConnectionString);
+            List<FIO> ot_DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_ot", Properties.Settings.Default.DocExchangeConnectionString);
+            List<NAME_VP> kem_vid_DataContext = MyReader.MySelect<NAME_VP>(@"select id,name from spr_namevp", Properties.Settings.Default.DocExchangeConnectionString);
+        }
 
         public List<F003> molist = MyReader.MySelect<F003>($@"SELECT mcod,namewithid from f003 order by mcod", Properties.Settings.Default.DocExchangeConnectionString);
         public List<V005> pol_DataContext = MyReader.MySelect<V005>(@"select IDPOL,NameWithID from SPR_79_V005", Properties.Settings.Default.DocExchangeConnectionString);
@@ -730,7 +731,7 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
         //public List<V005> prev_pol_DataContext = MyReader.MySelect<V005>(@"select IDPOL,NameWithID from SPR_79_V005", Properties.Settings.Default.DocExchangeConnectionString);
         //kem_vid.DataContext = MyReader.MySelect<NAMEVP>(@"select distinct name_vp from pol_documents order by name_vp",connectionString);
         // LoadingDecorator1.IsSplashScreenShown = false;
-        public List<FIO> fio_col = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_fam", Properties.Settings.Default.DocExchangeConnectionString);        
+        public List<FIO> fio_col = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_fam", Properties.Settings.Default.DocExchangeConnectionString);
         public List<FIO> im_DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_im", Properties.Settings.Default.DocExchangeConnectionString);
         public List<FIO> ot_DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_ot", Properties.Settings.Default.DocExchangeConnectionString);
         public List<NAME_VP> kem_vid_DataContext = MyReader.MySelect<NAME_VP>(@"select id,name from spr_namevp", Properties.Settings.Default.DocExchangeConnectionString);
@@ -742,44 +743,45 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
         //public List<FIO> prev_ot_DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_ot", Properties.Settings.Default.DocExchangeConnectionString);
         public MainWindow()
         {
- //           Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Background,
- //               new Action(delegate ()
- //               {
- //                   var molist =
- //                           MyReader.MySelect<F003>(
- //                               $@"
- //           SELECT mcod,namewithid from f003
- //order by mcod", Properties.Settings.Default.DocExchangeConnectionString);
-                    
+           
+            //           Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Background,
+            //               new Action(delegate ()
+            //               {
+            //                   var molist =
+            //                           MyReader.MySelect<F003>(
+            //                               $@"
+            //           SELECT mcod,namewithid from f003
+            //order by mcod", Properties.Settings.Default.DocExchangeConnectionString);
 
- //                   pol.DataContext = MyReader.MySelect<V005>(@"select IDPOL,NameWithID from SPR_79_V005", Properties.Settings.Default.DocExchangeConnectionString);
- //                   pol_pr.DataContext = MyReader.MySelect<V005>(@"select IDPOL,NameWithID from SPR_79_V005", Properties.Settings.Default.DocExchangeConnectionString);
- //                   doc_type.DataContext = MyReader.MySelect<F011>(@"select ID,NameWithID from SPR_79_F011", Properties.Settings.Default.DocExchangeConnectionString);
- //                   doctype1.DataContext = MyReader.MySelect<F011>(@"select ID,NameWithID from SPR_79_F011", Properties.Settings.Default.DocExchangeConnectionString);
- //                   doc_type1.DataContext = MyReader.MySelect<F011>(@"select ID,NameWithID from SPR_79_F011", Properties.Settings.Default.DocExchangeConnectionString);
- //                   ddtype.DataContext = MyReader.MySelect<F011>(@"select ID,NameWithID from SPR_79_F011", Properties.Settings.Default.DocExchangeConnectionString);
- //                   str_vid.DataContext = MyReader.MySelect<OKSM>(@"select ID,CAPTION from SPR_79_OKSM", Properties.Settings.Default.DocExchangeConnectionString);
- //                   str_vid1.DataContext = MyReader.MySelect<OKSM>(@"select ID,CAPTION from SPR_79_OKSM", Properties.Settings.Default.DocExchangeConnectionString);
- //                   str_r.DataContext = MyReader.MySelect<OKSM>(@"select ID,CAPTION from SPR_79_OKSM", Properties.Settings.Default.DocExchangeConnectionString);
- //                   gr.DataContext = MyReader.MySelect<OKSM>(@"select ID,CAPTION from SPR_79_OKSM", Properties.Settings.Default.DocExchangeConnectionString);
- //                   kat_zl.DataContext = MyReader.MySelect<V013>(@"select IDKAT,NameWithID from V013", Properties.Settings.Default.DocExchangeConnectionString);
- //                   type_policy.DataContext = MyReader.MySelect<F008>(@"select ID,NameWithID from SPR_79_F008", Properties.Settings.Default.DocExchangeConnectionString);
- //                   prev_pol.DataContext = MyReader.MySelect<V005>(@"select IDPOL,NameWithID from SPR_79_V005", Properties.Settings.Default.DocExchangeConnectionString);
- //                   //kem_vid.DataContext = MyReader.MySelect<NAMEVP>(@"select distinct name_vp from pol_documents order by name_vp",connectionString);
- //                   // LoadingDecorator1.IsSplashScreenShown = false;
- //                   fio_col = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_fam", Properties.Settings.Default.DocExchangeConnectionString);
- //                   fam.DataContext = fio_col;
- //                   im.DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_im", Properties.Settings.Default.DocExchangeConnectionString);
- //                   ot.DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_ot", Properties.Settings.Default.DocExchangeConnectionString);
- //                   kem_vid.DataContext = MyReader.MySelect<NAME_VP>(@"select id,name from spr_namevp", Properties.Settings.Default.DocExchangeConnectionString);
- //                   fam1.DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_fam", Properties.Settings.Default.DocExchangeConnectionString);
- //                   im1.DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_im", Properties.Settings.Default.DocExchangeConnectionString);
- //                   ot1.DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_ot", Properties.Settings.Default.DocExchangeConnectionString);
- //                   prev_fam.DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_fam", Properties.Settings.Default.DocExchangeConnectionString);
- //                   prev_im.DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_im", Properties.Settings.Default.DocExchangeConnectionString);
- //                   prev_ot.DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_ot", Properties.Settings.Default.DocExchangeConnectionString);
 
- //               }));
+            //                   pol.DataContext = MyReader.MySelect<V005>(@"select IDPOL,NameWithID from SPR_79_V005", Properties.Settings.Default.DocExchangeConnectionString);
+            //                   pol_pr.DataContext = MyReader.MySelect<V005>(@"select IDPOL,NameWithID from SPR_79_V005", Properties.Settings.Default.DocExchangeConnectionString);
+            //                   doc_type.DataContext = MyReader.MySelect<F011>(@"select ID,NameWithID from SPR_79_F011", Properties.Settings.Default.DocExchangeConnectionString);
+            //                   doctype1.DataContext = MyReader.MySelect<F011>(@"select ID,NameWithID from SPR_79_F011", Properties.Settings.Default.DocExchangeConnectionString);
+            //                   doc_type1.DataContext = MyReader.MySelect<F011>(@"select ID,NameWithID from SPR_79_F011", Properties.Settings.Default.DocExchangeConnectionString);
+            //                   ddtype.DataContext = MyReader.MySelect<F011>(@"select ID,NameWithID from SPR_79_F011", Properties.Settings.Default.DocExchangeConnectionString);
+            //                   str_vid.DataContext = MyReader.MySelect<OKSM>(@"select ID,CAPTION from SPR_79_OKSM", Properties.Settings.Default.DocExchangeConnectionString);
+            //                   str_vid1.DataContext = MyReader.MySelect<OKSM>(@"select ID,CAPTION from SPR_79_OKSM", Properties.Settings.Default.DocExchangeConnectionString);
+            //                   str_r.DataContext = MyReader.MySelect<OKSM>(@"select ID,CAPTION from SPR_79_OKSM", Properties.Settings.Default.DocExchangeConnectionString);
+            //                   gr.DataContext = MyReader.MySelect<OKSM>(@"select ID,CAPTION from SPR_79_OKSM", Properties.Settings.Default.DocExchangeConnectionString);
+            //                   kat_zl.DataContext = MyReader.MySelect<V013>(@"select IDKAT,NameWithID from V013", Properties.Settings.Default.DocExchangeConnectionString);
+            //                   type_policy.DataContext = MyReader.MySelect<F008>(@"select ID,NameWithID from SPR_79_F008", Properties.Settings.Default.DocExchangeConnectionString);
+            //                   prev_pol.DataContext = MyReader.MySelect<V005>(@"select IDPOL,NameWithID from SPR_79_V005", Properties.Settings.Default.DocExchangeConnectionString);
+            //                   //kem_vid.DataContext = MyReader.MySelect<NAMEVP>(@"select distinct name_vp from pol_documents order by name_vp",connectionString);
+            //                   // LoadingDecorator1.IsSplashScreenShown = false;
+            //                   fio_col = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_fam", Properties.Settings.Default.DocExchangeConnectionString);
+            //                   fam.DataContext = fio_col;
+            //                   im.DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_im", Properties.Settings.Default.DocExchangeConnectionString);
+            //                   ot.DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_ot", Properties.Settings.Default.DocExchangeConnectionString);
+            //                   kem_vid.DataContext = MyReader.MySelect<NAME_VP>(@"select id,name from spr_namevp", Properties.Settings.Default.DocExchangeConnectionString);
+            //                   fam1.DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_fam", Properties.Settings.Default.DocExchangeConnectionString);
+            //                   im1.DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_im", Properties.Settings.Default.DocExchangeConnectionString);
+            //                   ot1.DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_ot", Properties.Settings.Default.DocExchangeConnectionString);
+            //                   prev_fam.DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_fam", Properties.Settings.Default.DocExchangeConnectionString);
+            //                   prev_im.DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_im", Properties.Settings.Default.DocExchangeConnectionString);
+            //                   prev_ot.DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_ot", Properties.Settings.Default.DocExchangeConnectionString);
+
+            //               }));
 
             newCmd.InputGestures.Add(new KeyGesture(Key.L, ModifierKeys.Alt));
             CommandBindings.Add(new CommandBinding(newCmd, Develop_show));
@@ -807,23 +809,23 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
                 }));
             });
             t0.Start();
-            
+
             //Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Background,
             //    new Action(delegate ()
             //    {
-                    Thread t5 = new Thread(delegate ()
-                    {
-                        Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Background,
-                new Action(delegate ()
-                {
-                    strf_adm = "order by pe.ID DESC";
-                    strf_usr = $@"WHERE pe.AGENT =" + Vars.Agnt + " order by pe.ID DESC";
+            Thread t5 = new Thread(delegate ()
+            {
+                Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Background,
+        new Action(delegate ()
+        {
+            strf_adm = "order by pe.ID DESC";
+            strf_usr = $@"WHERE pe.AGENT =" + Vars.Agnt + " order by pe.ID DESC";
                     //if (stream.Length > 0)
                     var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
-                    if (SPR.Premmissions != "User")
-                    {
-                        var peopleList =
-                            MyReader.MySelect<Events>(SPR.MyReader.load_pers_grid + strf_adm, connectionString);
+            if (SPR.Premmissions != "User")
+            {
+                var peopleList =
+                    MyReader.MySelect<Events>(SPR.MyReader.load_pers_grid + strf_adm, connectionString);
                         //////ev =
                         //////     MyReader.MySelect<Events>(SPR.MyReader.load_pers_grid + strf_adm, connectionString);
 
@@ -831,16 +833,16 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
                         //////pers_grid.ItemsSource = ev;
 
                     }
-                    else
-                    {
-                        var peopleList =
-                            MyReader.MySelect<Events>(SPR.MyReader.load_pers_grid + strf_usr, connectionString);
+            else
+            {
+                var peopleList =
+                    MyReader.MySelect<Events>(SPR.MyReader.load_pers_grid + strf_usr, connectionString);
                         //foreach (var item in peopleList) events_g1.Add(item);
                         //pers_grid.ItemsSource = events_g1;
                         pers_grid.ItemsSource = peopleList;
-                        del_zl.IsEnabled = false;
+                del_zl.IsEnabled = false;
 
-                    }
+            }
 
 
                     //writer.Write(peopleList);
@@ -852,10 +854,10 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
 
 
                 }));
-                    });
-                    t5.Start();
+            });
+            t5.Start();
 
-                //}));
+            //}));
 
             Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Background,
                 new Action(delegate ()
@@ -883,12 +885,12 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
 
 
 
-                    
+
 
                 }));
 
             InitializeComponent();
-            
+
 
             DispatcherTimer timer = new DispatcherTimer();  // если надо, то в скобках указываем приоритет, например DispatcherPriority.Render
             //timer.Interval = TimeSpan.FromSeconds(15);
@@ -959,11 +961,11 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
             list4.Add(new Dost { ID = "6", NameWithID = "6 Дата рождения не соответствует календарю" });
 
             this.dost1.ItemsSource = list4;
-
+            
             G_layuot.restore_Layout(Properties.Settings.Default.DocExchangeConnectionString, pers_grid, pers_grid_2);
             //LoadingDecorator1.IsSplashScreenShown = false;
             WindowState = WindowState.Maximized;
-            Vars.MainTitle = "Insurance(полисная часть) v1.030";
+            Vars.MainTitle = "Insurance(полисная часть) v1.029";
             Title = Vars.MainTitle;
             prz.SelectedIndex = -1;
             //if (SPR.Premmissions == "User")
@@ -988,19 +990,46 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
 
 
             //prz_Agent.DataContext = MyReader.MySelect<AgentsSmo>(@"select id,prz_code,agent from pol_prz_agents", Properties.Settings.Default.DocExchangeConnectionString);
+            //if (SPR.Premmissions == "User")
+            //{
+            //    prz.DataContext = MyReader.MySelect<PrzSmo>($@"select id,prz_code,prz_name,NameWithCode from pol_prz where prz_code in ({SPR.PRZ_CODE})", Properties.Settings.Default.DocExchangeConnectionString);
+            //    prz_Agent.DataContext = MyReader.MySelect<AgentsSmo>($@"select id,prz_code,agent from pol_prz_agents where id={Vars.Agnt}", Properties.Settings.Default.DocExchangeConnectionString);
+            //}
+            //else
+            //{
+            //    prz.DataContext = MyReader.MySelect<PrzSmo>($@"select id,prz_code,prz_name,NameWithCode from pol_prz", Properties.Settings.Default.DocExchangeConnectionString);
+            //    prz_Agent.DataContext = MyReader.MySelect<AgentsSmo>($@"select id,prz_code,agent from pol_prz_agents", Properties.Settings.Default.DocExchangeConnectionString);
+            //}
+
+
             if (SPR.Premmissions == "User")
             {
-                prz.DataContext = MyReader.MySelect<PrzSmo>($@"select id,prz_code,prz_name,NameWithCode from pol_prz where prz_code in ({SPR.PRZ_CODE})", Properties.Settings.Default.DocExchangeConnectionString);
-                prz_Agent.DataContext = MyReader.MySelect<AgentsSmo>($@"select id,prz_code,agent from pol_prz_agents where id={Vars.Agnt}", Properties.Settings.Default.DocExchangeConnectionString);
+                prz_Agent.DataContext = MyReader.MySelect<AgentsSmo>(
+                    $@"select id,prz_code,agent from pol_prz_agents where agent='{SPR.Login}'",
+                    Properties.Settings.Default.DocExchangeConnectionString);
+                prz.DataContext = MyReader.MySelect<PrzSmo>(
+                    $@"select id,prz_code,prz_name,NameWithCode from pol_prz where prz_code in( {SPR.PRZ_CODE.Replace(";",",")})",
+                    Properties.Settings.Default.DocExchangeConnectionString);
             }
             else
             {
-                prz.DataContext = MyReader.MySelect<PrzSmo>($@"select id,prz_code,prz_name,NameWithCode from pol_prz", Properties.Settings.Default.DocExchangeConnectionString);
-                prz_Agent.DataContext = MyReader.MySelect<AgentsSmo>($@"select id,prz_code,agent from pol_prz_agents", Properties.Settings.Default.DocExchangeConnectionString);
+                prz.DataContext = MyReader.MySelect<PrzSmo>(
+                    $@"select id,prz_code,prz_name,NameWithCode from pol_prz",
+                    Properties.Settings.Default.DocExchangeConnectionString);
+                prz_Agent.DataContext = MyReader.MySelect<AgentsSmo>(
+                    $@"select id,prz_code,agent from pol_prz_agents where prz_code like'%{prz.EditValue}%'",
+                    Properties.Settings.Default.DocExchangeConnectionString);
+
             }
 
             prz.SelectedIndex = 0;
+         
             prz_Agent.EditValue = Vars.Agnt;
+            prz_Agent.Text = SPR.MyReader.SELECTVAIN("select agent from pol_prz_agents where ID="+ Vars.Agnt, Properties.Settings.Default.DocExchangeConnectionString);
+            if (prz_Agent.Text == "")
+            {
+                prz_Agent.SelectedIndex = 0;
+            }
             //cel_vizita.DataContext = MyReader.MySelect<R001>(@"select Kod,NameWithID from R001", Properties.Settings.Default.DocExchangeConnectionString);
             //sp_pod_z.DataContext = MyReader.MySelect<R003>(@"select ID,NameWithID from R003", Properties.Settings.Default.DocExchangeConnectionString);
             Version_Check();
@@ -1063,7 +1092,10 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
                 Load_att_btn.Visibility = Visibility.Collapsed;
                 Unload_att_btn.Visibility = Visibility.Collapsed;
             }
-
+            if (Vars.SMO == "67005")
+            {
+                Unload_att_btn.Visibility = Visibility.Visible;
+            }
         }
         //string cel_viz;
 
@@ -1222,7 +1254,7 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
                     //pers_grid_Loaded(this, e);
                     Window_Loaded(this, e);
                     //}
-                   
+
                 }
                 else
                 {
@@ -1300,14 +1332,14 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
 
         public void Vladik()
         {
-            
+
             if (POISKVLADIK.Load_ZL == true)
             {
-               
+
 
                 if (Vars.IdP != null)
                 {
-                   
+
                     Tab_ZL.Visibility = Visibility.Visible;
                     MainTab.SelectedIndex = 1;
                     Window_Loaded(this, e);
@@ -1315,15 +1347,15 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
                 }
                 else
                 {
-                
+
                     Tab_ZL.Visibility = Visibility.Visible;
                     MainTab.SelectedIndex = 1;
-                    
+
                     try
                     {
                         fam.Text = POISKVLADIK.FAM_TFOMS;
-                      
-                
+
+
                     }
                     catch
                     {
@@ -1400,14 +1432,14 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
 
 
                 POISKVLADIK.Load_ZL = false;
-               
+
                 return;
             }
         }
 
         private void w_main_Activated(object sender, EventArgs e)
         {
-         
+
             DispatcherTimer timer = new DispatcherTimer();  // если надо, то в скобках указываем приоритет, например DispatcherPriority.Render
             timer.Interval = TimeSpan.FromSeconds(1);
             timer.Tick += new EventHandler(Ot_tick);
@@ -1455,7 +1487,7 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
                     $@"select id,prz_code,agent from pol_prz_agents where agent='{SPR.Login}'",
                     Properties.Settings.Default.DocExchangeConnectionString);
                 prz.DataContext = MyReader.MySelect<PrzSmo>(
-                    $@"select id,prz_code,prz_name,NameWithCode from pol_prz where prz_code in( {SPR.PRZ_CODE})",
+                    $@"select id,prz_code,prz_name,NameWithCode from pol_prz where prz_code in( {SPR.PRZ_CODE.Replace(";", ",")})",
                     Properties.Settings.Default.DocExchangeConnectionString);
             }
             else
@@ -1720,7 +1752,7 @@ select @num", con);
 
         private void w_main_Loaded(object sender, RoutedEventArgs e)
         {
-      
+
             //layout_InUse();
             pers_grid.ClearSorting();
 
@@ -1764,7 +1796,7 @@ select @num", con);
                 //string sg_rows = " ";
                 //int[] rt = pers_grid.GetSelectedRowHandles();
                 int rtc = pers_grid.GetSelectedRowHandles().Count();
-                
+
                 //for (int i = 0; i < rt.Count(); i++)
 
                 //{
@@ -2706,18 +2738,18 @@ from pol_prz_agents where prz_code like'%{prz.EditValue.ToString()}%'", Properti
 
         private void poisk_Click(object sender, RoutedEventArgs e)
         {
-            if(Vars.SMO.Substring(0, 2) == "25")
+            if (Vars.SMO.Substring(0, 2) == "25")
             {
                 Poisk_Vladik w4 = new Poisk_Vladik();
                 w4.ShowDialog();
                 Vladik();
             }
-            else if(Vars.SMO.Substring(0, 2) == "46")
+            else if (Vars.SMO.Substring(0, 2) == "46")
             {
                 Poisk w4 = new Poisk();
                 w4.ShowDialog();
             }
-            
+
         }
 
         private void del_btn_Click(object sender, RoutedEventArgs e)
@@ -3212,8 +3244,8 @@ DEALLOCATE MY_CURSOR
                 }
 
                 pers_grid.FilterCriteria = fcrt;
-                
-                
+
+
             }
 
             //InsMethods.PersData_Default(this);
@@ -3235,20 +3267,20 @@ DEALLOCATE MY_CURSOR
                 return;
             }
 
-            if (ddnum.Text!="" && (int)type_policy.EditValue==2 && fakt_prekr.EditValue==null)
+            if (ddnum.Text != "" && (int)type_policy.EditValue == 2 && fakt_prekr.EditValue == null)
             {
                 string m = "Дата прекращения ВС не может быть пустой у иностранца!";
                 string t = "Ошибка!";
                 int b = 1;
                 Message me = new Message(m, t, b);
                 me.ShowDialog();
-                
+
                 return;
             }
-            else if(ddnum.Text != "" && (int)type_policy.EditValue == 2)
+            else if (ddnum.Text != "" && (int)type_policy.EditValue == 2)
             {
-          
-                if (docexp1.EditValue==null && (int)ddtype.EditValue != 11)
+
+                if (docexp1.EditValue == null && (int)ddtype.EditValue != 11)
                 {
                     string m = "Дата окончания ДД может быть пустой только у бессрочного вида на жительство!";
                     string t = "Ошибка!";
@@ -3258,7 +3290,7 @@ DEALLOCATE MY_CURSOR
 
                     return;
                 }
-                else if(docexp1.EditValue != null && (DateTime)(docexp1.EditValue ?? new DateTime(1900, 1, 1)) < (DateTime)(fakt_prekr.EditValue))
+                else if (docexp1.EditValue != null && (DateTime)(docexp1.EditValue ?? new DateTime(1900, 1, 1)) < (DateTime)(fakt_prekr.EditValue))
                 {
                     string m = "Дата прекращения ВС не может быть больше даты окончания действия ДД!";
                     string t = "Ошибка!";
@@ -3268,10 +3300,10 @@ DEALLOCATE MY_CURSOR
 
                     return;
                 }
-                
-                
+
+
             }
-            if((im.Text=="" || ot.Text=="") && dost1.EditValue==null)
+            if ((im.Text == "" || ot.Text == "") && dost1.EditValue == null)
             {
                 string m = "Проверьте ФИО и надежность идентификации!";
                 string t = "Ошибка!";
@@ -3281,7 +3313,7 @@ DEALLOCATE MY_CURSOR
 
                 return;
             }
-            if((cel_vizita.EditValue.ToString().Contains("П010") && pr_pod_z_smo.SelectedIndex!=0) || (cel_vizita.DisplayText.Contains("желани") && pr_pod_z_smo.SelectedIndex != 1)
+            if ((cel_vizita.EditValue.ToString().Contains("П010") && pr_pod_z_smo.SelectedIndex != 0) || (cel_vizita.DisplayText.Contains("желани") && pr_pod_z_smo.SelectedIndex != 1)
                 || (cel_vizita.DisplayText.Contains("житель") && pr_pod_z_smo.SelectedIndex != 2) || (cel_vizita.DisplayText.Contains("расторж") && pr_pod_z_smo.SelectedIndex != 3))
             {
                 string m = "Несовпадение причины внесения изменений в РС ЕРЗ и причины подачи заявления о выборе (замене) СМО";
@@ -4014,7 +4046,7 @@ DEALLOCATE MY_CURSOR
         //}
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-           
+
             //this.pr_pod_z_smo.ItemsSource = null;
             //this.pr_pod_z_polis.ItemsSource = null;
             //this.form_polis.ItemsSource = null;
@@ -4375,7 +4407,7 @@ on t0.idguid = t3.person_guid", con);
                             }
                             else
                             {
-                                status_p2.SelectedIndex = Convert.ToInt32(prelation)-1;
+                                status_p2.SelectedIndex = Convert.ToInt32(prelation) - 1;
                             }
 
                         }
@@ -4445,14 +4477,13 @@ on t0.idguid = t3.person_guid", con);
                         object docmr_1 = reader16["DOCMR"];
                         object str_vid_1 = reader16["OKSM"];
                         object idguid_ = reader16["IDGUID"];
-                        object docexp_prev_ = reader16["docexp"];
 
 
 
 
-                        if (doctype_1.ToString()=="")
+                        if (doctype_1.ToString() == "")
                         {
-                             doc_type1.EditValue = 14;
+                            doc_type1.EditValue = 14;
                         }
                         else
                         {
@@ -4471,9 +4502,8 @@ on t0.idguid = t3.person_guid", con);
 
                         kem_vid1.Text = name_vp_1.ToString();
                         kod_podr1.Text = name_vp_code_1.ToString();
-                        //prev_mr.Text = docmr_1.ToString();
+                        prev_mr.Text = docmr_1.ToString();
                         str_vid1.EditValue = str_vid_1;
-                        docexp2.EditValue= Convert.ToDateTime(docexp_prev_);
 
 
 
@@ -4505,7 +4535,7 @@ where event_guid=(select event_guid from pol_persons where id=@id) and main=0 an
                         ddser.Text = docser.ToString();
                         ddnum.Text = docnum.ToString();
                         dddate.DateTime = Convert.ToDateTime(docdate);
-                        if(docexp.ToString() == "")
+                        if (docexp.ToString() == "")
                         {
                             docexp1.EditValue = null;
                         }
@@ -4513,7 +4543,7 @@ where event_guid=(select event_guid from pol_persons where id=@id) and main=0 an
                         {
                             docexp1.EditValue = Convert.ToDateTime(docexp);
                         }
-                        
+
                         ddkemv.Text = name_vp.ToString();
 
                         dop_doc = 1;
@@ -5682,52 +5712,52 @@ where e.person_guid='{rper}' and main=1", con);
         private void date_vid_EditValueChanged(object sender, EditValueChangedEventArgs e)
         {
             try
-            { 
-            //if(btn_=="2")
-            //{
-            DateTime firstDate = dr.DateTime;
-            DateTime secondDate = DateTime.Now;
-            DateTime docDate = date_vid.DateTime;
-            if (firstDate != null)
             {
-                TimeSpan interval = secondDate.Subtract(firstDate);
-                if (interval.Days / 365.25 >= 20 && interval.Days / 365.25 < 45 && doc_type.EditValue.ToString() == "14")
+                //if(btn_=="2")
+                //{
+                DateTime firstDate = dr.DateTime;
+                DateTime secondDate = DateTime.Now;
+                DateTime docDate = date_vid.DateTime;
+                if (firstDate != null)
                 {
-                    TimeSpan interval1 = docDate.Subtract(firstDate);
-                    if (interval1.Days / 365.25 < 20)
+                    TimeSpan interval = secondDate.Subtract(firstDate);
+                    if (interval.Days / 365.25 >= 20 && interval.Days / 365.25 < 45 && doc_type.EditValue.ToString() == "14")
                     {
-                        date_vid.Background = new SolidColorBrush(Colors.Red);
+                        TimeSpan interval1 = docDate.Subtract(firstDate);
+                        if (interval1.Days / 365.25 < 20)
+                        {
+                            date_vid.Background = new SolidColorBrush(Colors.Red);
+                        }
+                        else
+                        {
+                            date_vid.Background = new SolidColorBrush(Colors.White);
+                        }
+
+                    }
+                    else if (interval.Days / 365.25 >= 45 && doc_type.EditValue.ToString() == "14")
+                    {
+                        TimeSpan interval1 = docDate.Subtract(firstDate);
+                        if (interval1.Days / 365.25 < 45)
+                        {
+                            date_vid.Background = new SolidColorBrush(Colors.Red);
+                        }
+                        else
+                        {
+                            date_vid.Background = new SolidColorBrush(Colors.White);
+                        }
                     }
                     else
                     {
                         date_vid.Background = new SolidColorBrush(Colors.White);
                     }
 
-                }
-                else if (interval.Days / 365.25 >= 45 && doc_type.EditValue.ToString() == "14")
-                {
-                    TimeSpan interval1 = docDate.Subtract(firstDate);
-                    if (interval1.Days / 365.25 < 45)
-                    {
-                        date_vid.Background = new SolidColorBrush(Colors.Red);
-                    }
-                    else
-                    {
-                        date_vid.Background = new SolidColorBrush(Colors.White);
-                    }
                 }
                 else
                 {
-                    date_vid.Background = new SolidColorBrush(Colors.White);
+                    return;
                 }
-
+                // 
             }
-            else
-            {
-                return;
-            }
-            // 
-             }
             catch
             {
 
@@ -6324,7 +6354,7 @@ where e.person_guid='{rper}' and main=1", con);
 
         private void Zl_photo_EditValueChanged(object sender, EditValueChangedEventArgs e)
         {
-            
+
 
 
             if (zl_photo.EditValue != null && zl_photo.EditValue.ToString() != "")
@@ -6604,7 +6634,7 @@ where e.person_guid='{rper}' and main=1", con);
 
             //set the color matrix attribute
             attributes.SetColorMatrix(colorMatrix);
-           
+
             //draw the original image on the new image
             //using the grayscale color matrix
             g.DrawImage(original, new System.Drawing.Rectangle(0, 0, original.Width, original.Height),
@@ -7162,16 +7192,16 @@ on t0.idguid = t3.person_guid", con);
                        dost1.EditValue = dost_1.Split(';');
                        cel_vizita.EditValue = tip_op_.ToString();
                        sp_pod_z.EditValue = Convert.ToInt32(sppz_.ToString() == "" ? 0 : sppz_);
-                       if(Vars.Btn=="3")
+                       if (Vars.Btn == "3")
                        {
                            d_obr.EditValue = DateTime.Today;
                        }
-                       else if(Vars.Btn == "2")
+                       else if (Vars.Btn == "2")
                        {
                            d_obr.EditValue = Convert.ToDateTime(dvisit_.ToString() == "" ? DateTime.Today : dvisit_);
                        }
-                       
-                       
+
+
                        petition.EditValue = Convert.ToBoolean(petition_.ToString() == "" ? 0 : petition_);
                        pr_pod_z_polis.SelectedIndex = Convert.ToInt32(rpolis_.ToString() == "" ? 0 : rpolis_) - 1;
                        form_polis.SelectedIndex = Convert.ToInt32(fpolis_.ToString() == "" ? 0 : fpolis_);
@@ -7251,7 +7281,7 @@ on t0.idguid = t3.person_guid", con);
                            }
                            else
                            {
-                               status_p2.SelectedIndex = Convert.ToInt32(prelation)-1;
+                               status_p2.SelectedIndex = Convert.ToInt32(prelation) - 1;
                            }
 
                        }
@@ -8237,7 +8267,7 @@ where vpolis=2 and blank=1 and DBEG is null)", con);
                     MyReader.MySelect<People>(SPR.MyReader.load_pers_grid2 + strf2, connectionString);
 
                 pers_grid_2.ItemsSource = peopleList;
-                if (pers_grid_2.VisibleRowCount != 0 && Vars.Btn=="1")
+                if (pers_grid_2.VisibleRowCount != 0 && Vars.Btn == "1")
                 {
                     string m = "Застрахованное лицо с такими серией и номером документа уже есть в базе данных!";
                     string t = "Сообщение";
@@ -8279,7 +8309,7 @@ where vpolis=2 and blank=1 and DBEG is null)", con);
             }
             else
             {
-               EnterKeyTraversal.SetIsEnabled(w_main, true);
+                Yamed.Control.EnterKeyTraversal.SetIsEnabled(w_main, true);
                 //Yamed.Control.EnterKeyTraversal.SetIsEnabled(im, false);
                 //return;
             }
@@ -9191,21 +9221,204 @@ delete from POL_PERSONS where id in({sg_rows_zl})", con);
         }
         private void TestBarnaul(object sender, RoutedEventArgs e)
         {
-            string fname1 = $@"IS{Vars.SMO}T{Vars.SMO.Substring(0, 2)}_{DateTime.Today.Year.ToString().Substring(0, 2) + (DateTime.Today.Month.ToString().Length < 2 ? "0" + DateTime.Today.Month.ToString() : DateTime.Today.Month.ToString())}1.csv";
-            SaveFileDialog SF = new SaveFileDialog();
-            SF.FileName = fname1;
-            SF.DefaultExt = ".zip";
-            SF.Filter = "Файлы zip (.zip)|*.zip";
-            bool res = SF.ShowDialog().Value;
-            string fname = SF.FileName;
-
-
-            if (res == true)
+            if (Vars.SMO == "67005")
             {
-                var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
-                SqlConnection con = new SqlConnection(connectionString);
 
-                SqlCommand comm = new SqlCommand($@"declare @r char='|';
+                //InuputForm infZ = new InuputForm();
+                //infZ.ShowDialog();
+                Insurance_SPR.SPR.S_PR = XtraInputBox.Show("Введите способ прикрепления к МО (0 - нет данных, 1 – по месту регистрации, 2 -  по заявлению)", "Прикрепление к МО", "2");
+                SaveFileDialog SF = new SaveFileDialog();
+                SF.DefaultExt = ".dbf";
+                SF.Filter = "Файлы DBF (.dbf)|*.dbf";
+                SF.FileName = "R67005.dbf";
+                bool res = SF.ShowDialog().Value;
+                List<RFILESMOLENSK> inf = new List<RFILESMOLENSK>();
+                if (res == true)
+                {
+                    //select FAM,im,ot,dr,w,pp.VPOLIS,pp.SPOLIS,pp.NPOLIS,'67005' as Q,p.DSTART as DP,pp.DEND as DENDP,pd.DOCTYPE,pd.DOCSER+' '+pd.DOCNUM as SN_PASP, p.SS as SNILS,pd.OKSM from POL_PERSONS p
+                    //                LEFT JOIN POL_POLISES pp
+                    //on p.EVENT_GUID = pp.EVENT_GUID
+                    //left join POL_DOCUMENTS pd
+                    //on pd.EVENT_GUID = p.EVENT_GUID
+                    inf = MyReader.MySelect<RFILESMOLENSK>($@"select 
+case when p.fam='' then null else p.FAM end as 'FAM',
+case when p.im='' then null else p.im end as 'IM',
+case when p.ot='' then null else p.OT end as 'OT',
+p.dr as 'DR',
+p.w as 'W',
+pp.VPOLIS as 'VPOLIS',
+pp.SPOLIS as 'S_POL',
+pp.NPOLIS as 'N_POL',
+'67005' as 'Q',
+pp.DBEG as 'DP',
+pp.dend as 'DENDP',
+CONVERT(NVARCHAR(2),pd.DOCTYPE) as 'DOCTYPE',
+pd.DOCSER + ''+ pd.DOCNUM as 'SN_PASP',
+p.SS as 'SNILS',
+(case when (fh.OKATO is null or right(fh.OKATO,9)='000000000') and ao7.OKATO is null and ao6.OKATO is not null then ao6.OKATO 
+      when fh.OKATO is null and ao7.OKATO is null and ao6.OKATO is null then ao3.OKATO
+		when fh.OKATO is null and ao7.OKATO is null and ao6.OKATO is null and ao3.OKATO is null then ao.OKATO
+      when (fh.OKATO is null or right(fh.OKATO,9)='000000000') and ao7.OKATO is not null then ao7.OKATO
+else fh.OKATO end) 'OKATO',
+(case
+when ag.FIAS_L1!='00000000-0000-0000-0000-000000000000' and ag.fias_l3!='00000000-0000-0000-0000-000000000000' then ao3.formalname+' '+ao3.shortname 
+when ag.FIAS_L1!='00000000-0000-0000-0000-000000000000' and ag.fias_l3='00000000-0000-0000-0000-000000000000' then ao.formalname+' '+ao.shortname 
+
+else ao.formalname+' '+ao.shortname end) as 'RNNAME',
+(case
+when ag.FIAS_L4!='00000000-0000-0000-0000-000000000000' then ao4.formalname+' '+ao4.shortname 
+else ao6.formalname+' '+ao6.shortname end) as 'NPNAME',
+ao7.formalname+' '+ao7.shortname as 'UL',
+ao7.CODE as 'ULCODE',
+REPLACE(ag.DOM,'  ','') as 'DOM',
+REPLACE(ag.KORP,'  ','') as 'KOR',
+ag.EXT as 'STR',
+ag.kv as 'KV',
+p.PHONE as 'TEL',
+p.mo as 'MCOD',
+CONVERT(date,p.DSTART) as 'D_PR',
+null as 'D_OT',
+{Insurance_SPR.SPR.S_PR} as 'S_PR',
+null as 'SNILS_VR'
+
+
+
+from POL_EVENTS e
+left join POL_PERSONS p
+on e.IDGUID=p.EVENT_GUID 
+left join (select*from POL_ADDRESSES where IDGUID in(select ADDR_GUID from POL_RELATION_ADDR_PERS where ADDRES_G=1)) ag
+on p.EVENT_GUID=ag.EVENT_GUID 
+left join (select*from POL_ADDRESSES where IDGUID in(select ADDR_GUID from POL_RELATION_ADDR_PERS where ADDRES_P=1)) ap
+on p.EVENT_GUID=ap.EVENT_GUID 
+left join POL_RELATION_ADDR_PERS pa
+on e.IDGUID=pa.EVENT_GUID and pa.ADDRES_G=1
+left join POL_POLISES pp
+on e.IDGUID=pp.EVENT_GUID
+left join POL_OPLIST op
+on e.IDGUID=op.EVENT_GUID
+left join FIAS.dbo.Houses fh
+on ag.HOUSE_GUID=fh.HOUSEID 
+left join FIAS.dbo.Houses fh1
+on ap.HOUSE_GUID=fh1.HOUSEID
+left join POL_DOCUMENTS pd
+on e.IDGUID=pd.EVENT_GUID and pd.main=1
+left join POL_DOCUMENTS pd1
+on e.IDGUID=pd1.EVENT_GUID and pd1.main=0 and pd1.ACTIVE=1
+left join POL_DOCUMENTS_old pdo
+on pd.PREVDOCGUID=pdo.IDGUID
+left join POL_PERSONSB pb2
+on p.EVENT_GUID=pb2.EVENT_GUID and pb2.TYPE=2
+left join POL_PERSONSB pb3
+on p.EVENT_GUID=pb3.EVENT_GUID and pb3.TYPE=3
+left join FIAS.dbo.AddressObjects ao
+on ag.fias_l1=ao.aoguid and ao.AOLEVEL=1 and ao.ACTSTATUS=1
+left join FIAS.dbo.AddressObjects ao3
+on ag.fias_l3=ao3.aoguid and ao3.AOLEVEL=3 and ao3.ACTSTATUS=1
+left join FIAS.dbo.AddressObjects ao4
+on ag.fias_l4=ao4.aoguid and ao4.AOLEVEL=4 and ao4.ACTSTATUS=1
+left join FIAS.dbo.AddressObjects ao41
+on ap.fias_l4=ao41.aoguid and ao41.AOLEVEL=4 and ao41.ACTSTATUS=1
+left join FIAS.dbo.AddressObjects ao6
+on ag.fias_l6=ao6.aoguid and ao6.AOLEVEL=6 and ao6.ACTSTATUS=1
+left join FIAS.dbo.AddressObjects ao7
+on ag.fias_l7=ao7.aoguid and ao7.AOLEVEL=7 and ao7.ACTSTATUS=1
+left join FIAS.dbo.AddressObjects ao71
+on ap.fias_l7=ao71.aoguid and ao71.AOLEVEL=7 and ao71.ACTSTATUS=1
+left join POL_PERSONS ppr
+on p.RPERSON_GUID=ppr.IDGUID 
+left join POL_PERSONS_OLD pold
+on p.idguid=pold.PERSON_GUID
+where  p.MO <> '' and p.MO is not null", Properties.Settings.Default.DocExchangeConnectionString);
+
+                    //DataTable dt = new DataTable();
+                    string dbffile = SF.FileName;
+                    using (Stream fos = File.Open(dbffile, FileMode.Create, FileAccess.ReadWrite))
+                    {
+
+                        var writer = new DotNetDBF.DBFWriter(fos);
+                        writer.CharEncoding = Encoding.GetEncoding(866);
+                        writer.Signature = DotNetDBF.DBFSignature.DBase3;
+
+                        writer.LanguageDriver = 0x26; // кодировка 866
+                        writer.Fields = new[]{
+                        new DotNetDBF.DBFField("FAM", DotNetDBF.NativeDbType.Char, 25),
+                        new DotNetDBF.DBFField("IM", DotNetDBF.NativeDbType.Char, 20),
+                        new DotNetDBF.DBFField("OT", DotNetDBF.NativeDbType.Char, 20),
+                        new DotNetDBF.DBFField("DR", DotNetDBF.NativeDbType.Date),
+                        new DotNetDBF.DBFField("W", DotNetDBF.NativeDbType.Numeric, 1,0),
+                        new DotNetDBF.DBFField("VPOLIS", DotNetDBF.NativeDbType.Numeric, 1,0),
+                        new DotNetDBF.DBFField("S_POL", DotNetDBF.NativeDbType.Char, 10),
+                        new DotNetDBF.DBFField("N_POL", DotNetDBF.NativeDbType.Char, 16,0),
+                        new DotNetDBF.DBFField("Q", DotNetDBF.NativeDbType.Char, 5),
+                        new DotNetDBF.DBFField("DP", DotNetDBF.NativeDbType.Date),
+                        new DotNetDBF.DBFField("DENDP", DotNetDBF.NativeDbType.Date),
+                        new DotNetDBF.DBFField("DOCTYPE", DotNetDBF.NativeDbType.Char,2),
+                        new DotNetDBF.DBFField("SN_PASP", DotNetDBF.NativeDbType.Char,25),
+                        new DotNetDBF.DBFField("SNILS", DotNetDBF.NativeDbType.Char, 14),
+                        new DotNetDBF.DBFField("OKATO", DotNetDBF.NativeDbType.Char, 11),
+                        new DotNetDBF.DBFField("RNNAME", DotNetDBF.NativeDbType.Char, 40),
+                        new DotNetDBF.DBFField("NPNAME", DotNetDBF.NativeDbType.Char, 40),
+                        new DotNetDBF.DBFField("UL", DotNetDBF.NativeDbType.Char, 40),
+                        new DotNetDBF.DBFField("ULCODE", DotNetDBF.NativeDbType.Char, 17),
+                        new DotNetDBF.DBFField("DOM", DotNetDBF.NativeDbType.Char, 7),
+                         new DotNetDBF.DBFField("KOR", DotNetDBF.NativeDbType.Char, 5),
+                          new DotNetDBF.DBFField("STR", DotNetDBF.NativeDbType.Char, 5),
+                           new DotNetDBF.DBFField("KV", DotNetDBF.NativeDbType.Char, 5),
+                            new DotNetDBF.DBFField("TEL", DotNetDBF.NativeDbType.Char, 12),
+                             new DotNetDBF.DBFField("MCOD", DotNetDBF.NativeDbType.Char, 6),
+                              new DotNetDBF.DBFField("D_PR", DotNetDBF.NativeDbType.Date),
+                              new DotNetDBF.DBFField("D_OT", DotNetDBF.NativeDbType.Date),
+                              new DotNetDBF.DBFField("S_PR", DotNetDBF.NativeDbType.Numeric, 1,0),
+                               new DotNetDBF.DBFField("SNILS_VR", DotNetDBF.NativeDbType.Char, 11),
+
+                    };
+
+                        for (int i = 0; i < inf.Count; i++)
+                        {
+                            try
+                            {
+                                writer.WriteRecord(inf[i].FAM, inf[i].IM, inf[i].OT, inf[i].DR, inf[i].W,
+                                     inf[i].VPOLIS, inf[i].S_POL, inf[i].N_POL, inf[i].Q, inf[i].DP, inf[i].DENDP,
+                                     inf[i].DOCTYPE, inf[i].SN_PASP, inf[i].SNILS, inf[i].OKATO, inf[i].RNNAME, inf[i].NPNAME,
+                                     inf[i].UL, inf[i].ULCODE, inf[i].DOM, inf[i].KOR, inf[i].STR, inf[i].KV,
+                                     inf[i].TEL, inf[i].MCOD, inf[i].D_PR, inf[i].D_OT, inf[i].S_PR, inf[i].SNILS_VR
+                                 //добавляем поля в набор
+                                 );
+                             
+                            }
+                            catch (Exception ex)
+                            {
+                                MessageBox.Show(i.ToString());
+                                MessageBox.Show(ex.ToString());
+                            }
+                        }
+                
+                        writer.Close();
+                    }
+                    string m = "R - Файл успешно выгружен!";
+                    string t = "Сообщение!";
+                    int b = 1;
+                    Message me = new Message(m, t, b);
+                    me.ShowDialog();
+                }
+            }
+            else
+            {
+                string fname1 = $@"IS{Vars.SMO}T{Vars.SMO.Substring(0, 2)}_{DateTime.Today.Year.ToString().Substring(0, 2) + (DateTime.Today.Month.ToString().Length < 2 ? "0" + DateTime.Today.Month.ToString() : DateTime.Today.Month.ToString())}1.csv";
+                SaveFileDialog SF = new SaveFileDialog();
+                SF.FileName = fname1;
+                SF.DefaultExt = ".zip";
+                SF.Filter = "Файлы zip (.zip)|*.zip";
+                bool res = SF.ShowDialog().Value;
+                string fname = SF.FileName;
+
+
+                if (res == true)
+                {
+                    var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
+                    SqlConnection con = new SqlConnection(connectionString);
+
+                    SqlCommand comm = new SqlCommand($@"declare @r char='|';
             SELECT convert(nvarchar(36), p.IDGUID) + @r + isnull(fam, '') + @r + isnull(im, '') + @r + isnull(ot, '') + @r + convert(nvarchar, isnull(cast(dr as date), '')) + @r
             + convert(nvarchar, isnull(w, '')) + @r + convert(nvarchar, isnull(DOCTYPE, '')) + @r + isnull(DOCSER, '') + @r + isnull(DOCNUM, '') + @r + isnull(ss, '') + @r
             + '1027739449913' + @r + '01000' + @r + enp + @r + convert(nvarchar, isnull(vpolis, '')) + @r + isnull(SPOLIS, '') + @r + isnull(NPOLIS, '') + @r
@@ -9215,36 +9428,37 @@ left
 join POL_DOCUMENTS d on p.EVENT_GUID = d.EVENT_GUID
 left
 join POL_POLISES pp on p.EVENT_GUID = pp.EVENT_GUID", con);
-                con.Open();
-                SqlDataReader dr = comm.ExecuteReader();
-                StreamWriter sr = new StreamWriter(fname, false, Encoding.GetEncoding(1251));
+                    con.Open();
+                    SqlDataReader dr = comm.ExecuteReader();
+                    StreamWriter sr = new StreamWriter(fname, false, Encoding.GetEncoding(1251));
 
-                while (dr.Read())
-                {
+                    while (dr.Read())
+                    {
 
-                    sr.Write("{0}", dr[0]);
-                    sr.WriteLine();
+                        sr.Write("{0}", dr[0]);
+                        sr.WriteLine();
+
+                    }
+
+                    sr.Close();
+                    con.Close();
+                    string fnamezip = fname.Replace(".csv", "");
+                    using (ZipFile zip = new ZipFile())
+                    {
+                        zip.AddFile(fname, "");
+
+                        zip.Save(fnamezip + ".zip");
+
+                    }
+
+                    File.Delete(fname);
+                    string m = "Файл " + fname + " успешно сохранен!";
+                    string t = "Сообщение!";
+                    int b = 1;
+                    Message me = new Message(m, t, b);
+                    me.ShowDialog();
 
                 }
-
-                sr.Close();
-                con.Close();
-                string fnamezip = fname.Replace(".csv", "");
-                using (ZipFile zip = new ZipFile())
-                {
-                    zip.AddFile(fname, "");
-
-                    zip.Save(fnamezip + ".zip");
-
-                }
-                
-                File.Delete(fname);
-                string m = "Файл " + fname + " успешно сохранен!";
-                string t = "Сообщение!";
-                int b = 1;
-                Message me = new Message(m, t, b);
-                me.ShowDialog();
-
             }
         }
         private DataTable tb;
@@ -9261,37 +9475,37 @@ join POL_POLISES pp on p.EVENT_GUID = pp.EVENT_GUID", con);
                 zip.ExtractAll(ex_path.Replace(OF.SafeFileName, ""), ExtractExistingFileAction.OverwriteSilently);
                 ex_path = ex_path.Replace(OF.SafeFileName, zip.EntryFileNames.First());
 
-                
-                        tb = new DataTable();
-                        if (ex_path.Contains(".xls") || ex_path.Contains(".xlsx"))
-                        {
-                            Spreadsheet excel = new Spreadsheet();
-                            excel.LoadFromFile(ex_path);
-                            tb = excel.ExportToDataTable();
-                        }
-                        else
-                        {
-                            string filename = ex_path;
-                            string[] attache = File.ReadAllLines(filename);
 
-                            var cls0 = attache[0].Split('|');
-                            for (int i = 0; i < cls0.Count(); i++)
-                            {
-                                tb.Columns.Add("Column" + i.ToString(), typeof(string));
-                            }
+                tb = new DataTable();
+                if (ex_path.Contains(".xls") || ex_path.Contains(".xlsx"))
+                {
+                    Spreadsheet excel = new Spreadsheet();
+                    excel.LoadFromFile(ex_path);
+                    tb = excel.ExportToDataTable();
+                }
+                else
+                {
+                    string filename = ex_path;
+                    string[] attache = File.ReadAllLines(filename);
 
-                            foreach (string row in attache)
-                            {
-                            // получаем все ячейки строки
+                    var cls0 = attache[0].Split('|');
+                    for (int i = 0; i < cls0.Count(); i++)
+                    {
+                        tb.Columns.Add("Column" + i.ToString(), typeof(string));
+                    }
 
-                            var cls = row.Split('|');
+                    foreach (string row in attache)
+                    {
+                        // получаем все ячейки строки
 
-                                tb.LoadDataRow(cls, LoadOption.Upsert);
+                        var cls = row.Split('|');
 
-                            }
-                        }
+                        tb.LoadDataRow(cls, LoadOption.Upsert);
 
-                    
+                    }
+                }
+
+
 
                 var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
                 SqlConnection con = new SqlConnection(connectionString);
@@ -9360,7 +9574,7 @@ join POL_POLISES pp on p.EVENT_GUID = pp.EVENT_GUID", con);
             {
                 return;
             }
-            
+
         }
 
         private void Load_flk_zl_ItemClick(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
@@ -9371,7 +9585,7 @@ join POL_POLISES pp on p.EVENT_GUID = pp.EVENT_GUID", con);
             bool res = OPF.ShowDialog().Value;
             string[] files = OPF.FileNames;
             string[] shfiles = OPF.SafeFileNames;
-            int ev_id = (int)pers_grid.GetCellValue(pers_grid.GetSelectedRowHandles()[0],"EVENT_ID");
+            int ev_id = (int)pers_grid.GetCellValue(pers_grid.GetSelectedRowHandles()[0], "EVENT_ID");
             int y = 0;
             if (res == true)
             {
@@ -9435,11 +9649,11 @@ join POL_POLISES pp on p.EVENT_GUID = pp.EVENT_GUID", con);
 
         private void Load_OK_ItemClick(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
         {
-            
+
             string sg_rows_zl = " ";
             int[] rt = pers_grid.GetSelectedRowHandles();
             for (int i = 0; i < rt.Count(); i++)
-            {                
+            {
                 var ddd_zl = pers_grid.GetCellValue(rt[i], "ID");
                 var sgr_zl = sg_rows_zl.Insert(sg_rows_zl.Length, ddd_zl.ToString()) + ",";
                 sg_rows_zl = sgr_zl;
@@ -9519,6 +9733,162 @@ join POL_POLISES pp on p.EVENT_GUID = pp.EVENT_GUID", con);
             {
                 return;
             }
+        }
+
+        private void Vignas_ItemClick(object sender, DevExpress.Xpf.Bars.ItemClickEventArgs e)
+        {
+
+            SaveFileDialog SF = new SaveFileDialog();
+            SF.DefaultExt = ".dbf";
+            SF.Filter = "Файлы DBF|*.dbf";
+            SF.FileName = "naselen.dbf";
+
+            bool res = SF.ShowDialog().Value;
+            List<NASELEN_KALININGRAD> naselen = new List<NASELEN_KALININGRAD>();
+            if (res == true)
+            {
+                //select FAM,im,ot,dr,w,pp.VPOLIS,pp.SPOLIS,pp.NPOLIS,'67005' as Q,p.DSTART as DP,pp.DEND as DENDP,pd.DOCTYPE,pd.DOCSER+' '+pd.DOCNUM as SN_PASP, p.SS as SNILS,pd.OKSM from POL_PERSONS p
+                //                LEFT JOIN POL_POLISES pp
+                //on p.EVENT_GUID = pp.EVENT_GUID
+                //left join POL_DOCUMENTS pd
+                //on pd.EVENT_GUID = p.EVENT_GUID
+                try
+                {
+
+                    naselen = MyReader.MySelect<NASELEN_KALININGRAD>($@"select 
+case when p.fam='' then null else p.FAM end as 'surname',
+case when p.im='' then null else p.im end as 'name',
+case when p.ot='' then null else p.OT end as 'secname',
+p.dr as 'dr',
+p.w as 'pol',
+pp.SPOLIS as 's_polis',
+pp.NPOLIS as 'n_polis',
+p.MR as 'mr',
+pp.DBEG as 'datp',
+pp.dend as 'date_e',
+CONVERT(NVARCHAR(2),pd.DOCTYPE) as 'tdok',
+pd.DOCSER as 's_pasp',
+pd.DOCNUM as 'n_pasp',
+e.TIP_OP as 'tip_op'
+
+from POL_EVENTS e
+left join POL_PERSONS p
+on e.IDGUID=p.EVENT_GUID 
+left join (select*from POL_ADDRESSES where IDGUID in(select ADDR_GUID from POL_RELATION_ADDR_PERS where ADDRES_G=1)) ag
+on p.EVENT_GUID=ag.EVENT_GUID 
+left join (select*from POL_ADDRESSES where IDGUID in(select ADDR_GUID from POL_RELATION_ADDR_PERS where ADDRES_P=1)) ap
+on p.EVENT_GUID=ap.EVENT_GUID 
+left join POL_RELATION_ADDR_PERS pa
+on e.IDGUID=pa.EVENT_GUID and pa.ADDRES_G=1
+left join POL_POLISES pp
+on e.IDGUID=pp.EVENT_GUID
+left join POL_OPLIST op
+on e.IDGUID=op.EVENT_GUID
+left join FIAS.dbo.Houses fh
+on ag.HOUSE_GUID=fh.HOUSEID 
+left join FIAS.dbo.Houses fh1
+on ap.HOUSE_GUID=fh1.HOUSEID
+left join POL_DOCUMENTS pd
+on e.IDGUID=pd.EVENT_GUID and pd.main=1
+left join POL_DOCUMENTS pd1
+on e.IDGUID=pd1.EVENT_GUID and pd1.main=0 and pd1.ACTIVE=1
+left join POL_DOCUMENTS_old pdo
+on pd.PREVDOCGUID=pdo.IDGUID
+left join POL_PERSONSB pb2
+on p.EVENT_GUID=pb2.EVENT_GUID and pb2.TYPE=2
+left join POL_PERSONSB pb3
+on p.EVENT_GUID=pb3.EVENT_GUID and pb3.TYPE=3
+left join FIAS.dbo.AddressObjects ao
+on ag.fias_l1=ao.aoguid and ao.AOLEVEL=1 and ao.ACTSTATUS=1
+left join FIAS.dbo.AddressObjects ao3
+on ag.fias_l3=ao3.aoguid and ao3.AOLEVEL=3 and ao3.ACTSTATUS=1
+left join FIAS.dbo.AddressObjects ao4
+on ag.fias_l4=ao4.aoguid and ao4.AOLEVEL=4 and ao4.ACTSTATUS=1
+left join FIAS.dbo.AddressObjects ao41
+on ap.fias_l4=ao41.aoguid and ao41.AOLEVEL=4 and ao41.ACTSTATUS=1
+left join FIAS.dbo.AddressObjects ao6
+on ag.fias_l6=ao6.aoguid and ao6.AOLEVEL=6 and ao6.ACTSTATUS=1
+left join FIAS.dbo.AddressObjects ao7
+on ag.fias_l7=ao7.aoguid and ao7.AOLEVEL=7 and ao7.ACTSTATUS=1
+left join FIAS.dbo.AddressObjects ao71
+on ap.fias_l7=ao71.aoguid and ao71.AOLEVEL=7 and ao71.ACTSTATUS=1
+left join POL_PERSONS ppr
+on p.RPERSON_GUID=ppr.IDGUID 
+left join POL_PERSONS_OLD pold
+on p.idguid=pold.PERSON_GUID
+where p.FAM is not null and p.FAM <> ''", Properties.Settings.Default.DocExchangeConnectionString);
+                }
+                catch (Exception ex)
+                {
+                      MessageBox.Show(ex.Message);
+                }
+                //DataTable dt = new DataTable();
+                string dbffile = SF.FileName;
+
+           
+               
+                using (Stream fos = File.Open(dbffile, FileMode.Create, FileAccess.ReadWrite))
+                {
+
+                    var writer = new DotNetDBF.DBFWriter(fos);
+                    writer.CharEncoding = Encoding.GetEncoding(866);
+                    writer.Signature = DotNetDBF.DBFSignature.DBase3;
+                    writer.LanguageDriver = 0x26; // кодировка 866
+                    writer.Fields = new[]{
+                        new DotNetDBF.DBFField("surname", DotNetDBF.NativeDbType.Char, 24),
+                        new DotNetDBF.DBFField("name", DotNetDBF.NativeDbType.Char, 16),
+                        new DotNetDBF.DBFField("secname", DotNetDBF.NativeDbType.Char, 16),
+                        new DotNetDBF.DBFField("dr", DotNetDBF.NativeDbType.Date),
+                        new DotNetDBF.DBFField("pol", DotNetDBF.NativeDbType.Numeric, 1,0),
+                        new DotNetDBF.DBFField("s_polis", DotNetDBF.NativeDbType.Char, 6),
+                        new DotNetDBF.DBFField("n_polis", DotNetDBF.NativeDbType.Numeric, 6,0),
+                        new DotNetDBF.DBFField("mr", DotNetDBF.NativeDbType.Char, 100),
+                        new DotNetDBF.DBFField("datp", DotNetDBF.NativeDbType.Date),
+                        new DotNetDBF.DBFField("date_e", DotNetDBF.NativeDbType.Date),
+                        new DotNetDBF.DBFField("tdok", DotNetDBF.NativeDbType.Numeric, 2,0),
+                        new DotNetDBF.DBFField("s_pasp", DotNetDBF.NativeDbType.Char, 10),
+                        new DotNetDBF.DBFField("n_pasp", DotNetDBF.NativeDbType.Numeric, 10, 0),
+                        new DotNetDBF.DBFField("tip_op", DotNetDBF.NativeDbType.Char, 4)
+
+                    };
+
+                    for (int i = 0; i < naselen.Count; i++)
+                    {
+                        try
+                        {
+                          
+                                writer.WriteRecord(naselen[i].surname, naselen[i].name, naselen[i].secname, naselen[i].dr, naselen[i].pol,
+                                naselen[i].s_polis, Convert.ToInt32(naselen[i].n_polis), naselen[i].mr, naselen[i].datp, naselen[i].date_e, naselen[i].tdok,
+                                naselen[i].s_pasp, Convert.ToInt32(naselen[i].n_pasp), naselen[i].tip_op);
+                           
+                        }
+                        catch
+                        {
+
+                        }
+                    }
+                    //add some records...
+                    writer.Close();
+
+                
+
+
+                }
+                string m = "Население успешно выгружено!";
+                string t = "Сообщение!";
+                int b = 1;
+                Message me = new Message(m, t, b);
+                me.ShowDialog();
+            }
+        }
+
+        private void Updtable2_Click(object sender, RoutedEventArgs e)
+        {
+              var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
+                    var peopleList =
+                        MyReader.MySelect<People>(SPR.MyReader.load_pers_grid2 + strf_adm, connectionString);
+                    pers_grid_2.ItemsSource = peopleList;
+                    pers_grid_2.View.FocusedRowHandle = -1;
         }
 
 

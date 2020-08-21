@@ -12,6 +12,7 @@ namespace Insurance_SPR
 {
     public static class SPR
     {
+        public static string S_PR { get; set; }
         public static string PATH_VIGRUZKA { get; set; }
         public static string Premmissions { get; set; }
         public static string Login { get; set; }
