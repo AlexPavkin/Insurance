@@ -3683,9 +3683,17 @@ dstart=@date_mo where idguid='{perguid}'", con);
             }
             else
             {
-                zap_polis = SPR.insert_polises;
+                if (!PD.no_new_polis)
+                {
+                    zap_polis = SPR.insert_polises;
+                }
+                else
+                {
+                    zap_polis = SPR.update_polises;
+                }
+
             }
-            
+
             string module = "Save_bt3_b0_s0_p13";
             SqlTransaction tr = null;
             var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
@@ -4161,7 +4169,15 @@ dstart=@date_mo where idguid='{perguid}'", con);
             }
             else
             {
-                zap_polis = SPR.insert_polises;
+                if (!PD.no_new_polis)
+                {
+                    zap_polis = SPR.insert_polises;
+                }
+                else
+                {
+                    zap_polis = SPR.update_polises;
+                }
+
             }
             string module = "Save_bt3_b1_s0_p13";
             SqlTransaction tr = null;
@@ -4520,13 +4536,22 @@ dstart=@date_mo where idguid='{perguid}'", con);
         public static void Save_bt3_b0_s1_p13(MainWindow PD)
         {
             string zap_polis;
+
             if (PD.blank_polis != false)
             {
                 zap_polis = SPR.update_polises;
             }
             else
             {
-                zap_polis = SPR.insert_polises;
+                if(!PD.no_new_polis)
+                {
+                    zap_polis = SPR.insert_polises;
+                }
+                else
+                {
+                    zap_polis = SPR.update_polises;
+                }
+                
             }
             string module = "Save_bt1_b0_s1_p2_sp1";
             SqlTransaction tr = null;
@@ -9602,7 +9627,15 @@ dstart=@date_mo where idguid='{perguid}'", con);
             }
             else
             {
-                zap_polis = SPR.insert_polises;
+                if (!PD.no_new_polis)
+                {
+                    zap_polis = SPR.insert_polises;
+                }
+                else
+                {
+                    zap_polis = SPR.update_polises;
+                }
+
             }
             string module = "SaveDD_bt3_b0_s0_p13";
             SqlTransaction tr = null;
@@ -10089,7 +10122,15 @@ dstart=@date_mo where idguid='{perguid}'", con);
             }
             else
             {
-                zap_polis = SPR.insert_polises;
+                if (!PD.no_new_polis)
+                {
+                    zap_polis = SPR.insert_polises;
+                }
+                else
+                {
+                    zap_polis = SPR.update_polises;
+                }
+
             }
             string module = "SaveDD_bt3_b1_s0_p13";
             SqlTransaction tr = null;
@@ -10465,13 +10506,22 @@ dstart=@date_mo where idguid='{perguid}'", con);
         {
             string zap_polis;
             if (PD.blank_polis != false)
-            {
-                zap_polis = SPR.update_polises_3;
-            }
-            else
-            {
-                zap_polis = SPR.insert_polises_3;
-            }
+                if (PD.blank_polis != false)
+                {
+                    zap_polis = SPR.update_polises;
+                }
+                else
+                {
+                    if (!PD.no_new_polis)
+                    {
+                        zap_polis = SPR.insert_polises;
+                    }
+                    else
+                    {
+                        zap_polis = SPR.update_polises;
+                    }
+
+                }
             string module = "SaveDD_bt3_b0_s1_p13";
             SqlTransaction tr = null;
             var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
