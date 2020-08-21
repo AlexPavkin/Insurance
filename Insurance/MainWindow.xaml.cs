@@ -9826,11 +9826,11 @@ where p.FAM is not null and p.FAM <> ''", Properties.Settings.Default.DocExchang
                
                 using (Stream fos = File.Open(dbffile, FileMode.Create, FileAccess.ReadWrite))
                 {
-
+                    //0xC9
                     var writer = new DotNetDBF.DBFWriter(fos);
                     writer.CharEncoding = Encoding.GetEncoding(866);
-                    writer.Signature = DotNetDBF.DBFSignature.DBase3;
-                    writer.LanguageDriver = 0x26; // кодировка 866
+                    writer.Signature = 0x43;
+                    writer.LanguageDriver = 0x65;//0x26; // кодировка 866
                     writer.Fields = new[]{
                         new DotNetDBF.DBFField("surname", DotNetDBF.NativeDbType.Char, 24),
                         new DotNetDBF.DBFField("name", DotNetDBF.NativeDbType.Char, 16),
@@ -9853,11 +9853,9 @@ where p.FAM is not null and p.FAM <> ''", Properties.Settings.Default.DocExchang
                     {
                         try
                         {
-                          
                                 writer.WriteRecord(naselen[i].surname, naselen[i].name, naselen[i].secname, naselen[i].dr, naselen[i].pol,
                                 naselen[i].s_polis, Convert.ToInt32(naselen[i].n_polis), naselen[i].mr, naselen[i].datp, naselen[i].date_e, naselen[i].tdok,
-                                naselen[i].s_pasp, Convert.ToInt32(naselen[i].n_pasp), naselen[i].tip_op);
-                           
+                                naselen[i].s_pasp, Convert.ToInt32(naselen[i].n_pasp), naselen[i].tip_op); 
                         }
                         catch
                         {
@@ -9866,10 +9864,6 @@ where p.FAM is not null and p.FAM <> ''", Properties.Settings.Default.DocExchang
                     }
                     //add some records...
                     writer.Close();
-
-                
-
-
                 }
                 string m = "Население успешно выгружено!";
                 string t = "Сообщение!";
