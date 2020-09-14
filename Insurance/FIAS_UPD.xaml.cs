@@ -429,7 +429,7 @@ namespace Insurance
                                         cast(dt.NORMDOC as uniqueidentifier),dt.LIVESTATUS from @dt dt
                                         left join AddressObjects ao on CAST(dt.AOID as uniqueidentifier) =ao.aoid where ao.aoguid is null";
                                 
-                                try
+                                        try
                                         {
                                             MyReader.UpdateFromTable<DataTable>(command0, ConnectionString1, dt);
                                             MyReader.UpdateFromTable<DataTable>(command, ConnectionString1, dt);
@@ -453,7 +453,7 @@ namespace Insurance
                                             return;
                                         }
 
-                            }
+                                }
                                 try
                                 {
 

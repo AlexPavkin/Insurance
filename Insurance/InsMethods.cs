@@ -10505,7 +10505,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
         public static void SaveDD_bt3_b0_s1_p13(MainWindow PD)
         {
             string zap_polis;
-
+           
                 if (PD.blank_polis != false)
                 {
                     zap_polis = SPR.update_polises;

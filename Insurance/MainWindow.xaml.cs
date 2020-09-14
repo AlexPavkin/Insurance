@@ -161,10 +161,8 @@ CREATE TYPE ForSelect AS TABLE ({sqltype})", con))
 
             return list;
         }
-
         public static void UpdateFromTable<T>(string com, string connectionString, DataTable dt)
         {
-
             string sqltype = "";
 
 
@@ -192,9 +190,6 @@ CREATE TYPE ForSelect AS TABLE ({sqltype})", con))
                     case "Decimal":
                         s = "numeric(10,2)";
                         break;
-                    //case "Numeric":
-                    //    s = "numeric(10,2)";
-                    //    break;
                     default:
                         s = dc.DataType.Name.ToString();
                         break;
@@ -203,7 +198,6 @@ CREATE TYPE ForSelect AS TABLE ({sqltype})", con))
                 sqltype = sqltype + dc.ColumnName + " " + s + ",";
 
             }
-
             sqltype = sqltype.Substring(0, sqltype.Length - 1);
             //foreach (var item in ids)
             //{
@@ -237,9 +231,8 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
             con.Close();
 
 
-        
 
-    }
+        }
         public static void UpdateFromTable<T>(string com, string connectionString, DataTable dt, bool deltype)
         {
             string sqltype = "";
@@ -348,13 +341,14 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
             {
                 //dt.Columns.Add(d.NAME,d.TYPE);
                 string s;
+               
                 switch (dc.DataType.Name.ToString())
                 {
                     case "Int32":
                         s = "int";
                         break;
                     case "String":
-                        s = $"nvarchar({dc.MaxLength})";
+                        s = $"nvarchar({(dc.MaxLength <= 0 ? "max" : dc.MaxLength.ToString())})";
                         break;
                     case "Guid":
                         s = "uniqueidentifier";
@@ -972,7 +966,7 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
             G_layuot.restore_Layout(Properties.Settings.Default.DocExchangeConnectionString, pers_grid, pers_grid_2);
             //LoadingDecorator1.IsSplashScreenShown = false;
             WindowState = WindowState.Maximized;
-            Vars.MainTitle = "Insurance(полисная часть) v1.031";
+            Vars.MainTitle = "Insurance(полисная часть) v1.040";
             Title = Vars.MainTitle;
             prz.SelectedIndex = -1;
             //if (SPR.Premmissions == "User")
@@ -1240,7 +1234,7 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
                                 Tab_ZL.Visibility = Visibility.Hidden;
                                 return;
                             }
-                            else if (pers_grid.GetFocusedRowCellValue("UNLOAD").ToString() == "True" && Vars.SMO !="67005")
+                            else if (pers_grid.GetFocusedRowCellValue("UNLOAD").ToString() == "True")
                             {
                                 string m2 = "Редактирование заявлений отправленных в ТФОМС запрещено!";
                                 string t2 = "Ошибка!";
@@ -3331,19 +3325,6 @@ DEALLOCATE MY_CURSOR
 
                 return;
             }
-            Vars.PunctRz = prz.EditValue.ToString();
-            Vars.mes_res = 0;
-            if (kat_zl.SelectedIndex == -1)
-            {
-                string m = "Вы не указали категорию ЗЛ!";
-                string t = "Ошибка!";
-                int b = 1;
-                Message me = new Message(m, t, b);
-                me.ShowDialog();
-
-                return;
-            }
-
             if (Vars.SMO == "67005")
             {
                 string m10 = "Добавить авто-прикрипление?" + (char)34 + Vars.CelVisit + (char)34 +
@@ -3381,6 +3362,18 @@ DEALLOCATE MY_CURSOR
                         }
                     }
                 }
+            }
+            Vars.PunctRz = prz.EditValue.ToString();
+            Vars.mes_res = 0;
+            if (kat_zl.SelectedIndex == -1)
+            {
+                string m = "Вы не указали категорию ЗЛ!";
+                string t = "Ошибка!";
+                int b = 1;
+                Message me = new Message(m, t, b);
+                me.ShowDialog();
+
+                return;
             }
 
             //MessageBox.Show(fakt_prekr.DisplayText.ToString());
@@ -4495,7 +4488,6 @@ on t0.idguid = t3.person_guid", con);
                         kod_podr.Text = name_vp_code.ToString();
                         //mr2.Text = docmr.ToString();
                         str_vid.EditValue = str_vid_;
-                     
 
 
 

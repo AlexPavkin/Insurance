@@ -585,8 +585,5 @@
   <ItemGroup>
     <Resource Include="Image1.png" />
   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Properties\Licenses.licx" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

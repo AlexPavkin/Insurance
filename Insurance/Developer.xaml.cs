@@ -904,9 +904,39 @@ SPOSOB_P3 as sposob,RESULT_P3 as result,PRIMECH as prim, l.kod as KOD_POL, l.kod
 
         private void Load_zah_data_Click(object sender, RoutedEventArgs e)
         {
-            string[] file_names = {"dict_doc.dbf","lnsi21.dbf","lnsi22.dbf","lnsi23.dbf","lpu.dbf","statpol.dbf",
-             "polis.dbf","polisext.dbf","polisprd.dbf","polissvd.dbf"};
             string ConnectionString1 = Properties.Settings.Default.DocExchangeConnectionString;
+            SqlConnection con = new SqlConnection(ConnectionString1);
+            SqlCommand com = new SqlCommand($@"IF exists (select * from sys.tables where name='dict_doc')
+                                               drop table [dict_doc]
+                                               IF exists (select * from sys.tables where name='country')
+                                               drop table [country]
+                                               IF exists (select * from sys.tables where name='lnsi20')
+                                               drop table [lnsi20]
+                                               IF exists (select * from sys.tables where name='lnsi21')
+                                               drop table [lnsi21]
+                                               IF exists (select * from sys.tables where name='lnsi22')
+                                               drop table [lnsi22]
+                                               IF exists (select * from sys.tables where name='lnsi23')
+                                               drop table [lnsi23]
+                                               IF exists (select * from sys.tables where name='lpu')
+                                               drop table [lpu]
+                                               IF exists (select * from sys.tables where name='statpol')
+                                               drop table [statpol]
+                                               IF exists (select * from sys.tables where name='polis')
+                                               drop table [polis]
+                                               IF exists (select * from sys.tables where name='polisext')
+                                               drop table [polisext]
+                                               IF exists (select * from sys.tables where name='polisprd')
+                                               drop table [polisprd]
+                                               IF exists (select * from sys.tables where name='polissvd')
+                                               drop table [polissvd]", con);
+            com.CommandTimeout = 0;
+            con.Open();
+            com.ExecuteNonQuery();
+            con.Close();
+            string[] file_names = {"dict_doc.dbf","country","lnsi21.dbf","lnsi22.dbf","lnsi23.dbf","lpu.dbf","statpol.dbf",
+             "polis.dbf","polisext.dbf","polisprd.dbf","polissvd.dbf"};
+            
             WFR.FolderBrowserDialog OF = new WFR.FolderBrowserDialog();
             //OF.Filter= "Файлы DBF (.dbf)|*.dbf";
             OF.Description = "Выберите папку с программой захарова";
@@ -997,23 +1027,23 @@ SPOSOB_P3 as sposob,RESULT_P3 as result,PRIMECH as prim, l.kod as KOD_POL, l.kod
                                 MyReader.LoadFromTable<DataTable>(ConnectionString1, dt1, item1.Name);
 
                             }
-                            SqlConnection con = new SqlConnection(ConnectionString1);
-                            SqlCommand com = new SqlCommand($@"if not exists (select * from INFORMATION_SCHEMA.COLUMNS where COLUMN_NAME='Podp' and TABLE_NAME='Photo')
+                            
+                            SqlCommand com1 = new SqlCommand($@"if not exists (select * from INFORMATION_SCHEMA.COLUMNS where COLUMN_NAME='Podp' and TABLE_NAME='Photo')
                                                               alter table photo add Podp nvarchar(max)
                                                               IF exists (select * from sys.tables where name='sign')
                                                               Update photo set photo.podp=s.photo from [sign] s
                                                               where photo.n_reg=s.n_reg
                                                               IF exists (select * from sys.tables where name='sign')
                                                               drop table [sign]", con);
-                            com.CommandTimeout = 0;
+                            com1.CommandTimeout = 0;
                             con.Open();
-                            com.ExecuteNonQuery();
+                            com1.ExecuteNonQuery();
                             con.Close();
                         }
 
                     }
                 }
-
+                MessageBox.Show("Данные загружены.");
             }
 
 
@@ -1209,7 +1239,7 @@ SPOSOB_P3 as sposob,RESULT_P3 as result,PRIMECH as prim, l.kod as KOD_POL, l.kod
             //            }
 
 
-            con_f.Close();
+            //con_f.Close();
             fias_d.reg.EditValue = reg;
             if (rn != Guid.Empty) fias_d.reg_rn.EditValue = rn;
             if (town != Guid.Empty) fias_d.reg_town.EditValue = town;
