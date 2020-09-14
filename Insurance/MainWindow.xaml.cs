@@ -161,8 +161,10 @@ CREATE TYPE ForSelect AS TABLE ({sqltype})", con))
 
             return list;
         }
+
         public static void UpdateFromTable<T>(string com, string connectionString, DataTable dt)
         {
+
             string sqltype = "";
 
 
@@ -190,6 +192,9 @@ CREATE TYPE ForSelect AS TABLE ({sqltype})", con))
                     case "Decimal":
                         s = "numeric(10,2)";
                         break;
+                    //case "Numeric":
+                    //    s = "numeric(10,2)";
+                    //    break;
                     default:
                         s = dc.DataType.Name.ToString();
                         break;
@@ -198,6 +203,7 @@ CREATE TYPE ForSelect AS TABLE ({sqltype})", con))
                 sqltype = sqltype + dc.ColumnName + " " + s + ",";
 
             }
+
             sqltype = sqltype.Substring(0, sqltype.Length - 1);
             //foreach (var item in ids)
             //{
@@ -231,8 +237,9 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
             con.Close();
 
 
+        
 
-        }
+    }
         public static void UpdateFromTable<T>(string com, string connectionString, DataTable dt, bool deltype)
         {
             string sqltype = "";
@@ -965,7 +972,7 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
             G_layuot.restore_Layout(Properties.Settings.Default.DocExchangeConnectionString, pers_grid, pers_grid_2);
             //LoadingDecorator1.IsSplashScreenShown = false;
             WindowState = WindowState.Maximized;
-            Vars.MainTitle = "Insurance(полисная часть) v1.029";
+            Vars.MainTitle = "Insurance(полисная часть) v1.031";
             Title = Vars.MainTitle;
             prz.SelectedIndex = -1;
             //if (SPR.Premmissions == "User")
@@ -1233,7 +1240,7 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
                                 Tab_ZL.Visibility = Visibility.Hidden;
                                 return;
                             }
-                            else if (pers_grid.GetFocusedRowCellValue("UNLOAD").ToString() == "True")
+                            else if (pers_grid.GetFocusedRowCellValue("UNLOAD").ToString() == "True" && Vars.SMO !="67005")
                             {
                                 string m2 = "Редактирование заявлений отправленных в ТФОМС запрещено!";
                                 string t2 = "Ошибка!";
@@ -3337,6 +3344,45 @@ DEALLOCATE MY_CURSOR
                 return;
             }
 
+            if (Vars.SMO == "67005")
+            {
+                string m10 = "Добавить авто-прикрипление?" + (char)34 + Vars.CelVisit + (char)34 +
+                                       ". Вы согласны?";
+                string t10 = "Внимание!";
+                int b10 = 2;
+                Message me10 = new Message(m10, t10, b10);
+                me10.ShowDialog();
+                if (Vars.mes_res == 1)
+                {
+
+                    var town = fias.reg_town.Text;
+                    var street = fias.reg_ul.Text.Split('-')[0].Trim();
+                    var naspunkt = fias.reg_np.Text.Split('-')[0].Trim();
+                    var dom = fias.reg_dom.Text.Trim().Replace("д.", "");
+                    var MO = "";
+                    if (town.Contains("Смоленск"))
+                    {
+                        var streetMO = SPR.MyReader.SELECTVAIN($@"SELECT TOP(1) STREET FROM [DocExchange].[dbo].[moaddr] where STREET like '%{street}%' and dom =  '{dom}'", Properties.Settings.Default.DocExchangeConnectionString);
+                        if (street.Contains(streetMO.Split(' ')[0]))
+                        {
+                            MO = SPR.MyReader.SELECTVAIN($@"SELECT TOP(1) MCOD FROM [DocExchange].[dbo].[moaddr] where STREET like '%{street}%' and dom =  '{dom}'", Properties.Settings.Default.DocExchangeConnectionString);
+                            mo_cmb.EditValue = MO;
+                            date_mo.EditValue = DateTime.Now;
+                        }
+                    }
+                    else
+                    {
+                        var Derevnya = SPR.MyReader.SELECTVAIN($@"SELECT TOP(1) NAME  FROM [DocExchange].[dbo].[moaddr] where [NAME] like '%{naspunkt}%'", Properties.Settings.Default.DocExchangeConnectionString);
+                        if (naspunkt.Contains(Derevnya.Split(' ')[0]))
+                        {
+                            MO = SPR.MyReader.SELECTVAIN($@"SELECT TOP(1) MCOD FROM [DocExchange].[dbo].[moaddr] where [NAME] like '%{naspunkt}%'", Properties.Settings.Default.DocExchangeConnectionString);
+                            mo_cmb.EditValue = MO;
+                            date_mo.EditValue = DateTime.Now;
+                        }
+                    }
+                }
+            }
+
             //MessageBox.Show(fakt_prekr.DisplayText.ToString());
             Events Create = new Events();
             Create.DVIZIT = DateTime.Now;
@@ -4449,6 +4495,7 @@ on t0.idguid = t3.person_guid", con);
                         kod_podr.Text = name_vp_code.ToString();
                         //mr2.Text = docmr.ToString();
                         str_vid.EditValue = str_vid_;
+                     
 
 
 
