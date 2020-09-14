@@ -3325,6 +3325,44 @@ DEALLOCATE MY_CURSOR
 
                 return;
             }
+            if (Vars.SMO == "67005")
+            {
+                string m10 = "Добавить авто-прикрипление?" + (char)34 + Vars.CelVisit + (char)34 +
+                                       ". Вы согласны?";
+                string t10 = "Внимание!";
+                int b10 = 2;
+                Message me10 = new Message(m10, t10, b10);
+                me10.ShowDialog();
+                if (Vars.mes_res == 1)
+                {
+
+                    var town = fias.reg_town.Text;
+                    var street = fias.reg_ul.Text.Split('-')[0].Trim();
+                    var naspunkt = fias.reg_np.Text.Split('-')[0].Trim();
+                    var dom = fias.reg_dom.Text.Trim().Replace("д.", "");
+                    var MO = "";
+                    if (town.Contains("Смоленск"))
+                    {
+                        var streetMO = SPR.MyReader.SELECTVAIN($@"SELECT TOP(1) STREET FROM [DocExchange].[dbo].[moaddr] where STREET like '%{street}%' and dom =  '{dom}'", Properties.Settings.Default.DocExchangeConnectionString);
+                        if (street.Contains(streetMO.Split(' ')[0]))
+                        {
+                            MO = SPR.MyReader.SELECTVAIN($@"SELECT TOP(1) MCOD FROM [DocExchange].[dbo].[moaddr] where STREET like '%{street}%' and dom =  '{dom}'", Properties.Settings.Default.DocExchangeConnectionString);
+                            mo_cmb.EditValue = MO;
+                            date_mo.EditValue = DateTime.Now;
+                        }
+                    }
+                    else
+                    {
+                        var Derevnya = SPR.MyReader.SELECTVAIN($@"SELECT TOP(1) NAME  FROM [DocExchange].[dbo].[moaddr] where [NAME] like '%{naspunkt}%'", Properties.Settings.Default.DocExchangeConnectionString);
+                        if (naspunkt.Contains(Derevnya.Split(' ')[0]))
+                        {
+                            MO = SPR.MyReader.SELECTVAIN($@"SELECT TOP(1) MCOD FROM [DocExchange].[dbo].[moaddr] where [NAME] like '%{naspunkt}%'", Properties.Settings.Default.DocExchangeConnectionString);
+                            mo_cmb.EditValue = MO;
+                            date_mo.EditValue = DateTime.Now;
+                        }
+                    }
+                }
+            }
             Vars.PunctRz = prz.EditValue.ToString();
             Vars.mes_res = 0;
             if (kat_zl.SelectedIndex == -1)
