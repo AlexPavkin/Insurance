@@ -341,13 +341,14 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
             {
                 //dt.Columns.Add(d.NAME,d.TYPE);
                 string s;
+               
                 switch (dc.DataType.Name.ToString())
                 {
                     case "Int32":
                         s = "int";
                         break;
                     case "String":
-                        s = $"nvarchar({dc.MaxLength})";
+                        s = $"nvarchar({(dc.MaxLength <= 0 ? "max" : dc.MaxLength.ToString())})";
                         break;
                     case "Guid":
                         s = "uniqueidentifier";
@@ -965,7 +966,7 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
             G_layuot.restore_Layout(Properties.Settings.Default.DocExchangeConnectionString, pers_grid, pers_grid_2);
             //LoadingDecorator1.IsSplashScreenShown = false;
             WindowState = WindowState.Maximized;
-            Vars.MainTitle = "Insurance(полисная часть) v1.029";
+            Vars.MainTitle = "Insurance(полисная часть) v1.040";
             Title = Vars.MainTitle;
             prz.SelectedIndex = -1;
             //if (SPR.Premmissions == "User")
