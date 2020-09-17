@@ -24,6 +24,7 @@ using ExcelDataReader;
 using Bytescout.Spreadsheet;
 using WFR = System.Windows.Forms;
 using Bytescout.Spreadsheet.Constants;
+using DevExpress.XtraEditors;
 
 namespace Insurance
 {
@@ -795,9 +796,48 @@ delete from POL_PERSONS where fam = 'f'
             con1.Close();
             MessageBox.Show("Данные успешно загружены!");
         }
+       
         private void Zagr_2()
         {
-            if (call_ == "attache" && Vars.SMO.StartsWith("22")==false && Vars.SMO.StartsWith("39") == false)
+            if (call_ == "attache" && Vars.SMO == "67005" == true)
+            {
+                var KMO = XtraInputBox.Show("Код МО [Название колонки]", "Прикрепление к МО", "Код МО");
+                var NPOLISA = XtraInputBox.Show("Номер полиса [Название колонки]", "Прикрепление к МО", "Номер полиса");
+                var DATPRIKREP = XtraInputBox.Show("Дата прикрепления [Название колонки]", "Прикрепление к МО", "Дата прикрепления");
+
+                int i = 0;
+                int[] checked_items = pol_zagr.GetSelectedRowHandles();
+                for (i = 0; i < checked_items.Count(); i++)
+                {
+                   
+                   //var KMO = pol_zagr.Columns.GetColumnByFieldName("Код МО").FieldName;
+                   //var NPOLISA = pol_zagr.Columns.GetColumnByFieldName("Номер полиса").FieldName;
+                   //var DATPRIKREP = pol_zagr.Columns.GetColumnByFieldName("Дата прикрепления").FieldName;
+                   
+                    //var datap = colums.Where(x => x.ActualColumnChooserHeaderCaption.ToString().Contains("Код МО")).Select(x => x.ActualColumnChooserHeaderCaption);
+
+                    var dp = pol_zagr.GetCellValue(checked_items[i], DATPRIKREP).ToString();
+                    var mo = pol_zagr.GetCellValue(checked_items[i], KMO).ToString();
+                    var polis = pol_zagr.GetCellValue(checked_items[i], NPOLISA).ToString();
+                    var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
+                    SqlConnection con = new SqlConnection(connectionString);
+                    SqlCommand com = new SqlCommand($@" update POL_PERSONS
+                set mo='{mo}', dstart='{dp}' 
+                where enp='{polis}' ", con);
+                    con.Open();
+                    com.CommandTimeout = 0;
+                    com.ExecuteNonQuery();
+                    con.Close();
+               
+                }
+                string m1 = "Прикрепление успешно загружено!";
+                string t1 = "Сообщение";
+                int b1 = 1;
+                Message me1 = new Message(m1, t1, b1);
+                me1.ShowDialog();
+                return;
+            }
+            else if (call_ == "attache" && Vars.SMO.StartsWith("22") == false && Vars.SMO.StartsWith("39") == false)
             {
                 int i = 0;
                 int[] checked_items = pol_zagr.GetSelectedRowHandles();
@@ -833,29 +873,6 @@ delete from POL_PERSONS where fam = 'f'
                     con.Close();
                 }
             }
-            else if (call_ == "attache" && Vars.SMO.StartsWith("22") == true)
-            {
-                var con_str = Properties.Settings.Default.DocExchangeConnectionString;
-                SqlConnection con = new SqlConnection(con_str);
-                SqlCommand com = new SqlCommand($@"create table [dbo].[Attache](
-	[ENP] [nvarchar](16) NULL,
-	[MO] [nvarchar](6) NULL) ON [PRIMARY]", con);
-                SqlCommand com1 = new SqlCommand($@"update POL_PERSONS  set mo=a.mo,DSTART=GETDATE() 
-  from Attache a
-  where POL_PERSONS.enp=a.enp 
-drop table [dbo].[Attache]", con);
-                con.Open();
-                com.ExecuteNonQuery();
-                SqlBulkCopy bulk = new SqlBulkCopy(con);
-                bulk.DestinationTableName = "dbo.Attache";
-                bulk.BulkCopyTimeout = 0;
-                bulk.BatchSize = 100000;
-                bulk.WriteToServer(tb);
-                com1.ExecuteNonQuery();
-                con.Close();
-                
-            }
-
             string m = "Прикрепление успешно загружено!";
             string t = "Сообщение";
             int b = 1;
