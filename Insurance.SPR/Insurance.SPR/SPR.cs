@@ -21,6 +21,7 @@ namespace Insurance_SPR
         public static bool Avto_vigruzka { get; set; }
         public static bool Avto_vigruzka_priznak { get; set; }
         public static string Row_filter { get; set; }
+        public static string FIAS_ONLINE_CONNECTION_STRING { get; set; }
         public class MyReader
         {
             public static string load_pers_grid =$@"SELECT  pp.SROKDOVERENOSTI,pp.ID,pp.ACTIVE,op.przcod,pe.UNLOAD,ENP ,FAM , IM  , OT ,W ,DR ,MO,oks.CAPTION as C_OKSM,r.NameWithID , pp.COMMENT,pe.DVIZIT, pp.DATEVIDACHI, pp.PRIZNAKVIDACHI,

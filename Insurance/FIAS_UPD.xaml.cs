@@ -24,11 +24,12 @@ using SharpCompress.Common;
 using Insurance_SPR;
 
 
-
 namespace Insurance
 {
+  
     class WorkDBF
     {
+       
         private OdbcConnection Conn = null;
         public DataTable Execute(string Command)
         {
@@ -70,6 +71,8 @@ namespace Insurance
     /// </summary>
     public partial class FIAS_UPD : Window
     {
+
+
         public delegate void ThreadStart(string[] reg);
         public delegate void MyDelegate();
         public delegate void MyDelegateErr(Exception ex);
@@ -140,7 +143,9 @@ namespace Insurance
                 }
                 else
                 {
+                   
                     Thread t1 = new Thread(delegate () { CopyToSQL_ADDROB(r, ch); });
+                    //t1.SetApartmentState(ApartmentState.STA);
                     t1.Start();
 
                     //CopyToSQL_ADDROB(r);
@@ -150,9 +155,14 @@ namespace Insurance
                 }
             }
 
-
+          
             void CopyToSQL_ADDROB(string[] Region, bool chk)
             {
+         
+                //try
+                //{
+
+                
                 OpenFileDialog opf = new OpenFileDialog();
 
                 opf.InitialDirectory = "c:\\";
@@ -302,11 +312,12 @@ namespace Insurance
                                     File.Delete(opf.FileName.Replace(opf.SafeFileName, "") + entry.Key);
 
                                 }
-                                catch
+                                catch (Exception ex)
                                 {
+                                    var s = ex.Message;
                                 }
-                                //if (i== Region.Count() - 1 && entry.Key == "ADDROB" + Region[Region.Count() - 1] + ".DBF")
-                                if (j >= 50)
+                                    //if (i== Region.Count() - 1 && entry.Key == "ADDROB" + Region[Region.Count() - 1] + ".DBF")
+                                    if (j >= 50)
                                 {
                                     goto forward;
                                 }
@@ -449,8 +460,9 @@ namespace Insurance
                                     File.Delete(opf.FileName.Replace(opf.SafeFileName, "") + entry.Key);
 
                                 }
-                                catch
+                                catch (Exception ex)
                                 {
+                                    var s = ex.Message;
                                 }
                                 //if (i== Region.Count() - 1 && entry.Key == "ADDROB" + Region[Region.Count() - 1] + ".DBF")
                                 if (j >= 50)
@@ -531,7 +543,7 @@ namespace Insurance
                                                 }
                                             }
                                             dt1.LoadDataRow(rtt, true);
-
+                                                
                                         }
 
                                     
@@ -547,29 +559,29 @@ from @dt dt where Houses.HOUSEID=dt.HOUSEID";
 select dt.POSTALCODE,dt.IFNSFL,dt.TERRIFNSFL,dt.IFNSUL,dt.TERRIFNSUL,dt.OKATO,dt.OKTMO,dt.UPDATEDATE,dt.HOUSENUM,dt.ESTSTATUS,dt.BUILDNUM,dt.STRUCNUM,dt.STRSTATUS,dt.HOUSEID,dt.HOUSEGUID,dt.AOGUID,
 dt.STARTDATE,dt.ENDDATE,dt.STATSTATUS,dt.NORMDOC,dt.COUNTER  from @dt dt
 left join houses h on dt.HOUSEID=h.HOUSEID where h.id is null";
-                                    try
-                                    {
+                                    //try
+                                    //{
                                         MyReader.UpdateFromTable<DataTable>(command0, ConnectionString11, dt1);
                                         MyReader.UpdateFromTable<DataTable>(command, ConnectionString11, dt1);
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        Dispatcher.BeginInvoke(new MyDelegateErr(MessErr),ex);
-                                        Thread.Sleep(100);
-                                        while(j>=0)
-                                        {
-                                            Dispatcher.BeginInvoke(new MyProgress(ProgressCount), j);
-                                            j = j - 1;
+                                    //}
+                                    //catch (Exception ex)
+                                    //{
+                                    //    Dispatcher.BeginInvoke(new MyDelegateErr(MessErr),ex);
+                                    //    Thread.Sleep(100);
+                                    //    while(j>=0)
+                                    //    {
+                                    //        Dispatcher.BeginInvoke(new MyProgress(ProgressCount), j);
+                                    //        j = j - 1;
                                             
-                                            Thread.Sleep(50);
-                                            if(j>0 && j<1)
-                                            {
-                                                j = 0;
-                                            }
-                                        }
+                                    //        Thread.Sleep(50);
+                                    //        if(j>0 && j<1)
+                                    //        {
+                                    //            j = 0;
+                                    //        }
+                                    //    }
                                         
-                                        return;
-                                    }
+                                    //    return;
+                                    //}
 
                                 }
                                 try
@@ -578,8 +590,9 @@ left join houses h on dt.HOUSEID=h.HOUSEID where h.id is null";
                                     File.Delete(opf.FileName.Replace(opf.SafeFileName, "") + entry.Key);
 
                                 }
-                                catch
+                                catch (Exception ex)
                                 {
+                                    var s = ex.Message;
                                 }
                                 //if (i== Region.Count() - 1 && entry.Key == "HOUSE" + Region[Region.Count() - 1] + ".DBF")
                                 if (j == 100)
@@ -756,12 +769,21 @@ left join houses h on dt.HOUSEID=h.HOUSEID where h.id is null";
                     connSQL1.Close();
 
                 }
-                catch
+                catch (Exception ex)
                 {
+                    var s = ex.Message.ToString();
                     connSQL1.Close();
                 }
+
+                //}
+                //catch (Exception exceptieeon)
+                //{
+                //    MessageBox.Show(exceptieeon.Message);
+                //    throw;
+                //}
                 //LoadingDecorator1.IsSplashScreenShown = false;
             }
+
 
         }
         private void ProgressMessR()

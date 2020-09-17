@@ -21,6 +21,7 @@ using Bytescout.Spreadsheet;
 using System.Data;
 using Microsoft.Win32;
 using System.Diagnostics;
+using DotNetDBF;
 
 namespace Insurance
 {
@@ -959,24 +960,24 @@ sps.Name as sposob_4,rp4.Name as result_4,PRIMECH as prim_4
                     inf = MyReader.MySelect<P3_INFORM>($@"select pp.id as ID_TFOMS,fam as SURNAME,im as NAME,ot as SECNAME,
 pp.dr as DR, w as POL, pp.SS as SNILS,1 as SCOMP,pol.VPOLIS as DPFS,ENP as SN_POL,VID_P3 as VIDPROF, 
 DATEPART(yy,Date_P3) as DYEAR, DATEPART(MM,Date_P3) as DMONTH, Theme_P3 as Tema,Date_P3 as DATE_UV,
-SPOSOB_P3 as sposob,RESULT_P3 as result,PRIMECH as prim, l.kod as KOD_POL, l.kod1 as KOD_POL1,'39001' as SMO
+SPOSOB_P3 as sposob,RESULT_P3 as result,PRIMECH as prim, l.kod as KOD_POL, l.kod1 as KOD_POL1,'{Vars.SMO}' as SMO
  from POL_PERSONS_INFORM p
  join POL_PERSONS pp on p.PERSONGUID=pp.IDGUID
  left join lpu_39 l on pp.MO=l.MCOD
  left join POL_POLISES pol on pp.EVENT_GUID=pol.EVENT_GUID
-  where pp.id={id} and Date_P3  BETWEEN '{start_d_Copy.EditValue}' AND '{end_d_Copy.EditValue}'", Properties.Settings.Default.DocExchangeConnectionString);
+  where pp.id in({id}) and p.Theme_P4 is null", Properties.Settings.Default.DocExchangeConnectionString);
                 }
                 else
                 {
                     inf = MyReader.MySelect<P3_INFORM>($@"select pp.id as ID_TFOMS,fam as SURNAME,im as NAME,ot as SECNAME,
 pp.dr as DR, w as POL, pp.SS as SNILS,1 as SCOMP,pol.VPOLIS as DPFS,ENP as SN_POL,VID_P3 as VIDPROF, 
 DATEPART(yy,Date_P3) as DYEAR, DATEPART(MM,Date_P3) as DMONTH, Theme_P3 as Tema,Date_P3 as DATE_UV,
-SPOSOB_P3 as sposob,RESULT_P3 as result,PRIMECH as prim, l.kod as KOD_POL, l.kod1 as KOD_POL1,'39001' as SMO
+SPOSOB_P3 as sposob,RESULT_P3 as result,PRIMECH as prim, l.kod as KOD_POL, l.kod1 as KOD_POL1,'{Vars.SMO}' as SMO
  from POL_PERSONS_INFORM p
  join POL_PERSONS pp on p.PERSONGUID=pp.IDGUID
  left join lpu_39 l on pp.MO=l.MCOD
  left join POL_POLISES pol on pp.EVENT_GUID=pol.EVENT_GUID
-  where Date_P3  BETWEEN '{start_d_Copy.EditValue}' AND '{end_d_Copy.EditValue}'", Properties.Settings.Default.DocExchangeConnectionString);
+  where Date_P3  BETWEEN '{start_d_Copy.EditValue}' AND '{end_d_Copy.EditValue}' and p.Theme_P4 is null", Properties.Settings.Default.DocExchangeConnectionString);
                 }
                 //DataTable dt = new DataTable();
                 string dbffile = SF.FileName;
@@ -985,7 +986,7 @@ SPOSOB_P3 as sposob,RESULT_P3 as result,PRIMECH as prim, l.kod as KOD_POL, l.kod
 
                     var writer = new DotNetDBF.DBFWriter(fos);
                     writer.CharEncoding = Encoding.GetEncoding(866);
-                    writer.Signature = 0x43;//DotNetDBF.DBFSignature.DBase3;
+                    writer.Signature = DBFSignature.DBase3;//0x43;//DotNetDBF.DBFSignature.DBase3;
                     writer.LanguageDriver = 0x26; // кодировка 866
                     
                     writer.Fields = new[]{
@@ -1053,7 +1054,7 @@ SPOSOB_P3 as sposob,RESULT_P3 as result,PRIMECH as prim, l.kod as KOD_POL, l.kod
                     inf = MyReader.MySelect<P4_INFORM>($@"select fam as SURNAME,im as NAME,ot as SECNAME,
 pp.dr as DR, w as POL, pp.SS as SNILS,1 as SCOMP,ENP as SN_POL, l.kod as KOD_POL, l.kod1 as KOD_POL1, mkb_p4 as KMKB,
 DATEPART(yy,Date_P4) as DYEAR, Month_1_P4 as PM1, Month_2_P4 as PM2, Month_3_P4 as PM3, Month_4_P4 as PM4,
-PERSON_ID as ID_TFOMS,'39001' as SMO, pol.VPOLIS as DPFS, soglasie_p4 as sogl, Theme_P4 as tema,Date_P4 as Date_uv,
+PERSON_ID as ID_TFOMS,'{Vars.SMO}' as SMO, pol.VPOLIS as DPFS, soglasie_p4 as sogl, Theme_P4 as tema,Date_P4 as Date_uv,
 SPOSOB_P4 as sposob,RESULT_P4 as result,PRIMECH as prim
 
  from POL_PERSONS_INFORM p
@@ -1061,14 +1062,14 @@ SPOSOB_P4 as sposob,RESULT_P4 as result,PRIMECH as prim
  left join lpu_39 l on pp.MO=l.MCOD
  left join POL_POLISES pol on pp.EVENT_GUID=pol.EVENT_GUID
  
- where p.id in({id})", Properties.Settings.Default.DocExchangeConnectionString);
+ where pp.id in({id}) and p.Theme_P3 is null", Properties.Settings.Default.DocExchangeConnectionString);
                 }
                 else
                 {
                     inf = MyReader.MySelect<P4_INFORM>($@"select fam as SURNAME,im as NAME,ot as SECNAME,
 pp.dr as DR, w as POL, pp.SS as SNILS,1 as SCOMP,ENP as SN_POL, l.kod as KOD_POL, l.kod1 as KOD_POL1, mkb_p4 as KMKB,
 DATEPART(yy,Date_P4) as DYEAR, Month_1_P4 as PM1, Month_2_P4 as PM2, Month_3_P4 as PM3, Month_4_P4 as PM4,
-PERSON_ID as ID_TFOMS,'39001' as SMO, pol.VPOLIS as DPFS, soglasie_p4 as sogl, Theme_P4 as tema,Date_P4 as Date_uv,
+PERSON_ID as ID_TFOMS,'{Vars.SMO}' as SMO, pol.VPOLIS as DPFS, soglasie_p4 as sogl, Theme_P4 as tema,Date_P4 as Date_uv,
 SPOSOB_P4 as sposob,RESULT_P4 as result,PRIMECH as prim
 
  from POL_PERSONS_INFORM p
@@ -1076,7 +1077,7 @@ SPOSOB_P4 as sposob,RESULT_P4 as result,PRIMECH as prim
  left join lpu_39 l on pp.MO=l.MCOD
  left join POL_POLISES pol on pp.EVENT_GUID=pol.EVENT_GUID
  
- where  Date_P4  BETWEEN '{start_d_Copy.EditValue}' AND '{end_d_Copy.EditValue}'", Properties.Settings.Default.DocExchangeConnectionString);
+ where  Date_P4  BETWEEN '{start_d_Copy.EditValue}' AND '{end_d_Copy.EditValue}' and p.Theme_P3 is null", Properties.Settings.Default.DocExchangeConnectionString);
                 }
                 //DataTable dt = new DataTable();
                 string dbffile = SF.FileName;
@@ -1085,7 +1086,7 @@ SPOSOB_P4 as sposob,RESULT_P4 as result,PRIMECH as prim
 
                     var writer = new DotNetDBF.DBFWriter(fos);
                     writer.CharEncoding = Encoding.GetEncoding(866);
-                    writer.Signature = DotNetDBF.DBFSignature.DBase3;
+                    writer.Signature = DBFSignature.DBase3;//0x43;//DotNetDBF.DBFSignature.DBase3;
                     writer.LanguageDriver = 0x26; // кодировка 866
                     writer.Fields = new[]{
                         new DotNetDBF.DBFField("SURNAME", DotNetDBF.NativeDbType.Char, 40),

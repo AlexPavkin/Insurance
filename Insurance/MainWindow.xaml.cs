@@ -35,6 +35,7 @@ using Ionic.Zip;
 using System.Xml;
 using Insurance.Classes;
 using System.Data.SqlTypes;
+using DevExpress.Xpf.Bars;
 using DevExpress.XtraEditors;
 namespace Insurance
 {
@@ -966,7 +967,7 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
             G_layuot.restore_Layout(Properties.Settings.Default.DocExchangeConnectionString, pers_grid, pers_grid_2);
             //LoadingDecorator1.IsSplashScreenShown = false;
             WindowState = WindowState.Maximized;
-            Vars.MainTitle = "Insurance(полисная часть) v1.040";
+            Vars.MainTitle = "Insurance(полисная часть) v1.041";
             Title = Vars.MainTitle;
             prz.SelectedIndex = -1;
             //if (SPR.Premmissions == "User")
@@ -1103,6 +1104,11 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
         //public string[] events_list;
         private void new_obr_Click(object sender, RoutedEventArgs e)
         {
+            //var otvet = XtraInputBox.Show("Использовать FIAS ONLINE? (0 - ДА, 1 – НЕТ)", "FIAS ONLINE", "1");
+            //if (otvet == "0")
+            //{
+            //    Properties.Settings.Default.FIASConnectionString = "";
+            //}
             //var r = Funcs.MyIdsTable(pers_grid.GetSelectedRowHandles(), "ID", pers_grid);
             //string command0 = $@"exec [dels] @dt";
             //MyReader.UpdateFromTable<DataTable>(command0, Properties.Settings.Default.DocExchangeConnectionString, r,false);
@@ -1234,7 +1240,7 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
                                 Tab_ZL.Visibility = Visibility.Hidden;
                                 return;
                             }
-                            else if (pers_grid.GetFocusedRowCellValue("UNLOAD").ToString() == "True")
+                            else if (pers_grid.GetFocusedRowCellValue("UNLOAD").ToString() == "True" && Vars.SMO !="67005")
                             {
                                 string m2 = "Редактирование заявлений отправленных в ТФОМС запрещено!";
                                 string t2 = "Ошибка!";
@@ -10021,6 +10027,33 @@ where p.FAM is not null and p.FAM <> ''", Properties.Settings.Default.DocExchang
 
         //        }
 
+        private void Del_prikrep_OnItemClick(object sender, ItemClickEventArgs itemClickEventArgs)
+        {
+            string sg_rows_zl = " ";
+            int[] rt = pers_grid.GetSelectedRowHandles();
+            for (int i = 0; i < rt.Count(); i++)
+            {
+                var ddd_zl = pers_grid.GetCellValue(rt[i], "ID");
+                var sgr_zl = sg_rows_zl.Insert(sg_rows_zl.Length, ddd_zl.ToString()) + ",";
+                sg_rows_zl = sgr_zl;
+            }
+            sg_rows_zl = sg_rows_zl.Substring(0, sg_rows_zl.Length - 1);
+            var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
+            SqlConnection con = new SqlConnection(connectionString);
+            SqlCommand com = new SqlCommand($@" update POL_PERSONS
+                set mo='', dstart='' 
+                where id in({sg_rows_zl}) ", con);
+            con.Open();
+            com.CommandTimeout = 0;
+            com.ExecuteNonQuery();
+            con.Close();
+            string m1 = "Прикрепление успешно удалено!";
+            string t1 = "Сообщение";
+            int b1 = 1;
+            Message me1 = new Message(m1, t1, b1);
+            me1.ShowDialog();
+            return;
+        }
     }
 }
 
