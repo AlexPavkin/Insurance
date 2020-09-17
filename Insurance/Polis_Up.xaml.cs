@@ -24,6 +24,7 @@ using ExcelDataReader;
 using Bytescout.Spreadsheet;
 using WFR = System.Windows.Forms;
 using Bytescout.Spreadsheet.Constants;
+using Microsoft.Win32;
 
 namespace Insurance
 {
@@ -149,7 +150,7 @@ namespace Insurance
             nam_smo.Focus();
             polis_up_file_ = Polis_upp_file;
             call_ = call;
-            if(call_=="attache")
+            if(call_=="attache" )
             {
                 this.Title = "Загрузка прикрепления";
                 nam_smo.Visibility = Visibility.Hidden;
@@ -159,6 +160,18 @@ namespace Insurance
                 date_lbl.Visibility = Visibility.Hidden;
                 btn_load_txt.Text = "Загрузить";
                                 
+            }
+           
+            if (call_ == "attache_tf")
+            {
+                this.Title = "Проставление прикрепления";
+                nam_smo.Visibility = Visibility.Hidden;
+                ns_lbl.Visibility = Visibility.Hidden;
+                P060_krome.Visibility = Visibility.Hidden;
+                dateP.Visibility = Visibility.Hidden;
+                date_lbl.Visibility = Visibility.Hidden;
+                upload_polises.Visibility = Visibility.Collapsed;
+
             }
             else
             {
@@ -202,6 +215,7 @@ namespace Insurance
             ////    pol_zagr.SelectAll();
             ////}
         }
+        DataTable dataTable_ex;
         private void polises_in_Loaded(object sender, RoutedEventArgs e)
         {
 
@@ -234,9 +248,9 @@ namespace Insurance
                 };
 
                 var dataSet = reader.AsDataSet(conf);
-                var dataTable = dataSet.Tables[0];
-                rows_count = dataTable.Rows.Count;
-                pol_zagr.ItemsSource = dataTable;
+                dataTable_ex = dataSet.Tables[0];
+                rows_count = dataTable_ex.Rows.Count;
+                pol_zagr.ItemsSource = dataTable_ex;
                 //pol_zagr1.ItemsSource = dataTable;
                 //pol_zagr.ItemsSource = a;
             }
@@ -868,7 +882,7 @@ drop table [dbo].[Attache]", con);
             if (call_=="attache")
             {
                 Zagr_2();
-            }
+            }            
             else
             {
                 Zagr_1();
@@ -935,6 +949,65 @@ drop table [dbo].[Attache]", con);
                     }
                 }
             }
+        }
+
+        private void Upd_attache_tfoms_Click(object sender, RoutedEventArgs e)
+        {
+            Dictionary<string, string> att = new Dictionary<string, string>();
+            DataTable dt = new DataTable();
+            int ii = 1;
+            dt.Columns.Add("id", typeof(int));
+            dt.Columns.Add("enp", typeof(string));
+            dt.Columns.Add("mo_s", typeof(string));
+            var con_str = Properties.Settings.Default.DocExchangeConnectionString;
+            SqlConnection con = new SqlConnection(con_str);
+            SqlCommand com = new SqlCommand($@"select enp,mo from pol_persons where enp is not null and enp!=''",con);
+            
+            con.Open();
+            SqlDataReader reader = com.ExecuteReader();
+            while(reader.Read())
+            {
+                
+                string _enp = reader["enp"].ToString();
+                string _mo = reader["mo"].ToString();
+               
+                dt.LoadDataRow(new object[] { ii, _enp, _mo },true);
+                ii = ii + 1;
+            }
+
+            var result = from exDataRow in dataTable_ex.AsEnumerable()
+                         join sqlDataRow in dt.AsEnumerable()
+                         on exDataRow.Field<string>("ЕНП") equals sqlDataRow.Field<string>("enp")
+                         into gres
+                         from subpet in gres.DefaultIfEmpty()
+                         select new
+                         {
+                             ЕНП = exDataRow.Field<string>("ЕНП"),
+                             /* other DataTable row values here */
+
+                             mo =subpet?.Field<string>("mo_s")??string.Empty
+                         };
+            pol_zagr.ItemsSource = result;
+            pol_zagr.RefreshData();
+
+            SaveFileDialog SF = new SaveFileDialog();
+            SF.DefaultExt = ".xls";
+            SF.Filter = "Файлы Excel (.xls; .xlsx)|*.xls;*.xlsx";
+            bool res = SF.ShowDialog().Value;
+            if(res)
+            {
+                string fname = SF.FileName;
+                pol_zagr.View.ExportToXls(fname);
+
+                //pers_grid.View.ShowPrintPreview(this);
+                string m = $@"Файл успешно сохранен и находится в папке:
+                {SF.FileName.Replace(SF.SafeFileName, "")}";
+                string t = "Сообщение";
+                int b = 1;
+                Message me = new Message(m, t, b);
+                me.ShowDialog();
+            }
+
         }
     }
 }

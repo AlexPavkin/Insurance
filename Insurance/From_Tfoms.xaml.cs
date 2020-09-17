@@ -32,7 +32,8 @@ namespace Insurance
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
             if(Vars.SMO!="46004" && Vars.SMO != "39001" )
             {
-                attache.Visibility = Visibility.Hidden;
+                attache.IsEnabled =false;
+                attache_to_foms.IsEnabled = false;
             }
         }
 
@@ -333,6 +334,25 @@ where --=(select person_guid from pol_polises where spolis='{xml_spol[i]}' and n
             }
         }
 
+        private void Attache_to_foms_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog OF = new OpenFileDialog();
+
+            bool res = OF.ShowDialog().Value;
+            string[] path_ex = OF.FileNames;
+            Attache_file = OF.SafeFileNames;
+            string call = "attache_tf";
+            if (res == true)
+            {
+
+                Polis_Up w8_polises_in = new Polis_Up(path_ex, Attache_file, call);
+                w8_polises_in.ShowDialog();
+            }
+            else
+            {
+                return;
+            }
+        }
     }
     
 }

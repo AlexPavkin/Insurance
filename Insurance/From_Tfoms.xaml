@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Insurance"
         mc:Ignorable="d"
-        Title="Загрузка" Height="235.153" Width="341" Background="#FF5F7B8B">
+        Title="Загрузка" Height="285.153" Width="341" Background="#FF5F7B8B">
     <Window.Resources>
         <!--<ControlTemplate TargetType="Button" x:Key="btTemplate">
             <Border CornerRadius="25" BorderBrush="CadetBlue" BorderThickness="2"
@@ -161,7 +161,7 @@
                     </Image.OpacityMask>
 
                 </Image>
-                <TextBlock Text="Загрузить ЕНП и ФЛК" VerticalAlignment="Center"  TextAlignment="Center" Margin="0,0" Width="149"  Foreground="White" FontWeight="Bold" FontSize="12"   />
+                <TextBlock Text="Загрузить ЕНП и ФЛК" VerticalAlignment="Center"  TextAlignment="Left" Margin="5,0" Width="149"  Foreground="White" FontWeight="Bold" FontSize="12"   />
             </StackPanel>
 
         </Button>
@@ -177,7 +177,7 @@
                     </Image.OpacityMask>
 
                 </Image>
-                <TextBlock Text="Загрузить СТОПЛИСТ" VerticalAlignment="Center"  TextAlignment="Center" Margin="0,0" Width="149"  Foreground="White" FontWeight="Bold" FontSize="12"   />
+                <TextBlock Text="Загрузить СТОПЛИСТ" VerticalAlignment="Center"  TextAlignment="Left" Margin="5,0" Width="149"  Foreground="White" FontWeight="Bold" FontSize="12"   />
             </StackPanel>
         </Button>
         <Button x:Name="izm"  HorizontalAlignment="Center" Height="36" Margin="10,106,0,0" VerticalAlignment="Top" Width="200" Click="Button_Click" FontWeight="Bold" FontSize="14" Style="{StaticResource myButtonStyle1}">
@@ -191,7 +191,7 @@
                         </LinearGradientBrush>
                     </Image.OpacityMask>
                 </Image>
-                <TextBlock Text="Загрузить Изменения" VerticalAlignment="Center"  TextAlignment="Center" Margin="0,0" Width="149"  Foreground="White" FontWeight="Bold" FontSize="12"   />
+                <TextBlock Text="Загрузить Изменения" VerticalAlignment="Center"  TextAlignment="Left" Margin="5,0" Width="149"  Foreground="White" FontWeight="Bold" FontSize="12"   />
             </StackPanel>
         </Button>
         <Button x:Name="attache"  HorizontalAlignment="Center" Height="36" Margin="10,147,0,0" VerticalAlignment="Top" Width="200" Click="Attache_Click" FontWeight="Bold" FontSize="14" Style="{StaticResource myButtonStyle1}">
@@ -205,7 +205,21 @@
                         </LinearGradientBrush>
                     </Image.OpacityMask>
                 </Image>
-                <TextBlock Text="Загрузить Прикрепление" VerticalAlignment="Center"  TextAlignment="Center" Margin="0,0" Width="149"  Foreground="White" FontWeight="Bold" FontSize="12"   />
+                <TextBlock Text="Загрузить Прикрепление" VerticalAlignment="Center"  TextAlignment="Left" Margin="5,0" Width="149"  Foreground="White" FontWeight="Bold" FontSize="12"   />
+            </StackPanel>
+        </Button>
+        <Button x:Name="attache_to_foms"  HorizontalAlignment="Center" Height="36" Margin="10,188,0,0" VerticalAlignment="Top" Width="200"  FontWeight="Bold" FontSize="14" Style="{StaticResource myButtonStyle1}" Click="Attache_to_foms_Click">
+            <StackPanel  Orientation="Horizontal" Width="200" HorizontalAlignment="Center" >
+                <!--Margin="5,0"-->
+                <Image Source="Insurance_icons\download.png" Width="30" Height="30" Focusable="True" >
+                    <Image.OpacityMask>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="Black" Offset="0"/>
+                            <GradientStop Color="White" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Image.OpacityMask>
+                </Image>
+                <TextBlock Text="Прикрепление для ТФОМС" VerticalAlignment="Center"  TextAlignment="Left" Margin="5,0" Width="164"  Foreground="White" FontWeight="Bold" FontSize="12"   />
             </StackPanel>
         </Button>
 
