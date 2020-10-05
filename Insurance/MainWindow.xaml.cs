@@ -737,6 +737,8 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
         public List<FIO> im_DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_im", Properties.Settings.Default.DocExchangeConnectionString);
         public List<FIO> ot_DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_ot", Properties.Settings.Default.DocExchangeConnectionString);
         public List<NAME_VP> kem_vid_DataContext = MyReader.MySelect<NAME_VP>(@"select id,name from spr_namevp", Properties.Settings.Default.DocExchangeConnectionString);
+        public List<SPR_DUBLE_REASON> list2 = MyReader.MySelect<SPR_DUBLE_REASON>(@"select * from SPR_DUBLE_REASON", Properties.Settings.Default.DocExchangeConnectionString);
+        public List<SPR_SMO_REASON> list1 = MyReader.MySelect<SPR_SMO_REASON>(@"select * from SPR_SMO_REASON", Properties.Settings.Default.DocExchangeConnectionString);
         //public List<FIO> fam1_DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_fam", Properties.Settings.Default.DocExchangeConnectionString);
         //public List<FIO> im1_DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_im", Properties.Settings.Default.DocExchangeConnectionString);
         //public List<FIO> ot1_DataContext = MyReader.MySelect<FIO>(@"select distinct fam,im,ot from spr_ot", Properties.Settings.Default.DocExchangeConnectionString);
@@ -926,19 +928,19 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
             prev_im.DataContext = im_DataContext;
             prev_ot.DataContext = ot_DataContext;
 
-            list1.Add("1 Первичный выбор СМО");
-            list1.Add("2 Замена СМО в соответствии с правом замены");
-            list1.Add("3 Замена СМО в связи со сменой места жительства");
-            list1.Add("4 Замена СМО в связи с прекращением действия договора");
-            this.pr_pod_z_smo.ItemsSource = list1;
+            //list1.Add("1 Первичный выбор СМО");
+            //list1.Add("2 Замена СМО в соответствии с правом замены");
+            //list1.Add("3 Замена СМО в связи со сменой места жительства");
+            //list1.Add("4 Замена СМО в связи с прекращением действия договора");
+            this.pr_pod_z_smo.DataContext = list1;
             //pr_pod_z_smo.SelectedIndex = 0;
 
-            list2.Add("1 Изменение реквизитов");
-            list2.Add("2 Установление ошибочности сведений");
-            list2.Add("3 Ветхость и непригодность полиса");
-            list2.Add("4 Утрата ранее выданного полиса");
-            list2.Add("5 Окончание срока действия полиса");
-            this.pr_pod_z_polis.ItemsSource = list2;
+            //list2.Add("1 Изменение реквизитов");
+            //list2.Add("2 Установление ошибочности сведений");
+            //list2.Add("3 Ветхость и непригодность полиса");
+            //list2.Add("4 Утрата ранее выданного полиса");
+            //list2.Add("5 Окончание срока действия полиса");
+            this.pr_pod_z_polis.DataContext = list2;
 
             list3.Add("0 Не требует изготовления полиса");
             list3.Add("1 Бумажный бланк");
@@ -4053,8 +4055,8 @@ DEALLOCATE MY_CURSOR
         }
 
         public ObservableCollection<string> list0 = new ObservableCollection<string>();
-        public ObservableCollection<string> list1 = new ObservableCollection<string>();
-        public ObservableCollection<string> list2 = new ObservableCollection<string>();
+        //public ObservableCollection<string> list1 = new ObservableCollection<string>();
+        //public ObservableCollection<string> list2 = new ObservableCollection<string>();
         public ObservableCollection<string> list3 = new ObservableCollection<string>();
         public ObservableCollection<Dost> list4 = new ObservableCollection<Dost>();
         public ObservableCollection<Table> list5 = new ObservableCollection<Table>();
@@ -4485,6 +4487,7 @@ on t0.idguid = t3.person_guid", con);
                         object name_vp_code = reader["NAME_VP_CODE"];
                         object docmr = reader["DOCMR"];
                         object str_vid_ = reader["OKSM"];
+                        object doc_exp_ = reader["DOCEXP"];
 
                         doc_type.EditValue = doctype;
                         doc_ser.Text = docser.ToString();
@@ -4494,7 +4497,14 @@ on t0.idguid = t3.person_guid", con);
                         kod_podr.Text = name_vp_code.ToString();
                         //mr2.Text = docmr.ToString();
                         str_vid.EditValue = str_vid_;
-
+                        if (doc_exp_.ToString() == "")
+                        {
+                            docexp.EditValue = null;
+                        }
+                        else
+                        {
+                            docexp.EditValue = Convert.ToDateTime(doc_exp_);
+                        }                        
 
 
                     }

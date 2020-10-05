@@ -742,13 +742,14 @@
                                                 <dxe:CheckEdit x:Name="petition" />
                                             </dxlc:LayoutItem>
                                             <dxlc:LayoutItem Label="Причина подачи заявления  о выдаче дубликата или переоформлении полиса" LabelPosition="Top">
-                                                <dxe:ComboBoxEdit x:Name="pr_pod_z_polis" NullValueButtonPlacement="EditBox" AutoComplete="True" ValidateOnTextInput="False" IncrementalFiltering="True" FilterCondition="Contains" ImmediatePopup="True" />
+                                                <dxe:ComboBoxEdit x:Name="pr_pod_z_polis" NullValueButtonPlacement="EditBox" AutoComplete="True" ValidateOnTextInput="False" IncrementalFiltering="True" FilterCondition="Contains" ImmediatePopup="True" ItemsSource="{Binding}" IsSynchronizedWithCurrentItem="True" EditValue="ID" ValueMember="ID" DisplayMember="NameWithId"/>
                                             </dxlc:LayoutItem>
                                             <dxlc:LayoutItem Label="Выбранная форма изготовления полиса" LabelPosition="Top" FontWeight="Bold">
                                                 <dxe:ComboBoxEdit x:Name="form_polis" NullValueButtonPlacement="EditBox" AutoComplete="True" ValidateOnTextInput="False" IncrementalFiltering="True" FilterCondition="Contains" ImmediatePopup="True" />
                                             </dxlc:LayoutItem>
                                             <dxlc:LayoutItem Label="Причина подачи заявления о выборе (замене) СМО" LabelPosition="Top">
-                                                <dxe:ComboBoxEdit x:Name="pr_pod_z_smo" PreviewKeyDown="Pr_pod_z_smo_PreviewKeyDown"  NullValueButtonPlacement="EditBox" AutoComplete="True" ValidateOnTextInput="False" IncrementalFiltering="True" FilterCondition="Contains" ImmediatePopup="True" SelectedIndexChanged="Pr_pod_z_smo_SelectedIndexChanged" PopupClosed="Pr_pod_z_smo_PopupClosed" />
+                                                <dxe:ComboBoxEdit x:Name="pr_pod_z_smo" PreviewKeyDown="Pr_pod_z_smo_PreviewKeyDown"  NullValueButtonPlacement="EditBox" AutoComplete="True" ValidateOnTextInput="False" IncrementalFiltering="True" FilterCondition="Contains" 
+                                                                  ImmediatePopup="True" SelectedIndexChanged="Pr_pod_z_smo_SelectedIndexChanged" PopupClosed="Pr_pod_z_smo_PopupClosed" ItemsSource="{Binding}" IsSynchronizedWithCurrentItem="True" EditValue="ID" ValueMember="ID" DisplayMember="NameWithId"/>
                                             </dxlc:LayoutItem>
 
                                         </dxlc:LayoutGroup>

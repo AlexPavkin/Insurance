@@ -29,6 +29,10 @@ namespace Insurance_SPR
         public string COMMENT { get; set; }
         [System.ComponentModel.DisplayName("Причина подачи заявления")]
         public string NameWithID { get; set; }
+        [System.ComponentModel.DisplayName("Причина выбора/замены СМО")]
+        public string NameWithID_RSMO { get; set; }
+        [System.ComponentModel.DisplayName("Причина выдачи дубликата")]
+        public string NameWithID_RD { get; set; }
         [System.ComponentModel.DisplayName("ЕНП")]
         public string ENP { get; set; }
         [System.ComponentModel.DisplayName("Активен (да/нет)")]
@@ -140,6 +144,19 @@ namespace Insurance_SPR
         public string result_4 { get; set; }
         public string prim_4 { get; set; }
 
+    }
+
+    public class SPR_DUBLE_REASON
+    {
+        public int ID { get; set; }
+        public string NAME { get; set; }
+        public string NameWithId { get; set; }
+    }
+    public class SPR_SMO_REASON
+    {
+        public int ID { get; set; }
+        public string NAME { get; set; }
+        public string NameWithId { get; set; }
     }
     public class P4_INFORM
     {               
