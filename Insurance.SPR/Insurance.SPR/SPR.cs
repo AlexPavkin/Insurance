@@ -86,7 +86,7 @@ st.namewithkod as STOP_REASON, pe.id as EVENT_ID, dbr.namewithid as NameWithID_R
             //            left join f003 f
             //            on pp.MO=f.mcod ";
 
-            public static string load_pers_grid2 = $@" SELECT pp.ID,pp.IDGUID,pp.active,pe.TIP_OP,pp.SS ,pp.ENP ,pp.FAM , pp.IM  , pp.OT ,pp.W ,pp.DR , pp.PHONE ,
+            public static string load_pers_grid2 = $@" SELECT  pp.ID,pp.IDGUID,pp.active,pe.TIP_OP,pp.SS ,pp.ENP ,pp.FAM , pp.IM  , pp.OT ,pp.W ,pp.DR , pp.PHONE ,
 pp.COMMENT ,f.NameWithID ,op.filename,d.DOCTYPE,d.DOCSER,d.DOCNUM,VPOLIS,SPOLIS ,NPOLIS,DBEG ,DRECEIVED,DEND ,DSTOP
   FROM [dbo].[POL_PERSONS] pp
 left join f003 f on pp.mo=f.mcod 

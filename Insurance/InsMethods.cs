@@ -5164,12 +5164,14 @@ dstart=@date_mo where idguid='{perguid}'", con);
                 comm2.Parameters.AddWithValue("@FIAS_L7", Guid.Empty);
                 comm2.Parameters.AddWithValue("@FIAS_L90", Guid.Empty);
                 comm2.Parameters.AddWithValue("@FIAS_L91", Guid.Empty);
+                
             }
             else
             {
                 comm2.Parameters.AddWithValue("@FIAS_L7", PD.fias.reg_ul.EditValue);
                 comm2.Parameters.AddWithValue("@FIAS_L90", PD.fias.reg_ul.EditValue);
                 comm2.Parameters.AddWithValue("@FIAS_L91", PD.fias.reg_ul.EditValue);
+               
             }
             if (PD.fias.reg_dom.EditValue == null)
             {
@@ -5448,7 +5450,7 @@ update pol_events set rperson_guid='{PD.rper}' where person_guid='{perguid}' and
                 con.Close();
 
             }
-            else if (PD.old_doc != 0)
+            else if (PD.old_doc != 0 && PD.doc_type1.SelectedIndex != -1)
             {
                 SqlConnection con = new SqlConnection(connectionString);
                 SqlCommand cmddoc = new SqlCommand($@"update POL_DOCUMENTS_OLD set  OKSM='{PD.str_vid1.EditValue}', DOCTYPE={PD.doc_type1.EditValue}, DOCSER='{PD.doc_ser1.Text}', DOCNUM='{PD.doc_num1.Text}', DOCDATE='{PD.date_vid2.DateTime}', DOCEXP='{PD.docexp2.EditValue}',
@@ -5457,6 +5459,15 @@ NAME_VP='{PD.kem_vid1.Text}', NAME_VP_CODE='{PD.kod_podr1.Text}' where idguid='{
                 cmddoc.ExecuteNonQuery();
                 con.Close();
             }
+            else if (PD.old_doc != 0 && PD.doc_type1.SelectedIndex == -1)
+            {
+                SqlConnection con = new SqlConnection(connectionString);
+                SqlCommand cmddoc = new SqlCommand($@"delete from POL_DOCUMENTS_OLD  where idguid='{PD.old_doc_guid}'", con);
+                con.Open();
+                cmddoc.ExecuteNonQuery();
+                con.Close();
+            }
+
 
             if (PD.prev_persguid == Guid.Empty && PD.prev_fam.Text != "")
             {                
@@ -5477,9 +5488,13 @@ NAME_VP='{PD.kem_vid1.Text}', NAME_VP_CODE='{PD.kod_podr1.Text}' where idguid='{
                 cmdpers.ExecuteNonQuery();
                 con.Close();
             }
-            else
+            else if(PD.prev_persguid != Guid.Empty && PD.prev_fam.Text == "" && PD.prev_im.Text == "")
             {
-
+                SqlConnection con = new SqlConnection(connectionString);
+                SqlCommand cmdpers = new SqlCommand($@"delete from POL_PERSONS_OLD where idguid='{PD.prev_persguid}'", con);
+                con.Open();
+                cmdpers.ExecuteNonQuery();
+                con.Close();
             }
 
             Item_Saved();
@@ -11164,12 +11179,14 @@ dstart=@date_mo where idguid='{perguid}'", con);
                 comm2.Parameters.AddWithValue("@FIAS_L7", Guid.Empty);
                 comm2.Parameters.AddWithValue("@FIAS_L90", Guid.Empty);
                 comm2.Parameters.AddWithValue("@FIAS_L91", Guid.Empty);
+                
             }
             else
             {
                 comm2.Parameters.AddWithValue("@FIAS_L7", PD.fias.reg_ul.EditValue);
                 comm2.Parameters.AddWithValue("@FIAS_L90", PD.fias.reg_ul.EditValue);
                 comm2.Parameters.AddWithValue("@FIAS_L91", PD.fias.reg_ul.EditValue);
+               
             }
             if (PD.fias.reg_dom.EditValue == null)
             {
@@ -11247,7 +11264,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
                 {
                     comm2.Parameters.AddWithValue("@FIAS_L6_1", PD.fias.reg_np.EditValue);
                 }
-                if (PD.fias1.reg_ul1.EditValue == null)
+                if (PD.fias.reg_ul.EditValue == null)
                 {
                     comm2.Parameters.AddWithValue("@FIAS_L7_1", Guid.Empty);
                     comm2.Parameters.AddWithValue("@FIAS_L90_1", Guid.Empty);
@@ -11255,9 +11272,9 @@ dstart=@date_mo where idguid='{perguid}'", con);
                 }
                 else
                 {
-                    comm2.Parameters.AddWithValue("@FIAS_L7_1", PD.fias1.reg_ul1.EditValue);
-                    comm2.Parameters.AddWithValue("@FIAS_L90_1", PD.fias1.reg_ul1.EditValue);
-                    comm2.Parameters.AddWithValue("@FIAS_L91_1", PD.fias1.reg_ul1.EditValue);
+                    comm2.Parameters.AddWithValue("@FIAS_L7_1", PD.fias.reg_ul.EditValue);
+                    comm2.Parameters.AddWithValue("@FIAS_L90_1", PD.fias.reg_ul.EditValue);
+                    comm2.Parameters.AddWithValue("@FIAS_L91_1", PD.fias.reg_ul.EditValue);
                 }
                 if (PD.fias.reg_dom.EditValue == null)
                 {
