@@ -16,7 +16,7 @@ namespace Insurance_SPR
     //    public string DOCSER { get; set; }
     //    public int DOCTYPE { get; set; }
     //}
-
+    
     public class Events
     {
         public Int32 ID { get; set; }
@@ -110,27 +110,27 @@ namespace Insurance_SPR
     }
     public class INFORM_ALL
     {
-
+       
         public string SURNAME { get; set; }
         public string NAME { get; set; }
         public string SECNAME { get; set; }
         public DateTime? DR { get; set; }
         public int POL { get; set; }
-        public string SNILS { get; set; }
+        public string SNILS { get; set; }        
         public int DPFS_3 { get; set; }
         public string SN_POL_3 { get; set; }
-        public string VIDPROF_3 { get; set; }
+        public string VIDPROF_3 { get; set; }        
         public string Tema_3 { get; set; }
         public DateTime DATE_UV_3 { get; set; }
         public string SPOSOB_3 { get; set; }
         public string RESULT_3 { get; set; }
         public string prim_3 { get; set; }
         //---------------------------------------------        
-        public string KMKB { get; set; }
+        public string KMKB { get; set; }        
         public int PM1 { get; set; }
         public int PM2 { get; set; }
         public int PM3 { get; set; }
-        public int PM4 { get; set; }
+        public int PM4 { get; set; }         
         public int DPFS_4 { get; set; }
         public string SN_POL_4 { get; set; }
         public bool sogl_4 { get; set; }
@@ -142,14 +142,14 @@ namespace Insurance_SPR
 
     }
     public class P4_INFORM
-    {
-        public string SURNAME { get; set; }
-        public string NAME { get; set; }
-        public string SECNAME { get; set; }
-        public DateTime? DR { get; set; }
-        public int POL { get; set; }
-        public string SNILS { get; set; }
-        public int SCOMP { get; set; }
+    {               
+        public string SURNAME { get; set; }        
+        public string NAME { get; set; }        
+        public string SECNAME { get; set; }         
+        public DateTime? DR { get; set; }        
+        public int POL { get; set; }        
+        public string SNILS { get; set; }        
+        public int SCOMP { get; set; }                        
         public string SN_POL { get; set; }
         public int KOD_POL { get; set; }
         public int KOD_POL1 { get; set; }
@@ -194,7 +194,7 @@ namespace Insurance_SPR
         public int KOD_POL { get; set; }
         public int KOD_POL1 { get; set; }
         public string SMO { get; set; }
-
+        
     }
     public class F003
     {
@@ -222,9 +222,9 @@ namespace Insurance_SPR
     }
     public static class Vars
     {
-        public static List<string> IDZZ { get; set; }
-        public static int[] IDS { get; set; }
-        public static string IDSZ { get; set; }
+        public static  List<string> IDZZ { get; set; }
+        public static int []IDS { get; set; }
+        public static  string IDSZ { get; set; }
         public static int Agnt { get; set; }
         public static string PunctRz { get; set; }
         public static string SMO { get; set; }
@@ -424,7 +424,7 @@ namespace Insurance_SPR
         public int ID { get; set; }
         public string PRZ_CODE { get; set; }
         public string AGENT { get; set; }
-
+        
 
     }
     public class PrzSmo
@@ -435,7 +435,7 @@ namespace Insurance_SPR
         public string NameWithCode { get; set; }
 
     }
-
+    
     public class PremissSmo
     {
         public string Premissions { get; set; }
@@ -477,7 +477,7 @@ namespace Insurance_SPR
         public DateTime DR { get; set; }
         [System.ComponentModel.DisplayName("Событие")]
         public string TIP_OP { get; set; }
-        [System.ComponentModel.DisplayName("Файл выгрузки")]
+        [System.ComponentModel.DisplayName("Файл выгрузки")]        
         public string FNAME { get; set; }
         [System.ComponentModel.DisplayName("Комментарий")]
         public string COMMENT { get; set; }
@@ -491,11 +491,11 @@ namespace Insurance_SPR
         public string FXML { get; set; }
         public DateTime? FDATE { get; set; }
     }
-    public class UNLOAD_FILES
+        public class UNLOAD_FILES
     {
-        public int ID { get; set; }
+        public int ID { get; set; }        
         [System.ComponentModel.DisplayName("Файл выгрузки")]
-        public string FILENAME { get; set; }
+        public string FILENAME { get; set; }        
         [System.ComponentModel.DisplayName("Дата файла")]
         public DateTime? FDATE { get; set; }
         [System.ComponentModel.DisplayName("Событие")]
@@ -551,7 +551,7 @@ namespace Insurance_SPR
     public class People_history
     {
         public Int32 ID { get; set; }
-
+        
         [System.ComponentModel.DisplayName("Комментарий")]
         public string COMMENT { get; set; }
         [System.ComponentModel.DisplayName("Файл выгрузки")]
@@ -629,15 +629,15 @@ namespace Insurance_SPR
         public int YEAR { get; set; }
         [System.ComponentModel.DisplayName("Комментарий")]
         public string COMMENT { get; set; }
-
+        
         public static List<DateTime> H_List
         {
             get
             {
-                List<DateTime> list_h = new List<DateTime>();
+                List<DateTime> list_h=new List<DateTime>();
                 SqlConnection con = new SqlConnection(doc_ex_con);
-
-                SqlCommand cmd = new SqlCommand($@"select H_DATE from SPR_HOLIDAYS where year between {DateTime.Today.Year} and {DateTime.Today.Year + 1} and status=1", con);
+                
+                SqlCommand cmd = new SqlCommand($@"select H_DATE from SPR_HOLIDAYS where year between {DateTime.Today.Year} and {DateTime.Today.Year+1} and status=1", con);
                 con.Open();
                 cmd.CommandTimeout = 0;
                 SqlDataReader dr = cmd.ExecuteReader();
@@ -646,10 +646,10 @@ namespace Insurance_SPR
                     object h_date = dr["H_DATE"];
                     list_h.Add((DateTime)h_date);
                 }
-
+                
                 dr.Close();
-                con.Close();
-
+                con.Close();         
+                
                 return list_h;
             }
 
@@ -682,14 +682,14 @@ namespace Insurance_SPR
         {
             List<DateTime> h = HOLIDAYS.H_List;
             List<DateTime> w = HOLIDAYS.W_List;
-            for (int i = 1; i < 45; i++)
+            for (int i = 1; i <45; i++)
             {
                 h_start = h_start.AddDays(1);
                 if (h.Exists(x => x == h_start) == true || (h_start.DayOfWeek == DayOfWeek.Saturday || h_start.DayOfWeek == DayOfWeek.Sunday && w.Exists(x => x == h_start) == false))
-                {
+                {                    
                     i = i - 1;
                 }
-            }
+            }            
 
             return h_start;
         }
@@ -702,13 +702,13 @@ namespace Insurance_SPR
         public string t { get; set; }
         public string h { get; set; }
     }
-
+    
     public class G_layuot
     {
         public static string lrt;
         public static string lrt1;
         public static string lrt2;
-        public static void restore_Layout(string connectionString, GridControl grid1, GridControl grid2)
+        public static void restore_Layout(string connectionString,GridControl grid1,GridControl grid2)
         {
             var connectionString1 = connectionString;
             SqlConnection con1 = new SqlConnection(connectionString1);
@@ -752,7 +752,7 @@ namespace Insurance_SPR
         {
             var connectionString1 = connectionString;
             SqlConnection con1 = new SqlConnection(connectionString1);
-            SqlCommand comm1 = new SqlCommand($@"select isnull(LayRTable" + num_lr + $@",'')  from auth where user_id={Convert.ToInt32(Insurance_SPR.SPR.PRZ_ID)}", con1);
+            SqlCommand comm1 = new SqlCommand($@"select isnull(LayRTable"+num_lr+$@",'')  from auth where user_id={Convert.ToInt32(Insurance_SPR.SPR.PRZ_ID)}", con1);
             con1.Open();
             lrt2 = (string)comm1.ExecuteScalar();
             con1.Close();
@@ -852,7 +852,7 @@ namespace Insurance_SPR
         {
             MemoryStream stream = new MemoryStream();
             StreamWriter writer = new StreamWriter(stream);
-
+            
             writer.Write(lrt2);
             writer.Flush();
             stream.Seek(0, SeekOrigin.Begin);

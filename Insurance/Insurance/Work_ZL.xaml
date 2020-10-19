@@ -1,0 +1,297 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Insurance"
+        xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"  xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" x:Name="w_1" x:Class="Insurance.Work_ZL"
+        xmlns:control="clr-namespace:Yamed.Control;assembly=Yamed.Control"
+        mc:Ignorable="d" control:EnterKeyTraversal.IsEnabled="True"
+        Title="Мастер ввода"
+        Background="#FF008BFF"  Width="1603" Height="683" >
+    <Window.Resources>
+        <!--<dx:TypedCollectionViewSource x:Key="TypedCollectionViewSource" AdapterType="{x:Type DocExchangeDataSetTableAdapters:R001TableAdapter}" Culture="ru-RU" ContextType="{x:Type local:DocExchangeDataSet}" CollectionViewType="{x:Type ListCollectionView}" Path="R001">
+            <dx:DesignDataManager.DesignData>
+                <dx:DesignDataSettings RowCount="5"/>
+            </dx:DesignDataManager.DesignData>
+        </dx:TypedCollectionViewSource>
+        <local:DocExchangeDataSet x:Key="docExchangeDataSet"/>
+        <CollectionViewSource x:Key="pOL_PERSONSViewSource" Source="{Binding POL_PERSONS, Source={StaticResource docExchangeDataSet}}"/>
+        <dx:TypedSimpleSource x:Key="TypedSimpleSource" AdapterType="{x:Type DocExchangeDataSetTableAdapters:POL_PERSONSTableAdapter}" ContextType="{x:Type local:DocExchangeDataSet}" Path="POL_PERSONS">
+            <dx:DesignDataManager.DesignData>
+                <dx:DesignDataSettings RowCount="5"/>
+            </dx:DesignDataManager.DesignData>
+        </dx:TypedSimpleSource>
+        <dx:TypedSimpleSource x:Key="TypedSimpleSource1" AdapterType="{x:Type DocExchangeDataSetTableAdapters:POL_PERSONSTableAdapter}" ContextType="{x:Type local:DocExchangeDataSet}" Path="POL_PERSONS">
+            <dx:DesignDataManager.DesignData>
+                <dx:DesignDataSettings RowCount="5"/>
+            </dx:DesignDataManager.DesignData>
+        </dx:TypedSimpleSource>
+        <dx:TypedSimpleSource x:Key="TypedSimpleSource2" AdapterType="{x:Type DocExchangeDataSetTableAdapters:POL_ADDRESSESTableAdapter}" ContextType="{x:Type local:DocExchangeDataSet}" Path="POL_ADDRESSES">
+            <dx:DesignDataManager.DesignData>
+                <dx:DesignDataSettings RowCount="5"/>
+            </dx:DesignDataManager.DesignData>
+        </dx:TypedSimpleSource>
+        <dx:TypedSimpleSource x:Key="TypedSimpleSource3" AdapterType="{x:Type DocExchangeDataSetTableAdapters:R003TableAdapter}" ContextType="{x:Type local:DocExchangeDataSet}" Path="R003">
+            <dx:DesignDataManager.DesignData>
+                <dx:DesignDataSettings RowCount="5"/>
+            </dx:DesignDataManager.DesignData>
+        </dx:TypedSimpleSource>
+        <dx:TypedSimpleSource x:Key="TypedSimpleSource4" AdapterType="{x:Type DocExchangeDataSetTableAdapters:POL_PERSONSTableAdapter}" ContextType="{x:Type local:DocExchangeDataSet}" Path="POL_PERSONS">
+            <dx:DesignDataManager.DesignData>
+                <dx:DesignDataSettings RowCount="5"/>
+            </dx:DesignDataManager.DesignData>
+        </dx:TypedSimpleSource>
+        <dx:TypedSimpleSource x:Key="TypedSimpleSource5" AdapterType="{x:Type DocExchangeDataSetTableAdapters:POL_PRZTableAdapter}" ContextType="{x:Type local:DocExchangeDataSet}" Path="POL_PRZ">
+            <dx:DesignDataManager.DesignData>
+                <dx:DesignDataSettings RowCount="5"/>
+            </dx:DesignDataManager.DesignData>
+        </dx:TypedSimpleSource>-->
+        <Style x:Key="myButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="{Binding Width}"/>
+            <Setter Property="Height" Value="{Binding Height}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Rectangle x:Name="myrec" Fill="LightGray"/>
+                            <Label Content="{TemplateBinding Content}" HorizontalAlignment="Center"
+                               VerticalAlignment="Center" Foreground="Black"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Fill" TargetName="myrec" >
+                                    <Setter.Value>
+                                        <SolidColorBrush Color="WhiteSmoke"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Fill" TargetName="myrec" >
+                                    <Setter.Value>
+                                        <SolidColorBrush Color="Yellow"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+        <Style x:Key="myButtonStyle1" TargetType="Button">
+            <Setter Property="Width" Value="{Binding Width}"/>
+            <Setter Property="Height" Value="{Binding Height}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Rectangle x:Name="myrec1" Fill="Blue"/>
+                            <Label x:Name="lbl1" Content="{TemplateBinding Content}" HorizontalAlignment="Center"
+                               VerticalAlignment="Center" Foreground="White"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Fill" TargetName="myrec1" >
+                                    <Setter.Value>
+                                        <SolidColorBrush Color="WhiteSmoke"/>
+
+                                    </Setter.Value>
+
+                                </Setter>
+                                <Setter Property="Foreground" TargetName="lbl1">
+                                    <Setter.Value>
+                                        <SolidColorBrush Color="Black"/>
+
+                                    </Setter.Value>
+                                </Setter>
+
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Fill" TargetName="myrec1" >
+                                    <Setter.Value>
+                                        <SolidColorBrush Color="Yellow"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+        <Style x:Key="myButtonStyle2" TargetType="Button">
+            <Setter Property="Width" Value="{Binding Width}"/>
+            <Setter Property="Height" Value="{Binding Height}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Rectangle x:Name="myrec2" Fill="Green"/>
+                            <Label x:Name="lbl2" Content="{TemplateBinding Content}" HorizontalAlignment="Center"
+                               VerticalAlignment="Center" Foreground="White"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Fill" TargetName="myrec2" >
+                                    <Setter.Value>
+                                        <SolidColorBrush Color="WhiteSmoke"/>
+
+                                    </Setter.Value>
+
+                                </Setter>
+                                <Setter Property="Foreground" TargetName="lbl2">
+                                    <Setter.Value>
+                                        <SolidColorBrush Color="Black"/>
+
+                                    </Setter.Value>
+                                </Setter>
+
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Fill" TargetName="myrec2" >
+                                    <Setter.Value>
+                                        <SolidColorBrush Color="Yellow"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+        <Style x:Key="myButtonStyle3" TargetType="Button">
+            <Setter Property="Width" Value="{Binding Width}"/>
+            <Setter Property="Height" Value="{Binding Height}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Rectangle x:Name="myrec3" Fill="LightGreen"/>
+                            <Label Content="{TemplateBinding Content}" HorizontalAlignment="Center"
+                               VerticalAlignment="Center" Foreground="Black"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Fill" TargetName="myrec3" >
+                                    <Setter.Value>
+                                        <SolidColorBrush Color="WhiteSmoke"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Fill" TargetName="myrec3" >
+                                    <Setter.Value>
+                                        <SolidColorBrush Color="Yellow"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+        <Style x:Key="myButtonStyle4" TargetType="Button">
+            <Setter Property="Width" Value="{Binding Width}"/>
+            <Setter Property="Height" Value="{Binding Height}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Rectangle x:Name="myrec4" Fill="Red"/>
+                            <Label x:Name="lbl2" Content="{TemplateBinding Content}" HorizontalAlignment="Center"
+                               VerticalAlignment="Center" Foreground="White"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Fill" TargetName="myrec4" >
+                                    <Setter.Value>
+                                        <SolidColorBrush Color="WhiteSmoke"/>
+
+                                    </Setter.Value>
+
+                                </Setter>
+                                <Setter Property="Foreground" TargetName="lbl2">
+                                    <Setter.Value>
+                                        <SolidColorBrush Color="Black"/>
+
+                                    </Setter.Value>
+                                </Setter>
+
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Fill" TargetName="myrec4" >
+                                    <Setter.Value>
+                                        <SolidColorBrush Color="Yellow"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+    </Window.Resources>
+    
+        <!--<Grid >
+            <Grid.Background>
+                <LinearGradientBrush EndPoint="0.1,1" StartPoint="0.1,0">
+                    <GradientStop Color="Black" Offset="0"/>
+                    <GradientStop Color="#FF60BFC8" Offset="0.083"/>
+                </LinearGradientBrush>
+            </Grid.Background>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.8*"/>
+            </Grid.ColumnDefinitions>
+
+            <dxe:ComboBoxEdit x:Name="cel_vizita" ImmediatePopup="True" ValidateOnTextInput="False" FilterCondition="Contains" HorizontalAlignment="Left" Margin="10,45,0,0" VerticalAlignment="Top" Width="347" ItemsSource="{Binding}" IsSynchronizedWithCurrentItem="True" DisplayMember="NameWithID" IncrementalFiltering="True" SelectedIndexChanged="cel_vizita_SelectedIndexChanged" ValueMember="Kod"  IsPopupOpen="True" NullValueButtonPlacement="EditBox" HorizontalScrollBarVisibility="Disabled" TabIndex="1"/>
+            <Button x:Name="izm_klient" Content="Изменить данные клиента" HorizontalAlignment="Left" Height="22" Margin="970,13,0,0" VerticalAlignment="Top" Width="155" RenderTransformOrigin="0.559,0.591" Click="izm_klient_Click" AutomationProperties.HelpText="Нажмите если были введены неверные данные ЗЛ" TabIndex="7" ClickMode="Release" Style="{StaticResource myButtonStyle}">
+                --><!--<Button.Background>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                        <GradientStop Color="Black" Offset="0"/>
+                        <GradientStop Color="White" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>--><!--
+            </Button>
+            <Label x:Name="pr_lbl" Content="Причина внесения изменений в РС ЕРЗ"  HorizontalAlignment="Left" Margin="10,23,0,0" VerticalAlignment="Top" Width="347" HorizontalContentAlignment="Center" Foreground="White"/>
+            <dxe:ComboBoxEdit x:Name="sp_pod_z" ImmediatePopup="True" ValidateOnTextInput="False"   HorizontalAlignment="Left" Margin="381,45,0,0" VerticalAlignment="Top" Width="238" DisplayMember="NameWithID" ItemsSource="{Binding}" EditValue="ID" ValueMember="ID" NullValueButtonPlacement="EditBox" HorizontalScrollBarVisibility="Disabled" FilterCondition="StartsWith" AutoComplete="True" TabIndex="2"/>
+            <Label x:Name="sposob_lbl" Content="Способ подачи заявления"  HorizontalAlignment="Left" Margin="381,23,0,0" VerticalAlignment="Top" Width="238" HorizontalContentAlignment="Center" Foreground="White"/>
+            <Button x:Name="new_klient" Content="Новый клиент" Style="{StaticResource myButtonStyle}" HorizontalAlignment="Left" Height="22" Margin="970,40,0,0" VerticalAlignment="Top" Width="155" RenderTransformOrigin="0.559,0.591" Click="new_klient_Click" AutomationProperties.HelpText="Нажмите если вы не нашли ЗЛ в списке ниже" TabIndex="5" GotKeyboardFocus="new_klient_GotKeyboardFocus"/>
+            <Button x:Name="dalee" Content="Работа с выбранным ЗЛ" Style="{StaticResource myButtonStyle}" HorizontalAlignment="Left" Height="22" Margin="970,67,0,0" VerticalAlignment="Top" Width="155" RenderTransformOrigin="0.559,0.591" Click="dalee_Click" AutomationProperties.HelpText="Нажмите если вы выбрали ЗЛ в списке ниже" TabIndex="6"/>
+            <Label x:Name="d_obr_lbl" Content="Дата обращения"  HorizontalAlignment="Left" Margin="643,23,0,0" VerticalAlignment="Top" Width="161" HorizontalContentAlignment="Center" Foreground="White"/>
+            <dxg:GridControl x:Name="pers_grid_1"   AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True" HorizontalAlignment="Stretch" Margin="0,94,0,0" VerticalAlignment="Top"    SelectionMode="Row"  Loaded="pers_grid_1_Loaded" ScrollViewer.HorizontalScrollBarVisibility="Visible"  MouseDoubleClick="pers_grid_1_MouseDoubleClick" PreviewKeyDown="pers_grid_1_PreviewKeyDown"   >
+                <dxg:GridControl.TotalSummary>
+                    <dxg:GridSummaryItem SummaryType="Count"  />
+                </dxg:GridControl.TotalSummary>
+                <dxg:GridControl.View>
+                    <dxg:TableView x:Name="tableView"    AllowPerPixelScrolling="True" ShowAutoFilterRow="True" ShowTotalSummary="True"  FilterEditorShowOperandTypeIcon="True" ShowGridMenu="tableView_ShowGridMenu" SnapsToDevicePixels="True" ShowCheckBoxSelectorColumn="True" RetainSelectionOnClickOutsideCheckBoxSelector="False" AllowConditionalFormattingMenu="True" ShowCriteriaInAutoFilterRow="False" ColumnFilterPopupMode="Excel" EditFormShowMode="None"  >
+                        <dxg:TableView.FormatConditions>
+                            <dxg:FormatCondition Expression="[ENP] = ''" FieldName="" ApplyToRow="True">
+                                <dx:Format Background="#FFE57572"/>
+                            </dxg:FormatCondition>
+                        </dxg:TableView.FormatConditions>
+                    </dxg:TableView>
+                </dxg:GridControl.View>
+            </dxg:GridControl>
+            <dxe:CheckEdit x:Name="petition" HorizontalAlignment="Left" Margin="823,45,0,0" VerticalAlignment="Top" Width="150" Content="Наличие ходатайства" Foreground="#FFF9F5F5" TabIndex="4"/>
+            <Button x:Name="poisk" Content="Поиск" Style="{StaticResource myButtonStyle}" HorizontalAlignment="Left" Height="22" Margin="1130,40,0,0" VerticalAlignment="Top" Width="76" RenderTransformOrigin="0.559,0.591" Click="poisk_Click" AutomationProperties.HelpText="Нажмите если вы выбрали ЗЛ в списке ниже" TabIndex="8"/>
+            <Button x:Name="del_btn" Content="Удалить" Style="{StaticResource myButtonStyle}" HorizontalAlignment="Left" Margin="1131,67,0,0" VerticalAlignment="Top" Width="75" Click="del_btn_Click" TabIndex="9"/>
+            <Button x:Name="print" Content="Печать" Style="{StaticResource myButtonStyle}" HorizontalAlignment="Left" Margin="1131,13,0,0" VerticalAlignment="Top" Width="75" Click="print_Click"/>
+            <dxe:DateEdit x:Name="d_obr" HorizontalAlignment="Left" Margin="643,45,0,0" VerticalAlignment="Top" Width="161" NullValueButtonPlacement="EditBox"/>
+
+        </Grid>-->
+   
+</Window>

@@ -1,0 +1,1158 @@
+﻿<Window x:Name="w_main" x:Class="Insurance.MainWindow" mc:Ignorable="d"  Height="948.4" Width="1666.987" Background="#FF0063FF" Activated="w_main_Activated" Loaded="w_main_Loaded" Closed="W_main_Closed" control:EnterKeyTraversal.IsEnabled="True"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:dxbt="http://schemas.devexpress.com/winfx/2008/xaml/bars/themekeys"
+    xmlns:local="clr-namespace:Insurance" 
+    xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
+    xmlns:dxprg="http://schemas.devexpress.com/winfx/2008/xaml/propertygrid" 
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" 
+    xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars" 
+    xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol" 
+    xmlns:Serialization="clr-namespace:DevExpress.Xpf.LayoutControl.Serialization;assembly=DevExpress.Xpf.LayoutControl.v17.2" 
+    xmlns:System="clr-namespace:System;assembly=mscorlib" 
+    xmlns:control="clr-namespace:Yamed.Control;assembly=Yamed.Control" 
+    xmlns:Editors="clr-namespace:Yamed.Control.Editors" Unloaded="W_main_Unloaded" Closing="W_main_Closing" PreviewKeyDown="W_main_PreviewKeyDown">
+    <Window.InputBindings>
+        <KeyBinding Modifiers="Alt"
+                    Key="L" 
+                    Command="{Binding CreateCustomerCommand}" />
+    </Window.InputBindings>
+
+    <Window.Resources>
+        <!--<local:DocExchangeDataSet x:Key="docExchangeDataSet"/>
+        <CollectionViewSource x:Key="pOL_PERSONSViewSource" Source="{Binding POL_PERSONS, Source={StaticResource docExchangeDataSet}}"/>
+        <CollectionViewSource x:Key="pOL_EVENTSViewSource" Source="{Binding POL_EVENTS, Source={StaticResource docExchangeDataSet}}"/>
+        <dx:TypedSimpleSource x:Key="TypedSimpleSource" AdapterType="{x:Type DocExchangeDataSetTableAdapters:POL_PRZTableAdapter}" ContextType="{x:Type local:DocExchangeDataSet}" Path="POL_PRZ">
+            <dx:DesignDataManager.DesignData>
+                <dx:DesignDataSettings RowCount="5"/>
+            </dx:DesignDataManager.DesignData>
+        </dx:TypedSimpleSource>-->
+
+        <Style x:Key="myButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Width" Value="{Binding Width}" />
+            <Setter Property="Height" Value="{Binding Height}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid>
+                            <Rectangle x:Name="myrec" Fill="LightGray" />
+                            <Label Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Black" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Fill" TargetName="myrec" Value="WhiteSmoke" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Fill" TargetName="myrec" Value="Yellow" />
+                            </Trigger>
+
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+        <Style x:Key="myButtonStyle1" TargetType="{x:Type Button}">
+            <Setter Property="Width" Value="{Binding Width}" />
+            <Setter Property="Height" Value="{Binding Height}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid>
+                            <Rectangle x:Name="myrec1" />
+                            <Label Content="{TemplateBinding Content}" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="White" />
+
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Fill" TargetName="myrec1">
+                                    <Setter.Value>
+                                        <SolidColorBrush Color="#FFA8B2AE" Opacity="0.5" />
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Fill" TargetName="myrec1" Value="#FF69C3D6" />
+                            </Trigger>
+
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+        <Style x:Key="myButtonStyle2" TargetType="{x:Type Button}">
+            <Setter Property="Width" Value="{Binding Width}" />
+            <Setter Property="Height" Value="{Binding Height}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid>
+                            <Rectangle x:Name="myrec2" Fill="DarkOrange" />
+                            <Label Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Black" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Fill" TargetName="myrec2" Value="WhiteSmoke" />
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Fill" TargetName="myrec2" Value="Yellow" />
+                            </Trigger>
+
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+        <Style x:Key="myButtonStyle3" TargetType="{x:Type Button}">
+            <Setter Property="Width" Value="{Binding Width}" />
+            <Setter Property="Height" Value="{Binding Height}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid>
+                            <Rectangle x:Name="myrec3" Fill="BlueViolet" />
+                            <Label x:Name="lbl" Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Fill" TargetName="myrec3" Value="WhiteSmoke" />
+                                <Setter Property="Foreground" TargetName="lbl" Value="Black" />
+
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Fill" TargetName="myrec3" Value="Yellow" />
+                            </Trigger>
+
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+        <Style x:Key="myButtonStyle4" TargetType="{x:Type Button}">
+            <Setter Property="Width" Value="{Binding Width}" />
+            <Setter Property="Height" Value="{Binding Height}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid>
+                            <Rectangle x:Name="myrec4" Fill="IndianRed" />
+                            <Label x:Name="lbl1" Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Fill" TargetName="myrec4" Value="WhiteSmoke" />
+                                <Setter Property="Foreground" TargetName="lbl1" Value="Black" />
+
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Fill" TargetName="myrec4" Value="Yellow" />
+                            </Trigger>
+
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+        <Style x:Key="myButtonStyle5" TargetType="{x:Type Button}">
+            <Setter Property="Width" Value="{Binding Width}" />
+            <Setter Property="Height" Value="{Binding Height}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid>
+                            <Rectangle x:Name="myrec5" Fill="Blue" />
+                            <Label x:Name="lbl2" Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Fill" TargetName="myrec5" Value="WhiteSmoke" />
+                                <Setter Property="Foreground" TargetName="lbl2" Value="Black" />
+
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Fill" TargetName="myrec5" Value="Yellow" />
+                            </Trigger>
+
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+        <Style x:Key="myButtonStyle6" TargetType="{x:Type Button}">
+            <Setter Property="Width" Value="{Binding Width}" />
+            <Setter Property="Height" Value="{Binding Height}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid>
+                            <Rectangle x:Name="myrec6" Fill="DarkSeaGreen" />
+                            <Label x:Name="lbl3" Content="{TemplateBinding Content}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Fill" TargetName="myrec6" Value="WhiteSmoke" />
+                                <Setter Property="Foreground" TargetName="lbl3" Value="Black" />
+
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Fill" TargetName="myrec6" Value="Yellow" />
+                            </Trigger>
+
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+
+
+    </Window.Resources>
+
+    <Grid Background="#FF5F7B8B" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
+        <ScrollViewer HorizontalAlignment="Left" VerticalScrollBarVisibility="Visible">
+            <DockPanel x:Name="dp1" HorizontalAlignment="Left" Height="{Binding}" LastChildFill="True" Width="150" Grid.RowSpan="2" VerticalAlignment="Stretch" Background="#FF598973">
+                <Button x:Name="new_obr" IsEnabled="True" Height="59" VerticalAlignment="Top" Width="149" Margin="0,130,0,0" Click="new_obr_Click" Style="{StaticResource myButtonStyle1}">
+                    <StackPanel Orientation="Vertical" Width="149">
+                        <!--Margin="5,0"-->
+                        <Image Source="Insurance_icons\workzl.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
+                            <Image.OpacityMask>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="Black" Offset="0" />
+                                    <GradientStop Color="White" Offset="1" />
+                                </LinearGradientBrush>
+                            </Image.OpacityMask>
+
+                        </Image>
+                        <TextBlock Text="Работа с ЗЛ" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0" Foreground="White" FontWeight="Bold" FontSize="12" />
+                    </StackPanel>
+                </Button>
+                <Button x:Name="upload" Height="59" VerticalAlignment="Top" Width="149" Margin="-149,190,0,0" HorizontalAlignment="Left" Click="upload_Click" Foreground="#FFFDFDFD" ClickMode="Release" Style="{StaticResource myButtonStyle1}">
+                    <StackPanel Orientation="Vertical" Width="149">
+                        <!--Margin="5,0"-->
+                        <Image Source="Insurance_icons\export.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
+                            <Image.OpacityMask>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="Black" Offset="0" />
+                                    <GradientStop Color="White" Offset="1" />
+                                </LinearGradientBrush>
+                            </Image.OpacityMask>
+
+                        </Image>
+                        <TextBlock Text="Выгрузить в ТФОМС" VerticalAlignment="Center" Margin="0,0" Width="149" Foreground="White" FontWeight="Bold" FontSize="12" TextAlignment="Center" />
+                    </StackPanel>
+                </Button>
+                <Button x:Name="download" Height="59" IsEnabled="True" VerticalAlignment="Top" Width="149" Margin="-149,250,0,0" HorizontalAlignment="Left" Click="download_Click_1" ClickMode="Release" Style="{StaticResource myButtonStyle1}">
+                    <StackPanel Orientation="Vertical" Width="149">
+                        <!--Margin="5,0"-->
+                        <Image Source="Insurance_icons\download.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
+                            <Image.OpacityMask>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="Black" Offset="0" />
+                                    <GradientStop Color="White" Offset="1" />
+                                </LinearGradientBrush>
+                            </Image.OpacityMask>
+
+                        </Image>
+                        <TextBlock Text="Загрузить из ТФОМС" VerticalAlignment="Center" TextAlignment="Center" Margin="0,0" Width="149" Foreground="White" FontWeight="Bold" FontSize="12" />
+                    </StackPanel>
+                </Button>
+                <Button x:Name="blanki" Height="59" VerticalAlignment="Top" Width="149" Margin="-149,310,0,0" HorizontalAlignment="Left" Click="download_Click" Foreground="#FFFEFEF9" ClickMode="Release" Background="#FF020202" Style="{StaticResource myButtonStyle1}" ToolTip="Загрузка номеров чистых бланков временных свидетельств">
+                    <StackPanel Orientation="Vertical" Width="149">
+                        <!--Margin="5,0"-->
+                        <Image Source="Insurance_icons\blanksv1.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
+                            <Image.OpacityMask>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="Black" Offset="0" />
+                                    <GradientStop Color="White" Offset="1" />
+                                </LinearGradientBrush>
+                            </Image.OpacityMask>
+
+                        </Image>
+                        <TextBlock Text="Загрузить бланки ВС" VerticalAlignment="Center" TextAlignment="Center" Margin="0,0" Width="149" Foreground="White" FontWeight="Bold" FontSize="12" />
+                    </StackPanel>
+                </Button>
+                <Button x:Name="settingss" Height="59" VerticalAlignment="Top" Width="149" Margin="-149,430,0,0" HorizontalAlignment="Left" Click="settingss_Click" ClickMode="Release" Style="{StaticResource myButtonStyle1}">
+                    <StackPanel Orientation="Vertical" Width="149">
+                        <!--Margin="5,0"-->
+                        <Image Source="Insurance_icons\settings.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
+                            <Image.OpacityMask>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="Black" Offset="0" />
+                                    <GradientStop Color="White" Offset="1" />
+                                </LinearGradientBrush>
+                            </Image.OpacityMask>
+
+                        </Image>
+                        <TextBlock Text="Настройки" VerticalAlignment="Center" TextAlignment="Center" Margin="0,0" Width="149" Foreground="White" FontWeight="Bold" FontSize="12" />
+                    </StackPanel>
+                </Button>
+                <Button x:Name="polises" Height="59" VerticalAlignment="Top" Width="149" Margin="-149,370,0,0" HorizontalAlignment="Left" Click="polises_Click" Foreground="#FFFEFEF9" HorizontalContentAlignment="Center" ClickMode="Release" Style="{StaticResource myButtonStyle1}" ToolTip="Загрузка серий и номеров бланков изготовленных полисов">
+                    <StackPanel Orientation="Vertical" Width="149">
+                        <!--Margin="5,0"-->
+                        <Image Source="Insurance_icons\enp.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
+                            <Image.OpacityMask>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="Black" Offset="0" />
+                                    <GradientStop Color="White" Offset="1" />
+                                </LinearGradientBrush>
+                            </Image.OpacityMask>
+
+                        </Image>
+                        <TextBlock Text="Загрузить бланки ЕНП" VerticalAlignment="Center" TextAlignment="Center" Margin="0,0" Width="149" Foreground="White" FontWeight="Bold" FontSize="12" />
+                    </StackPanel>
+                </Button>
+                <Button x:Name="p060" Height="59" VerticalAlignment="Top" Width="149" Margin="-149,490,0,0" HorizontalAlignment="Left" Click="p060_Click" ClickMode="Release" Style="{StaticResource myButtonStyle1}">
+                    <StackPanel Orientation="Vertical" Width="149">
+                        <!--Margin="5,0"-->
+                        <Image Source="Insurance_icons\update.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
+                            <Image.OpacityMask>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="Black" Offset="0" />
+                                    <GradientStop Color="White" Offset="1" />
+                                </LinearGradientBrush>
+                            </Image.OpacityMask>
+
+                        </Image>
+                        <TextBlock Text="Обновить программу" VerticalAlignment="Center" TextAlignment="Center" Margin="0,0" Width="149" Foreground="White" FontWeight="Bold" FontSize="12" />
+                    </StackPanel>
+                </Button>
+                <Label Content="Пункт выдачи (выгрузка)" Height="25" VerticalAlignment="Top" Width="149" Margin="-149,0,0,0" HorizontalContentAlignment="Center" Foreground="#FFFDFBFB" />
+                <dxe:ComboBoxEdit x:Name="prz" Height="25" AutoComplete="True" ValidateOnTextInput="False" FilterCondition="Contains" IncrementalFiltering="True" ImmediatePopup="True" VerticalAlignment="Top" Width="149" Margin="-149,25,0,0" NullValueButtonPlacement="EditBox" 
+                  HorizontalScrollBarVisibility="Disabled" ValueMember="PRZ_CODE" ItemsSource="{Binding}" DisplayMember="NameWithCode" LostFocus="Prz_LostFocus" SelectedIndexChanged="Prz_SelectedIndexChanged" EditValueChanged="Prz_EditValueChanged" />
+                <Button x:Name="Reports_Spisok" Height="59" VerticalAlignment="Top" Width="149" Margin="-149,550,0,0" HorizontalAlignment="Left" ClickMode="Release" Style="{StaticResource myButtonStyle1}" Click="Reports_Spisok_Click">
+                    <StackPanel Orientation="Vertical" Width="149">
+                        <!--Margin="5,0"-->
+                        <Image Source="Insurance_icons\edit.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
+                            <Image.OpacityMask>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="Black" Offset="0" />
+                                    <GradientStop Color="White" Offset="1" />
+                                </LinearGradientBrush>
+                            </Image.OpacityMask>
+
+                        </Image>
+                        <TextBlock Text="Редактор форм" VerticalAlignment="Center" TextAlignment="Center" Margin="0,0" Width="149" Foreground="White" FontWeight="Bold" FontSize="12" />
+                    </StackPanel>
+                </Button>
+                <Button x:Name="Sbros" Height="59" VerticalAlignment="Top" Width="149" Margin="-149,610,0,0" HorizontalAlignment="Left" ClickMode="Release" Style="{StaticResource myButtonStyle1}" Click="Sbros_Click">
+                    <StackPanel Orientation="Vertical" Width="149">
+                        <!--Margin="5,0"-->
+                        <Image Source="Insurance_icons\list1.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
+                            <Image.OpacityMask>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="Black" Offset="0" />
+                                    <GradientStop Color="White" Offset="1" />
+                                </LinearGradientBrush>
+                            </Image.OpacityMask>
+
+                        </Image>
+                        <TextBlock Text="Снять признак выгрузки" VerticalAlignment="Center" TextAlignment="Center" Margin="0,0" Width="149" Foreground="White" FontWeight="Bold" FontSize="12" />
+                    </StackPanel>
+                </Button>
+                <Label Content="Агент" Height="25" VerticalAlignment="Top" Width="149" Margin="-149,55,0,0" HorizontalContentAlignment="Center" Foreground="#FFFDFBFB" />
+                <dxe:ComboBoxEdit x:Name="prz_Agent" Height="25" AutoComplete="True" FilterCondition="Contains" ValidateOnTextInput="False" IncrementalFiltering="True"
+                  HorizontalScrollBarVisibility="Disabled" ImmediatePopup="True" VerticalAlignment="Top" Width="149" Margin="-149,80,0,0" NullValueButtonPlacement="EditBox" EditValue="ID" ValueMember="ID" ItemsSource="{Binding}" DisplayMember="AGENT" LostFocus="Prz_Agent_LostFocus" />
+                <Button x:Name="PrintForms" Height="59" VerticalAlignment="Top" Width="149" Margin="-149,670,0,0" HorizontalAlignment="Left" ClickMode="Release" Style="{StaticResource myButtonStyle1}" Click="PrintForms_Click">
+                    <StackPanel Orientation="Vertical" Width="149">
+                        <!--Margin="5,0"-->
+                        <Image Source="Insurance_icons\print.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
+                            <Image.OpacityMask>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="Black" Offset="0" />
+                                    <GradientStop Color="White" Offset="1" />
+                                </LinearGradientBrush>
+                            </Image.OpacityMask>
+
+                        </Image>
+                        <TextBlock Text="Печатные формы" VerticalAlignment="Center" TextAlignment="Center" Margin="0,0" Width="149" Foreground="White" FontWeight="Bold" FontSize="12" />
+                    </StackPanel>
+                </Button>
+                <Button x:Name="fias_upd" Height="59" VerticalAlignment="Top" Width="149" Margin="-149,730,0,0" HorizontalAlignment="Left" ClickMode="Release" Style="{StaticResource myButtonStyle1}" Click="Fias_upd_Click">
+                    <StackPanel Orientation="Vertical" Width="149">
+                        <!--Margin="5,0"-->
+                        <Image Source="Insurance_icons\fias.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
+                            <Image.OpacityMask>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="Black" Offset="0" />
+                                    <GradientStop Color="White" Offset="1" />
+                                </LinearGradientBrush>
+                            </Image.OpacityMask>
+
+                        </Image>
+                        <TextBlock Text="Обновить ФИАС" VerticalAlignment="Center" TextAlignment="Center" Margin="0,0" Width="149" Foreground="White" FontWeight="Bold" FontSize="12" />
+                    </StackPanel>
+
+                </Button>
+            </DockPanel>
+        </ScrollViewer>
+
+        <dx:DXTabControl x:Name="MainTab" Margin="167,5,0,0" Background="#FF5F7B8B" TabContentCacheMode="CacheTabsOnSelecting">
+            <dx:DXTabItem x:Name="Osn_oper" Header="Основные операции" Background="#FF5F7B8B">
+
+                <Grid Background="#FF5F7B8B" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
+                    <dxg:GridControl x:Name="pers_grid" AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True" HorizontalAlignment="Stretch" Margin="0,50,0,0" Loaded="pers_grid_Loaded" VerticalAlignment="Top" OpacityMask="#FF9BD8DB" 
+                               dx:DXSerializer.StoreLayoutMode="All" dx:DXSerializer.SerializationID="pers_grid" PreviewKeyDown="pers_grid_PreviewKeyDown" SelectionMode="Row" MouseDoubleClick="Pers_grid_MouseDoubleClick" Unloaded="Pers_grid_Unloaded" 
+                                     AutoGeneratedColumns="Pers_grid_AutoGeneratedColumns" KeyDown="Pers_grid_KeyDown" AllowMRUFilterList="False" GotFocus="Pers_grid_GotFocus">
+                        <!--<dxg:GridControl.Columns>
+                            <dxg:GridColumn x:Name="Column_ID" FieldName="ID" Header="ИД" Width="*"/>
+                            <dxg:GridColumn x:Name="Column_UNLOAD" FieldName="UNLOAD" />
+                        </dxg:GridControl.Columns>-->
+
+                        <dxg:GridControl.GroupSummary>
+                            <dxg:GridSummaryItem SummaryType="Count" />
+                        </dxg:GridControl.GroupSummary>
+
+
+                        <dxg:GridControl.TotalSummary>
+                            <dxg:GridSummaryItem SummaryType="Count" />
+                        </dxg:GridControl.TotalSummary>
+                        <dxg:GridControl.View>
+                            <dxg:TableView FilterEditorShowOperandTypeIcon="True" WaitIndicatorType="Panel" ShowTotalSummary="True" ShowCheckBoxSelectorColumn="True" RetainSelectionOnClickOutsideCheckBoxSelector="False" ShowAutoFilterRow="True"
+                                           AllowConditionalFormattingMenu="True" AllowFixedColumnMenu="True" ColumnFilterPopupMode="Excel" ShowCriteriaInAutoFilterRow="False" EditFormShowMode="Dialog" EditFormPostConfirmation="YesNo" ShowEditFormUpdateCancelButtons="False" 
+                                           ShowEditFormOnEnterKey="False" EditFormColumnCount="1" EditFormPostMode="Cached" EditFormShowing="TableView_EditFormShowing" Unloaded="TableView_Unloaded" CellValueChanging="TableView_CellValueChanging" PreviewKeyUp="TableView_PreviewKeyUp" 
+                                           AllowMergedGrouping="True" >
+
+                                <dxg:TableView.FormatConditions>
+                                    <dxg:FormatCondition Expression="[UNLOAD] = True" FieldName="" ApplyToRow="True">
+                                        <dx:Format Background="#FFF3F3A9" />
+                                    </dxg:FormatCondition>
+                                    <dxg:FormatCondition ApplyToRow="True" FieldName="" Expression="[DSTOP] Between(#1900-01-02#, Today())">
+                                        <dx:Format Background="#FFF5C6C4" />
+                                    </dxg:FormatCondition>
+                                    <dxg:FormatCondition ApplyToRow="True" FieldName="" Expression="[CYCLE]=True And [DSTOP] Is Null">
+                                        <dx:Format Background="#FFD6E4B8" />
+                                    </dxg:FormatCondition>
+
+                                </dxg:TableView.FormatConditions>
+                                <dxg:TableView.RowCellMenuCustomizations>
+                                    <dxb:BarButtonItem Name="copyCellDataItem"  Content="Обновить таблицу" ItemClick="Obnovit_ItemClick"/>
+                                    <dxb:BarItemSeparator/>
+                                    <dxb:BarButtonItem Name="unload_history" Content="История обмена с ТФОМС" ItemClick="Unload_history_ItemClick" />
+                                    <dxb:BarItemSeparator/>
+                                    <dxb:BarButtonItem Name="person_history" Content="История событий ЗЛ" ItemClick="Person_history_ItemClick" />
+                                    <dxb:BarItemSeparator/>
+                                    <dxb:BarButtonItem Name="only_stop" Content="Только погашеные" ItemClick="Only_stop_ItemClick"  />
+                                    <dxb:BarItemSeparator/>
+                                    <dxb:BarButtonItem Name="del_zl" Content="Удалить ЗЛ" ItemClick="Del_zl_ItemClick" />
+                                    <dxb:BarItemSeparator/>
+                                    <dxb:BarButtonItem Name="load_flk_zl" Content="Загрузить ФЛК для ЗЛ" ItemClick="Load_flk_zl_ItemClick" />
+                                    <dxb:BarItemSeparator/>
+                                    <dxb:BarButtonItem Name="load_OK" Content="Проставить комментарий 'ОК!' для ЗЛ" ItemClick="Load_OK_ItemClick" />
+                                </dxg:TableView.RowCellMenuCustomizations>
+
+                            </dxg:TableView>
+                        </dxg:GridControl.View>
+                    </dxg:GridControl>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Left" Width="{Binding}" Height="50">
+                        <Button x:Name="poisk" Style="{StaticResource myButtonStyle1}" ToolTip="Поиск по региональной базе ЗЛ если таковая имеется" HorizontalAlignment="Left" Height="50" Margin="5,0" VerticalAlignment="Top"  Click="poisk_Click" TabIndex="8">
+                            <StackPanel HorizontalAlignment="Center" Margin="5,0" Orientation="Horizontal">
+                                <Image Source="Insurance_icons\search.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
+                                    <Image.OpacityMask>
+                                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                            <GradientStop Color="Black" Offset="0" />
+                                            <GradientStop Color="White" Offset="1" />
+                                        </LinearGradientBrush>
+                                    </Image.OpacityMask>
+
+                                </Image>
+                                <TextBlock Text="Поиск" VerticalAlignment="Center" Foreground="White" FontWeight="Bold" />
+                            </StackPanel>
+
+                        </Button>
+                        <Button x:Name="del_btn" Style="{StaticResource myButtonStyle1}" ToolTip="Удаление выбранных записей" HorizontalAlignment="Left" Height="50" Margin="5,0" VerticalAlignment="Top" Click="del_btn_Click" TabIndex="9">
+                            <StackPanel HorizontalAlignment="Center" Margin="5,0" Orientation="Horizontal">
+                                <Image Source="Insurance_icons\delete_1.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
+                                    <Image.OpacityMask>
+                                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                            <GradientStop Color="Black" Offset="0" />
+                                            <GradientStop Color="White" Offset="1" />
+                                        </LinearGradientBrush>
+                                    </Image.OpacityMask>
+
+                                </Image>
+                                <TextBlock Text="Удалить последнее&#10;      событие ЗЛ" VerticalAlignment="Center" Foreground="White" FontWeight="Bold" Margin="5" />
+                            </StackPanel>
+                        </Button>
+
+                        <Button x:Name="Agent_btn_Izmenit" Style="{StaticResource myButtonStyle1}" ToolTip="Выберите агента и пункт выдачи в списке слева" HorizontalAlignment="Left" Height="50" Margin="5,0" VerticalAlignment="Top" Click="Agent_btn_Izmenit_Click" TabIndex="9">
+                            <StackPanel HorizontalAlignment="Center" Margin="5,0" Orientation="Horizontal">
+                                <Image Source="Insurance_icons/edit.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
+                                    <Image.OpacityMask>
+                                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                            <GradientStop Color="Black" Offset="0" />
+                                            <GradientStop Color="White" Offset="1" />
+                                        </LinearGradientBrush>
+                                    </Image.OpacityMask>
+
+                                </Image>
+                                <TextBlock Text="Изменить агента и&#10;    пункт выдачи" VerticalAlignment="Center" Foreground="White" FontWeight="Bold" Margin="5" />
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="Del_file_btn" Style="{StaticResource myButtonStyle1}" ToolTip="Удаление некорректных файлов выгрузки в ТФОМС" HorizontalAlignment="Left" Height="50" Margin="5,0" VerticalAlignment="Top"  TabIndex="9" Click="Del_file_btn_Click">
+                            <StackPanel HorizontalAlignment="Center" Margin="5,0" Orientation="Horizontal">
+                                <Image Source="Insurance_icons\delete_1.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
+                                    <Image.OpacityMask>
+                                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                            <GradientStop Color="Black" Offset="0" />
+                                            <GradientStop Color="White" Offset="1" />
+                                        </LinearGradientBrush>
+                                    </Image.OpacityMask>
+
+                                </Image>
+                                <TextBlock Text="Удалить некорректный  &#10;       файл выгрузки" VerticalAlignment="Center" Foreground="White" FontWeight="Bold" Margin="5"  />
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="Excel_file_btn" Style="{StaticResource myButtonStyle1}" ToolTip="Выгрузка таблицы в EXCEL" HorizontalAlignment="Left" Height="50" Margin="5,0" VerticalAlignment="Top"  TabIndex="9" Click="Excel_file_btn_Click">
+                            <StackPanel HorizontalAlignment="Center" Margin="5,0" Orientation="Horizontal">
+                                <Image Source="Insurance_icons\excel_export.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
+                                    <Image.OpacityMask>
+                                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                            <GradientStop Color="Black" Offset="0" />
+                                            <GradientStop Color="White" Offset="1" />
+                                        </LinearGradientBrush>
+                                    </Image.OpacityMask>
+
+                                </Image>
+                                <TextBlock Text="Выгрузить в EXCEL" VerticalAlignment="Center" Foreground="White" FontWeight="Bold" Margin="5" />
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="Unload_att_btn" Style="{StaticResource myButtonStyle1}"  ToolTip="Выгрузка для проверки прикрепления через ресурс ТФОМС" HorizontalAlignment="Left" Height="50" Margin="5,0" VerticalAlignment="Top"  TabIndex="9" Click="TestBarnaul">
+                            <StackPanel HorizontalAlignment="Center" Margin="5,0" Orientation="Horizontal">
+                                <Image Source="Insurance_icons\export.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
+                                    <Image.OpacityMask>
+                                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                            <GradientStop Color="Black" Offset="0" />
+                                            <GradientStop Color="White" Offset="1" />
+                                        </LinearGradientBrush>
+                                    </Image.OpacityMask>
+
+                                </Image>
+                                <TextBlock Text="Выгрузка запроса&#10;на прикрепление" VerticalAlignment="Center" Foreground="White" FontWeight="Bold" Margin="5" />
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="Load_att_btn" Style="{StaticResource myButtonStyle1}" ToolTip="Згрузка ответа от ТФОМС на запрос прикрепления" HorizontalAlignment="Left" Height="50" Margin="5,0" VerticalAlignment="Top"  TabIndex="9" Click="TestBarnaul1">
+                            <StackPanel HorizontalAlignment="Center" Margin="5,0" Orientation="Horizontal">
+                                <Image Source="Insurance_icons\export.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
+                                    <Image.OpacityMask>
+                                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                            <GradientStop Color="Black" Offset="0" />
+                                            <GradientStop Color="White" Offset="1" />
+                                        </LinearGradientBrush>
+                                    </Image.OpacityMask>
+
+                                </Image>
+                                <TextBlock Text="Загрузка прикрепления&#10;            из ТФОМС" VerticalAlignment="Center" Foreground="White" FontWeight="Bold" Margin="5" />
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                    <Button x:Name="help_btn" Style="{StaticResource myButtonStyle1}" ToolTip="Справка по работе с программой" HorizontalAlignment="Right" Height="50" VerticalAlignment="Top" TabIndex="9" Click="Help_btn_Click" Margin="0,0,0,0">
+                        <StackPanel HorizontalAlignment="Center" Margin="10,0" Orientation="Horizontal">
+                            <Image Source="Insurance_icons\help.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
+                                <Image.OpacityMask>
+                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                        <GradientStop Color="Black" Offset="0" />
+                                        <GradientStop Color="White" Offset="1" />
+                                    </LinearGradientBrush>
+                                </Image.OpacityMask>
+
+                            </Image>
+                            <TextBlock Text="Справка" VerticalAlignment="Center" Foreground="White" FontWeight="Bold" Margin="5" />
+                        </StackPanel>
+                    </Button>
+
+                    <Button x:Name="Inform_btn" Style="{StaticResource myButtonStyle1}" ToolTip="Выделите ЗЛ из списка для информирования" HorizontalAlignment="Right" Height="50" VerticalAlignment="Top" TabIndex="9" Click="Inform_btn_Click" Margin="0,0,114,0">
+                        <StackPanel HorizontalAlignment="Center" Margin="10,0" Orientation="Horizontal">
+                            <Image Source="{dx:DXImage Image=Apply_32x32.png}" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
+                                <Image.OpacityMask>
+                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                        <GradientStop Color="Black" Offset="0" />
+                                        <GradientStop Color="White" Offset="1" />
+                                    </LinearGradientBrush>
+                                </Image.OpacityMask>
+
+                            </Image>
+                            <TextBlock Text="Информирование" VerticalAlignment="Center" Foreground="White" FontWeight="Bold" Margin="5" />
+                        </StackPanel>
+                    </Button>
+                </Grid>
+            </dx:DXTabItem>
+            <dx:DXTabItem x:Name="Tab_ZL" Header="Работа с застрахованными" Background="White" GotFocus="DXTabItem_GotFocus" Padding="9,3" AllowHide="Default" Visibility="Hidden">
+                <ScrollViewer HorizontalScrollBarVisibility="Auto">
+                    <Grid x:Name="gp2" Background="#FF5F7B8B" Height="948" Margin="0,0,0,0">
+                        <TextBox x:Name="_1" HorizontalAlignment="Left" Height="23" Margin="169,1042,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="65" Visibility="Hidden" VerticalScrollBarVisibility="Visible" d:IsHidden="True" />
+                        <TextBox x:Name="_2" HorizontalAlignment="Left" Height="23" Margin="5,1042,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120" Visibility="Hidden" VerticalScrollBarVisibility="Visible" d:IsHidden="True" />
+                        <TextBox x:Name="_3" HorizontalAlignment="Left" Height="23" Margin="5,1097,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="200" Visibility="Hidden" VerticalScrollBarVisibility="Visible" d:IsHidden="True" />
+                        <TextBox x:Name="_4" HorizontalAlignment="Left" Height="23" Margin="281,1042,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="65" Visibility="Hidden" VerticalScrollBarVisibility="Visible" d:IsHidden="True" />
+                        <TextBox x:Name="_5" HorizontalAlignment="Left" Height="23" Margin="367,1042,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="65" Visibility="Hidden" VerticalScrollBarVisibility="Visible" d:IsHidden="True" />
+                        <TextBox x:Name="_6" HorizontalAlignment="Left" Height="23" Margin="222,1097,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="144" Visibility="Hidden" VerticalScrollBarVisibility="Visible" d:IsHidden="True" />
+                        <TextBox x:Name="_7" HorizontalAlignment="Left" Height="78" Margin="459,1097,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="259" Visibility="Hidden" VerticalScrollBarVisibility="Visible" d:IsHidden="True" />
+                        <TextBox x:Name="_8" HorizontalAlignment="Left" Height="23" Margin="371,1097,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="83" Visibility="Hidden" VerticalScrollBarVisibility="Visible" RenderTransformOrigin="0.434,7.043" d:IsHidden="True" />
+                        <StackPanel Orientation="Horizontal">
+                            <Button x:Name="nazad" Height="40" HorizontalAlignment="Left" Style="{StaticResource myButtonStyle1}" Margin="10,5,0,0" VerticalAlignment="Top" Width="78" Click="nazad_Click">
+                                <StackPanel Orientation="Horizontal" Width="78">
+                                    <!--Margin="5,0"-->
+                                    <Image Source="Insurance_icons\back.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
+                                        <Image.OpacityMask>
+                                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                <GradientStop Color="Black" Offset="0" />
+                                                <GradientStop Color="White" Offset="1" />
+                                            </LinearGradientBrush>
+                                        </Image.OpacityMask>
+
+                                    </Image>
+                                    <TextBlock Text="Назад" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,0" Foreground="White" FontWeight="Bold" FontSize="12" />
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="dalee" Height="40" HorizontalAlignment="Left" Style="{StaticResource myButtonStyle1}" Margin="10,5,0,0" VerticalAlignment="Top" Width="100" Click="dalee_Click_1" TabIndex="7">
+                                <StackPanel Orientation="Horizontal" Width="100">
+                                    <!--Margin="5,0"-->
+                                    <Image Source="Insurance_icons\save.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
+                                        <Image.OpacityMask>
+                                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                <GradientStop Color="Black" Offset="0" />
+                                                <GradientStop Color="White" Offset="1" />
+                                            </LinearGradientBrush>
+                                        </Image.OpacityMask>
+
+                                    </Image>
+                                    <TextBlock Text="Сохранить" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,0" Foreground="White" FontWeight="Bold" FontSize="12" />
+                                </StackPanel>
+                            </Button>
+                            <TextBox x:Name="_10" HorizontalAlignment="Left" Height="32" Margin="10,1165,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="611" Visibility="Collapsed" />
+                            <dxe:TextEdit x:Name="towntxt" HorizontalAlignment="Left" Margin="102,1277,0,0" VerticalAlignment="Top" Width="253" Visibility="Collapsed" />
+                            <Button x:Name="print" Style="{StaticResource myButtonStyle1}" Margin="10,5,0,0" ToolTip="Печать заявления ЗЛ или временного свидетельства" Height="40" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="165" Click="print_Click_1">
+                                <StackPanel Orientation="Horizontal" Width="165">
+                                    <!--Margin="5,0"-->
+                                    <Image Source="Insurance_icons\print.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
+                                        <Image.OpacityMask>
+                                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                <GradientStop Color="Black" Offset="0" />
+                                                <GradientStop Color="White" Offset="1" />
+                                            </LinearGradientBrush>
+                                        </Image.OpacityMask>
+
+                                    </Image>
+                                    <TextBlock Text="Печать заявления ЗЛ" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,0" Foreground="White" FontWeight="Bold" FontSize="12" />
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="clear" Style="{StaticResource myButtonStyle1}" ToolTip="Очистка всех полей для заведения нового ЗЛ" Height="40" HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" Width="165" Click="Clear_Click" >
+                                <StackPanel Orientation="Horizontal" Width="165">
+                                    <!--Margin="5,0"-->
+                                    <Image Source="Insurance_icons\clear.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
+                                        <Image.OpacityMask>
+                                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                <GradientStop Color="Black" Offset="0" />
+                                                <GradientStop Color="White" Offset="1" />
+                                            </LinearGradientBrush>
+                                        </Image.OpacityMask>
+
+                                    </Image>
+                                    <TextBlock Text="Очистить все поля" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,0" Foreground="White" FontWeight="Bold" FontSize="12" />
+                                </StackPanel>
+                            </Button>
+                            <Button x:Name="del_rper_btn" Style="{StaticResource myButtonStyle1}" ToolTip="Удаление выбранных записей" HorizontalAlignment="Left" Height="50" Margin="5,0" VerticalAlignment="Top"  TabIndex="9" Click="Del_rper_btn_Click">
+                                <StackPanel HorizontalAlignment="Center" Margin="5,0" Orientation="Horizontal">
+                                    <Image Source="Insurance_icons\delete_1.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
+                                        <Image.OpacityMask>
+                                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                <GradientStop Color="Black" Offset="0" />
+                                                <GradientStop Color="White" Offset="1" />
+                                            </LinearGradientBrush>
+                                        </Image.OpacityMask>
+
+                                    </Image>
+                                    <TextBlock Text="Удалить сведения&#10;о представителе ЗЛ" VerticalAlignment="Center" Foreground="White" FontWeight="Bold" Margin="5" />
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                        <dxg:GridControl x:Name="pers_grid_2" EnableSmartColumnsGeneration="True" HorizontalAlignment="Stretch" SelectionMode="Row" Margin="0,550,0,0" OpacityMask="#FFB3D8D7" Loaded="pers_grid_1_Loaded" 
+                                AutoGenerateColumns="AddNew" MouseDoubleClick="pers_grid_2_MouseDoubleClick" ScrollViewer.HorizontalScrollBarVisibility="Visible" ToolTipService.ShowDuration="10000" PreviewKeyDown="pers_grid_2_PreviewKeyDown" AutoGeneratedColumns="Pers_grid_2_AutoGeneratedColumns" GotFocus="Pers_grid_2_GotFocus">
+
+                            <dxg:GridControl.View>
+                                <dxg:TableView x:Name="tableView" ShowAutoFilterRow="True" AllowConditionalFormattingMenu="True" AllowPerPixelScrolling="True" ShowTotalSummary="True" FilterEditorShowOperandTypeIcon="True" ShowCheckBoxSelectorColumn="True" RetainSelectionOnClickOutsideCheckBoxSelector="False" EditFormPostConfirmation="YesNo" EditFormColumnCount="1" ShowEditFormOnDoubleClick="False" ShowEditFormUpdateCancelButtons="True" EditFormShowMode="None" ShowEditFormOnEnterKey="False"  />
+                            </dxg:GridControl.View>
+                            <dxg:GridControl.ToolTip>
+                                <ToolTip Background="#FFF02525" Placement="Mouse" VerticalOffset="10">
+
+                                    <TextBlock Margin="3" Width="300" Height="75" Foreground="White" TextWrapping="Wrap"><Run Text="Для работы с ЗЛ из базы должна быть активна любая закладка кроме данных о представителе. Отметьте ЗЛ в таблице и сделайте двойной щелчок левой кнопкой мыши." /></TextBlock>
+
+
+                                </ToolTip>
+                            </dxg:GridControl.ToolTip>
+                        </dxg:GridControl>
+                        <dx:DXTabControl x:Name="tabs" Margin="0,50,0,403" TabContentCacheMode="None">
+                            <dx:DXTabControl.View>
+                                <dx:TabControlScrollView AllowHideTabItems="False" HideButtonShowMode="InActiveTab"/>
+                            </dx:DXTabControl.View>
+                            <dx:DXTabItem x:Name="zayavlenie" Header="Заявление ЗЛ" BackgroundColor="WhiteSmoke">
+                                <Grid Background="Transparent" Margin="0,0,0,0">
+                                    <dxlc:LayoutControl HorizontalAlignment="Left" Margin="10,10,0,0" Height="431" VerticalAlignment="Top" Width="500" Orientation="Horizontal" ScrollBars="None">
+
+                                        <dxlc:LayoutGroup Header="Данные о заявлении застрахованного лица" View="GroupBox" Orientation="Vertical" Margin="-12,0,-12,322">
+                                            <dxlc:LayoutItem Label="Причина внесения изменений в РС ЕРЗ" LabelPosition="Top" FontWeight="Bold">
+                                                <dxe:ComboBoxEdit x:Name="cel_vizita" AutoComplete="True" ValidateOnTextInput="False" FilterCondition="Contains" ImmediatePopup="True" ItemsSource="{Binding}" IsSynchronizedWithCurrentItem="True" DisplayMember="NameWithID" IncrementalFiltering="True" ValueMember="Kod" IsPopupOpen="True" NullValueButtonPlacement="EditBox" HorizontalScrollBarVisibility="Disabled" EditValueChanged="Cel_vizita_EditValueChanged" />
+                                            </dxlc:LayoutItem>
+                                            <dxlc:LayoutItem Label="Способ подачи заявления" LabelPosition="Top" FontWeight="Bold">
+                                                <dxe:ComboBoxEdit x:Name="sp_pod_z" AutoComplete="True" ValidateOnTextInput="False" FilterCondition="Contains" ImmediatePopup="True" ItemsSource="{Binding}" IsSynchronizedWithCurrentItem="True" EditValue="ID" ValueMember="ID" IncrementalFiltering="True" IsPopupOpen="True" NullValueButtonPlacement="EditBox" DisplayMember="NameWithID" HorizontalScrollBarVisibility="Disabled" EditValueChanged="Sp_pod_z_EditValueChanged" />
+                                            </dxlc:LayoutItem>
+                                            <dxlc:LayoutItem Label="Дата подачи заявления" LabelPosition="Top">
+                                                <dxe:DateEdit x:Name="d_obr" NullValueButtonPlacement="EditBox" EditValueChanged="D_obr_EditValueChanged" MaskType="DateTimeAdvancingCaret" />
+                                            </dxlc:LayoutItem>
+                                            <dxlc:LayoutItem Label="Наличие ходатайства">
+                                                <dxe:CheckEdit x:Name="petition" />
+                                            </dxlc:LayoutItem>
+                                            <dxlc:LayoutItem Label="Причина подачи заявления  о выдаче дубликата или переоформлении полиса" LabelPosition="Top">
+                                                <dxe:ComboBoxEdit x:Name="pr_pod_z_polis" NullValueButtonPlacement="EditBox" AutoComplete="True" ValidateOnTextInput="False" IncrementalFiltering="True" FilterCondition="Contains" ImmediatePopup="True" />
+                                            </dxlc:LayoutItem>
+                                            <dxlc:LayoutItem Label="Выбранная форма изготовления полиса" LabelPosition="Top" FontWeight="Bold">
+                                                <dxe:ComboBoxEdit x:Name="form_polis" NullValueButtonPlacement="EditBox" AutoComplete="True" ValidateOnTextInput="False" IncrementalFiltering="True" FilterCondition="Contains" ImmediatePopup="True" />
+                                            </dxlc:LayoutItem>
+                                            <dxlc:LayoutItem Label="Причина подачи заявления о выборе (замене) СМО" LabelPosition="Top">
+                                                <dxe:ComboBoxEdit x:Name="pr_pod_z_smo" PreviewKeyDown="Pr_pod_z_smo_PreviewKeyDown"  NullValueButtonPlacement="EditBox" AutoComplete="True" ValidateOnTextInput="False" IncrementalFiltering="True" FilterCondition="Contains" ImmediatePopup="True" SelectedIndexChanged="Pr_pod_z_smo_SelectedIndexChanged" PopupClosed="Pr_pod_z_smo_PopupClosed" />
+                                            </dxlc:LayoutItem>
+
+                                        </dxlc:LayoutGroup>
+                                    </dxlc:LayoutControl>
+                                </Grid>
+                            </dx:DXTabItem>
+                            <dx:DXTabItem x:Name="pers_d_zl" Header="Персональные данные ЗЛ" BackgroundColor="WhiteSmoke" LostFocus="Pers_d_zl_LostFocus">
+                                <Grid Background="Transparent" Margin="0,0,0,-35" Height="480">
+                                    <ScrollViewer>
+
+                                        <dxlc:LayoutControl HorizontalAlignment="Left" Height="500" Margin="10,10,0,0" VerticalAlignment="Top" Width="1077" Orientation="Vertical">
+
+                                            <dxlc:LayoutGroup Header="Персональные данные застрахованного лица" View="GroupBox" Margin="-12,0,-12,-322">
+
+                                                <dxlc:LayoutGroup x:Name="fio" dx:ScrollViewerTouchBehavior.IsEnabled="True" Orientation="Vertical" Serialization:SerializableItem.TypeName="LayoutGroup" PreviewKeyDown="fio_PreviewKeyDown">
+                                                    <dxlc:LayoutItem Label="Фамилия" LabelHorizontalAlignment="Right">
+                                                        <dxe:ComboBoxEdit Tag="IgnoreEnterKeyTraversal" CharacterCasing="Upper" x:Name="fam"  NullValueButtonPlacement="EditBox" ImmediatePopup="True" AutoComplete="False" FilterCondition="Contains" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding}" EditValue="FAM" DisplayMember="FAM" ValidateOnTextInput="False" IncrementalFiltering="True" ProcessNewValue="Fam_ProcessNewValue" GotFocus="fam_GotFocus" EditValuePostDelay="0" ValidateOnEnterKeyPressed="False" PreviewKeyDown="Fam_PreviewKeyDown" />
+                                                    </dxlc:LayoutItem>
+                                                    <dxlc:LayoutItem Label="Имя" LabelHorizontalAlignment="Right">
+                                                        <dxe:ComboBoxEdit CharacterCasing="Upper" x:Name="im" NullValueButtonPlacement="EditBox" ImmediatePopup="True" AutoComplete="False" FilterCondition="Contains" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding}" EditValue="IM" DisplayMember="IM" ValidateOnTextInput="False" IncrementalFiltering="True" ProcessNewValue="Im_ProcessNewValue" />
+                                                    </dxlc:LayoutItem>
+                                                    <dxlc:LayoutItem Label="Дата рождения" LabelHorizontalAlignment="Right" FontWeight="Bold">
+                                                        <dxe:DateEdit x:Name="dr" NullValueButtonPlacement="EditBox" MaskType="DateTimeAdvancingCaret" LostFocus="Dr_LostFocus" PreviewKeyDown="Dr_PreviewKeyDown" />
+                                                    </dxlc:LayoutItem>
+                                                    <dxlc:LayoutItem Label="Пол" LabelHorizontalAlignment="Right" FontWeight="Bold">
+                                                        <dxe:ComboBoxEdit x:Name="pol" DisplayMember="NameWithID" ItemsSource="{Binding}" ValueMember="IDPOL" EditValue="IDPOL" FilterCondition="StartsWith" AutoComplete="True" NullValueButtonPlacement="EditBox" EditValueChanged="pol_EditValueChanged" GotFocus="Pol_GotFocus" />
+                                                    </dxlc:LayoutItem>
+                                                    <dxlc:LayoutItem Label="Тип документа" LabelHorizontalAlignment="Right" FontWeight="Bold">
+                                                        <dxe:ComboBoxEdit x:Name="doc_type" ItemsSource="{Binding}" DisplayMember="NameWithID" ValueMember="ID" EditValue="ID" SelectedIndex="0" SelectedIndexChanged="doc_type_SelectedIndexChanged" FilterCondition="StartsWith" NullValueButtonPlacement="EditBox" EditValueChanged="doc_type_EditValueChanged" HorizontalContentAlignment="Left" AutoComplete="True" HorizontalScrollBarVisibility="Disabled" LostFocus="doc_type_LostFocus" />
+                                                    </dxlc:LayoutItem>
+                                                    <dxlc:LayoutItem Label="Серия документа" LabelHorizontalAlignment="Right" FontWeight="Bold">
+                                                        <dxe:TextEdit x:Name="doc_ser" MaxLength="7" EditValueChanged="doc_ser_EditValueChanged" EditorActivated="doc_ser_EditorActivated" GotKeyboardFocus="doc_ser_GotKeyboardFocus" PreviewKeyDown="doc_ser_PreviewKeyDown" CharacterCasing="Upper" GotFocus="doc_ser_GotFocus" Mask="" MaskType="None" LostFocus="Doc_ser_LostFocus" />
+                                                    </dxlc:LayoutItem>
+                                                    <dxlc:LayoutItem Label="Номер документа" LabelHorizontalAlignment="Right" FontWeight="Bold">
+                                                        <dxe:TextEdit x:Name="doc_num" PreviewKeyDown="Doc_num_PreviewKeyDown" />
+                                                    </dxlc:LayoutItem>
+                                                    <dxlc:LayoutItem Label="Дата выдачи" LabelHorizontalAlignment="Right" FontWeight="Bold">
+                                                        <dxe:DateEdit MaskType="DateTimeAdvancingCaret" MaskPlaceHolder="." x:Name="date_vid" NullValueButtonPlacement="EditBox" EditValueChanged="date_vid_EditValueChanged" MaskUseAsDisplayFormat="True" />
+                                                    </dxlc:LayoutItem>
+                                                    <dxlc:LayoutItem Label="Страна выдачи" LabelHorizontalAlignment="Right">
+                                                        <dxe:ComboBoxEdit x:Name="str_vid" DisplayMember="CAPTION" ItemsSource="{Binding}" FilterCondition="StartsWith" AutoComplete="True" ValueMember="ID" NullValueButtonPlacement="EditBox" HorizontalScrollBarVisibility="Disabled" GotFocus="str_vid_GotFocus" />
+                                                    </dxlc:LayoutItem>
+                                                    <dxlc:LayoutItem Label="Кем выдан" LabelHorizontalAlignment="Right" FontWeight="Bold">
+                                                        <dxe:ComboBoxEdit CharacterCasing="Upper" x:Name="kem_vid" NullValueButtonPlacement="EditBox" ImmediatePopup="True" AutoComplete="False" FilterCondition="Contains" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding}" EditValue="NAME" DisplayMember="NAME" ValidateOnTextInput="False" IncrementalFiltering="True" ProcessNewValue="Kem_vid_ProcessNewValue" />
+                                                    </dxlc:LayoutItem>
+                                                    <dxlc:LayoutItem Label="Отчество" LabelHorizontalAlignment="Right">
+                                                        <dxe:ComboBoxEdit CharacterCasing="Upper" x:Name="ot" NullValueButtonPlacement="EditBox" ImmediatePopup="True" AutoComplete="False" FilterCondition="Contains" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding}" EditValue="OT" DisplayMember="OT" ValidateOnTextInput="False" IncrementalFiltering="True" LostFocus="Ot_LostFocus" ProcessNewValue="Ot_ProcessNewValue" />
+                                                    </dxlc:LayoutItem>
+                                                </dxlc:LayoutGroup>
+                                                <dxlc:LayoutGroup dx:ScrollViewerTouchBehavior.IsEnabled="True" Orientation="Vertical" Serialization:SerializableItem.TypeName="LayoutGroup">
+                                                    <dxlc:LayoutItem Label="Код подразделения" LabelHorizontalAlignment="Right">
+                                                        <dxe:TextEdit x:Name="kod_podr" MaskType="None" />
+                                                    </dxlc:LayoutItem>
+                                                    <dxlc:LayoutItem Label="Действителен до" LabelHorizontalAlignment="Right">
+                                                        <dxe:DateEdit x:Name="docexp" NullValueButtonPlacement="EditBox" MaskType="DateTimeAdvancingCaret" />
+                                                    </dxlc:LayoutItem>
+                                                    <dxlc:LayoutItem Label="Дополнительный документ">
+                                                        <dxe:ComboBoxEdit x:Name="ddtype" ItemsSource="{Binding}" DisplayMember="NameWithID" FilterCondition="StartsWith" AutoComplete="True" NullValueButtonPlacement="EditBox" HorizontalScrollBarVisibility="Disabled" ValueMember="ID" EditValueChanged="Ddtype_EditValueChanged" />
+                                                    </dxlc:LayoutItem>
+                                                    <dxlc:LayoutItem Label="Серия" LabelHorizontalAlignment="Right">
+                                                        <dxe:TextEdit x:Name="ddser" />
+                                                    </dxlc:LayoutItem>
+                                                    <dxlc:LayoutItem Label="Номер" LabelHorizontalAlignment="Right">
+                                                        <dxe:TextEdit x:Name="ddnum" />
+                                                    </dxlc:LayoutItem>
+                                                    <dxlc:LayoutItem Label="Кем выдан" LabelHorizontalAlignment="Right">
+                                                        <dxe:TextEdit x:Name="ddkemv" CharacterCasing="Upper" />
+                                                    </dxlc:LayoutItem>
+                                                    <dxlc:LayoutItem Label="Дата выдачи" LabelHorizontalAlignment="Right">
+                                                        <dxe:DateEdit x:Name="dddate" NullValueButtonPlacement="EditBox" MaskType="DateTimeAdvancingCaret" />
+                                                    </dxlc:LayoutItem>
+                                                    <dxlc:LayoutItem Label="Действителен до" LabelHorizontalAlignment="Right">
+                                                        <dxe:DateEdit x:Name="docexp1" NullValueButtonPlacement="EditBox" EditValueChanged="docexp1_EditValueChanged" MaskType="DateTimeAdvancingCaret" />
+                                                    </dxlc:LayoutItem>
+                                                    <dxlc:LayoutItem Label="Место рождения" LabelHorizontalAlignment="Right" FontWeight="Bold">
+                                                        <dxe:TextEdit x:Name="mr2" CharacterCasing="Upper" />
+                                                    </dxlc:LayoutItem>
+                                                    <dxlc:LayoutItem Label="Страна рождения" LabelHorizontalAlignment="Right" FontWeight="Bold">
+                                                        <dxe:ComboBoxEdit x:Name="str_r" ItemsSource="{Binding}" DisplayMember="CAPTION" SelectedIndex="0" ValueMember="ID" FilterCondition="Contains" AutoComplete="True" NullValueButtonPlacement="EditBox">
+                                                            <dxe:ComboBoxEdit.EditValue>
+                                                                <System:Int32>123</System:Int32>
+                                                            </dxe:ComboBoxEdit.EditValue>
+                                                        </dxe:ComboBoxEdit>
+                                                    </dxlc:LayoutItem>
+                                                    <dxlc:LayoutItem Label="Гражданство" LabelHorizontalAlignment="Right" FontWeight="Bold">
+                                                        <dxe:ComboBoxEdit x:Name="gr" DisplayMember="CAPTION" ItemsSource="{Binding}" ValueMember="ID" EditValue="123" FilterCondition="Contains" AutoComplete="True" NullValueButtonPlacement="EditBox" HorizontalScrollBarVisibility="Disabled" />
+                                                    </dxlc:LayoutItem>
+                                                </dxlc:LayoutGroup>
+                                                <dxlc:LayoutGroup dx:ScrollViewerTouchBehavior.IsEnabled="True" Orientation="Vertical" Serialization:SerializableItem.TypeName="LayoutGroup">
+                                                    <dxlc:LayoutItem Label="СНИЛС" LabelHorizontalAlignment="Right" FontWeight="Bold">
+                                                        <dxe:TextEdit x:Name="snils" Mask="000-000-000 00" MaskType="Simple" EditValueChanged="snils_EditValueChanged" />
+                                                    </dxlc:LayoutItem>
+                                                    <dxlc:LayoutItem Label="ЕНП" LabelHorizontalAlignment="Right">
+                                                        <dxe:TextEdit x:Name="enp" MaxLength="16" EditValueChanged="enp_EditValueChanged" Mask="0000000000000000" MaskType="Simple" />
+                                                    </dxlc:LayoutItem>
+                                                    <dxlc:LayoutItem Label="Прикреплен к МО" LabelHorizontalAlignment="Right">
+                                                        <dxe:ComboBoxEdit x:Name="mo_cmb" NullValueButtonPlacement="EditBox" ValidateOnTextInput="False" ImmediatePopup="True" ValueMember="mcod" EditValue="mcod" ItemsSource="{Binding}" DisplayMember="NameWithID" FilterCondition="Contains" HorizontalContentAlignment="Left" HorizontalScrollBarVisibility="Disabled" IncrementalFiltering="True" AutoComplete="True" />
+                                                    </dxlc:LayoutItem>
+                                                    <dxlc:LayoutItem Label="Дата прикрепления" LabelHorizontalAlignment="Right">
+                                                        <dxe:DateEdit x:Name="date_mo" NullValueButtonPlacement="EditBox" MaskType="DateTimeAdvancingCaret" />
+                                                    </dxlc:LayoutItem>
+                                                    <dxlc:LayoutItem Label="Телефон" LabelHorizontalAlignment="Right" FontWeight="Bold">
+                                                        <dxe:TextEdit x:Name="phone" MaxLength="11" Mask="[0-9]{5,11}" MaskType="RegEx" MaskUseAsDisplayFormat="True" MaskSaveLiteral="False" />
+                                                    </dxlc:LayoutItem>
+                                                    <dxlc:LayoutItem Label="E-mail:" LabelHorizontalAlignment="Right">
+                                                        <dxe:TextEdit x:Name="email" />
+                                                    </dxlc:LayoutItem>
+                                                    <dxlc:LayoutItem Label="Надежность идентификации">
+                                                        <dxe:ComboBoxEdit x:Name="dost1" SelectedIndexChanged="dost1_SelectedIndexChanged"  NullValueButtonPlacement="EditBox" PopupFooterButtons="OkCancel" IsTextEditable="False" ValueMember="ID"      DisplayMember="NameWithID" EditValueChanged="Dost1_EditValueChanged">
+                                                            <dxe:ComboBoxEdit.StyleSettings>
+                                                                <dxe:CheckedComboBoxStyleSettings />
+                                                            </dxe:ComboBoxEdit.StyleSettings>
+                                                        </dxe:ComboBoxEdit>
+                                                    </dxlc:LayoutItem>
+                                                    <dxlc:LayoutItem Label="Комментарий" LabelHorizontalAlignment="Right">
+                                                        <dxe:TextEdit x:Name="comments" CharacterCasing="Upper" />
+                                                    </dxlc:LayoutItem>
+                                                    <dxlc:LayoutItem Label="Дата смерти" LabelHorizontalAlignment="Right">
+                                                        <dxe:DateEdit MaskType="DateTimeAdvancingCaret" MaskPlaceHolder="." x:Name="ddeath" NullValueButtonPlacement="EditBox" />
+                                                    </dxlc:LayoutItem>
+                                                    <dxlc:LayoutItem Label="Категория ЗЛ" LabelHorizontalAlignment="Right" FontWeight="Bold">
+                                                        <dxe:ComboBoxEdit x:Name="kat_zl" DisplayMember="NameWithID" ItemsSource="{Binding}" ValueMember="IDKAT" EditValue="IDKAT" FilterCondition="StartsWith" AutoComplete="True" NullValueButtonPlacement="EditBox" HorizontalScrollBarVisibility="Disabled" PreviewKeyDown="kat_zl_PreviewKeyDown" />
+                                                    </dxlc:LayoutItem>
+                                                    <dxlc:DataLayoutItem>
+                                                        <Button x:Name="prev_doc_btn" Content="Предыдущие перс. данные" Style="{StaticResource myButtonStyle2}" HorizontalAlignment="Right" Height="25" VerticalAlignment="Top" Width="187" Click="prev_doc_btn_Click" />
+                                                    </dxlc:DataLayoutItem>
+                                                </dxlc:LayoutGroup>
+
+                                            </dxlc:LayoutGroup>
+                                        </dxlc:LayoutControl>
+                                    </ScrollViewer>
+                                </Grid>
+                            </dx:DXTabItem>
+                            <dx:DXTabItem x:Name="polis_zl" Header="Полис ОМС" BackgroundColor="WhiteSmoke" GotFocus="Polis_zl_GotFocus">
+                                <Grid Background="Transparent" Margin="0,0,0,-35" Height="480">
+                                    <dxlc:LayoutControl x:Name="polis_lc" HorizontalAlignment="Left" Height="500" VerticalAlignment="Top" Width="478" Orientation="Vertical">
+                                        <dxlc:LayoutGroup Header="Данные бланка полиса" View="GroupBox" Margin="-12,-2,-12,-305" Orientation="Vertical" Width="478" Height="350">
+                                            <dxlc:LayoutItem Label="Тип полиса" Margin="0,0,0,0" FontWeight="Bold">
+                                                <dxe:ComboBoxEdit x:Name="type_policy" ItemsSource="{Binding}" DisplayMember="NameWithID" ValueMember="ID" NullValueButtonPlacement="EditBox" EditValue="ID" HorizontalScrollBarVisibility="Disabled" FilterCondition="StartsWith" AutoComplete="True" LostFocus="Type_policy_LostFocus" />
+                                            </dxlc:LayoutItem>
+                                            <dxlc:LayoutItem Label="Серия бланка" Margin="0,0,0,0">
+                                                <dxe:TextEdit x:Name="ser_blank" EditValueChanged="ser_blank_EditValueChanged" />
+                                            </dxlc:LayoutItem>
+                                            <dxlc:LayoutItem Label="Номер бланка" Margin="0,0,0,0">
+                                                <dxe:TextEdit x:Name="num_blank" PreviewKeyDown="Num_blank_PreviewKeyDown" />
+                                            </dxlc:LayoutItem>
+                                            <dxlc:LayoutItem Label="Дата начала" Margin="0,0,0,0" ToolTip="Дата начала действия документа">
+                                                <dxe:DateEdit x:Name="date_vid1" NullValueButtonPlacement="EditBox" EditValueChanged="date_vid1_EditValueChanged" MaskType="DateTimeAdvancingCaret" />
+                                            </dxlc:LayoutItem>
+                                            <dxlc:LayoutItem Label="Дата окончания действия документа" Margin="0,0,0,0">
+                                                <dxe:DateEdit x:Name="date_end" NullValueButtonPlacement="EditBox" MaskType="DateTimeAdvancingCaret" />
+                                            </dxlc:LayoutItem>
+                                            <dxlc:LayoutItem Label="Дата получения" Margin="0,0,0,0">
+                                                <dxe:DateEdit x:Name="date_poluch" NullValueButtonPlacement="EditBox" MaskType="DateTimeAdvancingCaret" />
+                                            </dxlc:LayoutItem>
+                                            <dxlc:LayoutItem Label="Факт. прекр. действия" ToolTip="Для иностранных граждан">
+                                                <dxe:DateEdit x:Name="fakt_prekr" NullValueButtonPlacement="EditBox" MaskType="DateTimeAdvancingCaret" PreviewKeyDown="Fakt_prekr_PreviewKeyDown" />
+                                            </dxlc:LayoutItem>
+                                            <dxlc:LayoutItem Label="Дата выбытия" Visibility="Collapsed">
+                                                <dxe:DateEdit x:Name="dout" NullValueButtonPlacement="EditBox" Visibility="Collapsed" />
+                                            </dxlc:LayoutItem>
+                                            <dxlc:LayoutItem x:Name="pustoy_lbl" Label="Свободный бланк" Margin="0,0,0,0" FontWeight="Bold" Foreground="Green" Visibility="Hidden">
+                                                <dxe:CheckEdit x:Name="pustoy" PreviewKeyDown="pustoy_PreviewKeyDown" Visibility="Hidden"/>
+                                            </dxlc:LayoutItem>
+                                            <dxlc:LayoutItem Label="Полис выдан" Margin="0,0,0,0" Visibility="Collapsed">
+                                                <dxe:CheckEdit x:Name="priznak_vidachi" PreviewKeyDown="pustoy_PreviewKeyDown" />
+                                            </dxlc:LayoutItem>
+                                            <dxlc:LayoutItem Label="Дата выдачи" Visibility="Collapsed">
+                                                <dxe:DateEdit x:Name="date_vidachi" NullValueButtonPlacement="EditBox" PreviewKeyDown="Date_vidachi_PreviewKeyDown" />
+                                            </dxlc:LayoutItem>
+                                        </dxlc:LayoutGroup>
+                                    </dxlc:LayoutControl>
+                                </Grid>
+                            </dx:DXTabItem>
+                            <dx:DXTabItem x:Name="addr_reg_zl" Header="Адрес регистрации ЗЛ" HorizontalAlignment="Left" Width="175" PreviewKeyDown="addr_reg_zl_PreviewKeyDown" BackgroundColor="WhiteSmoke">
+                                <Grid Background="Transparent" Margin="0,0,0,-35" Height="480">
+                                    <dxlc:LayoutControl x:Name="addr" Width="717" Margin="10,10,0,0" VerticalAlignment="Top" Height="441" HorizontalAlignment="Left" AllowBringChildIntoView="False">
+                                        <dxlc:LayoutGroup x:Name="address" View="GroupBox" Orientation="Vertical" Margin="-12,0,-12,0" Header="Адрес регистрации застрахованного лица" Height="359" VerticalAlignment="Top">
+                                            <Editors:FiasControl x:Name="fias" Margin="0,0,197,-158" />
+                                        </dxlc:LayoutGroup>
+                                    </dxlc:LayoutControl>
+                                </Grid>
+                                <!--<Grid Background="Transparent" Margin="0,0,0,-68">
+                        <dxlc:LayoutControl x:Name="addr" Width="1034" Margin="10,10,0,-216" VerticalAlignment="Top" Height="500" HorizontalAlignment="Left" AllowBringChildIntoView="False">
+                            <dxlc:LayoutGroup x:Name="address" View="GroupBox" Orientation="Vertical" Margin="-12,0,-12,-376" Header="Адрес регистрации застрахованного лица">
+                                <dxlc:LayoutItem Label="Регион" FontWeight="Bold">
+                                    <dxe:ComboBoxEdit x:Name="reg" ValueMember="AOGUID" SelectedIndexChanged="reg_SelectedIndexChanged" SelectedItem="ExpandoObject" ItemsSource="{Binding Data, Source={StaticResource TypedSimpleSource9}}" ImmediatePopup="True" IncrementalFiltering="True" IsSynchronizedWithCurrentItem="True" FilterCondition="StartsWith" FindMode="Always" FindButtonPlacement="EditBox" FilterCriteria="{Binding fullname, Mode=OneWay}" DisplayMember="fullname" AutoComplete="True" AllowCollectionView="True" IsTextEditable="True"/>
+                                </dxlc:LayoutItem>
+                                <dxlc:LayoutItem Label="Район">
+                                    <dxe:ComboBoxEdit x:Name="reg_rn" ValueMember="AOGUID" SelectedIndex="-1" ItemsSource="{Binding Data, Source={StaticResource TypedSimpleSource20}}" IncrementalFiltering="True" IsSynchronizedWithCurrentItem="True" FilterCondition="StartsWith" FindButtonPlacement="EditBox" DisplayMember="fullname" AutoComplete="True"/>
+                                </dxlc:LayoutItem>
+                                <dxlc:LayoutItem Label="Город" FontWeight="Bold">
+                                    <dxe:ComboBoxEdit x:Name="reg_town" ValueMember="AOGUID" ItemsSource="{Binding Data, Source={StaticResource TypedSimpleSource18}}" FilterCondition="StartsWith" FindButtonPlacement="EditBox" DisplayMember="fullname" AutoComplete="True"/>
+                                </dxlc:LayoutItem>
+                                <dxlc:LayoutItem Label="Населенный пункт">
+                                    <dxe:ComboBoxEdit x:Name="reg_np" ValueMember="AOGUID" ItemsSource="{Binding Data, Source={StaticResource TypedSimpleSource19}}" FilterCondition="StartsWith" FindButtonPlacement="EditBox" DisplayMember="fullname" AutoComplete="True"/>
+                                </dxlc:LayoutItem>
+                                <dxlc:LayoutItem Label="Улица" FontWeight="Bold">
+                                    <dxe:ComboBoxEdit x:Name="reg_ul" ValueMember="AOGUID" ItemsSource="{Binding Data, Source={StaticResource TypedSimpleSource21}}" FilterCondition="StartsWith" FindButtonPlacement="EditBox" DisplayMember="fullname" AutoComplete="True"/>
+                                </dxlc:LayoutItem>
+                                <dxlc:LayoutItem Label="Дом">
+                                    <dxe:TextEdit x:Name="reg_dom"/>
+                                </dxlc:LayoutItem>
+                                <dxlc:LayoutItem Label="Корпус">
+                                    <dxe:TextEdit x:Name="reg_korp"/>
+                                </dxlc:LayoutItem>
+                                <dxlc:LayoutItem Label="Строение">
+                                    <dxe:TextEdit x:Name="reg_str"/>
+                                </dxlc:LayoutItem>
+                                <dxlc:LayoutItem Label="Квартира">
+                                    <dxe:TextEdit x:Name="reg_kv"/>
+                                </dxlc:LayoutItem>
+                                <dxlc:LayoutItem Label="Дата регистрации">
+                                    <dxe:DateEdit x:Name="reg_dr"/>
+                                </dxlc:LayoutItem>
+                                <dxlc:LayoutItem Label="Без ОМЖ">
+                                    <dxe:CheckEdit x:Name="bomj"/>
+                                </dxlc:LayoutItem>
+                            </dxlc:LayoutGroup>
+                        </dxlc:LayoutControl>
+                    </Grid>-->
+                            </dx:DXTabItem>
+                            <dx:DXTabItem x:Name="addr_mg_zl" Header="Адрес места жительства ЗЛ" PreviewKeyDown="addr_mg_zl_PreviewKeyDown" BackgroundColor="WhiteSmoke">
+                                <Grid Background="Transparent" Margin="0,0,0,-35" Height="480">
+                                    <dxlc:LayoutControl x:Name="addr_mg" HorizontalAlignment="Left" Height="441" Margin="10,10,0,0" VerticalAlignment="Top" Width="717" AllowBringChildIntoView="False">
+                                        <dxlc:LayoutGroup x:Name="address1" Header="Адрес места жительства застрахованного лица" View="GroupBox" Orientation="Vertical" Margin="-12,0,-12,0" Height="359" VerticalAlignment="Top">
+                                            <Editors:FiasControl1 x:Name="fias1" Margin="0,0,197,-158" />
+                                        </dxlc:LayoutGroup>
+                                    </dxlc:LayoutControl>
+                                </Grid>
+                                <!--<dxlc:LayoutItem Label="Регион" FontWeight="Bold">
+                                    <dxe:ComboBoxEdit x:Name="reg1" DisplayMember="fullname" IsSynchronizedWithCurrentItem="True" FilterCondition="StartsWith" FilterCriteria="{Binding fullname, Mode=OneWay}" IncrementalFiltering="True" FindMode="Always" SelectedIndexChanged="reg_SelectedIndexChanged" SelectedItem="ExpandoObject" AllowCollectionView="True" ItemsSource="{Binding Data, Source={StaticResource TypedSimpleSource9}}" ValueMember="AOGUID" AutoComplete="True" ImmediatePopup="True" FindButtonPlacement="EditBox"/>
+                                </dxlc:LayoutItem>
+                                <dxlc:LayoutItem Label="Район">
+                                    <dxe:ComboBoxEdit x:Name="reg_rn1" IncrementalFiltering="True" IsSynchronizedWithCurrentItem="True" ValueMember="AOGUID" FilterCondition="StartsWith" FindButtonPlacement="EditBox" ItemsSource="{Binding Data, Source={StaticResource TypedSimpleSource20}}"  SelectedIndex="-1" DisplayMember="fullname" AutoComplete="True" />
+                                </dxlc:LayoutItem>
+                                <dxlc:LayoutItem Label="Город" FontWeight="Bold">
+                                    <dxe:ComboBoxEdit x:Name="reg_town1" ValueMember="AOGUID" ItemsSource="{Binding Data, Source={StaticResource TypedSimpleSource18}}" DisplayMember="fullname" AutoComplete="True" FindButtonPlacement="EditBox" FilterCondition="StartsWith"/>
+                                </dxlc:LayoutItem>
+                                <dxlc:LayoutItem Label="Населенный пункт">
+                                    <dxe:ComboBoxEdit x:Name="reg_np1" ItemsSource="{Binding Data, Source={StaticResource TypedSimpleSource19}}" ValueMember="AOGUID" DisplayMember="fullname" AutoComplete="True" FindButtonPlacement="EditBox" FilterCondition="StartsWith"/>
+                                </dxlc:LayoutItem>
+                                <dxlc:LayoutItem Label="Улица" FontWeight="Bold">
+                                    <dxe:ComboBoxEdit x:Name="reg_ul1" AutoComplete="True" FilterCondition="StartsWith" FindButtonPlacement="EditBox" ItemsSource="{Binding Data, Source={StaticResource TypedSimpleSource21}}" ValueMember="AOGUID" DisplayMember="fullname"/>
+                                </dxlc:LayoutItem>
+                                <dxlc:LayoutItem Label="Дом">
+                                    <dxe:TextEdit x:Name="reg_dom1"/>
+                                </dxlc:LayoutItem>
+                                <dxlc:LayoutItem Label="Корпус">
+                                    <dxe:TextEdit x:Name="reg_korp1"/>
+                                </dxlc:LayoutItem>
+                                <dxlc:LayoutItem Label="Строение">
+                                    <dxe:TextEdit x:Name="reg_str1"/>
+                                </dxlc:LayoutItem>
+                                <dxlc:LayoutItem Label="Квартира">
+                                    <dxe:TextEdit x:Name="reg_kv1"/>
+                                </dxlc:LayoutItem>
+                                <dxlc:LayoutItem Label="Дата регистрации">
+                                    <dxe:DateEdit x:Name="reg_dr1"/>
+                                </dxlc:LayoutItem>
+                                <dxlc:LayoutItem Label="Совпадает с адресом регистрации">
+                                    <dxe:CheckEdit x:Name="sovp_addr" Width="152" Checked="sovp_addr_Checked"/>
+                                </dxlc:LayoutItem>-->
+
+
+                            </dx:DXTabItem>
+                            <dx:DXTabItem x:Name="bio_zl" Header="Биометрические данные ЗЛ" BackgroundColor="WhiteSmoke">
+                                <Grid Background="Transparent" Margin="0,0,0,-35" Height="480">
+
+                                    <dxlc:LayoutControl x:Name="biometriya" HorizontalAlignment="Left" Height="500" Margin="10,10,0,-300" VerticalAlignment="Top" Width="455" AllowBringChildIntoView="False">
+                                        <dxlc:LayoutGroup x:Name="address2" Header="Биометрические данные застрахованного лица" View="GroupBox" Margin="-12,0,-12,-40" Orientation="Vertical">
+                                            <dxlc:LayoutGroup dx:ScrollViewerTouchBehavior.IsEnabled="True" Serialization:SerializableItem.TypeName="LayoutGroup">
+                                                <dxlc:LayoutItem Label="Фото ЗЛ">
+                                                    <dxe:ImageEdit x:Name="zl_photo" Width="120" Height="150" Stretch="Fill" PreviewKeyDown="zl_photo_PreviewKeyDown" EditValueChanged="Zl_photo_EditValueChanged" LostFocus="Zl_photo_LostFocus" RenderTransformOrigin="0.5,0.5" MouseRightButtonUp="Zl_photo_MouseRightButtonUp" MouseDoubleClick="Zl_photo_MouseDoubleClick" PreviewMouseRightButtonDown="Zl_photo_PreviewMouseRightButtonDown" BorderThickness="2,2,2,0" MouseLeftButtonDown="Zl_photo_MouseLeftButtonDown" MouseRightButtonDown="Zl_photo_MouseRightButtonDown" MouseLeftButtonUp="Zl_photo_MouseLeftButtonUp" PreviewMouseLeftButtonDown="Zl_photo_PreviewMouseLeftButtonDown" />
+                                                </dxlc:LayoutItem>
+                                            </dxlc:LayoutGroup>
+                                            <dxlc:LayoutItem Label="Подпись ЗЛ">
+                                                <dxe:ImageEdit x:Name="zl_podp" Width="350" Height="100" Stretch="Fill" PreviewKeyDown="zl_podp_PreviewKeyDown" LostFocus="Zl_podp_LostFocus" />
+                                            </dxlc:LayoutItem>
+                                        </dxlc:LayoutGroup>
+                                    </dxlc:LayoutControl>
+                                    <Button x:Name="rotate" Height="60" HorizontalAlignment="Left" Style="{StaticResource myButtonStyle1}" Margin="352,104,0,0" VerticalAlignment="Top" Width="60" Click="Rotate_Click" Visibility="Visible">
+                                        <StackPanel Orientation="Horizontal" Width="60">
+                                            <!--Margin="5,0"-->
+                                            <Image Source="Insurance_icons\90r.png" Width="50" Height="50" Focusable="True" Margin="5,0" HorizontalAlignment="Center">
+                                                <Image.OpacityMask>
+                                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                        <GradientStop Color="Black" Offset="0" />
+                                                        <GradientStop Color="White" Offset="1" />
+                                                    </LinearGradientBrush>
+                                                </Image.OpacityMask>
+
+                                            </Image>
+
+                                        </StackPanel>
+                                    </Button>
+                                    <Button x:Name="rotate_l" Height="60" HorizontalAlignment="Left" Style="{StaticResource myButtonStyle1}" Margin="130,104,0,0" VerticalAlignment="Top" Width="60" Visibility="Visible" Click="Rotate_l_Click">
+                                        <StackPanel Orientation="Horizontal" Width="60">
+                                            <!--Margin="5,0"-->
+                                            <Image Source="Insurance_icons\90l.png" Width="50" Height="50" Focusable="True" Margin="5,0" HorizontalAlignment="Center">
+                                                <Image.OpacityMask>
+                                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                        <GradientStop Color="Black" Offset="0" />
+                                                        <GradientStop Color="White" Offset="1" />
+                                                    </LinearGradientBrush>
+                                                </Image.OpacityMask>
+
+                                            </Image>
+
+                                        </StackPanel>
+                                    </Button>
+                                </Grid>
+                            </dx:DXTabItem>
+                            <dx:DXTabItem x:Name="pd_p_zl" Header="Персональные данные представителя ЗЛ" BackgroundColor="WhiteSmoke" Margin="0" TabIndex="6" GotFocus="Pd_p_zl_GotFocus">
+                                <Grid Background="Transparent" Margin="0,0,0,-35" Height="480">
+                                    <dxlc:LayoutControl HorizontalAlignment="Left" Height="500" VerticalAlignment="Top" Width="1010" Margin="10,10,0,-216">
+                                        <dxlc:LayoutGroup Header="Персональные данные представителя застрахованного лица" View="GroupBox" Margin="-12,0,-12,-223">
+                                            <dxlc:LayoutGroup dx:ScrollViewerTouchBehavior.IsEnabled="True" Orientation="Vertical" Serialization:SerializableItem.TypeName="LayoutGroup">
+                                                <dxlc:LayoutItem Label="Фамилия">
+                                                    <dxe:ComboBoxEdit CharacterCasing="Upper" x:Name="fam1" ItemsSource="{Binding}" DisplayMember="FAM" IsSynchronizedWithCurrentItem="True" IncrementalFiltering="True" ImmediatePopup="True" NullValueButtonPlacement="EditBox" ProcessNewValue="Fam_ProcessNewValue1" EditValue="FAM" ValidateOnTextInput="False" EditValuePostDelay="0" GotFocus="Fam1_GotFocus"/>
+                                                </dxlc:LayoutItem>
+                                                <dxlc:LayoutItem Label="Имя">
+                                                    <dxe:ComboBoxEdit CharacterCasing="Upper" x:Name="im1" ItemsSource="{Binding}" DisplayMember="IM" IsSynchronizedWithCurrentItem="True" IncrementalFiltering="True" ImmediatePopup="True" NullValueButtonPlacement="EditBox" ProcessNewValue="Im_ProcessNewValue1" EditValue="IM" ValidateOnTextInput="False" EditValuePostDelay="0"/>
+                                                </dxlc:LayoutItem>
+                                                <dxlc:LayoutItem Label="Отчество">
+                                                    <dxe:ComboBoxEdit CharacterCasing="Upper" x:Name="ot1" ItemsSource="{Binding}" DisplayMember="OT" IsSynchronizedWithCurrentItem="True" IncrementalFiltering="True" ImmediatePopup="True" NullValueButtonPlacement="EditBox" ProcessNewValue="Ot_ProcessNewValue1" EditValue="OT" ValidateOnTextInput="False" EditValuePostDelay="0"/>
+                                                </dxlc:LayoutItem>
+                                                <dxlc:LayoutItem Label="Пол">
+                                                    <dxe:ComboBoxEdit x:Name="pol_pr" DisplayMember="NameWithID" ItemsSource="{Binding}" ValueMember="IDPOL" EditValue="IDPOL" FilterCondition="Contains" AutoComplete="True" NullValueButtonPlacement="EditBox" />
+                                                </dxlc:LayoutItem>
+                                                <dxlc:LayoutItem Label="Дата рождения">
+                                                    <dxe:DateEdit x:Name="dr1" NullValueButtonPlacement="EditBox" MaskType="DateTimeAdvancingCaret" />
+                                                </dxlc:LayoutItem>
+                                                <dxlc:LayoutItem Label="Телефон">
+                                                    <dxe:TextEdit x:Name="phone_p1" Mask="8\d\d\d\d\d\d\d\d\d\d" MaskType="Regular" />
+                                                </dxlc:LayoutItem>
+                                            </dxlc:LayoutGroup>
+                                            <dxlc:LayoutGroup dx:ScrollViewerTouchBehavior.IsEnabled="True" Orientation="Vertical" Serialization:SerializableItem.TypeName="LayoutGroup">
+                                                <dxlc:LayoutItem Label="Тип документа">
+                                                    <dxe:ComboBoxEdit x:Name="doctype1" ItemsSource="{Binding}" DisplayMember="NameWithID" ValueMember="ID" EditValue="ID" NullValueButtonPlacement="EditBox" FilterCondition="StartsWith" AutoComplete="True" HorizontalScrollBarVisibility="Disabled" SelectedIndexChanged="Doctype1_SelectedIndexChanged" LostFocus="Doctype1_LostFocus" />
+                                                </dxlc:LayoutItem>
+                                                <dxlc:LayoutItem Label="Серия">
+                                                    <dxe:TextEdit x:Name="docser1" EditValueChanged="Docser1_EditValueChanged" />
+                                                </dxlc:LayoutItem>
+                                                <dxlc:LayoutItem Label="Номер">
+                                                    <dxe:TextEdit x:Name="docnum1" />
+                                                </dxlc:LayoutItem>
+                                                <dxlc:LayoutItem Label="Дата выдачи">
+                                                    <dxe:DateEdit x:Name="docdate1" NullValueButtonPlacement="EditBox" MaskType="DateTimeAdvancingCaret" />
+                                                </dxlc:LayoutItem>
+                                                <dxlc:LayoutItem Label="Статус представителя">
+                                                    <dxe:ComboBoxEdit x:Name="status_p2" NullValueButtonPlacement="EditBox" FilterCondition="StartsWith" AutoComplete="True" PreviewKeyDown="status_p2_PreviewKeyDown" />
+                                                </dxlc:LayoutItem>
+                                                <dxlc:LayoutItem Label="Срок доверенности">
+                                                    <dxe:DateEdit x:Name="srok_doverenosti" NullValueButtonPlacement="EditBox" MaskType="DateTimeAdvancingCaret" />
+                                                </dxlc:LayoutItem>
+                                            </dxlc:LayoutGroup>
+                                        </dxlc:LayoutGroup>
+                                    </dxlc:LayoutControl>
+                                </Grid>
+                            </dx:DXTabItem>
+                            <dx:DXTabItem x:Name="prev_doc" Header="Предыдущие данные" BackgroundColor="OrangeRed" LostFocus="Prev_doc_LostFocus" TabIndex="7" Visibility="Hidden" GotFocus="Prev_doc_GotFocus">
+                                <Grid Background="Transparent">
+                                    <dxlc:LayoutControl HorizontalAlignment="Left" Height="500" Margin="10,10,0,0" VerticalAlignment="Top" Width="543">
+                                        <dxlc:LayoutGroup Header="Предыдущий документ" View="GroupBox" Margin="-12,0,-12,-322">
+                                            <dxlc:LayoutGroup dx:ScrollViewerTouchBehavior.IsEnabled="True" Orientation="Vertical" Serialization:SerializableItem.TypeName="LayoutGroup">
+                                                <dxlc:LayoutItem Label="Тип документа" LabelHorizontalAlignment="Right" FontWeight="Bold">
+                                                    <dxe:ComboBoxEdit x:Name="doc_type1" ItemsSource="{Binding}" DisplayMember="NameWithID" ValueMember="ID" EditValue="ID" SelectedIndex="0" FilterCondition="StartsWith" NullValueButtonPlacement="EditBox" HorizontalContentAlignment="Left" AutoComplete="True" HorizontalScrollBarVisibility="Disabled" Loaded="Doc_type1_Loaded" SelectedIndexChanged="Doc_type1_SelectedIndexChanged" />
+                                                </dxlc:LayoutItem>
+                                                <dxlc:LayoutItem Label="Серия документа" LabelHorizontalAlignment="Right">
+                                                    <dxe:TextEdit x:Name="doc_ser1" GotFocus="Doc_ser1_GotFocus" Mask="" MaskType="None" PreviewKeyDown="Doc_ser1_PreviewKeyDown" />
+                                                </dxlc:LayoutItem>
+                                                <dxlc:LayoutItem Label="Номер документа" LabelHorizontalAlignment="Right">
+                                                    <dxe:TextEdit x:Name="doc_num1" LostFocus="Doc_num1_LostFocus" />
+                                                </dxlc:LayoutItem>
+                                                <dxlc:LayoutItem Label="Страна выдачи"  LabelHorizontalAlignment="Right">
+                                                    <dxe:ComboBoxEdit x:Name="str_vid1" DisplayMember="CAPTION" ItemsSource="{Binding}" FilterCondition="StartsWith" AutoComplete="True" ValueMember="ID" NullValueButtonPlacement="EditBox" HorizontalScrollBarVisibility="Disabled" />
+                                                </dxlc:LayoutItem>
+                                                <dxlc:LayoutItem Label="Кем выдан" FontWeight="Bold" LabelHorizontalAlignment="Right">
+                                                    <dxe:TextEdit x:Name="kem_vid1" CharacterCasing="Upper" />
+                                                </dxlc:LayoutItem>
+                                                <dxlc:LayoutItem Label="Дата выдачи" LabelHorizontalAlignment="Right">
+                                                    <dxe:DateEdit MaskType="DateTimeAdvancingCaret" MaskPlaceHolder="." x:Name="date_vid2" NullValueButtonPlacement="EditBox" EditValueChanged="date_vid_EditValueChanged" MaskUseAsDisplayFormat="True" />
+                                                </dxlc:LayoutItem>
+                                                <dxlc:LayoutItem Label="Код подразделения" LabelHorizontalAlignment="Right">
+                                                    <dxe:TextEdit x:Name="kod_podr1" MaskType="None" />
+                                                </dxlc:LayoutItem>
+                                                <dxlc:LayoutItem Label="Действителен до" LabelHorizontalAlignment="Right">
+                                                    <dxe:DateEdit x:Name="docexp2" NullValueButtonPlacement="EditBox" PreviewKeyDown="docexp2_PreviewKeyDown" />
+                                                </dxlc:LayoutItem>
+                                            </dxlc:LayoutGroup>
+                                            <dxlc:LayoutGroup dx:ScrollViewerTouchBehavior.IsEnabled="True" Orientation="Vertical" Serialization:SerializableItem.TypeName="LayoutGroup" />
+                                            <dxlc:LayoutGroup dx:ScrollViewerTouchBehavior.IsEnabled="True" Orientation="Vertical" Serialization:SerializableItem.TypeName="LayoutGroup" />
+
+                                        </dxlc:LayoutGroup>
+                                    </dxlc:LayoutControl>
+                                    <dxlc:LayoutControl HorizontalAlignment="Left" Height="400" Margin="578,10,0,0" VerticalAlignment="Top" Width="543">
+                                        <dxlc:LayoutGroup Header="Предыдущие ФИО" View="GroupBox" Margin="-12,0,-12,-322" Orientation="Vertical">
+                                            <dxlc:LayoutItem Label="Фамилия">
+                                                <dxe:ComboBoxEdit CharacterCasing="Upper" x:Name="prev_fam" ItemsSource="{Binding}" DisplayMember="FAM" IsSynchronizedWithCurrentItem="True" IncrementalFiltering="True" ImmediatePopup="True" NullValueButtonPlacement="EditBox" ProcessNewValue="Fam_ProcessNewValue2" EditValue="FAM" ValidateOnTextInput="False" EditValuePostDelay="0"/>
+                                            </dxlc:LayoutItem>
+                                            <dxlc:LayoutItem Label="Имя">
+                                                <dxe:ComboBoxEdit CharacterCasing="Upper" x:Name="prev_im" ItemsSource="{Binding}" DisplayMember="IM" IsSynchronizedWithCurrentItem="True" IncrementalFiltering="True" ImmediatePopup="True" NullValueButtonPlacement="EditBox" ProcessNewValue="Im_ProcessNewValue2" EditValue="IM" ValidateOnTextInput="False" EditValuePostDelay="0"/>
+                                            </dxlc:LayoutItem>
+                                            <dxlc:LayoutItem Label="Отчество">
+                                                <dxe:ComboBoxEdit CharacterCasing="Upper" x:Name="prev_ot" ItemsSource="{Binding}" DisplayMember="OT" IsSynchronizedWithCurrentItem="True" IncrementalFiltering="True" ImmediatePopup="True" NullValueButtonPlacement="EditBox" ProcessNewValue="Ot_ProcessNewValue2" EditValue="OT" ValidateOnTextInput="False" EditValuePostDelay="0"/>
+                                            </dxlc:LayoutItem>
+                                            <dxlc:LayoutItem Label="Пол">
+                                                <dxe:ComboBoxEdit x:Name="prev_pol" DisplayMember="NameWithID" ItemsSource="{Binding}" ValueMember="IDPOL" EditValue="IDPOL" FilterCondition="StartsWith" AutoComplete="True" NullValueButtonPlacement="EditBox" GotFocus="Prev_pol_GotFocus" />
+                                            </dxlc:LayoutItem>
+                                            <dxlc:LayoutItem Label="Дата рождения">
+                                                <dxe:DateEdit x:Name="prev_dr" NullValueButtonPlacement="EditBox" MaskType="DateTimeAdvancingCaret" MaskUseAsDisplayFormat="True" />
+                                            </dxlc:LayoutItem>
+                                            <dxlc:LayoutItem Label="Место рождения">
+                                                <dxe:TextEdit x:Name="prev_mr" CharacterCasing="Upper" />
+                                            </dxlc:LayoutItem>
+                                        </dxlc:LayoutGroup>
+                                    </dxlc:LayoutControl>
+                                </Grid>
+                            </dx:DXTabItem>
+
+                        </dx:DXTabControl>
+
+                    </Grid>
+                </ScrollViewer>
+            </dx:DXTabItem>
+        </dx:DXTabControl>
+
+
+    </Grid>
+
+</Window>
