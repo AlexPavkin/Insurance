@@ -27,6 +27,7 @@ namespace Insurance
         
         public Holidays()
         {
+            
             IList<DateTime> holidays_nav=new List<DateTime>();
             IList<DateTime> works_nav = new List<DateTime>();
             InitializeComponent();

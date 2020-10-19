@@ -315,23 +315,45 @@ where --=(select person_guid from pol_polises where spolis='{xml_spol[i]}' and n
         public string[] Attache_file;
         private void Attache_Click(object sender, RoutedEventArgs e)
         {
-            
-            OpenFileDialog OF = new OpenFileDialog();
-
-            bool res = OF.ShowDialog().Value;
-            string[] path_ex = OF.FileNames;
-            Attache_file = OF.SafeFileNames;
-            string call = "attache";
-            if (res == true)
+            if(Vars.SMO=="39001")
             {
-                
-                Polis_Up w8_polises_in = new Polis_Up(path_ex, Attache_file,call);
-                w8_polises_in.ShowDialog();
+                OpenFileDialog OF = new OpenFileDialog();
+
+                bool res = OF.ShowDialog().Value;
+                string[] path_ex = OF.FileNames;
+                Attache_file = OF.SafeFileNames;
+                string call = "attache";
+                if (res == true)
+                {
+
+                    Polis_Up w8_polises_in = new Polis_Up(path_ex, Attache_file, call);
+                    w8_polises_in.ShowDialog();
+                }
+                else
+                {
+                    return;
+                }
             }
             else
             {
-                return;
+                OpenFileDialog OF = new OpenFileDialog();
+
+                bool res = OF.ShowDialog().Value;
+                string[] path_ex = OF.FileNames;
+                Attache_file = OF.SafeFileNames;
+                string call = "attache";
+                if (res == true)
+                {
+
+                    Polis_Up w8_polises_in = new Polis_Up(path_ex, Attache_file, call);
+                    w8_polises_in.ShowDialog();
+                }
+                else
+                {
+                    return;
+                }
             }
+            
         }
 
         private void Attache_to_foms_Click(object sender, RoutedEventArgs e)

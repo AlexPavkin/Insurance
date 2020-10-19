@@ -895,7 +895,10 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
 
             InitializeComponent();
 
-
+            if(Vars.SMO.StartsWith("83"))
+            {
+                Unload_saleh_bline_btn.Visibility = Visibility.Visible;
+            }
             DispatcherTimer timer = new DispatcherTimer();  // если надо, то в скобках указываем приоритет, например DispatcherPriority.Render
             //timer.Interval = TimeSpan.FromSeconds(15);
             //timer.Tick += new EventHandler(Reload_tick);
@@ -969,7 +972,7 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
             G_layuot.restore_Layout(Properties.Settings.Default.DocExchangeConnectionString, pers_grid, pers_grid_2);
             //LoadingDecorator1.IsSplashScreenShown = false;
             WindowState = WindowState.Maximized;
-            Vars.MainTitle = "Insurance(полисная часть) v1.041";
+            Vars.MainTitle = "Insurance(полисная часть) v1.056";
             Title = Vars.MainTitle;
             prz.SelectedIndex = -1;
             //if (SPR.Premmissions == "User")
@@ -7322,7 +7325,7 @@ on t0.idguid = t3.person_guid", con);
                            idguid = idguid_.ToString();
                            if (dr_1.ToString() == "")
                            {
-                               dr1.EditValue = "";
+                               dr1.EditValue = null;
                            }
                            else
                            {
@@ -9302,8 +9305,8 @@ case when p.ot='' then null else p.OT end as 'OT',
 p.dr as 'DR',
 p.w as 'W',
 pp.VPOLIS as 'VPOLIS',
-pp.SPOLIS as 'S_POL',
-pp.NPOLIS as 'N_POL',
+'' as 'S_POL',
+case when pp.vpolis=2 then isnull(pp.SPOLIS,'')+isnull(pp.NPOLIS,'') else isnull(p.ENP,pp.NPOLIS) end as 'N_POL',
 '67005' as 'Q',
 pp.DBEG as 'DP',
 pp.dend as 'DENDP',
@@ -10063,6 +10066,48 @@ where p.FAM is not null and p.FAM <> ''", Properties.Settings.Default.DocExchang
             Message me1 = new Message(m1, t1, b1);
             me1.ShowDialog();
             return;
+        }
+
+        
+
+        private void Unload_saleh_bline_btn_Click(object sender, RoutedEventArgs e)
+        {
+            string fname1 = $@"Уведомление {DateTime.Today.ToShortDateString()}.csv";
+            SaveFileDialog SF = new SaveFileDialog();
+            SF.FileName = fname1;
+            SF.DefaultExt = ".csv";
+            SF.Filter = "Файлы CSV (.csv)|*.csv";
+            bool res = SF.ShowDialog().Value;
+            string fname = SF.FileName;
+            var ids = Funcs.MyIds(pers_grid.GetSelectedRowHandles(), pers_grid);
+
+            if(res == true)
+            {
+                var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
+                SqlConnection con = new SqlConnection(connectionString);
+
+                SqlCommand comm = new SqlCommand($@"declare @r char=';';
+select isnull(phone,'0000000000') +@r+ isnull(fam,'')+' '+isnull(im,'')+' '+isnull(ot,'') from pol_persons where id in ({ids})", con);
+                con.Open();
+                SqlDataReader dr = comm.ExecuteReader();
+                StreamWriter sr = new StreamWriter(fname, false, Encoding.GetEncoding(1251));
+
+                while (dr.Read())
+                {
+
+                    sr.Write("{0}", dr[0]);
+                    sr.WriteLine();
+
+                }
+
+                sr.Close();
+                con.Close();
+                string m = "Список оповещения успешно сформирован!";
+                string t = "Сообщение!";
+                int b = 1;
+                Message me = new Message(m, t, b);
+                me.ShowDialog();
+            }
         }
     }
 }
