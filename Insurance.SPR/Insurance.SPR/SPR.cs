@@ -2,15 +2,17 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-
+using System.Windows;
 
 namespace Insurance_SPR
 {
     public static class SPR
     {
+        public static string S_PR { get; set; }
         public static string PATH_VIGRUZKA { get; set; }
         public static string Premmissions { get; set; }
         public static string Login { get; set; }
@@ -19,10 +21,12 @@ namespace Insurance_SPR
         public static bool Avto_vigruzka { get; set; }
         public static bool Avto_vigruzka_priznak { get; set; }
         public static string Row_filter { get; set; }
+        public static string FIAS_ONLINE_CONNECTION_STRING { get; set; }
         public class MyReader
         {
-            public static string load_pers_grid = $@"SELECT  pp.SROKDOVERENOSTI,pp.ID,pp.ACTIVE,op.przcod,pe.UNLOAD,ENP ,FAM , IM  , OT ,W ,DR ,MO,oks.CAPTION as C_OKSM,r.NameWithID , pp.COMMENT,pe.DVIZIT, pp.DATEVIDACHI, pp.PRIZNAKVIDACHI,
-            SS  ,VPOLIS,SPOLIS ,NPOLIS,DBEG ,DEND ,DSTOP ,BLANK ,DRECEIVED,f.NameWithId as MO_NameWithId,op.filename,pp.phone,p.AGENT, pp.CYCLE, st.namewithkod as STOP_REASON, pe.id as EVENT_ID
+            public static string load_pers_grid =$@"SELECT  pp.SROKDOVERENOSTI,pp.ID,pp.ACTIVE,op.przcod,pe.UNLOAD,ENP ,FAM , IM  , OT ,W ,DR ,MO,oks.CAPTION as C_OKSM,r.NameWithID ,
+pp.COMMENT,pe.DVIZIT, pp.DATEVIDACHI, pp.PRIZNAKVIDACHI, SS  ,VPOLIS,SPOLIS ,NPOLIS,DBEG ,DEND ,DSTOP ,BLANK ,DRECEIVED,f.NameWithId as MO_NameWithId,op.filename,pp.phone,p.AGENT, pp.CYCLE, 
+st.namewithkod as STOP_REASON, pe.id as EVENT_ID, dbr.namewithid as NameWithID_RD,smr.namewithid as NameWithID_RSMO
               FROM [dbo].[POL_PERSONS] pp left join 
             pol_events pe on pp.event_guid=pe.idguid
          	LEFT JOIN POL_PRZ_AGENTS p
@@ -37,6 +41,10 @@ namespace Insurance_SPR
             on pp.MO=f.mcod
             left join SPR_STOP st
             on ps.STOP_REASON=st.kod
+            left join SPR_DUBLE_REASON dbr
+            on pe.rpolis=dbr.id     
+            left join SPR_SMO_REASON smr
+            on pe.rsmo=smr.id            
 			left join SPR_79_OKSM oks
 			on pp.C_OKSM=oks.A3  ";
 
@@ -116,8 +124,57 @@ on pp.IDGUID=d.PERSON_GUID and d.MAIN=1 and d.ACTIVE=1
 
                 return UNLOAD.ToString();
             }
+            public static DataTable Query(string query, string connstring)
+            {
+                SqlConnection connect = new SqlConnection(connstring);
+                DataTable result = new DataTable();
+                try
+                {
+                    connect.Open();
+                    SqlCommand command = new SqlCommand (query, connect);
+                    SqlDataAdapter adapter = new SqlDataAdapter(command);
+                    adapter.Fill(result);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+                finally
+                {
+                    if (connect.State != ConnectionState.Closed)
+                        connect.Close();
+                }
+                return result;
+            }
 
 
+            public static DataTable LoadFromCSV(string ex_path, char column_razd =';', char rows_razd = ';')
+            {
+                string filename = ex_path;
+                string[] attache = File.ReadAllLines(filename, Encoding.GetEncoding(1251));
+                DataTable tb = new DataTable();
+                //var cls0 = attache[0].Split('|');
+                var cls0 = attache[0].Split(column_razd);
+                cls0 = cls0.Where(x => x != "").ToArray();
+                for (int i = 0; i < cls0.Count(); i++)
+                {
+                    tb.Columns.Add(/*"Column" + */cls0[i].ToString().Replace("\"", ""), typeof(string));
+                }
+                //tb.Columns.AddRange();
+                //foreach (string row in attache)
+                for (int i = 1; i < attache.Count(); i++)
+                {
+                    // получаем все ячейки строки
+                    var row1 = attache[i].Substring(0, attache[i].Length - 1).Replace("\"", "");
+                    var cls = row1.Split(rows_razd);
+                    //var row1 = row.Substring(0, row.Length - 1);
+                    //var cls = row1.Split(';');
+                    //cls = cls.Where(x => x != "").ToArray();
+                    tb.LoadDataRow(cls, LoadOption.Upsert);
+                    //Attache_mo.Add(new ATTACHED_MO { GUID = cls[0], OKATO = cls[1], SMO = cls[2], DPFS = cls[3], SER = cls[4], NUM = cls[5], ENP = cls[6], MO = cls[7] });
+                }
+                return tb;
+            }
             public static List<T> MySelect<T>(string selectCmd, string connectionString)
             {
                 List<T> list;

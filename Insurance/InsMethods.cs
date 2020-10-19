@@ -1510,16 +1510,19 @@ dstart=@date_mo where idguid='{perguid}'", con);
                 comm.Parameters.AddWithValue("@FIAS_L6", PD.fias.reg_np.EditValue);
             }
 
-            if (PD.fias.bomj.IsChecked == true)
-            {
-                comm.Parameters.AddWithValue("@bomg", 1);
-                comm.Parameters.AddWithValue("@addr_g", 0);
-            }
-            else
-            {
-                comm.Parameters.AddWithValue("@bomg", 0);
-                comm.Parameters.AddWithValue("@addr_g", 1);
-            }
+            //if (PD.fias.bomj.IsChecked == true)
+            //{
+            //    comm.Parameters.AddWithValue("@bomg", 1);
+            //    comm.Parameters.AddWithValue("@addr_g", 0);
+            //}
+            //else
+            //{
+            //    comm.Parameters.AddWithValue("@bomg", 0);
+            //    comm.Parameters.AddWithValue("@addr_g", 1);
+            //}
+            comm.Parameters.AddWithValue("@bomg", 1);
+            comm.Parameters.AddWithValue("@addr_g", 1);
+            comm.Parameters.AddWithValue("@addr_p", 1);
 
             if (PD.fias.reg_dr.EditValue == null)
             {
@@ -1536,7 +1539,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
             //}
             //else
             //{
-            comm.Parameters.AddWithValue("@addr_p", 0);
+            //comm.Parameters.AddWithValue("@addr_p", 0);
             //}
 
 
@@ -1866,17 +1869,19 @@ dstart=@date_mo where idguid='{perguid}'", con);
                 comm.Parameters.AddWithValue("@FIAS_L6", PD.fias.reg_np.EditValue);
             }
 
-            if (PD.fias.bomj.IsChecked == true)
-            {
-                comm.Parameters.AddWithValue("@bomg", 1);
-                comm.Parameters.AddWithValue("@addr_g", 0);
-            }
-            else
-            {
-                comm.Parameters.AddWithValue("@bomg", 0);
-                comm.Parameters.AddWithValue("@addr_g", 1);
-            }
-
+            //if (PD.fias.bomj.IsChecked == true)
+            //{
+            //    comm.Parameters.AddWithValue("@bomg", 1);
+            //    comm.Parameters.AddWithValue("@addr_g", 0);
+            //}
+            //else
+            //{
+            //    comm.Parameters.AddWithValue("@bomg", 0);
+            //    comm.Parameters.AddWithValue("@addr_g", 1);
+            //}
+            comm.Parameters.AddWithValue("@bomg", 1);
+            comm.Parameters.AddWithValue("@addr_g", 1);
+            comm.Parameters.AddWithValue("@addr_p", 1);
             if (PD.fias.reg_dr.EditValue == null)
             {
                 comm.Parameters.AddWithValue("@dreg", DBNull.Value);
@@ -1892,7 +1897,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
             //}
             //else
             //{
-            comm.Parameters.AddWithValue("@addr_p", 0);
+            //comm.Parameters.AddWithValue("@addr_p", 0);
             //}
 
 
@@ -2220,17 +2225,19 @@ dstart=@date_mo where idguid='{perguid}'", con);
                 comm.Parameters.AddWithValue("@FIAS_L6", PD.fias.reg_np.EditValue);
             }
 
-            if (PD.fias.bomj.IsChecked == true)
-            {
+            //if (PD.fias.bomj.IsChecked == true)
+            //{
+            //    comm.Parameters.AddWithValue("@bomg", 1);
+            //    comm.Parameters.AddWithValue("@addr_g", 0);
+            //}
+            //else
+            //{
+            //    comm.Parameters.AddWithValue("@bomg", 0);
+            //    comm.Parameters.AddWithValue("@addr_g", 1);
+            //}
                 comm.Parameters.AddWithValue("@bomg", 1);
-                comm.Parameters.AddWithValue("@addr_g", 0);
-            }
-            else
-            {
-                comm.Parameters.AddWithValue("@bomg", 0);
                 comm.Parameters.AddWithValue("@addr_g", 1);
-            }
-
+                comm.Parameters.AddWithValue("@addr_p", 1);
             if (PD.fias.reg_dr.EditValue == null)
             {
                 comm.Parameters.AddWithValue("@dreg", DBNull.Value);
@@ -2246,7 +2253,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
             //}
             //else
             //{
-            comm.Parameters.AddWithValue("@addr_p", 0);
+            //comm.Parameters.AddWithValue("@addr_p", 0);
             //}
 
 
@@ -3676,9 +3683,17 @@ dstart=@date_mo where idguid='{perguid}'", con);
             }
             else
             {
-                zap_polis = SPR.insert_polises;
+                if (!PD.no_new_polis)
+                {
+                    zap_polis = SPR.insert_polises;
+                }
+                else
+                {
+                    zap_polis = SPR.update_polises;
+                }
+
             }
-            
+
             string module = "Save_bt3_b0_s0_p13";
             SqlTransaction tr = null;
             var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
@@ -4154,7 +4169,15 @@ dstart=@date_mo where idguid='{perguid}'", con);
             }
             else
             {
-                zap_polis = SPR.insert_polises;
+                if (!PD.no_new_polis)
+                {
+                    zap_polis = SPR.insert_polises;
+                }
+                else
+                {
+                    zap_polis = SPR.update_polises;
+                }
+
             }
             string module = "Save_bt3_b1_s0_p13";
             SqlTransaction tr = null;
@@ -4513,13 +4536,22 @@ dstart=@date_mo where idguid='{perguid}'", con);
         public static void Save_bt3_b0_s1_p13(MainWindow PD)
         {
             string zap_polis;
+
             if (PD.blank_polis != false)
             {
                 zap_polis = SPR.update_polises;
             }
             else
             {
-                zap_polis = SPR.insert_polises;
+                if(!PD.no_new_polis)
+                {
+                    zap_polis = SPR.insert_polises;
+                }
+                else
+                {
+                    zap_polis = SPR.update_polises;
+                }
+                
             }
             string module = "Save_bt1_b0_s1_p2_sp1";
             SqlTransaction tr = null;
@@ -4956,7 +4988,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
             SqlTransaction tr = null;
             var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
             SqlConnection con2 = new SqlConnection(connectionString);
-            SqlCommand comm2 = new SqlCommand("update pol_persons set COMMENT=@COMMENT, SROKDOVERENOSTI=@SROK,PRIZNAKVIDACHI=@PRIZNAKVIDACHI,DATEVIDACHI=@DATEVIDACHI,ENP=@enp,FAM=@fam,IM=@im,OT=@ot,W=@w,DR=@dr,ss=@ss,mr=@mr,birth_oksm=@boksm,"
+            SqlCommand comm2 = new SqlCommand("update pol_persons set DOP_COMMENT=@DOP_COMMENT,COMMENT=@COMMENT, SROKDOVERENOSTI=@SROK,PRIZNAKVIDACHI=@PRIZNAKVIDACHI,DATEVIDACHI=@DATEVIDACHI,ENP=@enp,FAM=@fam,IM=@im,OT=@ot,W=@w,DR=@dr,ss=@ss,mr=@mr,birth_oksm=@boksm,"
                                               + "c_oksm=@coksm,phone=@phone,email=@email,kateg=@kateg,dost=@dost,ddeath=@ddeath,rperson_guid=@rpguid, mo=@mo, dstart=@date_mo where id=@id_p " +
 
                 "update pol_addresses set fias_l1=@FIAS_L1,fias_l3=@FIAS_L3,fias_l4=@FIAS_L4,fias_l6=@FIAS_L6,fias_l7=@FIAS_L7,fias_l90=@FIAS_L90," +
@@ -5005,6 +5037,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
             comm2.Parameters.AddWithValue("@pet", Convert.ToInt32(PD.petition.EditValue));
             comm2.Parameters.AddWithValue("@SROK", PD.srok_doverenosti.EditValue ?? DBNull.Value);
             comm2.Parameters.AddWithValue("@COMMENT", PD.comments.Text);
+            comm2.Parameters.AddWithValue("@DOP_COMMENT", PD.Dop_comments.Text);
             if (PD.priznak_vidachi.IsChecked == true)
             {
                 comm2.Parameters.AddWithValue("@PRIZNAKVIDACHI", "1");
@@ -5091,7 +5124,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
             comm2.Parameters.AddWithValue("@docmr", PD.mr2.Text);
 
             comm2.Parameters.AddWithValue("@id_p", Vars.IdP);
-            if (PD.s == "" || PD.s == null)
+            if (PD.s == "" || PD.s == null || PD.dost1.EditValue==null)
             {
                 comm2.Parameters.AddWithValue("@dost", DBNull.Value);
             }
@@ -5153,10 +5186,13 @@ dstart=@date_mo where idguid='{perguid}'", con);
             if (PD.fias.bomj.IsChecked == true)
             {
                 comm2.Parameters.AddWithValue("@bomg", 1);
-                comm2.Parameters.AddWithValue("@addr_g", 0);
+                comm2.Parameters.AddWithValue("@addr_g", 1);
+                comm2.Parameters.AddWithValue("@addr_p", 1);
+                comm2.Parameters.AddWithValue("@addr_p1", 1);
+                comm2.Parameters.AddWithValue("@addr_g1", 1);
 
             }
-            else
+            else 
             {
                 comm2.Parameters.AddWithValue("@bomg", 0);
                 comm2.Parameters.AddWithValue("@addr_g", 1);
@@ -5174,6 +5210,8 @@ dstart=@date_mo where idguid='{perguid}'", con);
                 }
 
             }
+
+
 
             if (PD.fias.reg_dr.EditValue == null)
             {
@@ -5401,10 +5439,10 @@ update pol_events set rperson_guid='{PD.rper}' where person_guid='{perguid}' and
             if (PD.old_doc == 0 && PD.doc_num1.Text != "")
             {
                 SqlConnection con = new SqlConnection(connectionString);
-                SqlCommand cmddoc = new SqlCommand($@"insert into POL_DOCUMENTS_OLD(IDGUID, PERSON_GUID, OKSM, DOCTYPE, DOCSER, DOCNUM, DOCDATE, NAME_VP, NAME_VP_CODE, event_guid)
+                SqlCommand cmddoc = new SqlCommand($@"insert into POL_DOCUMENTS_OLD(IDGUID, PERSON_GUID, OKSM, DOCTYPE, DOCSER, DOCNUM, DOCDATE, NAME_VP, NAME_VP_CODE, event_guid,docexp)
                                 values(newid(),(select idguid from pol_persons where id={Vars.IdP}),'{PD.str_vid1.EditValue}',{PD.doc_type1.EditValue},
 '{PD.doc_ser1.Text}','{PD.doc_num1.Text}','{PD.date_vid2.DateTime}','{PD.kem_vid1.Text}','{PD.kod_podr1.Text}',
-                                (select event_guid from pol_persons where id={Vars.IdP}))", con);
+                                (select event_guid from pol_persons where id={Vars.IdP}),'{PD.docexp2.EditValue}')", con);
                 con.Open();
                 cmddoc.ExecuteNonQuery();
                 con.Close();
@@ -5413,7 +5451,7 @@ update pol_events set rperson_guid='{PD.rper}' where person_guid='{perguid}' and
             else if (PD.old_doc != 0)
             {
                 SqlConnection con = new SqlConnection(connectionString);
-                SqlCommand cmddoc = new SqlCommand($@"update POL_DOCUMENTS_OLD set  OKSM='{PD.str_vid1.EditValue}', DOCTYPE={PD.doc_type1.EditValue}, DOCSER='{PD.doc_ser1.Text}', DOCNUM='{PD.doc_num1.Text}', DOCDATE='{PD.date_vid2.DateTime}', 
+                SqlCommand cmddoc = new SqlCommand($@"update POL_DOCUMENTS_OLD set  OKSM='{PD.str_vid1.EditValue}', DOCTYPE={PD.doc_type1.EditValue}, DOCSER='{PD.doc_ser1.Text}', DOCNUM='{PD.doc_num1.Text}', DOCDATE='{PD.date_vid2.DateTime}', DOCEXP='{PD.docexp2.EditValue}',
 NAME_VP='{PD.kem_vid1.Text}', NAME_VP_CODE='{PD.kod_podr1.Text}' where idguid='{PD.old_doc_guid}'", con);
                 con.Open();
                 cmddoc.ExecuteNonQuery();
@@ -5452,7 +5490,7 @@ NAME_VP='{PD.kem_vid1.Text}', NAME_VP_CODE='{PD.kod_podr1.Text}' where idguid='{
         {
             var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
             SqlConnection con3 = new SqlConnection(connectionString);
-            SqlCommand comm3 = new SqlCommand("update pol_persons set COMMENT=@COMMENT, SROKDOVERENOSTI=@srok_doverenosti,PRIZNAKVIDACHI=@PRIZNAKVIDACHI,DATEVIDACHI=@DATEVIDACHI,ENP=@enp,FAM=@fam,IM=@im,OT=@ot,W=@w,DR=@dr,ss=@ss,mr=@mr,birth_oksm=@boksm,"
+            SqlCommand comm3 = new SqlCommand("update pol_persons set DOP_COMMENT=@DOP_COMMENT,COMMENT=@COMMENT, SROKDOVERENOSTI=@srok_doverenosti,PRIZNAKVIDACHI=@PRIZNAKVIDACHI,DATEVIDACHI=@DATEVIDACHI,ENP=@enp,FAM=@fam,IM=@im,OT=@ot,W=@w,DR=@dr,ss=@ss,mr=@mr,birth_oksm=@boksm,"
                 + "c_oksm=@coksm,phone=@phone,email=@email,kateg=@kateg,dost=@dost,ddeath=@ddeath,rperson_guid=@rpguid, mo=@mo, dstart=@date_mo where id=@id_p " +
 
                 "update pol_addresses set fias_l1=@FIAS_L1,fias_l3=@FIAS_L3,fias_l4=@FIAS_L4,fias_l6=@FIAS_L6,fias_l7=@FIAS_L7,fias_l90=@FIAS_L90," +
@@ -5489,6 +5527,7 @@ NAME_VP='{PD.kem_vid1.Text}', NAME_VP_CODE='{PD.kod_podr1.Text}' where idguid='{
             comm3.Parameters.AddWithValue("@tip_op", Vars.CelVisit);
             comm3.Parameters.AddWithValue("@srok_doverenosti", PD.srok_doverenosti.EditValue ?? DBNull.Value);
             comm3.Parameters.AddWithValue("@COMMENT", PD.comments.Text);
+            comm3.Parameters.AddWithValue("@DOP_COMMENT", PD.Dop_comments.Text);
             if (PD.priznak_vidachi.IsChecked == true)
             {
                 comm3.Parameters.AddWithValue("@PRIZNAKVIDACHI", "1");
@@ -6083,7 +6122,8 @@ NAME_VP='{PD.kem_vid1.Text}', NAME_VP_CODE='{PD.kod_podr1.Text}', active=0,main=
             if (PD.fias.bomj.IsChecked == true)
             {
                 comm.Parameters.AddWithValue("@bomg", 1);
-                comm.Parameters.AddWithValue("@addr_g", 0);
+                comm.Parameters.AddWithValue("@addr_g", 1);
+                comm.Parameters.AddWithValue("@addr_p", 1);
             }
             else
             {
@@ -9587,7 +9627,15 @@ dstart=@date_mo where idguid='{perguid}'", con);
             }
             else
             {
-                zap_polis = SPR.insert_polises;
+                if (!PD.no_new_polis)
+                {
+                    zap_polis = SPR.insert_polises;
+                }
+                else
+                {
+                    zap_polis = SPR.update_polises;
+                }
+
             }
             string module = "SaveDD_bt3_b0_s0_p13";
             SqlTransaction tr = null;
@@ -10074,7 +10122,15 @@ dstart=@date_mo where idguid='{perguid}'", con);
             }
             else
             {
-                zap_polis = SPR.insert_polises;
+                if (!PD.no_new_polis)
+                {
+                    zap_polis = SPR.insert_polises;
+                }
+                else
+                {
+                    zap_polis = SPR.update_polises;
+                }
+
             }
             string module = "SaveDD_bt3_b1_s0_p13";
             SqlTransaction tr = null;
@@ -10449,14 +10505,23 @@ dstart=@date_mo where idguid='{perguid}'", con);
         public static void SaveDD_bt3_b0_s1_p13(MainWindow PD)
         {
             string zap_polis;
-            if (PD.blank_polis != false)
-            {
-                zap_polis = SPR.update_polises_3;
-            }
-            else
-            {
-                zap_polis = SPR.insert_polises_3;
-            }
+           
+                if (PD.blank_polis != false)
+                {
+                    zap_polis = SPR.update_polises;
+                }
+                else
+                {
+                    if (!PD.no_new_polis)
+                    {
+                        zap_polis = SPR.insert_polises;
+                    }
+                    else
+                    {
+                        zap_polis = SPR.update_polises;
+                    }
+
+                }
             string module = "SaveDD_bt3_b0_s1_p13";
             SqlTransaction tr = null;
             var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
@@ -10904,7 +10969,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
             var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
             SqlConnection con2 = new SqlConnection(connectionString);
             SqlCommand comm2 = new SqlCommand("update pol_persons set SROKDOVERENOSTI=@srok_doverenosti,PRIZNAKVIDACHI=@PRIZNAKVIDACHI,DATEVIDACHI=@DATEVIDACHI,ENP=@enp,FAM=@fam,IM=@im,OT=@ot,W=@w,DR=@dr,ss=@ss,mr=@mr,birth_oksm=@boksm,"
-                + "c_oksm=@coksm,phone=@phone,email=@email,kateg=@kateg,dost=@dost,ddeath=@ddeath,rperson_guid=@rpguid, mo=@mo, dstart=@date_mo, COMMENT=@COMMENT where id=@id_p " +
+                + "c_oksm=@coksm,phone=@phone,email=@email,kateg=@kateg,dost=@dost,ddeath=@ddeath,rperson_guid=@rpguid, mo=@mo, dstart=@date_mo, DOP_COMMENT=@DOP_COMMENT, COMMENT=@COMMENT where id=@id_p " +
 
                 "update pol_addresses set fias_l1=@FIAS_L1,fias_l3=@FIAS_L3,fias_l4=@FIAS_L4,fias_l6=@FIAS_L6,fias_l7=@FIAS_L7,fias_l90=@FIAS_L90," +
                 "fias_l91=@FIAS_L91, dom=@DOM,korp=@KORP,ext=@EXT,kv=@KV, house_guid=@HOUSE_GUID where idguid=(select ADDR_GUID from pol_relation_addr_pers where addres_g=1 and event_guid=(select event_guid from pol_persons where id=@id_p)) and " +
@@ -10960,6 +11025,8 @@ dstart=@date_mo where idguid='{perguid}'", con);
             comm2.Parameters.AddWithValue("@docexp1", PD.docexp1.EditValue ?? DBNull.Value);
             comm2.Parameters.AddWithValue("@srok_doverenosti", PD.srok_doverenosti.EditValue ?? DBNull.Value);
             comm2.Parameters.AddWithValue("@COMMENT", PD.comments.Text);
+            comm2.Parameters.AddWithValue("@DOP_COMMENT", PD.Dop_comments.Text);
+
             if (PD.priznak_vidachi.IsChecked == true)
             {
                 comm2.Parameters.AddWithValue("@PRIZNAKVIDACHI", "1");
@@ -11119,7 +11186,10 @@ dstart=@date_mo where idguid='{perguid}'", con);
             if (PD.fias.bomj.IsChecked == true)
             {
                 comm2.Parameters.AddWithValue("@bomg", 1);
-                comm2.Parameters.AddWithValue("@addr_g", 0);
+                comm2.Parameters.AddWithValue("@addr_g", 1);
+                comm2.Parameters.AddWithValue("@addr_p", 1);
+                comm2.Parameters.AddWithValue("@addr_p1", 1);
+                comm2.Parameters.AddWithValue("@addr_g1", 1);
 
             }
             else
@@ -11448,7 +11518,7 @@ NAME_VP='{PD.kem_vid1.Text}', NAME_VP_CODE='{PD.kod_podr1.Text}', active=0,main=
             var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
             SqlConnection con3 = new SqlConnection(connectionString);
             SqlCommand comm3 = new SqlCommand("update pol_persons set SROKDOVERENOSTI=@srok_doverenosti,PRIZNAKVIDACHI=@PRIZNAKVIDACHI,DATEVIDACHI=@DATEVIDACHI,ENP=@enp,FAM=@fam,IM=@im,OT=@ot,W=@w,DR=@dr,ss=@ss,mr=@mr,birth_oksm=@boksm,"
-                + "c_oksm=@coksm,phone=@phone,email=@email,kateg=@kateg,dost=@dost,ddeath=@ddeath,rperson_guid=@rpguid,mo=@mo,dstart=@date_mo, COMMENT=@COMMENT where id=@id_p " +
+                + "c_oksm=@coksm,phone=@phone,email=@email,kateg=@kateg,dost=@dost,ddeath=@ddeath,rperson_guid=@rpguid,mo=@mo,dstart=@date_mo, DOP_COMMENT=@DOP_COMMENT, COMMENT=@COMMENT where id=@id_p " +
 
                 "update pol_addresses set fias_l1=@FIAS_L1,fias_l3=@FIAS_L3,fias_l4=@FIAS_L4,fias_l6=@FIAS_L6,fias_l7=@FIAS_L7,fias_l90=@FIAS_L90," +
                 "fias_l91=@FIAS_L91, dom=@DOM,korp=@KORP,ext=@EXT,kv=@KV,house_guid=@HOUSE_GUID where idguid=(select ADDR_GUID from pol_relation_addr_pers where addres_g=1 and person_guid=(select idguid from pol_persons where id=@id_p)) and " +
@@ -11493,6 +11563,7 @@ NAME_VP='{PD.kem_vid1.Text}', NAME_VP_CODE='{PD.kod_podr1.Text}', active=0,main=
             comm3.Parameters.AddWithValue("@docexp1", PD.docexp1.EditValue ?? DBNull.Value);
             comm3.Parameters.AddWithValue("@srok_doverenosti", PD.srok_doverenosti.EditValue ?? DBNull.Value);
             comm3.Parameters.AddWithValue("@COMMENT", PD.comments.Text);
+            comm3.Parameters.AddWithValue("@DOP_COMMENT", PD.Dop_comments.Text);
             if (PD.priznak_vidachi.IsChecked == true)
             {
                 comm3.Parameters.AddWithValue("@PRIZNAKVIDACHI", "1");

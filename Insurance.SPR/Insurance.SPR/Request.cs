@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Insurance_SPR
 {
@@ -19,6 +20,11 @@ namespace Insurance_SPR
                 str = strSource.Substring(num1 + length, num2 - (num1 + length));
             }
             return str;
+        }
+        public static List<string> RegexParses(string url, string one, string two)
+        {
+            var match = Regex.Matches(url, one + "(.*?)" + two);
+            return match.Cast<Match>().Select(text => text.Groups[1].Value).ToList();
         }
 
         public static string POST(string Url, string Data)

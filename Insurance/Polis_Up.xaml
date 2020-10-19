@@ -75,9 +75,9 @@
 
         </Style>
     </Window.Resources>
-    
+
     <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Visible">
-        
+
         <Grid Background="#FF5F7B8B">
             <!--<dx:WaitIndicator Content="Loading..." DeferedVisibility="{Binding IsWaitIndicatorVisible}">
                 <dx:WaitIndicator.ContentTemplate>
@@ -90,54 +90,77 @@
                 </dx:WaitIndicator.ContentTemplate>
             </dx:WaitIndicator>-->
 
-            <dxg:GridControl x:Name="pol_zagr" AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True" HorizontalAlignment="Stretch" Margin="10,65,10,0" VerticalAlignment="Top"  SelectionMode="Row" Height="874" Loaded="Pol_zagr_Loaded"  >
+            <dxg:GridControl x:Name="pol_zagr" AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True" HorizontalAlignment="Stretch" Margin="10,65,10,0" VerticalAlignment="Top"  SelectionMode="Row" Height="893" Loaded="Pol_zagr_Loaded"  >
                 <dxg:GridControl.View>
                     <dxg:TableView  AllowPerPixelScrolling="True" AllowBestFit="True"  BestFitMode="AllRows" BestFitArea="Rows"   ShowTotalSummary="True" ColumnFilterPopupMode="Excel" ShowAutoFilterRow="True" HorizontalScrollbarVisibility="Visible" FilterEditorShowOperandTypeIcon="True"  SnapsToDevicePixels="True"  ShowCheckBoxSelectorColumn="True" AutoWidth="True"/>
                 </dxg:GridControl.View>
             </dxg:GridControl>
-            <Button x:Name="upload_polises"  HorizontalAlignment="Left" Margin="10,5,0,0" VerticalAlignment="Top" Width="178" Height="60" Foreground="White" Click="upload_polises_Click" Style="{StaticResource myButtonStyle1}">
-                <StackPanel  Orientation="Vertical" Width="178" >
-                    <!--Margin="5,0"-->
-                    <Image Source="Insurance_icons\enp.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
-                        <Image.OpacityMask>
-                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                <GradientStop Color="Black" Offset="0"/>
-                                <GradientStop Color="White" Offset="1"/>
-                            </LinearGradientBrush>
-                        </Image.OpacityMask>
+            <StackPanel Margin="10,5,0,0" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="60" Orientation="Horizontal">
+                <Button x:Name="upload_polises"  HorizontalAlignment="Left"  VerticalAlignment="Top" Width="178" Height="60" Foreground="White" Click="upload_polises_Click" Style="{StaticResource myButtonStyle1}">
+                    <StackPanel  Orientation="Vertical" Width="178" >
+                        <!--Margin="5,0"-->
+                        <Image Source="Insurance_icons\enp.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
+                            <Image.OpacityMask>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="Black" Offset="0"/>
+                                    <GradientStop Color="White" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Image.OpacityMask>
 
-                    </Image>
-                    <TextBlock x:Name="btn_load_txt" Text="Загрузить выбранные" VerticalAlignment="Center"  TextAlignment="Center" Margin="0,0" Width="149"  Foreground="White" FontWeight="Bold" FontSize="12"   />
-                </StackPanel>
-            </Button>
-            <Button x:Name="One_folder"  HorizontalAlignment="Left" Margin="800,5,0,0" VerticalAlignment="Top" Width="192" Height="60" Foreground="White" Click="File_Copy_Click" Style="{StaticResource myButtonStyle1}" Visibility="Collapsed">
-                <StackPanel  Orientation="Vertical" Width="178" >
-                    <!--Margin="5,0"-->
-                    <Image Source="Insurance_icons\download.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
-                        <Image.OpacityMask>
-                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                <GradientStop Color="Black" Offset="0"/>
-                                <GradientStop Color="White" Offset="1"/>
-                            </LinearGradientBrush>
-                        </Image.OpacityMask>
+                        </Image>
+                        <TextBlock x:Name="btn_load_txt" Text="Загрузить выбранные" VerticalAlignment="Center"  TextAlignment="Center" Margin="0,0" Width="149"  Foreground="White" FontWeight="Bold" FontSize="12"   />
+                    </StackPanel>
+                </Button>
+                <Button x:Name="One_folder"  HorizontalAlignment="Left"  VerticalAlignment="Top" Width="192" Height="60" Foreground="White" Click="File_Copy_Click" Style="{StaticResource myButtonStyle1}" Visibility="Collapsed">
+                    <StackPanel  Orientation="Vertical" Width="178" >
+                        <!--Margin="5,0"-->
+                        <Image Source="Insurance_icons\download.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
+                            <Image.OpacityMask>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="Black" Offset="0"/>
+                                    <GradientStop Color="White" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Image.OpacityMask>
 
-                    </Image>
-                    <TextBlock  Text="Копировать в одну папку" VerticalAlignment="Center"  TextAlignment="Center" Margin="0,0" Width="155"  Foreground="White" FontWeight="Bold" FontSize="12"   />
+                        </Image>
+                        <TextBlock  Text="Копировать в одну папку" VerticalAlignment="Center"  TextAlignment="Center" Margin="0,0" Width="155"  Foreground="White" FontWeight="Bold" FontSize="12"   />
+                    </StackPanel>
+                </Button>
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                    <Label x:Name="ns_lbl" Content="Наименование СМО" HorizontalAlignment="Left" VerticalAlignment="Top" Width="195" Foreground="#FFFDF7F7" HorizontalContentAlignment="Center"/>
+                    <TextBox x:Name="nam_smo" HorizontalAlignment="Left" Height="25" TextWrapping="Wrap" VerticalAlignment="Center" Width="195" GotFocus="nam_smo_GotFocus" CharacterCasing="Upper" PreviewKeyDown="nam_smo_PreviewKeyDown"/>
                 </StackPanel>
-            </Button>
-            <TextBox x:Name="nam_smo" HorizontalAlignment="Left" Height="25" Margin="198,35,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="195" GotFocus="nam_smo_GotFocus" CharacterCasing="Upper" PreviewKeyDown="nam_smo_PreviewKeyDown"/>
-            <Label x:Name="ns_lbl" Content="Наименование СМО" HorizontalAlignment="Left" Margin="198,10,0,0" VerticalAlignment="Top" Width="195" Foreground="#FFFDF7F7" HorizontalContentAlignment="Center"/>
-            <Button x:Name="p033" Content="П033 Автоматически" HorizontalAlignment="Left" Margin="613,35,0,0" VerticalAlignment="Top" Width="154" Click="p033_Click" RenderTransformOrigin="0.507,2.136" Visibility="Hidden"/>
-            <Button Content="Данные из регистра" HorizontalAlignment="Left" Margin="791,35,0,0" VerticalAlignment="Top" Width="137" Click="Button_Click_1" Visibility="Hidden"/>
-            <dxg:GridControl x:Name="pol_zagr1" AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True"  HorizontalAlignment="Stretch" Margin="10,414,10,0" VerticalAlignment="Top" Height="544" SelectionMode="Row" ScrollViewer.HorizontalScrollBarVisibility="Visible" Visibility="Collapsed">
-                <dxg:GridControl.View>
-                    <dxg:TableView AllowPerPixelScrolling="True" ShowCheckBoxSelectorColumn="True" ShowAutoFilterRow="True" HorizontalScrollbarVisibility="Visible" ShowTotalSummary="True" BestFitArea="Rows" BestFitMode="AllRows" ScrollViewer.HorizontalScrollBarVisibility="Visible"/>
-                </dxg:GridControl.View>
-            </dxg:GridControl>
-            <Button Content="Загрузка" HorizontalAlignment="Left" Margin="943,35,0,0" VerticalAlignment="Top" Width="139" Click="Button_Click_2" Visibility="Hidden"/>
-            <CheckBox Name="P060_krome"  Content="Загрузить всех кроме П060" HorizontalAlignment="Left" Margin="407,35,0,0" VerticalAlignment="Top" Foreground="White"/>
-            <dxe:DateEdit x:Name="dateP" NullValueButtonPlacement="EditBox" MaskType="DateTimeAdvancingCaret" Margin="597,35,359,921" />
-            <Label x:Name="date_lbl" Content="Дата для записи" HorizontalAlignment="Left" Margin="572,13,0,0" VerticalAlignment="Top" Width="195" Foreground="#FFFDF7F7" HorizontalContentAlignment="Center"/>
+                        <CheckBox Name="P060_krome"  Content="Загрузить всех кроме П060" HorizontalAlignment="Left"  VerticalAlignment="Center" Foreground="White" Margin="10,20,0,0"/>
+                <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="10,0,0,0">
+                    <Label x:Name="date_lbl" Content="Дата для записи" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="195" Foreground="#FFFDF7F7" HorizontalContentAlignment="Center"/>
+                    <dxe:DateEdit x:Name="dateP" NullValueButtonPlacement="EditBox" MaskType="DateTimeAdvancingCaret"  />
+                </StackPanel>
+                <Button x:Name="upd_attache_tfoms"  HorizontalAlignment="Left"  VerticalAlignment="Top" Width="180" Height="60" Foreground="White" Margin="10,0,0,0" Style="{StaticResource myButtonStyle1}" Click="Upd_attache_tfoms_Click">
+                    <StackPanel  Orientation="Vertical" Width="180" >
+                        <!--Margin="5,0"-->
+                        <Image Source="Insurance_icons\enp.png" Width="30" Height="30" Focusable="True" HorizontalAlignment="Center">
+                            <Image.OpacityMask>
+                                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                    <GradientStop Color="Black" Offset="0"/>
+                                    <GradientStop Color="White" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Image.OpacityMask>
+
+                        </Image>
+                        <TextBlock Text="Прикрепление для ТФОМС"  VerticalAlignment="Center"  TextAlignment="Center" Margin="0,0" Width="180"  Foreground="White" FontWeight="Bold" FontSize="12"   />
+                    </StackPanel>
+                </Button>
+
+                <Button x:Name="p033" Content="П033 Автоматически" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="154" Click="p033_Click" RenderTransformOrigin="0.507,2.136" Visibility="Collapsed"/>
+                <Button Content="Данные из регистра" HorizontalAlignment="Left" VerticalAlignment="Top" Width="137" Click="Button_Click_1" Visibility="Collapsed"/>
+                <Button Content="Загрузка" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="139" Click="Button_Click_2" Visibility="Collapsed"/>
+            </StackPanel>
+                <dxg:GridControl x:Name="pol_zagr1" AutoGenerateColumns="AddNew" EnableSmartColumnsGeneration="True"  HorizontalAlignment="Stretch"  VerticalAlignment="Top" Height="544" SelectionMode="Row" ScrollViewer.HorizontalScrollBarVisibility="Visible" Visibility="Collapsed">
+                    <dxg:GridControl.View>
+                        <dxg:TableView AllowPerPixelScrolling="True" ShowCheckBoxSelectorColumn="True" ShowAutoFilterRow="True" HorizontalScrollbarVisibility="Visible" ShowTotalSummary="True" BestFitArea="Rows" BestFitMode="AllRows" ScrollViewer.HorizontalScrollBarVisibility="Visible"/>
+                    </dxg:GridControl.View>
+                </dxg:GridControl>
+                
         </Grid>
     </ScrollViewer>
 </Window>

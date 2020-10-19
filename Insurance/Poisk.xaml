@@ -7,7 +7,8 @@
         xmlns:local="clr-namespace:Insurance"
         xmlns:control="clr-namespace:Yamed.Control;assembly=Yamed.Control"
         xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors" x:Class="Insurance.Poisk"
-        mc:Ignorable="d" control:EnterKeyTraversal.IsEnabled="True"
+        xmlns:spr="clr-namespace:Insurance_SPR;assembly=Insurance_SPR" 
+        mc:Ignorable="d" spr:EnterKeyTraversal.IsEnabled="True"
         Title="Поиск ЗЛ" Height="450" Width="1100" Background="#FF008BFF">
     <Window.Resources>
         <Style x:Key="myButtonStyle" TargetType="Button">

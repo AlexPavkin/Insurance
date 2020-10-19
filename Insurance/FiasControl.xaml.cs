@@ -11,6 +11,7 @@ using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
 using System.Text.RegularExpressions;
+using Insurance_SPR;
 
 namespace Yamed.Control.Editors
 {
@@ -50,7 +51,7 @@ namespace Yamed.Control.Editors
     {
         
         public bool from_fias = false;
-        private readonly string _connectionString; 
+        private readonly string _connectionString; //readonly
         public FiasAddress Address;
         public string btn_1;
         public FiasControl()
@@ -59,8 +60,17 @@ namespace Yamed.Control.Editors
             bomj.AllowUpdateTextBlockWhenPrinting = false;
             var conn = Insurance.Properties.Settings.Default.FIASConnectionString;
 
+            if (string.IsNullOrEmpty(SPR.FIAS_ONLINE_CONNECTION_STRING) == false)
+            {
+                _connectionString = SPR.FIAS_ONLINE_CONNECTION_STRING;
+            }
+            else
+            {
+                _connectionString = conn;
+            }
 
-            _connectionString = conn;
+       
+           
             List<FiasStreet> regionList = new List<FiasStreet>();
 
             TaskScheduler uiScheduler = TaskScheduler.FromCurrentSynchronizationContext(); //get UI thread context 
@@ -155,7 +165,7 @@ where PARENTGUID = '{
 join [dbo].[AddressObjectTypes]
         aot on ao.SHORTNAME = aot.SCNAME and ao.AOLEVEL = aot.[LEVEL]
 where PARENTGUID = '{
-                        id}' AND LIVESTATUS = 1 and AOLEVEL = 6
+                        id}' AND LIVESTATUS = 1 and AOLEVEL in (6,65)
   order by formalname", _connectionString);
             reg_np.DataContext = nasPunktnList;
             reg_np.NullText = $"Населенный пункт: {nasPunktnList.Count}";
