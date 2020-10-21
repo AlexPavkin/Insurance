@@ -972,7 +972,7 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
             G_layuot.restore_Layout(Properties.Settings.Default.DocExchangeConnectionString, pers_grid, pers_grid_2);
             //LoadingDecorator1.IsSplashScreenShown = false;
             WindowState = WindowState.Maximized;
-            Vars.MainTitle = "Insurance(полисная часть) v1.056";
+            Vars.MainTitle = "Insurance(полисная часть) v1.061";
             Title = Vars.MainTitle;
             prz.SelectedIndex = -1;
             //if (SPR.Premmissions == "User")
@@ -8028,6 +8028,7 @@ event_guid=(select event_guid from pol_persons where id=@id)", con);
                 Vars.CelVisit = cel_vizita.EditValue.ToString();
                 Vars.NewCelViz = 1;
             }
+
             if (Vars.CelVisit == "П010" || Vars.CelVisit == "П034" || Vars.CelVisit == "П035" || Vars.CelVisit == "П036" || Vars.CelVisit == "П061" || Vars.CelVisit == "П062" || Vars.CelVisit == "П062" || Vars.CelVisit == "П063")
             {
                 no_new_polis = false;
@@ -8065,7 +8066,7 @@ where vpolis=2 and blank=1 and DBEG is null)", con);
                     reader8.Close();
                     con.Close();
                 }
-
+                
             }
             else
             {
@@ -8076,13 +8077,20 @@ where vpolis=2 and blank=1 and DBEG is null)", con);
                 }
                 else
                 {
-                    type_policy.EditValue = 3;
-                    ser_blank.Text = "";
-                    num_blank.Text = "";
-                    date_vid1.EditValue = null;
-                    date_poluch.EditValue = null;
-                    date_end.EditValue = null;
-
+                    if (Vars.CelVisit == "П031" || Vars.CelVisit=="П032" || Vars.CelVisit == "П033" || Vars.CelVisit.Contains("П02") || Vars.CelVisit.Contains("П04"))
+                    {
+                    }
+                    else
+                    {
+                        type_policy.EditValue = 3;
+                        ser_blank.Text = "";
+                        num_blank.Text = "";
+                        date_vid1.EditValue = null;
+                        date_poluch.EditValue = null;
+                        date_end.EditValue = null;
+                    }
+                
+           
                 }
             }
         }
