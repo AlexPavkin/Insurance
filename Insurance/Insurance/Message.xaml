@@ -1,0 +1,79 @@
+﻿<Window x:Class="Insurance.Message"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+        xmlns:local="clr-namespace:Insurance"
+        mc:Ignorable="d"
+        Title="Внимание!"  Height="200" Width="400" Background="#FF9DC8D3" WindowStyle="ToolWindow" ResizeMode="NoResize" Topmost="True" Margin="0" BorderBrush="#FFA74F4F" BorderThickness="5" PreviewKeyDown="Window_PreviewKeyDown" >
+
+    <Window.Resources>
+        <Style x:Key="myButtonStyle" TargetType="Button">
+            <Setter Property="Width" Value="{Binding Width}"/>
+            <Setter Property="Height" Value="{Binding Height}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <Rectangle x:Name="myrec" Fill="LightGray" />
+                            <Label Content="{TemplateBinding Content}" HorizontalAlignment="Center"
+                               VerticalAlignment="Center" Foreground="Black"/>
+                            <Border x:Name="TheBorder" 
+                            BorderThickness="1,1,1,1"
+                            CornerRadius="0"                    
+                            
+                            BorderBrush="DarkBlue">
+                            </Border>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Fill" TargetName="myrec" >
+                                    <Setter.Value>
+                                        <SolidColorBrush Color="WhiteSmoke"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Fill" TargetName="myrec" >
+                                    <Setter.Value>
+                                        <SolidColorBrush Color="#FF69C3D6"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+                            <Trigger Property="IsFocused" Value="True">                                
+                                <Setter TargetName="TheBorder" Property="BitmapEffect">
+                                    <Setter.Value>
+                                        <DropShadowBitmapEffect ShadowDepth="10" />
+                                    </Setter.Value>                                    
+                                </Setter>
+                                <Setter TargetName="TheBorder" Property="BorderThickness">                                    
+                                    <Setter.Value>
+                                        <Thickness Bottom="2.5" Top="2.5" Left="2.5" Right="2.5" />
+                                    </Setter.Value>
+                                </Setter>
+                            </Trigger>
+
+
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+        </Style>
+    </Window.Resources>
+
+
+    <Grid>
+
+        <Button x:Name="izm"  Content="Исправить ошибки" HorizontalAlignment="Left" Margin="59,126,0,0" VerticalAlignment="Top" Width="132" Style="{StaticResource myButtonStyle}" Click="Izm_Click" FontWeight="Bold"/>
+        <Button x:Name="create" Content="Создать событие" HorizontalAlignment="Left" Margin="209,126,0,0" VerticalAlignment="Top" Width="124" Style="{StaticResource myButtonStyle}" Click="Create_Click" FontWeight="Bold" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"/>
+        <TextBlock x:Name="message" HorizontalAlignment="Left" Margin="14,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="100" Width="356" Foreground="Black" FontWeight="Bold" FontSize="15"/>
+        <Button x:Name="izm_Copy" Content="Да" HorizontalAlignment="Left" Margin="59,126,0,0" VerticalAlignment="Top" Width="132" Style="{StaticResource myButtonStyle}" Click="Izm_Copy_Click" FontWeight="Bold"/>
+        <Button x:Name="create_Copy" Content="Нет" HorizontalAlignment="Left" Margin="209,126,0,0" VerticalAlignment="Top" Width="124" Style="{StaticResource myButtonStyle}" Click="Create_Copy_Click" FontWeight="Bold"/>
+        <Button x:Name="izm_Copy1" Content="OK!" Margin="126,126,0,0" VerticalAlignment="Top" Style="{StaticResource myButtonStyle}"  FontWeight="Bold" HorizontalAlignment="Left" Width="132" Click="Izm_Copy1_Click"/>
+        <Button x:Name="Addd" Content="Добавить"  HorizontalAlignment="Left" Margin="59,115,0,0" VerticalAlignment="Top" Width="132" Style="{StaticResource myButtonStyle}"  FontWeight="Bold" Click="Addd_Click"/>
+        <Button x:Name="History"  Content="Просмотр истории" HorizontalAlignment="Left" Margin="196,115,0,0" VerticalAlignment="Top" Width="132" Style="{StaticResource myButtonStyle}"  FontWeight="Bold" Click="History_Click"/>
+
+    </Grid>
+</Window>
