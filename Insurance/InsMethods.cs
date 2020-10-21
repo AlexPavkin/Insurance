@@ -11454,13 +11454,14 @@ update pol_events set rperson_guid='{PD.rper}' where person_guid='{perguid}' and
                 SqlConnection con = new SqlConnection(connectionString);
                 SqlCommand cmddoc = new SqlCommand($@"insert into POL_DOCUMENTS(IDGUID, PERSON_GUID,  DOCTYPE, DOCSER, DOCNUM, DOCDATE,DOCEXP ,NAME_VP, event_guid,active,main)
                                 values(newid(),(select idguid from pol_persons where id={Vars.IdP}),{PD.ddtype.EditValue},
-'{PD.ddser.Text}','{PD.ddnum.Text}','{PD.dddate.EditValue}','{PD.docexp1.EditValue}','{PD.ddkemv.Text}',
+'{PD.ddser.Text}','{PD.ddnum.Text}','{PD.dddate.EditValue}',@docexp1,'{PD.ddkemv.Text}',
                                 (select event_guid from pol_persons where id={Vars.IdP}),1,0)
  
  
 insert into pol_relation_doc_pers(PERSON_GUID, DOC_GUID, EVENT_GUID) values((select person_guid from pol_documents where id = SCOPE_IDENTITY()),
  (select idguid from pol_documents where id= SCOPE_IDENTITY()),
  (select event_guid from pol_documents where id= SCOPE_IDENTITY()) )", con);
+                cmddoc.Parameters.AddWithValue("@docexp1", PD.docexp1.EditValue ?? DBNull.Value);
                 con.Open();
                 cmddoc.ExecuteNonQuery();
                 con.Close();
@@ -11469,9 +11470,10 @@ insert into pol_relation_doc_pers(PERSON_GUID, DOC_GUID, EVENT_GUID) values((sel
             else if (PD.dop_doc != 0)
             {
                 SqlConnection con = new SqlConnection(connectionString);
-                SqlCommand cmddoc = new SqlCommand($@"update POL_DOCUMENTS set   DOCTYPE={PD.ddtype.EditValue}, DOCSER='{PD.ddser.Text}', DOCNUM='{PD.ddnum.Text}', DOCDATE='{PD.dddate.EditValue}', DOCEXP='{PD.docexp1.EditValue}',
+                SqlCommand cmddoc = new SqlCommand($@"update POL_DOCUMENTS set   DOCTYPE={PD.ddtype.EditValue}, DOCSER='{PD.ddser.Text}', DOCNUM='{PD.ddnum.Text}', DOCDATE='{PD.dddate.EditValue}', DOCEXP=@docexp1,
 NAME_VP='{PD.ddkemv.Text}' where person_guid=(select idguid from pol_persons where id={Vars.IdP}) and active=1 and main=0", con);
                 con.Open();
+                cmddoc.Parameters.AddWithValue("@docexp1", PD.docexp1.EditValue ?? DBNull.Value);
                 cmddoc.ExecuteNonQuery();
                 con.Close();
             }
@@ -12032,6 +12034,7 @@ NAME_VP='{PD.kem_vid1.Text}', NAME_VP_CODE='{PD.kod_podr1.Text}', active=0,main=
             PD.spolis_ = null;
             PD.prev_persguid = Guid.Empty;
             PD.old_doc = 0;
+            PD.dop_doc = 0;
             PD.s = null;
             Vars.IdP = null;
         }

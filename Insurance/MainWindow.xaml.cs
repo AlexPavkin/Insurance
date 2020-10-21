@@ -4593,7 +4593,7 @@ where event_guid=(select event_guid from pol_persons where id=@id) and main=0 an
                         ddser.Text = docser.ToString();
                         ddnum.Text = docnum.ToString();
                         dddate.DateTime = Convert.ToDateTime(docdate);
-                        if (docexp.ToString() == "")
+                        if (docexp.ToString() == "" || docexp.ToString().Contains("1900"))
                         {
                             docexp1.EditValue = null;
                         }
@@ -7456,12 +7456,20 @@ where event_guid=(select event_guid from pol_persons where id=@id) and main=0 an
                         object name_vp = reader2["NAME_VP"];
 
 
-
+                        if (docexp.ToString() == "" || docexp.ToString().Contains("1900"))
+                        {
+                            docexp1.EditValue = null;
+                        }
+                        else
+                        {
+                            docexp1.EditValue = Convert.ToDateTime(docexp);
+                        }
+                        dop_doc = 1;
                         ddtype.EditValue = doctype;
                         ddser.Text = docser.ToString();
                         ddnum.Text = docnum.ToString();
                         dddate.EditValue = Convert.ToDateTime(docdate);
-                        docexp1.EditValue = Convert.ToDateTime(docexp);
+                        //docexp1.EditValue = Convert.ToDateTime(docexp);
                         ddkemv.Text = name_vp.ToString();
 
 
