@@ -37,13 +37,14 @@ using Insurance.Classes;
 using System.Data.SqlTypes;
 using DevExpress.Xpf.Bars;
 using DevExpress.XtraEditors;
+using System.Windows.Data;
+
 namespace Insurance
 {
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
     /// 
-
 
     public static class BusinessDays
     {
