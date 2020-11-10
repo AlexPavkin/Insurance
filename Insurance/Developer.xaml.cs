@@ -355,14 +355,14 @@ join POL_POLISES pp on p.EVENT_GUID = pp.EVENT_GUID", con);
                 for (int y = 0; y < files.Count(); y++)
                 {
                     //var dir=Directory.CreateDirectory(files[y].Replace(".arj", "\\").Replace(".ARJ", "\\"));
-                    new ZipFile(files[y]).ExtractAll(files[y].Replace(".arj", "").Replace(".ARJ", ""), ExtractExistingFileAction.OverwriteSilently);
+                    //new ZipFile(files[y]).ExtractAll(files[y].Replace(".arj", "").Replace(".ARJ", ""), ExtractExistingFileAction.OverwriteSilently);
                     DataTable dt = new DataTable();
                     string dbffile = files[0];//OF.FileName;
                     using (Stream fos = File.Open(dbffile, FileMode.OpenOrCreate, FileAccess.ReadWrite))
                     {
 
                         var dbf = new DotNetDBF.DBFReader(fos);
-                        dbf.CharEncoding = Encoding.GetEncoding(866);
+                        dbf.CharEncoding = Encoding.GetEncoding(1251);
 
                         var cnt = dbf.RecordCount;
                         //var writer = new DotNetDBF.DBFWriter(fos);

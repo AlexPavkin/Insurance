@@ -375,6 +375,42 @@ where --=(select person_guid from pol_polises where spolis='{xml_spol[i]}' and n
                 return;
             }
         }
+
+        private void Izm_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog OPF = new OpenFileDialog();
+            OPF.Multiselect = false;
+            bool res = OPF.ShowDialog().Value;
+            string[] files = OPF.FileNames;
+
+            if (res == true)
+            {
+                Cursor = Cursors.Wait;
+               
+                XmlDocument xDoc = new XmlDocument();
+                xDoc.Load(OPF.FileName);
+
+                var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
+                SqlConnection con = new SqlConnection(connectionString);
+                SqlCommand com = new SqlCommand($@"exec [Load_K_File] @xml = '{xDoc.LastChild.OuterXml}'", con);
+                con.Open();
+                com.CommandTimeout = 0;
+                com.ExecuteNonQuery();
+                con.Close();
+
+               
+
+                Cursor = Cursors.Arrow;
+                string m = "Данные K-файла(ов) успешно загружены!";
+                string t = "Сообщение";
+                int b = 1;
+                Message me = new Message(m, t, b);
+                me.ShowDialog();
+                return;
+
+
+            }
+        }
     }
     
 }

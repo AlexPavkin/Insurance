@@ -180,7 +180,7 @@
                 <TextBlock Text="Загрузить СТОПЛИСТ" VerticalAlignment="Center"  TextAlignment="Left" Margin="5,0" Width="149"  Foreground="White" FontWeight="Bold" FontSize="12"   />
             </StackPanel>
         </Button>
-        <Button x:Name="izm"  HorizontalAlignment="Center" Height="36" Margin="10,106,0,0" VerticalAlignment="Top" Width="200" Click="Button_Click" FontWeight="Bold" FontSize="14" Style="{StaticResource myButtonStyle1}">
+        <Button x:Name="izm"  HorizontalAlignment="Center" Height="36" Margin="10,106,0,0" VerticalAlignment="Top" Width="200"  FontWeight="Bold" FontSize="14" Style="{StaticResource myButtonStyle1}" Click="Izm_Click">
             <StackPanel  Orientation="Horizontal" Width="200" HorizontalAlignment="Center" >
                 <!--Margin="5,0"-->
                 <Image Source="Insurance_icons\download.png" Width="30" Height="30" Focusable="True" >

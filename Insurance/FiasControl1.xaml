@@ -1,45 +1,59 @@
-﻿<dxlc:LayoutGroup
+﻿<dxlc:LayoutGroup 
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
         xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" Padding="0" View="Group" x:Name="FiasLayGr" Orientation="Vertical"
         x:Class="Yamed.Control.Editors.FiasControl1" Height="376.741" Width="494" FocusManager.FocusedElement="{Binding ElementName=sovp_addr}" >
-    <dxlc:LayoutItem Label="Регион" LabelPosition="Top" Margin="0,43,222,-63">
-        <dxe:ComboBoxEdit EditValue="{Binding DataContext.reg, ElementName=FiasLayGr, UpdateSourceTrigger=PropertyChanged}" HorizontalScrollBarVisibility="Disabled" x:Name = "reg1" EditValueChanged="RegionBoxEdit_OnEditValueChanged" ItemsSource = "{Binding}" DisplayMember = "NAME" ValueMember = "ID" NullValueButtonPlacement = "EditBox" AutoComplete = "True" ValidateOnTextInput = "False" IncrementalFiltering = "True" FilterCondition = "Contains" ImmediatePopup = "True"  />
-    </dxlc:LayoutItem>
-    <dxlc:LayoutItem Label="Район" LabelPosition="Top" Margin="0,59,222,-59">
-        <dxe:ComboBoxEdit EditValue="{Binding DataContext.reg_rn, ElementName=FiasLayGr, UpdateSourceTrigger=PropertyChanged}" HorizontalScrollBarVisibility="Disabled" IsEnabled="False" EditValueChanged="RnBoxEdit_OnEditValueChanged" x:Name = "reg_rn1" ItemsSource = "{Binding}" DisplayMember = "NAME" ValueMember = "ID" NullValueButtonPlacement = "EditBox" AutoComplete = "True" ValidateOnTextInput = "False" IncrementalFiltering = "True" FilterCondition = "Contains" ImmediatePopup = "True"/>
-    </dxlc:LayoutItem>
-    <dxlc:LayoutItem Label="Город" LabelPosition="Top" Margin="0,55,222,-55">
-        <dxe:ComboBoxEdit EditValue="{Binding DataContext.reg_town, ElementName=FiasLayGr, UpdateSourceTrigger=PropertyChanged}" HorizontalScrollBarVisibility="Disabled" IsEnabled="False" EditValueChanged="CityBoxEdit_OnEditValueChanged" x:Name = "reg_town1" ItemsSource = "{Binding}" DisplayMember = "NAME" ValueMember = "ID" NullValueButtonPlacement = "EditBox" AutoComplete = "True" ValidateOnTextInput = "False" IncrementalFiltering = "True" FilterCondition = "Contains" ImmediatePopup = "True" />
-    </dxlc:LayoutItem>
-    <dxlc:LayoutItem Label="Врутригородской район" LabelPosition="Top" Margin="0,51,222,-51">
-        <dxe:ComboBoxEdit EditValue="{Binding DataContext.CityRn, ElementName=FiasLayGr, UpdateSourceTrigger=PropertyChanged}" HorizontalScrollBarVisibility="Disabled" IsEnabled="False" EditValueChanged="CityRnBoxEdit_OnEditValueChanged" x:Name = "CityRnBoxEdit" ItemsSource = "{Binding}" DisplayMember = "NAME" ValueMember = "ID" NullValueButtonPlacement = "EditBox" AutoComplete = "True" ValidateOnTextInput = "False" IncrementalFiltering = "True" FilterCondition = "Contains" ImmediatePopup = "True" />
-    </dxlc:LayoutItem>
-    <dxlc:LayoutItem Label="Населенный пункт" LabelPosition="Top" Margin="0,47,222,-47">
-        <dxe:ComboBoxEdit EditValue="{Binding DataContext.reg_np, ElementName=FiasLayGr, UpdateSourceTrigger=PropertyChanged}" HorizontalScrollBarVisibility="Disabled" IsEnabled="False" EditValueChanged="NasPunktBoxEdit_OnEditValueChanged" x:Name = "reg_np1" ItemsSource = "{Binding}" DisplayMember = "NAME" ValueMember = "ID" NullValueButtonPlacement = "EditBox" AutoComplete = "True" ValidateOnTextInput = "False" IncrementalFiltering = "True" FilterCondition = "Contains" ImmediatePopup = "True" />
-    </dxlc:LayoutItem>
-    <dxlc:LayoutItem Label="Улица" LabelPosition="Top" Margin="0,43,222,-43">
-        <dxe:ComboBoxEdit EditValue="{Binding DataContext.reg_ul, ElementName=FiasLayGr, UpdateSourceTrigger=PropertyChanged}" HorizontalScrollBarVisibility="Disabled" IsEnabled="False" EditValueChanged="UlBoxEdit_OnEditValueChanged"  x:Name = "reg_ul1" ItemsSource = "{Binding}" DisplayMember = "NAME" ValueMember = "ID" NullValueButtonPlacement = "EditBox" AutoComplete = "True" ValidateOnTextInput = "False" IncrementalFiltering = "True" FilterCondition = "Contains" ImmediatePopup = "True" />
-    </dxlc:LayoutItem>
-    <dxlc:LayoutItem Label="Доп. адресообразующий элемент" LabelPosition="Top" Margin="300,-207,0,0">
-        <dxe:ComboBoxEdit EditValue="{Binding DataContext.DopUl, ElementName=FiasLayGr, UpdateSourceTrigger=PropertyChanged}" HorizontalScrollBarVisibility="Disabled" IsEnabled="False"  x:Name = "DopUlBoxEdit1" EditValueChanged="DopUlBoxEdit_OnEditValueChanged" ItemsSource = "{Binding}" DisplayMember = "NAME" ValueMember = "ID" NullValueButtonPlacement = "EditBox" AutoComplete = "True" ValidateOnTextInput = "False" IncrementalFiltering = "True" FilterCondition = "Contains" ImmediatePopup = "True" />
-    </dxlc:LayoutItem>
-    <dxlc:LayoutItem  Label="Номер дома" LabelPosition="Top" Margin="300,-170,0,0">
-        <dxe:ComboBoxEdit  HorizontalScrollBarVisibility="Disabled" x:Name="reg_dom1"  NullValueButtonPlacement="EditBox"  EditValue="{Binding DataContext.reg_dom1, ElementName=FiasLayGr, UpdateSourceTrigger=PropertyChanged}"  IsEnabled="False"  ItemsSource = "{Binding}" DisplayMember = "NAME" ValueMember = "HOUSEGUID"  AutoComplete = "True" ValidateOnTextInput = "False" IncrementalFiltering = "True" FilterCondition = "Contains" ImmediatePopup = "True" EditValueChanged="Reg_dom1_EditValueChanged"/>
-    </dxlc:LayoutItem>
-    <dxlc:LayoutItem Label="Номер квартиры"  LabelPosition="Top" Margin="300,-51,0,0">
-        <dxe:TextEdit  x:Name="reg_kv1"  PreviewKeyDown="reg_kv1_PreviewKeyDown"/>
-    </dxlc:LayoutItem>
-    <dxlc:LayoutItem Label="Дата регистрации" LabelPosition="Top" Margin="300,-14,0,0" IsEnabled="False" Foreground="#FFB2ACAC">
-        <dxe:DateEdit x:Name="reg_dr1"  />
-    </dxlc:LayoutItem>
-    <dxe:CheckEdit x:Name="sovp_addr"  Height="22" VerticalAlignment="Top" Content="Совпадает с адресом регистрации" Margin="0,-293,279,0" PreviewKeyDown="sovp_addr_PreviewKeyDown" TabIndex="0" EditValueChanged="sovp_addr_EditValueChanged"/>
-    <dxlc:LayoutItem Label="Корпус" Margin="300,-172,0,0" LabelPosition="Top">
-        <dxe:TextEdit x:Name="reg_korp1" />
-    </dxlc:LayoutItem>
-    <dxlc:LayoutItem Label="Строение" Margin="300,-135,0,0" LabelPosition="Top">
-        <dxe:TextEdit x:Name="reg_str1" />
-    </dxlc:LayoutItem>
+    <dxlc:LayoutGroup>
+        <dxlc:LayoutItem >
+            <dxe:CheckEdit x:Name="sovp_addr"  Height="22" VerticalAlignment="Top" Content="Совпадает с адресом регистрации"  PreviewKeyDown="sovp_addr_PreviewKeyDown" TabIndex="0" EditValueChanged="sovp_addr_EditValueChanged"/>
+        </dxlc:LayoutItem>
+    </dxlc:LayoutGroup>
+    <dxlc:LayoutGroup Orientation="Horizontal" Margin="0,10,0,0">
+        <dxlc:LayoutGroup Orientation="Vertical">
+            <dxlc:LayoutItem Label="Регион" LabelPosition="Top" >
+                <dxe:ComboBoxEdit EditValue="{Binding DataContext.reg, ElementName=FiasLayGr, UpdateSourceTrigger=PropertyChanged}" HorizontalScrollBarVisibility="Disabled" x:Name = "reg1" EditValueChanged="RegionBoxEdit_OnEditValueChanged" ItemsSource = "{Binding}" DisplayMember = "NAME" ValueMember = "ID" NullValueButtonPlacement = "EditBox" AutoComplete = "True" ValidateOnTextInput = "False" IncrementalFiltering = "True" FilterCondition = "Contains" ImmediatePopup = "True"  />
+            </dxlc:LayoutItem>
+            <dxlc:LayoutItem Label="Район" LabelPosition="Top" >
+                <dxe:ComboBoxEdit EditValue="{Binding DataContext.reg_rn, ElementName=FiasLayGr, UpdateSourceTrigger=PropertyChanged}" HorizontalScrollBarVisibility="Disabled" IsEnabled="False" EditValueChanged="RnBoxEdit_OnEditValueChanged" x:Name = "reg_rn1" ItemsSource = "{Binding}" DisplayMember = "NAME" ValueMember = "ID" NullValueButtonPlacement = "EditBox" AutoComplete = "True" ValidateOnTextInput = "False" IncrementalFiltering = "True" FilterCondition = "Contains" ImmediatePopup = "True"/>
+            </dxlc:LayoutItem>
+            <dxlc:LayoutItem Label="Город" LabelPosition="Top">
+                <dxe:ComboBoxEdit EditValue="{Binding DataContext.reg_town, ElementName=FiasLayGr, UpdateSourceTrigger=PropertyChanged}" HorizontalScrollBarVisibility="Disabled" IsEnabled="False" EditValueChanged="CityBoxEdit_OnEditValueChanged" x:Name = "reg_town1" ItemsSource = "{Binding}" DisplayMember = "NAME" ValueMember = "ID" NullValueButtonPlacement = "EditBox" AutoComplete = "True" ValidateOnTextInput = "False" IncrementalFiltering = "True" FilterCondition = "Contains" ImmediatePopup = "True" />
+            </dxlc:LayoutItem>
+            <dxlc:LayoutItem Label="Врутригородской район" LabelPosition="Top">
+                <dxe:ComboBoxEdit EditValue="{Binding DataContext.CityRn, ElementName=FiasLayGr, UpdateSourceTrigger=PropertyChanged}" HorizontalScrollBarVisibility="Disabled" IsEnabled="False" EditValueChanged="CityRnBoxEdit_OnEditValueChanged" x:Name = "CityRnBoxEdit" ItemsSource = "{Binding}" DisplayMember = "NAME" ValueMember = "ID" NullValueButtonPlacement = "EditBox" AutoComplete = "True" ValidateOnTextInput = "False" IncrementalFiltering = "True" FilterCondition = "Contains" ImmediatePopup = "True" />
+            </dxlc:LayoutItem>
+            <dxlc:LayoutItem Label="Населенный пункт" LabelPosition="Top" >
+                <dxe:ComboBoxEdit EditValue="{Binding DataContext.reg_np, ElementName=FiasLayGr, UpdateSourceTrigger=PropertyChanged}" HorizontalScrollBarVisibility="Disabled" IsEnabled="False" EditValueChanged="NasPunktBoxEdit_OnEditValueChanged" x:Name = "reg_np1" ItemsSource = "{Binding}" DisplayMember = "NAME" ValueMember = "ID" NullValueButtonPlacement = "EditBox" AutoComplete = "True" ValidateOnTextInput = "False" IncrementalFiltering = "True" FilterCondition = "Contains" ImmediatePopup = "True" />
+            </dxlc:LayoutItem>
+            <dxlc:LayoutItem Label="Улица" LabelPosition="Top" >
+                <dxe:ComboBoxEdit EditValue="{Binding DataContext.reg_ul, ElementName=FiasLayGr, UpdateSourceTrigger=PropertyChanged}" HorizontalScrollBarVisibility="Disabled" IsEnabled="False" EditValueChanged="UlBoxEdit_OnEditValueChanged"  x:Name = "reg_ul1" ItemsSource = "{Binding}" DisplayMember = "NAME" ValueMember = "ID" NullValueButtonPlacement = "EditBox" AutoComplete = "True" ValidateOnTextInput = "False" IncrementalFiltering = "True" FilterCondition = "Contains" ImmediatePopup = "True" />
+            </dxlc:LayoutItem>
+        </dxlc:LayoutGroup>
+        <dxlc:LayoutGroup Orientation="Vertical">
+            <dxlc:LayoutItem Label="Доп. адресообразующий элемент" LabelPosition="Top" >
+                <dxe:ComboBoxEdit EditValue="{Binding DataContext.DopUl, ElementName=FiasLayGr, UpdateSourceTrigger=PropertyChanged}" HorizontalScrollBarVisibility="Disabled" IsEnabled="False"  x:Name = "DopUlBoxEdit1" EditValueChanged="DopUlBoxEdit_OnEditValueChanged" ItemsSource = "{Binding}" DisplayMember = "NAME" ValueMember = "ID" NullValueButtonPlacement = "EditBox" AutoComplete = "True" ValidateOnTextInput = "False" IncrementalFiltering = "True" FilterCondition = "Contains" ImmediatePopup = "True" />
+            </dxlc:LayoutItem>
+            <dxlc:LayoutItem  Label="Номер дома" LabelPosition="Top">
+                <dxe:ComboBoxEdit  HorizontalScrollBarVisibility="Disabled" x:Name="reg_dom1"  NullValueButtonPlacement="EditBox"  EditValue="{Binding DataContext.reg_dom1, ElementName=FiasLayGr, UpdateSourceTrigger=PropertyChanged}"  IsEnabled="False"  ItemsSource = "{Binding}" DisplayMember = "NAME" ValueMember = "HOUSEGUID"  AutoComplete = "True" ValidateOnTextInput = "False" IncrementalFiltering = "True" FilterCondition = "Contains" ImmediatePopup = "True" EditValueChanged="Reg_dom1_EditValueChanged"/>
+            </dxlc:LayoutItem>
+            <dxlc:LayoutItem Label="Номер дома  при отсутствии в ФИАС" LabelPosition="Top" >
+                <dxe:TextEdit  x:Name="reg_dom_notfias1" />
+            </dxlc:LayoutItem>
+            <dxlc:LayoutItem Label="Номер квартиры"  LabelPosition="Top" >
+                <dxe:TextEdit  x:Name="reg_kv1"  PreviewKeyDown="reg_kv1_PreviewKeyDown"/>
+            </dxlc:LayoutItem>
+            <dxlc:LayoutItem Label="Дата регистрации" LabelPosition="Top"  IsEnabled="False" Foreground="#FFB2ACAC" Visibility="Collapsed">
+                <dxe:DateEdit x:Name="reg_dr1"  />
+            </dxlc:LayoutItem>
+            
+            <dxlc:LayoutItem Label="Корпус"  LabelPosition="Top">
+                <dxe:TextEdit x:Name="reg_korp1" />
+            </dxlc:LayoutItem>
+            <dxlc:LayoutItem Label="Строение"  LabelPosition="Top">
+                <dxe:TextEdit x:Name="reg_str1" />
+            </dxlc:LayoutItem>
+        </dxlc:LayoutGroup>
+    </dxlc:LayoutGroup>
 </dxlc:LayoutGroup>

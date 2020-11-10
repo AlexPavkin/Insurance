@@ -73,8 +73,9 @@
             </Setter>
 
         </Style>
+        <local:StrToArr x:Key="StringToArray"/>
     </Window.Resources>
-    <Grid>
+    <Grid x:Name="maingrid">
         <dxe:TextEdit x:Name="agent_tbx" HorizontalAlignment="Left" Height="31" Margin="324,44,0,0" VerticalAlignment="Top" Width="376"/>
         <Button x:Name="cancel_btn"  HorizontalAlignment="Left" Height="40" Margin="460,106,0,0" VerticalAlignment="Top" Width="106"  Click="Cancel_btn_Click" Style="{StaticResource myButtonStyle1}">
             <StackPanel  Orientation="Horizontal"  Width="100" >
@@ -113,7 +114,7 @@
         <Label Content="Права доступа" HorizontalAlignment="Left" Margin="210,89,0,0" VerticalAlignment="Top" Width="219" Foreground="#FFFBF9F9" HorizontalContentAlignment="Center"/>
         <dxe:ComboBoxEdit x:Name="Premiss_edt" HorizontalAlignment="Left" Height="31" Margin="210,116,0,0" VerticalAlignment="Top" Width="219" NullValueButtonPlacement="EditBox"  EditValue="Premissions" DisplayMember="Premissions" ItemsSource="{Binding}"/>
         <dxe:ComboBoxEdit x:Name="prz_combo" NullValueButtonPlacement="EditBox"  Margin="10,44,0,0" SelectedIndexChanged="Prz_combo_SelectedIndexChanged_1" HorizontalAlignment="Left" VerticalAlignment="Top" Height="31" Width="303" 
-             DisplayMember="NameWithCode"   ValueMember="PRZ_CODE"  ItemsSource="{Binding}" EditValueChanged="Prz_combo_EditValueChanged">
+             DisplayMember="NameWithCode"   ValueMember="PRZ_CODE"  ItemsSource="{Binding}" EditValueChanged="Prz_combo_EditValueChanged" EditValue="{Binding DataContext,ElementName=maingrid, Converter={StaticResource StringToArray}}">
             <dxe:ComboBoxEdit.StyleSettings>
                 <dxe:CheckedComboBoxStyleSettings />
             </dxe:ComboBoxEdit.StyleSettings>

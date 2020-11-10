@@ -208,8 +208,8 @@ namespace Insurance_SPR
         public int SPOSOB { get; set; }
         public int RESULT { get; set; }
         public string prim { get; set; }
-        public int KOD_POL { get; set; }
-        public int KOD_POL1 { get; set; }
+        public double KOD_POL { get; set; }
+        public double KOD_POL1 { get; set; }
         public string SMO { get; set; }
         
     }

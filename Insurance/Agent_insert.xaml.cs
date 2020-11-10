@@ -15,6 +15,8 @@ using System.Data.SqlClient;
 using Insurance_SPR;
 using System.Collections.ObjectModel;
 using System.Collections;
+using System.Globalization;
+using System.Windows.Threading;
 
 namespace Insurance
 {
@@ -36,15 +38,95 @@ namespace Insurance
     //    public string NameWithCode { get; set; }
 
     //}
+
+    public class StrToArr : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo ture)
+        {
+            
+            string[] ev=null;
+            if (value != null)
+            {
+                ev = value.ToString().Split(';');
+                return ev;
+            }
+            else
+            {
+                return ev;
+            }
+                
+            
+        }
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo ture)
+        {
+            string p1 = "";
+            if (value == null)
+            {
+                return null;
+            }
+            else
+            {
+                var d1 = (ICollection)value;
+                string[] dd1 = new string[d1.Count];
+                string p="";
+                d1.CopyTo(dd1, 0);
+                for (int i = 0; i < dd1.Count(); i++)
+                {
+                    p1 += (dd1[i] + ";");
+                    p = p1.Substring(0, p1.Length - 1);
+                }
+                
+                return p;
+            }
+        }
+    }
+
+
     public partial class Agent_insert : Window
     {
+       
         private int btn_;
         private int id_;
-
+        private string przs;
         public Agent_insert(int btn, int id)
         {
+            var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
+
+            
+            if (btn == 1)
+            {
+
+            }
+            else if (btn == 2)
+            {
+                var con1 = new SqlConnection(connectionString);
+                var comm1 = new SqlCommand($@"SELECT pa.PRZ_CODE,at.password,at.premissions,pa.agent FROM POL_PRZ_AGENTS pa
+left join auth at on pa.id=at.user_id 
+where pa.id={id}", con1);
+                con1.Open();
+                var reader1 = comm1.ExecuteReader();
+
+                while (reader1.Read()) // построчно считываем данные
+                {
+                    object PRZ_CODE = reader1["PRZ_CODE"];
+                    object Pass = reader1["Password"];
+                    object Prem = reader1["Premissions"];
+                    object Agnt = reader1["AGENT"];
+
+                    przs = PRZ_CODE.ToString();
+                    
+                }
+
+                reader1.Close();
+                con1.Close();
+            }
+
+
             InitializeComponent();
+
+            maingrid.DataContext = przs;
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
+
             prz_combo.DataContext = MyReader.MySelect<PrzSmo>(@"select id,PRZ_NAME,prz_code,NameWithCode from pol_prz",
                 Properties.Settings.Default.DocExchangeConnectionString);
             
@@ -85,7 +167,8 @@ where pa.id={id_}", con1);
                     object Agnt = reader1["AGENT"];
 
                     string pr = PRZ_CODE.ToString();
-                    prz_combo.EditValue = pr.Split(',');
+                    maingrid.DataContext = pr.ToString();
+                    //prz_combo.EditValue = pr.Split(';');
                     agent_tbx.Text = Agnt.ToString();
                     pass.Text = Pass.ToString();
                     Premiss_edt.Text = Prem.ToString();
@@ -194,6 +277,7 @@ where pa.id={id_}", con1);
 
         private void Save_btn_Click(object sender, RoutedEventArgs e)
         {
+            var rr = maingrid.DataContext;
             if (btn_ == 1)
             {
                 var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
@@ -222,7 +306,7 @@ where pa.id={id_}", con1);
                 var con = new SqlConnection(connectionString);
                 var comm =
                     new SqlCommand(
-                        $@"update pol_prz_agents set prz_code='{p}',agent='{agent_tbx.Text}' where id={id_}",
+                        $@"update pol_prz_agents set prz_code='{maingrid.DataContext}',agent='{agent_tbx.Text}' where id={id_}",
                         con);
                 con.Open();
                 comm.ExecuteNonQuery();
@@ -273,22 +357,23 @@ insert into auth(login,password,premissions,user_id) values('{agent_tbx.Text}','
 
         private void Prz_combo_EditValueChanged(object sender, DevExpress.Xpf.Editors.EditValueChangedEventArgs e)
         {
-            string p1 = "";
-            if (prz_combo.EditValue == null)
-            {
+            
+            //string p1 = "";
+            //if (prz_combo.EditValue == null)
+            //{
 
-            }
-            else
-            {
-                var d1 = (ICollection)prz_combo.EditValue;
-                string[] dd1 = new string[d1.Count];
-                d1.CopyTo(dd1, 0);
-                for (int i = 0; i < dd1.Count(); i++)
-                {
-                    p1 += (dd1[i] + ";");
-                    p = p1.Substring(0, p1.Length - 1);
-                }
-            }
+            //}
+            //else
+            //{
+            //    var d1 = (ICollection)prz_combo.EditValue;
+            //    string[] dd1 = new string[d1.Count];
+            //    d1.CopyTo(dd1, 0);
+            //    for (int i = 0; i < dd1.Count(); i++)
+            //    {
+            //        p1 += (dd1[i] + ";");
+            //        p = p1.Substring(0, p1.Length - 1);
+            //    }
+            //}
         }
     }
 }
