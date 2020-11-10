@@ -269,5 +269,47 @@ on pp.IDGUID=d.PERSON_GUID and d.MAIN=1 and d.ACTIVE=1
                                 "(select idguid from pol_persons where id=@id_p),event_guid=(select event_guid from pol_persons where id=@id_p)" +
                                 "where spolis=@spolis and npolis=@npolis ";
 
+
+        public static string insert_address =
+                  " insert into pol_addresses (IDGUID,INDX,OKATO,SUBJ,FIAS_L1,FIAS_L3,FIAS_L4,FIAS_L6,FIAS_L90,FIAS_L91,FIAS_L7,DOM,KORP,EXT,KV,EVENT_GUID,HOUSE_GUID) " +
+                                "values(newid(),(select POSTALCODE from fias.dbo.AddressObjects where aoguid=@FIAS_L7 and actstatus=1),(select OKATO from fias.dbo.AddressObjects where aoguid=@FIAS_L7 and actstatus=1)," +
+                                "(select left(OKATO,5) from fias.dbo.AddressObjects where aoguid=@FIAS_L1 and livestatus=1),@FIAS_L1,@FIAS_L3,@FIAS_L4,@FIAS_L6,@FIAS_L90,@FIAS_L91,@FIAS_L7,@DOM,@KORP,@EXT,@KV, " +
+                                $"(select event_guid from pol_persons where id={Vars.IdP}),@HOUSE_GUID)";
+
+        public static string insert_pol_relation_address =
+                               "insert into pol_relation_addr_pers (person_guid,addr_guid,bomg,addres_g,dreg,addres_p,dt1,dt2,event_guid)" +
+                                $" values(select idguid from pol_persons  where id = {Vars.IdP} ), (select idguid from pol_addresses where id=SCOPE_IDENTITY())" +
+                                ", @bomg,1,@dreg,0,sysdatetime(),null,(select event_guid from pol_addresses where id=SCOPE_IDENTITY()))";
+
+        public static string insert_address_2 =
+            " insert into pol_addresses (IDGUID,INDX,OKATO,SUBJ,FIAS_L1,FIAS_L3,FIAS_L4,FIAS_L6,FIAS_L90,FIAS_L91,FIAS_L7,DOM,KORP,EXT,KV,EVENT_GUID,HOUSE_GUID) " +
+            "values(newid(),(select POSTALCODE from fias.dbo.AddressObjects where aoguid=@FIAS_L7_1 and actstatus=1),(select OKATO from fias.dbo.AddressObjects where aoguid=@FIAS_L7_1 and actstatus=1)," +
+            "(select left(OKATO,5) from fias.dbo.AddressObjects where aoguid=@FIAS_L1_1 and livestatus=1),@FIAS_L1_1,@FIAS_L3_1,@FIAS_L4_1,@FIAS_L6_1,@FIAS_L90_1,@FIAS_L91_1,@FIAS_L7_1,@DOM_1,@KORP_1,@EXT_1,@KV_1, " +
+            $"(select event_guid from pol_persons where id={Vars.IdP}),@HOUSE_GUID_1)";
+
+        public static string insert_pol_relation_address_2 =
+            "insert into pol_relation_addr_pers (person_guid,addr_guid,bomg,addres_g,dreg,addres_p,dt1,dt2,event_guid)" +
+            " values((select idguid from pol_persons where event_guid=(select event_guid from pol_addresses where id=SCOPE_IDENTITY()) ), (select idguid from pol_addresses where id=SCOPE_IDENTITY())" +
+            ", @bomg,0,@dreg1,1,sysdatetime(),null,(select event_guid from pol_addresses where id=SCOPE_IDENTITY()))";
+
+
+        public static string update_addresses =
+            "update pol_addresses set fias_l1=@FIAS_L1,fias_l3=@FIAS_L3,fias_l4=@FIAS_L4,fias_l6=@FIAS_L6,fias_l7=@FIAS_L7,fias_l90=@FIAS_L90," +
+            "fias_l91=@FIAS_L91, dom=@DOM,korp=@KORP,ext=@EXT,kv=@KV, house_guid=@HOUSE_GUID where idguid=(select ADDR_GUID from pol_relation_addr_pers where addres_g=1 and event_guid=(select event_guid from pol_persons where id=@id_p)) and " +
+            "event_guid=(select event_guid from pol_persons where id =@id_p) ";
+
+        public static string update_addresses_2 =
+            "update pol_addresses set fias_l1=@FIAS_L1_1,fias_l3=@FIAS_L3_1,fias_l4=@FIAS_L4_1,fias_l6=@FIAS_L6_1,fias_l7=@FIAS_L7_1,fias_l90=@FIAS_L90_1," +
+            "fias_l91=@FIAS_L91_1, dom=@DOM_1,korp=@KORP_1,ext=@EXT_1,kv=@KV_1,house_guid=@HOUSE_GUID_1 where idguid=(select ADDR_GUID from pol_relation_addr_pers where addres_p=1 and event_guid=(select event_guid from pol_persons where id=@id_p)) and " +
+            "event_guid=(select event_guid from pol_persons where id =@id_p) ";
+
+        public static string update__pol_relation =
+            "update pol_relation_addr_pers SET bomg=@bomg,addres_g=@addr_g,addres_p=@addr_p,dreg=@dreg where addres_g=1 and event_guid=(select event_guid from pol_persons where id=@id_p) ";
+
+        public static string update__pol_relation_2 =
+            "update pol_relation_addr_pers SET bomg=@bomg,addres_g=@addr_g1,addres_p=@addr_p1,dreg=@dreg where addres_p=1  and event_guid=(select event_guid from pol_persons where id=@id_p) ";
+
+
+
     }
 }

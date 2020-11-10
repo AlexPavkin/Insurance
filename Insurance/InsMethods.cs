@@ -4984,6 +4984,28 @@ dstart=@date_mo where idguid='{perguid}'", con);
 
         public static void Save_bt2_prf1(MainWindow PD)
         {
+            //var insert1 = "";
+            //var insert2 = "";
+            //var update1 = "";
+            //var update2 = "";
+            //var addr_mest_zhit = SPR.MyReader.SELECTVAIN($"select IDGUID from pol_addresses pa left join POL_RELATION_ADDR_PERS pr on pa.IDGUID = pr.ADDR_GUID where pr.event_guid = (select event_guid from pol_persons where id = {Vars.IdP}) and pr.addres_p = 1", Properties.Settings.Default.DocExchangeConnectionString);
+            //if (string.IsNullOrEmpty(addr_mest_zhit))
+            //{
+            //    insert1 = SPR.insert_address+" "+SPR.insert_pol_relation_address;
+            //}
+            //else
+            //{
+            //    update1 = SPR.update_addresses + " "+SPR.update__pol_relation;
+            //}
+            //var addr_reg = SPR.MyReader.SELECTVAIN($"select IDGUID from pol_addresses pa left join POL_RELATION_ADDR_PERS pr on pa.IDGUID = pr.ADDR_GUID where pr.event_guid = (select event_guid from pol_persons where id = {Vars.IdP}) and pr.addres_g = 1", Properties.Settings.Default.DocExchangeConnectionString);
+            //if (string.IsNullOrEmpty(addr_reg))
+            //{
+            //    insert2 = SPR.insert_address_2+" "+SPR.insert_pol_relation_address_2;
+            //}
+            //else
+            //{
+            //    update2 = SPR.update_addresses_2 + " " + SPR.update__pol_relation_2;
+            //}
             string module = "Save_bt2_prf1";
             SqlTransaction tr = null;
             var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
@@ -4991,6 +5013,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
             SqlCommand comm2 = new SqlCommand("update pol_persons set DOP_COMMENT=@DOP_COMMENT,COMMENT=@COMMENT, SROKDOVERENOSTI=@SROK,PRIZNAKVIDACHI=@PRIZNAKVIDACHI,DATEVIDACHI=@DATEVIDACHI,ENP=@enp,FAM=@fam,IM=@im,OT=@ot,W=@w,DR=@dr,ss=@ss,mr=@mr,birth_oksm=@boksm,"
                                               + "c_oksm=@coksm,phone=@phone,email=@email,kateg=@kateg,dost=@dost,ddeath=@ddeath,rperson_guid=@rpguid, mo=@mo, dstart=@date_mo where id=@id_p " +
 
+                                             // insert1+" "+insert2 + " " + update1 + " " + update2 +
                 "update pol_addresses set fias_l1=@FIAS_L1,fias_l3=@FIAS_L3,fias_l4=@FIAS_L4,fias_l6=@FIAS_L6,fias_l7=@FIAS_L7,fias_l90=@FIAS_L90," +
                 "fias_l91=@FIAS_L91, dom=@DOM,korp=@KORP,ext=@EXT,kv=@KV, house_guid=@HOUSE_GUID where idguid=(select ADDR_GUID from pol_relation_addr_pers where addres_g=1 and event_guid=(select event_guid from pol_persons where id=@id_p)) and " +
                 "event_guid=(select event_guid from pol_persons where id =@id_p) " +
@@ -5496,7 +5519,74 @@ NAME_VP='{PD.kem_vid1.Text}', NAME_VP_CODE='{PD.kod_podr1.Text}' where idguid='{
                 cmdpers.ExecuteNonQuery();
                 con.Close();
             }
+            if (PD.docexp1.EditValue == null)
+            {
+                SqlConnection con = new SqlConnection(connectionString);
+                SqlCommand cmdpers =
+                    new SqlCommand(
+                        $@"update pol_documents set docexp = null where event_guid=(select event_guid from pol_persons where id={Vars.IdP}) and main=0",
+                        con);
+                con.Open();
+                cmdpers.ExecuteNonQuery();
+                con.Close();
+            }
 
+            string denttst = SPR.MyReader.SELECTVAIN($@"select dend from pol_polises where event_guid=(select event_guid from pol_persons where id = {Vars.IdP})", Properties.Settings.Default.DocExchangeConnectionString);
+            string id = SPR.MyReader.SELECTVAIN($@"select id from pol_polises where event_guid=(select event_guid from pol_persons where id = {Vars.IdP})", Properties.Settings.Default.DocExchangeConnectionString);
+            if (string.IsNullOrEmpty(id))
+            {
+                SqlConnection conz = new SqlConnection(connectionString);
+                SqlCommand cmdpers2 =
+                    new SqlCommand(
+                        $@"insert into pol_polises(vpolis, spolis, npolis, dbeg, dend, dstop, blank, dreceived, person_guid, event_guid) values(@vpolis, @spolis, @npolis, @dbeg, @dend, @dstop, @blank, @dreceived, " +
+                $"(select idguid from pol_persons where id={Vars.IdP}),(select event_guid from pol_persons where id={Vars.IdP}))",
+                        conz);
+                cmdpers2.Parameters.AddWithValue("@vpolis", PD.type_policy.EditValue.ToString());
+                cmdpers2.Parameters.AddWithValue("@spolis", PD.ser_blank.Text);
+                cmdpers2.Parameters.AddWithValue("@npolis", PD.num_blank.Text);
+                cmdpers2.Parameters.AddWithValue("@dbeg", PD.date_vid1.DateTime);
+                if (Convert.ToDateTime(PD.date_end.EditValue) == DateTime.MinValue || PD.date_end.EditValue == null)
+                {
+                    cmdpers2.Parameters.AddWithValue("@dend", DBNull.Value);
+                }
+                else
+                {
+                    cmdpers2.Parameters.AddWithValue("@dend", PD.date_end.EditValue);
+                }
+                if (Convert.ToDateTime(PD.fakt_prekr.EditValue) == DateTime.MinValue || PD.fakt_prekr.EditValue == null)
+                {
+                    cmdpers2.Parameters.AddWithValue("@dstop", DBNull.Value);
+                }
+                else
+                {
+                    cmdpers2.Parameters.AddWithValue("@dstop", PD.fakt_prekr.EditValue);
+                }
+                cmdpers2.Parameters.AddWithValue("@dreceived", PD.date_poluch.EditValue);
+                if (PD.pustoy.IsChecked == true)
+                {
+                    cmdpers2.Parameters.AddWithValue("@blank", 1);
+                }
+                else
+                {
+                    cmdpers2.Parameters.AddWithValue("@blank", 0);
+                }
+
+                conz.Open();
+                cmdpers2.ExecuteNonQuery();
+                conz.Close();
+            }
+            else
+                if (string.IsNullOrEmpty(denttst))
+            {
+                SqlConnection con1 = new SqlConnection(connectionString);
+                SqlCommand cmdpers1 =
+                    new SqlCommand(
+                        $@"update pol_polises set dend={PD.date_end.EditValue ?? DBNull.Value} where event_guid=(select event_guid from pol_persons where id={Vars.IdP})",
+                        con1);
+                con1.Open();
+                cmdpers1.ExecuteNonQuery();
+                con1.Close();
+            }
             Item_Saved();
             PersData_Default(PD);
         }
@@ -11528,7 +11618,33 @@ NAME_VP='{PD.kem_vid1.Text}', NAME_VP_CODE='{PD.kod_podr1.Text}', active=0,main=
             {
 
             }
-                Item_Saved();
+
+            if (PD.docexp1.EditValue == null)
+            {
+                SqlConnection con = new SqlConnection(connectionString);
+                SqlCommand cmdpers =
+                    new SqlCommand(
+                        $@"update pol_documents set docexp = null where event_guid=(select event_guid from pol_persons where id={Vars.IdP}) and main=0",
+                        con);
+                con.Open();
+                cmdpers.ExecuteNonQuery();
+                con.Close();
+            }
+
+            string denttst = SPR.MyReader.SELECTVAIN($@"select dend from pol_polises where event_guid=(select event_guid from pol_persons where id = {Vars.IdP})", Properties.Settings.Default.DocExchangeConnectionString);
+
+            if (string.IsNullOrEmpty(denttst))
+            {
+                SqlConnection con1 = new SqlConnection(connectionString);
+                SqlCommand cmdpers1 =
+                    new SqlCommand(
+                        $@"update pol_polises set dend={PD.date_end.EditValue ?? DBNull.Value} where event_guid=(select event_guid from pol_persons where id={Vars.IdP})",
+                        con1);
+                con1.Open();
+                cmdpers1.ExecuteNonQuery();
+                con1.Close();
+            }
+            Item_Saved();
             PersData_Default(PD);
         }
 
