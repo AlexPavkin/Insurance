@@ -973,7 +973,7 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
             G_layuot.restore_Layout(Properties.Settings.Default.DocExchangeConnectionString, pers_grid, pers_grid_2);
             //LoadingDecorator1.IsSplashScreenShown = false;
             WindowState = WindowState.Maximized;
-            Vars.MainTitle = "Insurance(полисная часть) v1.061";
+            Vars.MainTitle = "Insurance(полисная часть) v1.069";
             Title = Vars.MainTitle;
             prz.SelectedIndex = -1;
             //if (SPR.Premmissions == "User")
@@ -3337,63 +3337,7 @@ DEALLOCATE MY_CURSOR
 
                 return;
             }
-            if (Vars.SMO == "67005")
-            {
-                string m10 = "Добавить авто-прикрипление?" + (char)34 + Vars.CelVisit + (char)34 +
-                                       ". Вы согласны?";
-                string t10 = "Внимание!";
-                int b10 = 2;
-                Message me10 = new Message(m10, t10, b10);
-                me10.ShowDialog();
-                if (Vars.mes_res == 1)
-                {
 
-                    var town = fias.reg_town.Text;
-                    var street = fias.reg_ul.Text.Split('-')[0].Trim();
-                    var naspunkt = fias.reg_np.Text.Split('-')[0].Trim();
-                    var dom = fias.reg_dom.Text.Trim().Replace("д.", "");
-                    var MO = "";
-                    if (town.Contains("Смоленск"))
-                    {
-                        var streetMO = SPR.MyReader.SELECTVAIN($@"SELECT TOP(1) STREET FROM [DocExchange].[dbo].[moaddr] where STREET like '%{street}%' and dom =  '{dom}'", Properties.Settings.Default.DocExchangeConnectionString);
-                        if (street.Contains(streetMO.Split(' ')[0]))
-                        {
-                            MO = SPR.MyReader.SELECTVAIN($@"SELECT TOP(1) MCOD FROM [DocExchange].[dbo].[moaddr] where STREET like '%{street}%' and dom =  '{dom}'", Properties.Settings.Default.DocExchangeConnectionString);
-                            mo_cmb.EditValue = MO;
-                            date_mo.EditValue = DateTime.Now;
-                        }
-                    }
-                    else
-                    {
-                        var Derevnya = SPR.MyReader.SELECTVAIN($@"SELECT TOP(1) NAME  FROM [DocExchange].[dbo].[moaddr] where [NAME] like '%{naspunkt}%'", Properties.Settings.Default.DocExchangeConnectionString);
-                        if (naspunkt.Contains(Derevnya.Split(' ')[0]))
-                        {
-                            MO = SPR.MyReader.SELECTVAIN($@"SELECT TOP(1) MCOD FROM [DocExchange].[dbo].[moaddr] where [NAME] like '%{naspunkt}%'", Properties.Settings.Default.DocExchangeConnectionString);
-                            mo_cmb.EditValue = MO;
-                            date_mo.EditValue = DateTime.Now;
-                        }
-                    }
-                }
-            }
-            Vars.PunctRz = prz.EditValue.ToString();
-            Vars.mes_res = 0;
-            if (kat_zl.SelectedIndex == -1)
-            {
-                string m = "Вы не указали категорию ЗЛ!";
-                string t = "Ошибка!";
-                int b = 1;
-                Message me = new Message(m, t, b);
-                me.ShowDialog();
-
-                return;
-            }
-
-            //MessageBox.Show(fakt_prekr.DisplayText.ToString());
-            Events Create = new Events();
-            Create.DVIZIT = DateTime.Now;
-            prev_doc_stringSql(); //Предидущий документ
-            //----------------------------------------------------------------------------------------
-            // При нажатии кнопки "Далее" если в предидущем окне была нажата кнопка "Новый клиент".
             DateTime firstDate = dr.DateTime;
             DateTime secondDate = DateTime.Now;
             TimeSpan interval = secondDate.Subtract(firstDate);
@@ -3417,6 +3361,106 @@ DEALLOCATE MY_CURSOR
                 me.ShowDialog();
                 return;
             }
+
+            if (Vars.SMO == "67005")
+            {
+                string m10 = "Добавить авто-прикрипление?" + (char)34 + Vars.CelVisit + (char)34 +
+                                       ". Вы согласны?";
+                string t10 = "Внимание!";
+                int b10 = 2;
+                Message me10 = new Message(m10, t10, b10);
+                me10.ShowDialog();
+                if (Vars.mes_res == 1)
+                {
+
+                    var town = fias.reg_town.Text;
+                    var street = fias.reg_ul.Text.Split('-')[0].Trim();
+                    var naspunkt = fias.reg_np.Text.Split('-')[0].Trim();
+                    var dom = fias.reg_dom.Text.Trim().Replace("д.", "");
+                    var MO = "";
+                    string streetMO = "";
+
+                    if (town.Contains("Смоленск"))
+                    {
+                        if (interval.Days / 365.25 < 18)
+                        {
+                            streetMO = SPR.MyReader.SELECTVAIN($@"SELECT TOP(1) STREET FROM [DocExchange].[dbo].[moaddr] where STREET like '%{street}%' and dom =  '{dom}' and old in(0,2)", Properties.Settings.Default.DocExchangeConnectionString);
+                            if (street.Contains(streetMO.Split(' ')[0]))
+                            {
+                                MO = SPR.MyReader.SELECTVAIN($@"SELECT TOP(1) MCOD FROM [DocExchange].[dbo].[moaddr] where STREET like '%{street}%' and dom =  '{dom}' and old in(0,2)", Properties.Settings.Default.DocExchangeConnectionString);
+                                mo_cmb.EditValue = MO;
+                                date_mo.EditValue = DateTime.Now;
+                            }
+                        }
+                        else
+                        {
+                            streetMO = SPR.MyReader.SELECTVAIN($@"SELECT TOP(1) STREET FROM [DocExchange].[dbo].[moaddr] where STREET like '%{street}%' and dom =  '{dom}' and old in(0,1)", Properties.Settings.Default.DocExchangeConnectionString);
+                            if (street.Contains(streetMO.Split(' ')[0]))
+                            {
+                                MO = SPR.MyReader.SELECTVAIN($@"SELECT TOP(1) MCOD FROM [DocExchange].[dbo].[moaddr] where STREET like '%{street}%' and dom =  '{dom}' and old in(0,1)", Properties.Settings.Default.DocExchangeConnectionString);
+                                mo_cmb.EditValue = MO;
+                                date_mo.EditValue = DateTime.Now;
+                            }
+                        }
+
+                        
+                    }
+                    else if(town.Contains("Десногорск"))
+                    {
+                        mo_cmb.EditValue = "670012";
+                    }
+                    else if (town.Contains("Вязьма"))
+                    {
+                        if (interval.Days / 365.25 < 18)
+                        {
+                            streetMO = SPR.MyReader.SELECTVAIN($@"SELECT TOP(1) STREET FROM [DocExchange].[dbo].[moaddr] where STREET like '%{street}%'", Properties.Settings.Default.DocExchangeConnectionString);
+                            if (street.Contains(streetMO.Split(' ')[0]))
+                            {
+                                MO = SPR.MyReader.SELECTVAIN($@"SELECT TOP(1) MCOD FROM [DocExchange].[dbo].[moaddr] where STREET like '%{street}%'", Properties.Settings.Default.DocExchangeConnectionString);
+                                mo_cmb.EditValue = MO;
+                                date_mo.EditValue = DateTime.Now;
+                            }
+                        }
+                        else
+                        {
+                            mo_cmb.EditValue = "670014";
+                            date_mo.EditValue = DateTime.Now;
+                        }
+                        
+                    }
+                    else
+                    {
+                        var Derevnya = SPR.MyReader.SELECTVAIN($@"SELECT TOP(1) NAME  FROM [DocExchange].[dbo].[moaddr] where [NAME] like '%{naspunkt}%'", Properties.Settings.Default.DocExchangeConnectionString);
+                        if (naspunkt.Contains(Derevnya.Split(' ')[0]))
+                        {
+                            MO = SPR.MyReader.SELECTVAIN($@"SELECT TOP(1) MCOD FROM [DocExchange].[dbo].[moaddr] where [NAME] like '%{naspunkt}%'", Properties.Settings.Default.DocExchangeConnectionString);
+                            mo_cmb.EditValue = MO;
+                            date_mo.EditValue = DateTime.Now;
+                        }
+                        
+                    }
+                }
+            }
+            Vars.PunctRz = prz.EditValue.ToString();
+            Vars.mes_res = 0;
+            if (kat_zl.SelectedIndex == -1)
+            {
+                string m = "Вы не указали категорию ЗЛ!";
+                string t = "Ошибка!";
+                int b = 1;
+                Message me = new Message(m, t, b);
+                me.ShowDialog();
+
+                return;
+            }
+
+            //MessageBox.Show(fakt_prekr.DisplayText.ToString());
+            Events Create = new Events();
+            Create.DVIZIT = DateTime.Now;
+            prev_doc_stringSql(); //Предидущий документ
+            //----------------------------------------------------------------------------------------
+            // При нажатии кнопки "Далее" если в предидущем окне была нажата кнопка "Новый клиент".
+            
 
             //-------------------------------------------------------------------------------------------------
             // если нет дополнительного документа
@@ -4496,7 +4540,7 @@ on t0.idguid = t3.person_guid", con);
                         doc_type.EditValue = doctype;
                         doc_ser.Text = docser.ToString();
                         doc_num.Text = docnum.ToString();
-                        date_vid.DateTime = Convert.ToDateTime(docdate);
+                        date_vid.EditValue = Convert.ToDateTime(docdate);
                         kem_vid.Text = name_vp.ToString();
                         kod_podr.Text = name_vp_code.ToString();
                         //mr2.Text = docmr.ToString();
@@ -4556,7 +4600,7 @@ on t0.idguid = t3.person_guid", con);
                         doc_ser1.Text = docser_1.ToString();
                         doc_num1.Text = docnum_1.ToString();
 
-                        date_vid2.DateTime = Convert.ToDateTime(docdate_1);
+                        date_vid2.EditValue = Convert.ToDateTime(docdate_1);
 
 
                         kem_vid1.Text = name_vp_1.ToString();
@@ -4593,7 +4637,7 @@ where event_guid=(select event_guid from pol_persons where id=@id) and main=0 an
                         ddtype.EditValue = doctype;
                         ddser.Text = docser.ToString();
                         ddnum.Text = docnum.ToString();
-                        dddate.DateTime = Convert.ToDateTime(docdate);
+                        dddate.EditValue = Convert.ToDateTime(docdate);
                         if (docexp.ToString() == "" || docexp.ToString().Contains("1900"))
                         {
                             docexp1.EditValue = null;
@@ -4632,7 +4676,7 @@ from POL_EVENTS where IDGUID=(select event_guid from pol_persons where id=@id) a
                         doctype1.EditValue = doctype;
                         docser1.Text = docser.ToString();
                         docnum1.Text = docnum.ToString();
-                        docdate1.DateTime = Convert.ToDateTime(docdate);
+                        docdate1.EditValue = Convert.ToDateTime(docdate);
 
 
 
@@ -4668,6 +4712,7 @@ where pr.event_guid=(select event_guid from pol_persons where id=@id) and pr.add
                         object np = reader3["FIAS_L6"];
                         object street = reader3["FIAS_L7"];
                         object dom_ = reader3["HOUSE_GUID"];
+                        object dom_s = reader3["DOM"];
                         object korp_ = reader3["KORP"];
                         object str_ = reader3["EXT"];
                         object kv_ = reader3["KV"];
@@ -4724,7 +4769,7 @@ where pr.event_guid=(select event_guid from pol_persons where id=@id) and pr.add
                         }
 
                         fias.reg_dom.EditValue = dom_;
-                        if (fias.reg_dom.EditValue != null)
+                    if (fias.reg_dom.EditValue != null && fias.reg_dom.EditValue.ToString() != "00000000-0000-0000-0000-000000000000")
                         {
                             dstrkor = fias.reg_dom.Text.Replace(' ', ',').Split(',');
                             domsplit = dstrkor[0].Replace("д.", "");
@@ -4732,6 +4777,7 @@ where pr.event_guid=(select event_guid from pol_persons where id=@id) and pr.add
                         else
                         {
                             domsplit = "";
+                            fias.reg_dom_notfias.Text = dom_s.ToString();
                         }
 
                         fias.reg_korp.Text = korp_.ToString();
@@ -4788,7 +4834,8 @@ where pr.event_guid=(select event_guid from pol_persons where id=@id) and pr.add
                             object np = reader4["FIAS_L6"];
                             object street = reader4["FIAS_L7"];
                             object dom_ = reader4["HOUSE_GUID"];
-                            object korp_ = reader4["KORP"];
+
+                            object dom_s = reader4["DOM"]; object korp_ = reader4["KORP"];
                             object str_ = reader4["EXT"];
                             object kv_ = reader4["KV"];
                             object d_reg = reader4["DREG"];
@@ -4840,7 +4887,7 @@ where pr.event_guid=(select event_guid from pol_persons where id=@id) and pr.add
                             }
                             fias1.reg_dom1.EditValue = dom_;
 
-                            if (fias1.reg_dom1.EditValue != null)
+                            if (fias1.reg_dom1.EditValue != null && fias1.reg_dom1.EditValue.ToString() != "00000000-0000-0000-0000-000000000000")
                             {
                                 dstrkor1 = fias1.reg_dom1.Text.Replace(' ', ',').Split(',');
                                 domsplit1 = dstrkor1[0].Replace("д.", "");
@@ -4848,6 +4895,7 @@ where pr.event_guid=(select event_guid from pol_persons where id=@id) and pr.add
                             else
                             {
                                 domsplit1 = "";
+                                fias1.reg_dom_notfias1.Text = dom_s.ToString();
                             }
                             fias1.reg_korp1.Text = korp_.ToString();
                             fias1.reg_str1.Text = str_.ToString();
@@ -4882,6 +4930,7 @@ where pr.event_guid=(select event_guid from pol_persons where id=@id) and pr.add
                             object np = reader14["FIAS_L6"];
                             object street = reader14["FIAS_L7"];
                             object dom_ = reader14["HOUSE_GUID"];
+                            object dom_s = reader14["DOM"];
                             object korp_ = reader14["KORP"];
                             object str_ = reader14["EXT"];
                             object kv_ = reader14["KV"];
@@ -4933,7 +4982,7 @@ where pr.event_guid=(select event_guid from pol_persons where id=@id) and pr.add
                             }
                             fias1.reg_dom1.EditValue = dom_;
 
-                            if (fias1.reg_dom1.EditValue != null)
+                            if (fias1.reg_dom1.EditValue != null && fias1.reg_dom1.EditValue.ToString() != "00000000-0000-0000-0000-000000000000")
                             {
                                 dstrkor1 = fias1.reg_dom1.Text.Replace(' ', ',').Split(',');
                                 domsplit1 = dstrkor1[0].Replace("д.", "");
@@ -4941,6 +4990,7 @@ where pr.event_guid=(select event_guid from pol_persons where id=@id) and pr.add
                             else
                             {
                                 domsplit1 = "";
+                                fias1.reg_dom_notfias1.Text = dom_s.ToString();
                             }
                             fias1.reg_korp1.Text = korp_.ToString();
                             fias1.reg_str1.Text = str_.ToString();
@@ -7373,7 +7423,7 @@ on t0.idguid = t3.person_guid", con);
                         doc_type.EditValue = doctype;
                         doc_ser.Text = docser.ToString();
                         doc_num.Text = docnum.ToString();
-                        date_vid.DateTime = Convert.ToDateTime(docdate);
+                        date_vid.EditValue = Convert.ToDateTime(docdate);
                         kem_vid.Text = name_vp.ToString();
                         kod_podr.Text = name_vp_code.ToString();
                         mr2.Text = docmr.ToString();
@@ -7424,7 +7474,7 @@ on t0.idguid = t3.person_guid", con);
                         }
                         else
                         {
-                            date_vid2.DateTime = Convert.ToDateTime(docdate_1);
+                            date_vid2.EditValue = Convert.ToDateTime(docdate_1);
                         }
 
                         kem_vid1.Text = name_vp_1.ToString();
@@ -7531,6 +7581,7 @@ where pr.event_guid=(select event_guid from pol_persons where id=@id) and pr.add
                         object np = reader3["FIAS_L6"];
                         object street = reader3["FIAS_L7"];
                         object dom_ = reader3["HOUSE_GUID"];
+                        object dom_s = reader3["DOM"];
                         object korp_ = reader3["KORP"];
                         object str_ = reader3["EXT"];
                         object kv_ = reader3["KV"];
@@ -7587,7 +7638,7 @@ where pr.event_guid=(select event_guid from pol_persons where id=@id) and pr.add
                         }
 
                         fias.reg_dom.EditValue = dom_;
-                        if (fias.reg_dom.EditValue != null)
+                        if (fias.reg_dom.EditValue != null && fias.reg_dom.EditValue.ToString() != "00000000-0000-0000-0000-000000000000")
                         {
                             dstrkor = fias.reg_dom.Text.Replace(' ', ',').Split(',');
                             domsplit = dstrkor[0].Replace("д.", "");
@@ -7595,6 +7646,7 @@ where pr.event_guid=(select event_guid from pol_persons where id=@id) and pr.add
                         else
                         {
                             domsplit = "";
+                            fias.reg_dom_notfias.Text = dom_s.ToString();
                         }
 
                         fias.reg_korp.Text = korp_.ToString();
@@ -7640,6 +7692,7 @@ where pr.event_guid=(select event_guid from pol_persons where id=@id) and pr.add
                             object np = reader4["FIAS_L6"];
                             object street = reader4["FIAS_L7"];
                             object dom_ = reader4["HOUSE_GUID"];
+                            object dom_s = reader4["DOM"];
                             object korp_ = reader4["KORP"];
                             object str_ = reader4["EXT"];
                             object kv_ = reader4["KV"];
@@ -7692,7 +7745,7 @@ where pr.event_guid=(select event_guid from pol_persons where id=@id) and pr.add
                             }
                             fias1.reg_dom1.EditValue = dom_;
 
-                            if (fias1.reg_dom1.EditValue != null)
+                            if (fias1.reg_dom1.EditValue != null && fias1.reg_dom1.EditValue.ToString() != "00000000-0000-0000-0000-000000000000")
                             {
                                 dstrkor1 = fias1.reg_dom1.Text.Replace(' ', ',').Split(',');
                                 domsplit1 = dstrkor1[0].Replace("д.", "");
@@ -7700,6 +7753,7 @@ where pr.event_guid=(select event_guid from pol_persons where id=@id) and pr.add
                             else
                             {
                                 domsplit1 = "";
+                                fias1.reg_dom_notfias1.Text = dom_s.ToString();
                             }
                             fias1.reg_korp1.Text = korp_.ToString();
                             fias1.reg_str1.Text = str_.ToString();
@@ -7735,6 +7789,7 @@ where pr.event_guid=(select event_guid from pol_persons where id=@id) and pr.add
                             object np = reader14["FIAS_L6"];
                             object street = reader14["FIAS_L7"];
                             object dom_ = reader14["HOUSE_GUID"];
+                            object dom_s = reader14["DOM"];
                             object korp_ = reader14["KORP"];
                             object str_ = reader14["EXT"];
                             object kv_ = reader14["KV"];
@@ -7786,7 +7841,7 @@ where pr.event_guid=(select event_guid from pol_persons where id=@id) and pr.add
                             }
                             fias1.reg_dom1.EditValue = dom_;
 
-                            if (fias1.reg_dom1.EditValue != null)
+                            if (fias1.reg_dom1.EditValue != null && fias1.reg_dom1.EditValue.ToString() != "00000000-0000-0000-0000-000000000000")
                             {
                                 dstrkor1 = fias1.reg_dom1.Text.Replace(' ', ',').Split(',');
                                 domsplit1 = dstrkor1[0].Replace("д.", "");
@@ -7794,6 +7849,7 @@ where pr.event_guid=(select event_guid from pol_persons where id=@id) and pr.add
                             else
                             {
                                 domsplit1 = "";
+                                fias1.reg_dom_notfias1.Text = dom_s.ToString();
                             }
                             fias1.reg_korp1.Text = korp_.ToString();
                             fias1.reg_str1.Text = str_.ToString();
@@ -9436,15 +9492,15 @@ where  p.MO <> '' and p.MO is not null", Properties.Settings.Default.DocExchange
                         new DotNetDBF.DBFField("UL", DotNetDBF.NativeDbType.Char, 40),
                         new DotNetDBF.DBFField("ULCODE", DotNetDBF.NativeDbType.Char, 17),
                         new DotNetDBF.DBFField("DOM", DotNetDBF.NativeDbType.Char, 7),
-                         new DotNetDBF.DBFField("KOR", DotNetDBF.NativeDbType.Char, 5),
-                          new DotNetDBF.DBFField("STR", DotNetDBF.NativeDbType.Char, 5),
-                           new DotNetDBF.DBFField("KV", DotNetDBF.NativeDbType.Char, 5),
-                            new DotNetDBF.DBFField("TEL", DotNetDBF.NativeDbType.Char, 12),
-                             new DotNetDBF.DBFField("MCOD", DotNetDBF.NativeDbType.Char, 6),
-                              new DotNetDBF.DBFField("D_PR", DotNetDBF.NativeDbType.Date),
-                              new DotNetDBF.DBFField("D_OT", DotNetDBF.NativeDbType.Date),
-                              new DotNetDBF.DBFField("S_PR", DotNetDBF.NativeDbType.Numeric, 1,0),
-                               new DotNetDBF.DBFField("SNILS_VR", DotNetDBF.NativeDbType.Char, 11),
+                        new DotNetDBF.DBFField("KOR", DotNetDBF.NativeDbType.Char, 5),
+                        new DotNetDBF.DBFField("STR", DotNetDBF.NativeDbType.Char, 5),
+                        new DotNetDBF.DBFField("KV", DotNetDBF.NativeDbType.Char, 5),
+                        new DotNetDBF.DBFField("TEL", DotNetDBF.NativeDbType.Char, 12),
+                        new DotNetDBF.DBFField("MCOD", DotNetDBF.NativeDbType.Char, 6),
+                        new DotNetDBF.DBFField("D_PR", DotNetDBF.NativeDbType.Date),
+                        new DotNetDBF.DBFField("D_OT", DotNetDBF.NativeDbType.Date),
+                        new DotNetDBF.DBFField("S_PR", DotNetDBF.NativeDbType.Numeric, 1,0),
+                        new DotNetDBF.DBFField("SNILS_VR", DotNetDBF.NativeDbType.Char, 11),
 
                     };
 
@@ -9470,6 +9526,15 @@ where  p.MO <> '' and p.MO is not null", Properties.Settings.Default.DocExchange
                 
                         writer.Close();
                     }
+                    using (ZipFile zip = new ZipFile())
+                    {
+                        zip.CompressionLevel = Ionic.Zlib.CompressionLevel.BestCompression;
+                        zip.AddFile(SF.FileName, "");
+
+                        zip.Save(SF.FileName.Replace(".dbf",".zip"));
+
+                    }
+                    File.Delete(SF.FileName);
                     string m = "R - Файл успешно выгружен!";
                     string t = "Сообщение!";
                     int b = 1;

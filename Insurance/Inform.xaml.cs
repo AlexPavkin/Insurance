@@ -985,24 +985,59 @@ SPOSOB_P3 as sposob,RESULT_P3 as result,PRIMECH as prim, l.kod as KOD_POL, l.kod
                 {
 
                     var writer = new DotNetDBF.DBFWriter(fos);
-                    writer.CharEncoding = Encoding.GetEncoding(866);
-                    writer.Signature = DBFSignature.DBase3;//0x43;//DotNetDBF.DBFSignature.DBase3;
-                    writer.LanguageDriver = 0x26; // кодировка 866
-                    
+                    writer.CharEncoding = Encoding.GetEncoding(1251);
+                    writer.Signature = 0x03;//DotNetDBF.DBFSignature.DBase3;
+                    writer.LanguageDriver = 0xC9;//0x26; // кодировка 866
+
+                    //writer.Fields = new[]{
+                    //    new DotNetDBF.DBFField("ID_TFOMS", DotNetDBF.NativeDbType.Numeric, 5, 0),
+                    //    new DotNetDBF.DBFField("SURNAME", DotNetDBF.NativeDbType.Char, 40),
+                    //    new DotNetDBF.DBFField("NAME", DotNetDBF.NativeDbType.Char, 40),
+                    //    new DotNetDBF.DBFField("SECNAME", DotNetDBF.NativeDbType.Char, 40),
+                    //    new DotNetDBF.DBFField("DR", DotNetDBF.NativeDbType.Date),
+                    //    new DotNetDBF.DBFField("POL", DotNetDBF.NativeDbType.Numeric, 1,0),
+                    //    new DotNetDBF.DBFField("SNILS", DotNetDBF.NativeDbType.Char, 20),
+                    //    new DotNetDBF.DBFField("SCOMP", DotNetDBF.NativeDbType.Numeric, 2,0),
+                    //    new DotNetDBF.DBFField("DPFS", DotNetDBF.NativeDbType.Numeric, 1, 0),
+                    //    new DotNetDBF.DBFField("SN_POL", DotNetDBF.NativeDbType.Char, 16),
+                    //    new DotNetDBF.DBFField("VIDPROF", DotNetDBF.NativeDbType.Numeric, 1,0),
+                    //    new DotNetDBF.DBFField("DYEAR", DotNetDBF.NativeDbType.Numeric, 4,0),
+                    //    new DotNetDBF.DBFField("DMONTH", DotNetDBF.NativeDbType.Numeric, 2,0),
+                    //    new DotNetDBF.DBFField("Tema", DotNetDBF.NativeDbType.Numeric, 1, 0),
+                    //    new DotNetDBF.DBFField("DATE_UV", DotNetDBF.NativeDbType.Date),
+                    //    new DotNetDBF.DBFField("SPOSOB", DotNetDBF.NativeDbType.Numeric, 2, 0),
+                    //    new DotNetDBF.DBFField("RESULT", DotNetDBF.NativeDbType.Numeric, 1, 0),
+                    //    new DotNetDBF.DBFField("prim", DotNetDBF.NativeDbType.Char, 250),
+                    //    new DotNetDBF.DBFField("KOD_POL", DotNetDBF.NativeDbType.Numeric, 5,0),
+                    //    new DotNetDBF.DBFField("KOD_POL1", DotNetDBF.NativeDbType.Numeric, 2,0),
+                    //    new DotNetDBF.DBFField("SMO", DotNetDBF.NativeDbType.Char, 5),
+
+                    //};
+
+                    //for (int i = 0; i < inf.Count; i++)
+                    //{
+                    //    writer.WriteRecord(inf[i].ID_TFOMS, inf[i].SURNAME, inf[i].NAME, inf[i].SECNAME, inf[i].DR,
+                    //         inf[i].POL, inf[i].SNILS, inf[i].SCOMP, inf[i].DPFS, inf[i].SN_POL, inf[i].VIDPROF,
+                    //         inf[i].DYEAR, inf[i].DMONTH, inf[i].Tema, inf[i].DATE_UV, inf[i].SPOSOB, inf[i].RESULT,
+                    //         inf[i].prim, inf[i].KOD_POL, inf[i].KOD_POL1, inf[i].SMO
+                    //       // добавляем поля в набор
+                    //       );
+
+                    //}
                     writer.Fields = new[]{
                         new DotNetDBF.DBFField("ID_TFOMS", DotNetDBF.NativeDbType.Numeric, 5, 0),
                         new DotNetDBF.DBFField("SURNAME", DotNetDBF.NativeDbType.Char, 40),
                         new DotNetDBF.DBFField("NAME", DotNetDBF.NativeDbType.Char, 40),
                         new DotNetDBF.DBFField("SECNAME", DotNetDBF.NativeDbType.Char, 40),
                         new DotNetDBF.DBFField("DR", DotNetDBF.NativeDbType.Date),
-                        new DotNetDBF.DBFField("POL", DotNetDBF.NativeDbType.Numeric, 1,0),
+                        
                         new DotNetDBF.DBFField("SNILS", DotNetDBF.NativeDbType.Char, 20),
                         new DotNetDBF.DBFField("SCOMP", DotNetDBF.NativeDbType.Numeric, 2,0),
                         new DotNetDBF.DBFField("DPFS", DotNetDBF.NativeDbType.Numeric, 1, 0),
                         new DotNetDBF.DBFField("SN_POL", DotNetDBF.NativeDbType.Char, 16),
-                        new DotNetDBF.DBFField("VIDPROF", DotNetDBF.NativeDbType.Numeric, 1,0),
-                        new DotNetDBF.DBFField("DYEAR", DotNetDBF.NativeDbType.Numeric, 4,0),
                         new DotNetDBF.DBFField("DMONTH", DotNetDBF.NativeDbType.Numeric, 2,0),
+                        new DotNetDBF.DBFField("DYEAR", DotNetDBF.NativeDbType.Numeric, 4,0),
+                        
                         new DotNetDBF.DBFField("Tema", DotNetDBF.NativeDbType.Numeric, 1, 0),
                         new DotNetDBF.DBFField("DATE_UV", DotNetDBF.NativeDbType.Date),
                         new DotNetDBF.DBFField("SPOSOB", DotNetDBF.NativeDbType.Numeric, 2, 0),
@@ -1011,20 +1046,21 @@ SPOSOB_P3 as sposob,RESULT_P3 as result,PRIMECH as prim, l.kod as KOD_POL, l.kod
                         new DotNetDBF.DBFField("KOD_POL", DotNetDBF.NativeDbType.Numeric, 5,0),
                         new DotNetDBF.DBFField("KOD_POL1", DotNetDBF.NativeDbType.Numeric, 2,0),
                         new DotNetDBF.DBFField("SMO", DotNetDBF.NativeDbType.Char, 5),
+                        new DotNetDBF.DBFField("POL", DotNetDBF.NativeDbType.Numeric, 1,0),
+                        new DotNetDBF.DBFField("VIDPROF", DotNetDBF.NativeDbType.Numeric, 1,0)
 
                     };
 
                     for (int i = 0; i < inf.Count; i++)
                     {
                         writer.WriteRecord(inf[i].ID_TFOMS, inf[i].SURNAME, inf[i].NAME, inf[i].SECNAME, inf[i].DR,
-                             inf[i].POL, inf[i].SNILS, inf[i].SCOMP, inf[i].DPFS, inf[i].SN_POL, inf[i].VIDPROF,
-                             inf[i].DYEAR, inf[i].DMONTH, inf[i].Tema, inf[i].DATE_UV, inf[i].SPOSOB, inf[i].RESULT,
-                             inf[i].prim, inf[i].KOD_POL, inf[i].KOD_POL1, inf[i].SMO
+                                           inf[i].SNILS, inf[i].SCOMP, inf[i].DPFS, inf[i].SN_POL,  inf[i].DMONTH, 
+                                           inf[i].DYEAR, inf[i].Tema, inf[i].DATE_UV, inf[i].SPOSOB, 
+                                           inf[i].RESULT, inf[i].prim,  inf[i].KOD_POL, inf[i].KOD_POL1, inf[i].SMO, inf[i].POL, inf[i].VIDPROF
                            // добавляем поля в набор
                            );
 
                     }
-
 
                 }
             }

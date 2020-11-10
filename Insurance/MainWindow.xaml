@@ -945,7 +945,7 @@
                             <dx:DXTabItem x:Name="addr_reg_zl" Header="Адрес регистрации ЗЛ" HorizontalAlignment="Left" Width="175" PreviewKeyDown="addr_reg_zl_PreviewKeyDown" BackgroundColor="WhiteSmoke">
                                 <Grid Background="Transparent" Margin="0,0,0,-35" Height="480">
                                     <dxlc:LayoutControl x:Name="addr" Width="717" Margin="10,10,0,0" VerticalAlignment="Top" Height="441" HorizontalAlignment="Left" AllowBringChildIntoView="False">
-                                        <dxlc:LayoutGroup x:Name="address" View="GroupBox" Orientation="Vertical" Margin="-12,0,-12,0" Header="Адрес регистрации застрахованного лица" Height="359" VerticalAlignment="Top">
+                                        <dxlc:LayoutGroup x:Name="address" View="GroupBox" Orientation="Vertical" Margin="-12,0,-12,0" Header="Адрес регистрации застрахованного лица" Height="400" VerticalAlignment="Top">
                                             <Editors:FiasControl x:Name="fias" Margin="0,0,197,-158" />
                                         </dxlc:LayoutGroup>
                                     </dxlc:LayoutControl>
@@ -993,7 +993,7 @@
                             <dx:DXTabItem x:Name="addr_mg_zl" Header="Адрес места жительства ЗЛ" PreviewKeyDown="addr_mg_zl_PreviewKeyDown" BackgroundColor="WhiteSmoke">
                                 <Grid Background="Transparent" Margin="0,0,0,-35" Height="480">
                                     <dxlc:LayoutControl x:Name="addr_mg" HorizontalAlignment="Left" Height="441" Margin="10,10,0,0" VerticalAlignment="Top" Width="717" AllowBringChildIntoView="False">
-                                        <dxlc:LayoutGroup x:Name="address1" Header="Адрес места жительства застрахованного лица" View="GroupBox" Orientation="Vertical" Margin="-12,0,-12,0" Height="359" VerticalAlignment="Top">
+                                        <dxlc:LayoutGroup x:Name="address1" Header="Адрес места жительства застрахованного лица" View="GroupBox" Orientation="Vertical" Margin="-12,0,-12,0" Height="400" VerticalAlignment="Top">
                                             <Editors:FiasControl1 x:Name="fias1" Margin="0,0,197,-158" />
                                         </dxlc:LayoutGroup>
                                     </dxlc:LayoutControl>
