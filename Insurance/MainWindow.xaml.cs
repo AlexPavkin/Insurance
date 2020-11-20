@@ -434,8 +434,6 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
             int isrt = str;
             con.Close();
 
-
-
         }
         public static DataTable ToDataTable<T>(List<T> items)
 
@@ -3266,9 +3264,12 @@ DEALLOCATE MY_CURSOR
 
         }
 
+        
+
 
         private void dalee_Click_1(object sender, RoutedEventArgs e)
         {
+          
             if (kem_vid.Text.Length > 100)
             {
                 string m = "Длинна \"Кем выдан документ превышает\" 100 символов!";
@@ -3605,6 +3606,21 @@ DEALLOCATE MY_CURSOR
                 // При нажатии кнопки "Далее" если в предидущем окне была нажата кнопка "Далее".
                 else if (Vars.Btn == "3")
                 {
+                    //Событие создание
+                    string m1 = "Отправить файл в ТФОМС?";
+                    string t1 = "Внимание!";
+                    int b1 = 2;
+                    Message me1 = new Message(m1, t1, b1);
+                    me1.ShowDialog();
+
+                    if (Vars.mes_res == 1)
+                    {
+                        Vigruzka_SALEHARD();
+                    }
+                    else
+                    {
+                     
+
                     if (fias.reg_dom.EditValue != null)
                     {
                         dstrkor = fias.reg_dom.Text.Replace(' ', ',').Split(',');
@@ -3645,8 +3661,7 @@ DEALLOCATE MY_CURSOR
                         InsMethods.Save_bt3_b0_s1_p13(this);
                         return;
                     }
-
-
+                    }
 
                 }
 
@@ -3927,6 +3942,12 @@ DEALLOCATE MY_CURSOR
                 // При нажатии кнопки "Далее" если в предидущем окне была нажата кнопка "Далее".
                 else if (Vars.Btn == "3")
                 {
+
+                    if (Vars.mes_res == 0)
+                    {
+                        Vigruzka_SALEHARD();
+                    }
+                   
                     if (fias.reg_dom.EditValue != null)
                     {
                         dstrkor = fias.reg_dom.Text.Replace(' ', ',').Split(',');
@@ -3968,7 +3989,7 @@ DEALLOCATE MY_CURSOR
                         return;
                     }
 
-
+                  
                 }
 
                 //--------------------------------------------------------------------------------------------------
@@ -4081,7 +4102,7 @@ DEALLOCATE MY_CURSOR
 
 
                 }
-
+            
             }
 
             //var connectionString1 = Properties.Settings.Default.DocExchangeConnectionString;
@@ -4100,7 +4121,141 @@ DEALLOCATE MY_CURSOR
 
 
             //}
+
+
+
+
+
+
+       
+
         }
+
+        public void Vigruzka_SALEHARD()
+        {
+            var id = SPR.MyReader.SELECTVAIN("select id from POL_PERSONS where EVENT_GUID = (SELECT TOP (1) IDGUID FROM POL_EVENTS ORDER BY ID DESC)",
+                Properties.Settings.Default.DocExchangeConnectionString);
+
+            string fname1 = "";
+            var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
+            SqlConnection con = new SqlConnection(connectionString);
+            SqlCommand comm4 = new SqlCommand($@"select top (1) smo_code from pol_prz", con);
+            con.Open();
+            comm4.CommandTimeout = 0;
+            string smocod = (string)comm4.ExecuteScalar();
+            con.Close();
+            SqlCommand comm2 = new SqlCommand($@"declare @num nvarchar(5);
+set @num=(select
+(case
+when (select count(*) from POL_FILES where 
+FNAME_MM=datepart(mm,GETDATE()) 
+and FNAME_GG=right(datepart(yy,GETDATE()),2) and id=(select max(id) from POL_FILES where FNAME_MM=datepart(mm,GETDATE()) 
+and FNAME_GG=right(datepart(yy,GETDATE()),2)))=0 then 0 
+else (select FNAME_Z+1 from POL_FILES where 
+FNAME_MM=datepart(mm,GETDATE()) 
+and FNAME_GG=right(datepart(yy,GETDATE()),2) and id=(select max(id) from POL_FILES where FNAME_MM=datepart(mm,GETDATE()) 
+and FNAME_GG=right(datepart(yy,GETDATE()),2))) end));
+set @num =(case 
+when len(@num)=1 and @num=0 then @num+'01'
+when len(@num)=1 and @num!=0 then '00'+@num
+when len(@num)=2 then '0'+@num else @num end)
+select 'i'+(select top(1) SMO_CODE from pol_prz)+'_'+'{prz.EditValue.ToString()}'+'_'+
+(case when len(convert(nvarchar,datepart(mm,GETDATE())))=1 then '0'+convert(nvarchar,datepart(mm,GETDATE()))
+else convert(nvarchar,datepart(mm,GETDATE())) end)+
+convert(nvarchar,right(datepart(yy,GETDATE()),2))+@num+'.xml'", con);
+            con.Open();
+            comm2.CommandTimeout = 0;
+            string fname = (string)comm2.ExecuteScalar();
+            con.Close();
+            SqlCommand comm5 = new SqlCommand($@"declare @num nvarchar(5);
+set @num=(select
+(case
+when (select count(*) from POL_FILES where 
+FNAME_MM=datepart(mm,GETDATE()) 
+and FNAME_GG=right(datepart(yy,GETDATE()),2) and id=(select max(id) from POL_FILES where FNAME_MM=datepart(mm,GETDATE()) 
+and FNAME_GG=right(datepart(yy,GETDATE()),2)))=0 then 0 
+else (select FNAME_Z+1 from POL_FILES where 
+FNAME_MM=datepart(mm,GETDATE()) 
+and FNAME_GG=right(datepart(yy,GETDATE()),2) and id=(select max(id) from POL_FILES where FNAME_MM=datepart(mm,GETDATE()) 
+and FNAME_GG=right(datepart(yy,GETDATE()),2))) end));
+set @num =(case 
+when len(@num)=1 and @num=0 then @num+'01'
+when len(@num)=1 and @num!=0 then '00'+@num
+when len(@num)=2 then '0'+@num else @num end)
+select @num", con);
+            con.Open();
+            comm5.CommandTimeout = 0;
+            string num = (string)comm5.ExecuteScalar();
+            con.Close();
+
+
+            string Path = $@"C:\Отправка ТФОМС";
+            string fname3;
+
+            fname3 = "i" + smocod + "_" + prz.EditValue.ToString() + "_" +
+                     DateTime.Today.ToString("MM") + DateTime.Today.ToString("yy") +
+                     fname + ".xml";
+            num = fname;
+
+            SqlCommand comm = new SqlCommand(
+                $@"exec [Unload_ToFoms] @num = '{num.Replace(".xml","")}', @FName = '{num}', @col = 1, @prz = '{prz.EditValue.ToString()}', @ids = '{id}' ", con);
+
+            con.Open();
+            comm.CommandTimeout = 0;
+            fname1 = (string)comm.ExecuteScalar();
+            con.Close();
+
+
+            SqlCommand comm1 = new SqlCommand($@"Select FXML from pol_files where filename='{fname1}'",
+                con);
+            con.Open();
+            comm1.CommandTimeout = 0;
+            string fxml = (string)comm1.ExecuteScalar();
+            con.Close();
+
+            File.WriteAllText(Path,
+                "<?xml version=" + (char)34 + "1.0" + (char)34 + " encoding=" + (char)34 +
+                "windows-1251" + (char)34 + "?>" + fxml, Encoding.GetEncoding("windows-1251"));
+            XDocument xDoc = XDocument.Load(Path);
+            xDoc.Save(Path);
+            string fnamezip = Path.Replace(".xml", "");
+            using (ZipFile zip = new ZipFile())
+            {
+                zip.AddFile(Path, "");
+
+                zip.Save(fnamezip + ".zip");
+
+            }
+
+
+
+            FileInfo file_zip = new FileInfo(fnamezip + ".zip");
+            long size = file_zip.Length;
+            byte[] array;
+            using (FileStream fs = new FileStream(fnamezip + ".zip", FileMode.Open))
+            {
+                // преобразуем строку в байты
+                array = new byte[fs.Length];
+                // считываем данные
+                fs.Read(array, 0, array.Length);
+                // декодируем байты в строку
+                //string textFromFile = System.Text.Encoding.Default.GetString(array);
+
+            }
+
+            SqlCommand comm3 =
+                new SqlCommand(
+                    $@"UPDATE pol_files set fzip=convert(varbinary(max),'{array}'),fsize={size} where filename='{fname1}'",
+                    con);
+            con.Open();
+            comm3.CommandTimeout = 0;
+            comm3.ExecuteScalar();
+            con.Close();
+
+        }
+
+
+
 
         public ObservableCollection<string> list0 = new ObservableCollection<string>();
         //public ObservableCollection<string> list1 = new ObservableCollection<string>();
@@ -10189,6 +10344,167 @@ select isnull(phone,'0000000000') +@r+ isnull(fam,'')+' '+isnull(im,'')+' '+isnu
                 int b = 1;
                 Message me = new Message(m, t, b);
                 me.ShowDialog();
+            }
+        }
+
+        private void Vigr_ZSP_OnItemClick(object sender, ItemClickEventArgs itemClickEventArgs)
+        {
+            if (pers_grid.SelectedItems.Count == 0)
+            {
+                string m1 = "Вы не выбрали ЗЛ для выгрузки!";
+                string t1 = "Ошибка!";
+                int b1 = 1;
+                Message me1 = new Message(m1, t1, b1);
+                me1.ShowDialog();
+                return;
+            }
+
+            var sg_rows = Funcs.MyIds(pers_grid.GetSelectedRowHandles(), pers_grid);
+            int rtc = pers_grid.GetSelectedRowHandles().Count();
+            if (prz.EditValue == null)
+            {
+                string m = "Выберите пункт выдачи!";
+                string t = "Ошибка!";
+                int b = 1;
+                Message me = new Message(m, t, b);
+                me.ShowDialog();
+
+                return;
+            }
+            else
+            {
+
+            }
+
+
+            string fname1;
+            var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
+            SqlConnection con = new SqlConnection(connectionString);
+            SqlCommand comm4 = new SqlCommand($@"select top (1) smo_code from pol_prz", con);
+            con.Open();
+            comm4.CommandTimeout = 0;
+            string smocod = (string)comm4.ExecuteScalar();
+            con.Close();
+
+            SqlCommand comm2 = new SqlCommand($@"select top(1) '71140-SMO'+(select top(1) SMO_CODE from pol_prz)+'-ZSP1-'+
+ CAST(CAST(SUBSTRING([filename],21,3) as int)+1 as nvarchar)
++'.uprmes'from POL_FILES_ZSSP pzsp", con);
+            con.Open();
+            comm2.CommandTimeout = 0;
+            string fname = (string)comm2.ExecuteScalar();
+            con.Close();
+     
+
+            SaveFileDialog SF = new SaveFileDialog();
+            SF.InitialDirectory = "C:\\";
+
+            SF.FileName = fname;
+
+            string fname3;
+            bool res = SF.ShowDialog().Value;
+        
+
+            string sff = SF.FileName.Replace(SF.SafeFileName, fname);
+            if (res == true)
+            {
+
+                var serdoc = SPR.MyReader.SELECTVAIN(
+                    $@"SELECT pdo.DOCSER from POL_DOCUMENTS pdo left join POL_PERSONS pp on pp.[EVENT_GUID] = pdo.IDGUID where pp.ID = {sg_rows}",
+                    Properties.Settings.Default.DocExchangeConnectionString);
+                var typedoc = SPR.MyReader.SELECTVAIN(
+                    $@"SELECT pdo.DOCTYPE from POL_DOCUMENTS pdo left join POL_PERSONS pp on pp.[EVENT_GUID] = pdo.IDGUID where pp.ID = {sg_rows}",
+                    Properties.Settings.Default.DocExchangeConnectionString);
+                var numdoc = SPR.MyReader.SELECTVAIN(
+                    $@"SELECT pdo.DOCNUM from POL_DOCUMENTS pdo left join POL_PERSONS pp on pp.[EVENT_GUID] = pdo.IDGUID where pp.ID = {sg_rows}",
+                    Properties.Settings.Default.DocExchangeConnectionString);
+                var snils = SPR.MyReader.SELECTVAIN(
+                    $@"SELECT pp.SS from POL_PERSONS pp where pp.ID = {sg_rows}",
+                    Properties.Settings.Default.DocExchangeConnectionString);
+                var fam = SPR.MyReader.SELECTVAIN(
+                    $@"SELECT pp.FAM from POL_PERSONS pp where pp.ID = {sg_rows}",
+                    Properties.Settings.Default.DocExchangeConnectionString);
+                var im = SPR.MyReader.SELECTVAIN(
+                    $@"SELECT pp.IM from POL_PERSONS pp where pp.ID = {sg_rows}",
+                    Properties.Settings.Default.DocExchangeConnectionString);
+                var ot = SPR.MyReader.SELECTVAIN(
+                    $@"SELECT pp.OT from POL_PERSONS pp where pp.ID = {sg_rows}",
+                    Properties.Settings.Default.DocExchangeConnectionString);
+                var mr = SPR.MyReader.SELECTVAIN(
+                    $@"SELECT pp.mr from POL_PERSONS pp where pp.ID = {sg_rows}",
+                    Properties.Settings.Default.DocExchangeConnectionString);
+
+
+                string xml =
+                    $@"<?xml version=""1.0"" encoding=""windows-1251""?><UPRMessageBatch xmlns:xsi=""http://www.w3.org/2001/XMLSchema-instance"" xmlns:rtc=""http://www.rintech.ru"" xmlns:xsd=""http://www.w3.org/2001/XMLSchema"" xmlns=""urn:hl7-org:v2xml""><BHS><BHS.1>|</BHS.1><BHS.2>^~\&amp;</BHS.2><BHS.3><HD.1>СРЗ 83</HD.1></BHS.3><BHS.4><HD.1>83</HD.1><HD.2>1.2.643.2.40.3.3.1.0</HD.2><HD.3>ISO</HD.3></BHS.4><BHS.5><HD.1>ЦК ЕРП</HD.1></BHS.5><BHS.6><HD.1>00</HD.1><HD.2>1.2.643.2.40.3.3.1.0</HD.2><HD.3>ISO</HD.3></BHS.6><BHS.7>2020-11-17T14:51:35Z+06:00</BHS.7><BHS.11>71140-SMO83001-ZSP1-01304120</BHS.11></BHS><QBP_ZP1><MSH><MSH.1>|</MSH.1><MSH.2>^~\&amp;</MSH.2><MSH.3><HD.1>СРЗ 83</HD.1></MSH.3><MSH.4><HD.1>83</HD.1><HD.2>1.2.643.2.40.3.3.1.0</HD.2><HD.3>ISO</HD.3></MSH.4><MSH.5><HD.1>ЦК ЕРП</HD.1></MSH.5><MSH.6><HD.1>00</HD.1><HD.2>1.2.643.2.40.3.3.1.0</HD.2><HD.3>ISO</HD.3></MSH.6><MSH.7>2020-11-17T14:51:35Z+06:00</MSH.7><MSH.9><MSG.1>QBP</MSG.1><MSG.2>ZP1</MSG.2><MSG.3>QBP_ZP1</MSG.3></MSH.9><MSH.10>71140-SMO83001-ZSP1-01304120</MSH.10><MSH.11><PT.1>P</PT.1></MSH.11><MSH.12><VID.1>2.6</VID.1></MSH.12><MSH.15>AL</MSH.15><MSH.16>AL</MSH.16></MSH><QPD><QPD.1><CWE.1>СП</CWE.1><CWE.2>Запрос страховой принадлежности</CWE.2><CWE.3>1.2.643.2.40.1.9</CWE.3></QPD.1><QPD.3>У</QPD.3><QPD.5><CX.1>74 98 № 029613</CX.1><CX.5>14</CX.5></QPD.5><QPD.5><CX.1>05947245293</CX.1><CX.5>PEN</CX.5></QPD.5><QPD.6><XPN.1><FN.1>ВДОВЕНКО</FN.1></XPN.1><XPN.2>НИНА</XPN.2><XPN.3>АЛЕКСЕЕВНА</XPN.3><XPN.7>L</XPN.7></QPD.6><QPD.7>1949-09-24</QPD.7><QPD.8>2</QPD.8><QPD.9>С. ЛЯПУНОВО БАЙКАЛОВСКИЙ РАЙОН СВЕРДЛОВСКАЯ ОБЛАСТЬ</QPD.9><QPD.12><HD.1>83</HD.1><HD.2>1.2.643.2.40.3.3.1.0</HD.2><HD.3>ISO</HD.3></QPD.12><QPD.13></QPD.13></QPD></QBP_ZP1><BTS><BTS.1>1</BTS.1><BTS.3>7CCD8C54</BTS.3></BTS></UPRMessageBatch>"
+                        .Replace("<BHS.7>2020-11-17T14:51:35Z+06:00</BHS.7>", DateTime.Now.ToString())
+                        .Replace("<BHS.11>71140-SMO83001-ZSP1-01304120</BHS.11>", "<BHS.11>" + fname.Replace(".uprmes","") + "</BHS.11>")
+                        .Replace("<MSH.10>71140-SMO83001-ZSP1-01304120</MSH.10>", "<MSH.10>" + fname.Replace(".uprmes", "") + "</MSH.10>")
+                        .Replace("<CX.1>74 98 № 029613</CX.1>", serdoc+" № "+numdoc)
+                        .Replace("<CX.5>14</CX.5>", typedoc)
+                        .Replace("<CX.1>05947245293</CX.1>", "<CX.1>"+ snils + "</CX.1>")
+                        .Replace("<FN.1>ВДОВЕНКО</FN.1>", "<FN.1>"+fam+"</FN.1>")
+                        .Replace("<XPN.2>НИНА</XPN.2>", "<XPN.2>"+im+"</XPN.2>")
+                        .Replace("<XPN.2>НИНА</XPN.2>", "<XPN.2>" + im + "</XPN.2>")
+                        .Replace("<XPN.3>АЛЕКСЕЕВНА</XPN.3>", "<XPN.3>"+ot+"</XPN.3>");
+
+                string crc =
+                  $@"<QBP_ZP1><MSH><MSH.1>|</MSH.1><MSH.2>^~\&amp;</MSH.2><MSH.3><HD.1>СРЗ 83</HD.1></MSH.3><MSH.4><HD.1>83</HD.1><HD.2>1.2.643.2.40.3.3.1.0</HD.2><HD.3>ISO</HD.3></MSH.4><MSH.5><HD.1>ЦК ЕРП</HD.1></MSH.5><MSH.6><HD.1>00</HD.1><HD.2>1.2.643.2.40.3.3.1.0</HD.2><HD.3>ISO</HD.3></MSH.6><MSH.7>2020-11-17T14:51:35Z+06:00</MSH.7><MSH.9><MSG.1>QBP</MSG.1><MSG.2>ZP1</MSG.2><MSG.3>QBP_ZP1</MSG.3></MSH.9><MSH.10>71140-SMO83001-ZSP1-01304120</MSH.10><MSH.11><PT.1>P</PT.1></MSH.11><MSH.12><VID.1>2.6</VID.1></MSH.12><MSH.15>AL</MSH.15><MSH.16>AL</MSH.16></MSH><QPD><QPD.1><CWE.1>СП</CWE.1><CWE.2>Запрос страховой принадлежности</CWE.2><CWE.3>1.2.643.2.40.1.9</CWE.3></QPD.1><QPD.3>У</QPD.3><QPD.5><CX.1>74 98 № 029613</CX.1><CX.5>14</CX.5></QPD.5><QPD.5><CX.1>05947245293</CX.1><CX.5>PEN</CX.5></QPD.5><QPD.6><XPN.1><FN.1>ВДОВЕНКО</FN.1></XPN.1><XPN.2>НИНА</XPN.2><XPN.3>АЛЕКСЕЕВНА</XPN.3><XPN.7>L</XPN.7></QPD.6><QPD.7>1949-09-24</QPD.7><QPD.8>2</QPD.8><QPD.9>С. ЛЯПУНОВО БАЙКАЛОВСКИЙ РАЙОН СВЕРДЛОВСКАЯ ОБЛАСТЬ</QPD.9><QPD.12><HD.1>83</HD.1><HD.2>1.2.643.2.40.3.3.1.0</HD.2><HD.3>ISO</HD.3></QPD.12><QPD.13></QPD.13></QPD></QBP_ZP1>"
+                      .Replace("<BHS.7>2020-11-17T14:51:35Z+06:00</BHS.7>", DateTime.Now.ToString())
+                      .Replace("<BHS.11>71140-SMO83001-ZSP1-01304120</BHS.11>", "<BHS.11>" + fname.Replace(".uprmes", "") + "</BHS.11>")
+                      .Replace("<MSH.10>71140-SMO83001-ZSP1-01304120</MSH.10>", "<MSH.10>" + fname.Replace(".uprmes", "") + "</MSH.10>")
+                      .Replace("<CX.1>74 98 № 029613</CX.1>", serdoc + " № " + numdoc)
+                      .Replace("<CX.5>14</CX.5>", typedoc)
+                      .Replace("<CX.1>05947245293</CX.1>", "<CX.1>" + snils + "</CX.1>")
+                      .Replace("<FN.1>ВДОВЕНКО</FN.1>", "<FN.1>" + fam + "</FN.1>")
+                      .Replace("<XPN.2>НИНА</XPN.2>", "<XPN.2>" + im + "</XPN.2>")
+                      .Replace("<XPN.2>НИНА</XPN.2>", "<XPN.2>" + im + "</XPN.2>")
+                      .Replace("<XPN.3>АЛЕКСЕЕВНА</XPN.3>", "<XPN.3>" + ot + "</XPN.3>");
+
+
+
+        File.WriteAllText($@"C:\test.xml", crc);
+        var hashcrc = CRC32($@"C:\test.xml");
+
+        xml = xml.Replace("<BTS.3>7CCD8C54</BTS.3>", hashcrc);
+        SqlCommand comm = new SqlCommand($@"declare @xml xml;
+                                            set @xml='{xml}'
+                                            INSERT into POL_FILES_ZSSP (FILENAME,FNAME_T,FNAME_N,FNAME_MM,FNAME_GG,FXML)
+                                            values ('{fname}','i','{fname.Split('-')[3].Replace(".uprmes", "")}','{DateTime.Now.Month.ToString()}','{DateTime.Now.Day.ToString()}', @xml)", con);
+
+            con.Open();
+            comm.CommandTimeout = 0;
+            fname1 = (string)comm.ExecuteScalar();
+            con.Close();
+
+
+        File.WriteAllText(sff,xml);
+        pers_grid.UnselectAll();
+        string m = "Файл " + fname + " успешно сохранен!";
+        string t = "Сообщение!";
+                int b = 1;
+                Message me = new Message(m, t, b);
+                me.ShowDialog();
+             
+                pers_grid_Loaded(this, e);
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        static string CRC32(string Path)
+        {
+            Crc32 crc32 = new Crc32();
+            String hash = String.Empty;
+            using (FileStream fs = File.OpenRead(Path))
+            {
+                foreach (byte b in crc32.ComputeHash(fs))
+                {
+                    hash += b.ToString("x2").ToLower();
+                }
+
+                return hash;
             }
         }
     }

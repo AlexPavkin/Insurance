@@ -289,6 +289,8 @@ on pp.IDGUID=d.PERSON_GUID and d.MAIN=1 and d.ACTIVE=1
         //    public string NAME { get; set; }
 
         //}
+       
+
         public static string Translit(string str)
         {
             string[] rus_up = { "Й", "Ц", "У", "К", "Е", "Н", "Г", "Ш", "Щ", "З", "Х", "Ъ", "Ф", "Ы", "В", "А", "П", "Р", "О", "Л", "Д", "Ж", "Э", "Я", "Ч", "С", "М", "И", "Т", "Ь", "Б", "Ю", ",", "." };

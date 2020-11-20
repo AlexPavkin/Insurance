@@ -459,8 +459,10 @@
                                     <dxb:BarButtonItem Name ="vignas" Content="Выгрузить Население(Калининград)" ItemClick="Vignas_ItemClick"/>
                                     <dxb:BarItemSeparator/>
                                     <dxb:BarButtonItem Name="Del_prikrep" Content ="Удалить прикрепление" ItemClick="Del_prikrep_OnItemClick"/>
-                                    
-                                </dxg:TableView.RowCellMenuCustomizations>
+                                    <dxb:BarItemSeparator/>
+                                    <dxb:BarButtonItem Name="Vigr_ZSP" Content ="Выгрузить ЗСП" ItemClick="Vigr_ZSP_OnItemClick"/>
+
+</dxg:TableView.RowCellMenuCustomizations>
 
                             </dxg:TableView>
                         </dxg:GridControl.View>
