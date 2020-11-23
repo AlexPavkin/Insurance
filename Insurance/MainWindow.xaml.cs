@@ -689,7 +689,7 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
             SqlConnection con = new SqlConnection(connectionString);
             SqlCommand comm = new SqlCommand($@"select count(H_DATE) from SPR_HOLIDAYS where H_DATE > '{h_start}' and H_DATE < '{h_end}' and status='1'", con);
             SqlCommand comm1 = new SqlCommand($@"select count(H_DATE) from SPR_HOLIDAYS where H_DATE between '{h_start}' and '{h_end}' and status in('2','3')", con);
-            con.Open();
+            con.Open(); 
             int h_kol = (int)comm.ExecuteScalar();
             int w_kol = (int)comm1.ExecuteScalar();
             con.Close();
