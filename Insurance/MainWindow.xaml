@@ -463,8 +463,9 @@
                                     <dxb:BarButtonItem Name="Izm_active" Content ="Поменять статус активности" ItemClick="Izm_active_ItemClick" />
                                     <dxb:BarItemSeparator/>
                                     <dxb:BarButtonItem Name="Del_stopreason" Content ="Удалить причину снятия с учета" ItemClick="Del_stopreason_ItemClick"  />
-                                    
-                                </dxg:TableView.RowCellMenuCustomizations>
+                                    <dxb:BarItemSeparator/>
+                                    <dxb:BarButtonItem Name="Vigr_ZSP" Content ="Выгрузить ЗСП" ItemClick="Vigr_ZSP_OnItemClick"/>
+                                </dxg:TableView.RowCellMenuCustomizations>     
 
                             </dxg:TableView>
                         </dxg:GridControl.View>
