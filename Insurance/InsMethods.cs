@@ -4125,8 +4125,8 @@ NAME_VP='{PD.kem_vid1.Text}', NAME_VP_CODE='{PD.kod_podr1.Text}' where idguid='{
             else if (PD.prev_persguid != Guid.Empty && PD.prev_fam.Text != "")
             {
 
-                SqlCommand cmdpers = new SqlCommand($@"update POL_PERSONS_OLD set FAM='{PD.prev_fam.Text}',IM='{PD.prev_im.Text}',OT='{PD.prev_ot.Text}',W={PD.prev_pol.EditValue},DR='{PD.prev_dr.EditValue}',MR='{PD.prev_mr.Text}'
- where idguid='{PD.prev_persguid}'", con);
+                SqlCommand cmdpers = new SqlCommand($@"update POL_PERSONS_OLD set FAM='{PD.prev_fam.Text}',IM='{PD.prev_im.Text}',OT='{PD.prev_ot.Text}',W={PD.prev_pol.EditValue},DR='{PD.prev_dr.EditValue}',MR='{PD.prev_mr.Text}',
+ event_guid=(select event_guid from pol_persons where id={Vars.IdP}) where idguid='{PD.prev_persguid}'", con);
                 con.Open();
                 cmdpers.ExecuteNonQuery();
                 con.Close();
@@ -4189,7 +4189,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
                 "insert into pol_events (IDGUID,dvizit,method,petition,tip_op,person_guid,rperson_guid,prelation,rsmo,rpolis,fpolis,agent)" +
                 " VALUES (newid(),@dvizit,@method,@pet,@tip_op,(select idguid from pol_persons where id=@id_p)," +
                 "(select rperson_guid from pol_persons where id=@id_p),@prelation,@rsmo,@rpolis,@fpolis,@agent)" +
-                 "update pol_persons set event_guid=(select idguid from pol_events where id=SCOPE_IDENTITY()) where idguid=(select person_guid from pol_events where id=SCOPE_IDENTITY())" +
+                 "update pol_persons set event_guid=(select idguid from pol_events where id=SCOPE_IDENTITY()) where id=@id_p)" +
 
                 "insert into POL_DOCUMENTS(IDGUID,PERSON_GUID,OKSM,DOCTYPE,DOCSER,DOCNUM,DOCDATE,NAME_VP,NAME_VP_CODE,DOCMR,event_guid)" +
                 "values(newid(),(select person_guid from pol_events where id=SCOPE_IDENTITY()), @oksm,@doctype,@docser,@docnam,@docdate,@name_vp,@vp_code,@docmr," +
@@ -4498,8 +4498,8 @@ NAME_VP='{PD.kem_vid1.Text}', NAME_VP_CODE='{PD.kod_podr1.Text}' where idguid='{
             else if (PD.prev_persguid != Guid.Empty && PD.prev_fam.Text != "")
             {
 
-                SqlCommand cmdpers = new SqlCommand($@"update POL_PERSONS_OLD set FAM='{PD.prev_fam.Text}',IM='{PD.prev_im.Text}',OT='{PD.prev_ot.Text}',W={PD.prev_pol.EditValue},DR='{PD.prev_dr.EditValue}',MR='{PD.prev_mr.Text}'
- where idguid='{PD.prev_persguid}'", con);
+                SqlCommand cmdpers = new SqlCommand($@"update POL_PERSONS_OLD set FAM='{PD.prev_fam.Text}',IM='{PD.prev_im.Text}',OT='{PD.prev_ot.Text}',W={PD.prev_pol.EditValue},DR='{PD.prev_dr.EditValue}',MR='{PD.prev_mr.Text}',
+event_guid=(select event_guid from pol_persons where id={Vars.IdP}) where idguid='{PD.prev_persguid}'", con);
                 con.Open();
                 cmdpers.ExecuteNonQuery();
                 con.Close();
@@ -4947,8 +4947,8 @@ NAME_VP='{PD.kem_vid1.Text}', NAME_VP_CODE='{PD.kod_podr1.Text}' where idguid='{
             else if (PD.prev_persguid != Guid.Empty && PD.prev_fam.Text != "")
             {
 
-                SqlCommand cmdpers = new SqlCommand($@"update POL_PERSONS_OLD set FAM='{PD.prev_fam.Text}',IM='{PD.prev_im.Text}',OT='{PD.prev_ot.Text}',W={PD.prev_pol.EditValue},DR='{PD.prev_dr.EditValue}',MR='{PD.prev_mr.Text}'
- where idguid='{PD.prev_persguid}'", con);
+                SqlCommand cmdpers = new SqlCommand($@"update POL_PERSONS_OLD set FAM='{PD.prev_fam.Text}',IM='{PD.prev_im.Text}',OT='{PD.prev_ot.Text}',W={PD.prev_pol.EditValue},DR='{PD.prev_dr.EditValue}',MR='{PD.prev_mr.Text}',
+  event_guid=(select event_guid from pol_persons where id={Vars.IdP}) where idguid='{PD.prev_persguid}'", con);
                 con.Open();
                 cmdpers.ExecuteNonQuery();
                 con.Close();
@@ -10104,8 +10104,8 @@ NAME_VP='{PD.kem_vid1.Text}', NAME_VP_CODE='{PD.kod_podr1.Text}' where idguid='{
             else if (PD.prev_persguid != Guid.Empty && PD.prev_fam.Text != "")
             {
 
-                SqlCommand cmdpers = new SqlCommand($@"update POL_PERSONS_OLD set FAM='{PD.prev_fam.Text}',IM='{PD.prev_im.Text}',OT='{PD.prev_ot.Text}',W={PD.prev_pol.EditValue},DR='{PD.prev_dr.EditValue}',MR='{PD.prev_mr.Text}'
- where idguid='{PD.prev_persguid}'", con);
+                SqlCommand cmdpers = new SqlCommand($@"update POL_PERSONS_OLD set FAM='{PD.prev_fam.Text}',IM='{PD.prev_im.Text}',OT='{PD.prev_ot.Text}',W={PD.prev_pol.EditValue},DR='{PD.prev_dr.EditValue}',MR='{PD.prev_mr.Text}',
+  event_guid=(select event_guid from pol_persons where id={Vars.IdP}) where idguid='{PD.prev_persguid}'", con);
                 con.Open();
                 cmdpers.ExecuteNonQuery();
                 con.Close();
@@ -10168,7 +10168,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
                 "insert into pol_events (IDGUID,dvizit,method,petition,tip_op,person_guid,rperson_guid,prelation,rsmo,rpolis,fpolis,agent)" +
                 " VALUES (newid(),@dvizit,@method,@pet,@tip_op,(select idguid from pol_persons where id=@id_p)," +
                 "(select rperson_guid from pol_persons where id=@id_p),@prelation,@rsmo,@rpolis,@fpolis,@agent)" +
-                 "update pol_persons set event_guid=(select idguid from pol_events where id=SCOPE_IDENTITY()) where idguid=(select person_guid from pol_events where id=SCOPE_IDENTITY())" +
+                 "update pol_persons set event_guid=(select idguid from pol_events where id=SCOPE_IDENTITY()) where id=@id_p)" +
 
                 "insert into POL_DOCUMENTS(IDGUID,PERSON_GUID,OKSM,DOCTYPE,DOCSER,DOCNUM,DOCDATE,NAME_VP,NAME_VP_CODE,DOCMR,event_guid)" +
                 "values(newid(),(select person_guid from pol_events where id=SCOPE_IDENTITY()), @oksm,@doctype,@docser,@docnam,@docdate,@name_vp,@vp_code,@docmr," +
@@ -10493,8 +10493,8 @@ NAME_VP='{PD.kem_vid1.Text}', NAME_VP_CODE='{PD.kod_podr1.Text}' where idguid='{
             else if (PD.prev_persguid != Guid.Empty && PD.prev_fam.Text != "")
             {
 
-                SqlCommand cmdpers = new SqlCommand($@"update POL_PERSONS_OLD set FAM='{PD.prev_fam.Text}',IM='{PD.prev_im.Text}',OT='{PD.prev_ot.Text}',W={PD.prev_pol.EditValue},DR='{PD.prev_dr.EditValue}',MR='{PD.prev_mr.Text}'
- where idguid='{PD.prev_persguid}'", con);
+                SqlCommand cmdpers = new SqlCommand($@"update POL_PERSONS_OLD set FAM='{PD.prev_fam.Text}',IM='{PD.prev_im.Text}',OT='{PD.prev_ot.Text}',W={PD.prev_pol.EditValue},DR='{PD.prev_dr.EditValue}',MR='{PD.prev_mr.Text}',
+ event_guid=(select event_guid from pol_persons where id={Vars.IdP}) where idguid='{PD.prev_persguid}'", con);
                 con.Open();
                 cmdpers.ExecuteNonQuery();
                 con.Close();
@@ -10953,8 +10953,8 @@ NAME_VP='{PD.kem_vid1.Text}', NAME_VP_CODE='{PD.kod_podr1.Text}' where idguid='{
             else if (PD.prev_persguid != Guid.Empty && PD.prev_fam.Text != "")
             {
 
-                SqlCommand cmdpers = new SqlCommand($@"update POL_PERSONS_OLD set FAM='{PD.prev_fam.Text}',IM='{PD.prev_im.Text}',OT='{PD.prev_ot.Text}',W={PD.prev_pol.EditValue},DR='{PD.prev_dr.EditValue}',MR='{PD.prev_mr.Text}'
- where idguid='{PD.prev_persguid}'", con);
+                SqlCommand cmdpers = new SqlCommand($@"update POL_PERSONS_OLD set FAM='{PD.prev_fam.Text}',IM='{PD.prev_im.Text}',OT='{PD.prev_ot.Text}',W={PD.prev_pol.EditValue},DR='{PD.prev_dr.EditValue}',MR='{PD.prev_mr.Text}',
+ event_guid=(select event_guid from pol_persons where id={Vars.IdP}) where idguid='{PD.prev_persguid}'", con);
                 con.Open();
                 cmdpers.ExecuteNonQuery();
                 con.Close();

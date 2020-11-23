@@ -973,7 +973,7 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
             G_layuot.restore_Layout(Properties.Settings.Default.DocExchangeConnectionString, pers_grid, pers_grid_2);
             //LoadingDecorator1.IsSplashScreenShown = false;
             WindowState = WindowState.Maximized;
-            Vars.MainTitle = "Insurance(полисная часть) v1.069";
+            Vars.MainTitle = "Insurance(полисная часть) v1.071";
             Title = Vars.MainTitle;
             prz.SelectedIndex = -1;
             //if (SPR.Premmissions == "User")
@@ -4292,7 +4292,7 @@ LEFT join
 on t0.EVENT_GUID=t2.IDGUID
 LEFT join
 (select * from pol_persons_old )T3
-on t0.idguid = t3.person_guid", con);
+on t0.event_guid = t3.event_guid", con);
                     comm3.Parameters.AddWithValue("@id", Vars.IdP);
                     con.Open();
                     SqlDataReader reader1 = comm3.ExecuteReader();
@@ -4347,6 +4347,10 @@ on t0.idguid = t3.person_guid", con);
                         object DOP_COMMENT = reader1["DOP_COMMENT"];
 
                         prev_persguid = prev_persguid_.ToString() == "" ? Guid.Empty : (Guid)prev_persguid_;
+                        if (prev_persguid != Guid.Empty)
+                        {
+                            prev_doc.Visibility = Visibility.Visible;
+                        }
                         rper = idguid_.ToString() == "" ? Guid.Empty : (Guid)idguid_;
                         if (ddeath_.ToString() == "")
                         {
@@ -9459,7 +9463,7 @@ left join POL_PERSONS ppr
 on p.RPERSON_GUID=ppr.IDGUID 
 left join POL_PERSONS_OLD pold
 on p.idguid=pold.PERSON_GUID
-where  p.MO <> '' and p.MO is not null", Properties.Settings.Default.DocExchangeConnectionString);
+where  p.MO <> '' and p.MO is not null and p.active=1", Properties.Settings.Default.DocExchangeConnectionString);
 
                     //DataTable dt = new DataTable();
                     string dbffile = SF.FileName;
@@ -10189,6 +10193,72 @@ select isnull(phone,'0000000000') +@r+ isnull(fam,'')+' '+isnull(im,'')+' '+isnu
                 int b = 1;
                 Message me = new Message(m, t, b);
                 me.ShowDialog();
+            }
+        }
+
+        private void Izm_active_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            string sg_rows_zl = " ";
+            int[] rt = pers_grid.GetSelectedRowHandles();
+            for (int i = 0; i < rt.Count(); i++)
+            {
+                var ddd_zl = pers_grid.GetCellValue(rt[i], "ID");
+                var sgr_zl = sg_rows_zl.Insert(sg_rows_zl.Length, ddd_zl.ToString()) + ",";
+                sg_rows_zl = sgr_zl;
+            }
+            sg_rows_zl = sg_rows_zl.Substring(0, sg_rows_zl.Length - 1);
+            string m1 = "Вы действительно хотите изменить статус активности выбранным ЗЛ?";
+            string t1 = "Внимание!";
+            int b1 = 2;
+            Message me1 = new Message(m1, t1, b1);
+            me1.ShowDialog();
+
+            if (Vars.mes_res == 1)
+            {
+                var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
+                SqlConnection con = new SqlConnection(connectionString);
+                SqlCommand comm = new SqlCommand($@"update pol_persons set active=(case when active=1 then 0 else 1 end) where id in({sg_rows_zl})", con);
+                con.Open();
+                comm.ExecuteNonQuery();
+                con.Close();
+            }
+            else
+            {
+                return;
+            }
+        }
+
+        private void Del_stopreason_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            string sg_rows_zl = " ";
+            int[] rt = pers_grid.GetSelectedRowHandles();
+            for (int i = 0; i < rt.Count(); i++)
+            {
+                var ddd_zl = pers_grid.GetCellValue(rt[i], "ID");
+                var sgr_zl = sg_rows_zl.Insert(sg_rows_zl.Length, ddd_zl.ToString()) + ",";
+                sg_rows_zl = sgr_zl;
+            }
+            sg_rows_zl = sg_rows_zl.Substring(0, sg_rows_zl.Length - 1);
+            string m1 = "Вы действительно хотите удалить причину снятия с учета выбранным ЗЛ?";
+            string t1 = "Внимание!";
+            int b1 = 2;
+            Message me1 = new Message(m1, t1, b1);
+            me1.ShowDialog();
+
+            if (Vars.mes_res == 1)
+            {
+                var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
+                SqlConnection con = new SqlConnection(connectionString);
+                SqlCommand comm = new SqlCommand($@"update pp set stop_reason=null from pol_persons p
+join pol_polises pp on p.event_guid=pp.event_guid
+ where p.id in({sg_rows_zl})", con);
+                con.Open();
+                comm.ExecuteNonQuery();
+                con.Close();
+            }
+            else
+            {
+                return;
             }
         }
     }

@@ -18,9 +18,9 @@
                          SelectionChanged="Pol_zagr_SelectionChanged" >
             <dxg:GridControl.View>
                 <dxg:TableView AllowPerPixelScrolling="True" AllowBestFit="True" BestFitMode="AllRows" BestFitArea="Rows" ShowTotalSummary="True" 
-                                ColumnFilterPopupMode="Excel" ShowAutoFilterRow="True" HorizontalScrollbarVisibility="Visible" ShowDataNavigator="True" NavigationStyle="Row"
-                                FilterEditorShowOperandTypeIcon="True" SnapsToDevicePixels="True" RetainSelectionOnClickOutsideCheckBoxSelector="False" ShowCheckBoxSelectorColumn="True" AutoWidth="True" Margin="0,0,0,0"
-                                EditFormColumnCount="1" ShowEditFormOnDoubleClick="True" />
+                                ColumnFilterPopupMode="Excel" ShowAutoFilterRow="True" HorizontalScrollbarVisibility="Visible" ShowDataNavigator="False" NavigationStyle="Row"
+                                FilterEditorShowOperandTypeIcon="True" SnapsToDevicePixels="True" RetainSelectionOnClickOutsideCheckBoxSelector="False" ShowCheckBoxSelectorColumn="True" AutoWidth="False" Margin="0,0,0,0"
+                                EditFormColumnCount="1" ShowEditFormOnDoubleClick="True"  />
             </dxg:GridControl.View>
         </dxg:GridControl>
         <Button x:Name="from_excel_btn" Content="Прикрепление из CSV для Барнаула (просмотр) " HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="379" Height="31" FontWeight="Bold" TabIndex="3" Click="From_excel_btn_Click" />

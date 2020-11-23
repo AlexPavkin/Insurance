@@ -401,8 +401,13 @@ namespace Insurance
                                         if (rtt != null)
                                         {
                                             for (int i = 0; i < rtt.Count(); i++)
+                                        {
+                                            if (rtt[i] == null)
                                             {
-                                                if (rtt[i].ToString() == "")
+                                                rtt[i] = null;
+                                            }
+                                            else
+                                            if (rtt[i].ToString() == "")
                                                 {
                                                     rtt[i] = null;
                                                 }
@@ -412,6 +417,7 @@ namespace Insurance
                                         }
 
                                     }
+
                                 string command0 = $@" update AddressObjects set [AOGUID]=CAST(dt.AOGUID as UNIQUEIDENTIFIER),[FORMALNAME]=dt.FORMALNAME,[REGIONCODE]=dt.REGIONCODE,[AUTOCODE]=dt.AUTOCODE,[AREACODE]=dt.AREACODE,
                                         [CITYCODE]=dt.CITYCODE,[CTARCODE]=dt.CTARCODE,[PLACECODE]=dt.PLACECODE,[STREETCODE]=dt.STREETCODE,[EXTRCODE]=dt.EXTRCODE,[SEXTCODE]=dt.SEXTCODE,[OFFNAME]=dt.OFFNAME,
                                         [POSTALCODE]=dt.POSTALCODE,[IFNSFL]=dt.IFNSFL,[TERRIFNSFL]=dt.TERRIFNSFL,[IFNSUL]=dt.IFNSUL,[TERRIFNSUL]=dt.TERRIFNSUL,[OKATO]=dt.OKATO,[OKTMO]=dt.OKTMO,[UPDATEDATE]=dt.UPDATEDATE,
@@ -672,26 +678,31 @@ Extended Properties=dBASE IV;", opf.FileName.Replace("\\" + opf.SafeFileName, ""
                                         workCol.DefaultValue = DBNull.Value;
                                     }
 
-                                    //var result = (from s in fields select s.Name).ToArray();
-                                    //dt.Load(dbf.NextRecord());
-                                    for (int ii = 0; ii < dbf.RecordCount; ii++)
+                                //var result = (from s in fields select s.Name).ToArray();
+                                //dt.Load(dbf.NextRecord());
+                                for (int ii = 0; ii < dbf.RecordCount; ii++)
+                                {
+                                    var rtt = dbf.NextRecord();
+
+                                    if (rtt != null)
                                     {
-                                        var rtt = dbf.NextRecord();
-
-                                        if (rtt != null)
+                                        for (int i = 0; i < rtt.Count(); i++)
                                         {
-                                            for (int i = 0; i < rtt.Count(); i++)
+                                            if (rtt[i] == null)
                                             {
-                                                if (rtt[i].ToString() == "")
-                                                {
-                                                    rtt[i] = null;
-                                                }
+                                                rtt[i] = null;
                                             }
-                                            dt1.LoadDataRow(rtt, true);
-
+                                            else
+                                            if (rtt[i].ToString() == "")
+                                            {
+                                                rtt[i] = null;
+                                            }
                                         }
+                                        dt1.LoadDataRow(rtt, true);
 
                                     }
+
+                                }
                                 string command0 = $@"update Houses set [POSTALCODE]=dt.POSTALCODE,[IFNSFL]=dt.IFNSFL,[TERRIFNSFL]=dt.TERRIFNSFL,[IFNSUL]=dt.IFNSUL,[TERRIFNSUL]=dt.TERRIFNSUL,[OKATO]=dt.OKATO,
 [OKTMO]=dt.OKTMO,[UPDATEDATE]=dt.UPDATEDATE,[HOUSENUM]=dt.HOUSENUM,[ESTSTATUS]=dt.ESTSTATUS,[BUILDNUM]=dt.BUILDNUM,[STRUCNUM]=dt.STRUCNUM,[STRSTATUS]=dt.STRSTATUS,[HOUSEID]=dt.HOUSEID,[HOUSEGUID]=dt.HOUSEGUID,
 [AOGUID]=dt.AOGUID,[STARTDATE]=dt.STARTDATE,[ENDDATE]=dt.ENDDATE,[STATSTATUS]=dt.STATSTATUS,[NORMDOC]=dt.NORMDOC,[COUNTER]=dt.COUNTER  

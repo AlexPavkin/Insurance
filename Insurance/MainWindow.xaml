@@ -459,6 +459,10 @@
                                     <dxb:BarButtonItem Name ="vignas" Content="Выгрузить Население(Калининград)" ItemClick="Vignas_ItemClick"/>
                                     <dxb:BarItemSeparator/>
                                     <dxb:BarButtonItem Name="Del_prikrep" Content ="Удалить прикрепление" ItemClick="Del_prikrep_OnItemClick"/>
+                                    <dxb:BarItemSeparator/>
+                                    <dxb:BarButtonItem Name="Izm_active" Content ="Поменять статус активности" ItemClick="Izm_active_ItemClick" />
+                                    <dxb:BarItemSeparator/>
+                                    <dxb:BarButtonItem Name="Del_stopreason" Content ="Удалить причину снятия с учета" ItemClick="Del_stopreason_ItemClick"  />
                                     
                                 </dxg:TableView.RowCellMenuCustomizations>
 
