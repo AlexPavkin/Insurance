@@ -362,7 +362,7 @@ join POL_POLISES pp on p.EVENT_GUID = pp.EVENT_GUID", con);
                     {
 
                         var dbf = new DotNetDBF.DBFReader(fos);
-                        dbf.CharEncoding = Encoding.GetEncoding(1251);
+                        dbf.CharEncoding = Encoding.GetEncoding(866);
 
                         var cnt = dbf.RecordCount;
                         //var writer = new DotNetDBF.DBFWriter(fos);
@@ -1369,6 +1369,67 @@ SPOSOB_P3 as sposob,RESULT_P3 as result,PRIMECH as prim, l.kod as KOD_POL, l.kod
             string connstring = Properties.Settings.Default.DocExchangeConnectionString;
             // pol_zagr.DataContext = MyReader.MySelect<string>(Script.Text, Properties.Settings.Default.DocExchangeConnectionString);
             pol_zagr.ItemsSource = SPR.MyReader.Query(Script.Text, Properties.Settings.Default.DocExchangeConnectionString);
+        }
+
+        private void Load_zah_data_Copy_Click(object sender, RoutedEventArgs e)
+        {
+            string ConnectionString1 = Properties.Settings.Default.DocExchangeConnectionString;
+            
+            WFR.OpenFileDialog OF = new WFR.OpenFileDialog();
+            //OF.Filter= "Файлы DBF (.dbf)|*.dbf";
+            OF.Title = "Выберите файл для загрузки в SQL";
+            if (OF.ShowDialog() == WFR.DialogResult.OK)
+            {
+
+              
+                //string ConnectionString1 = Properties.Settings.Default.DocExchangeConnectionString;
+                DataTable dt = new DataTable();
+                using (Stream fos = File.Open(OF.FileName, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+                {
+                    var dbf = new DotNetDBF.DBFReader(fos);
+                    dbf.CharEncoding = Encoding.GetEncoding(866);
+                    var cnt = dbf.RecordCount;
+                    var fields = dbf.Fields;
+                    for (int ii = 0; ii < fields.Count(); ii++)
+                    {
+                        DataColumn workCol = dt.Columns.Add(fields[ii].Name, fields[ii].Type);
+                        if (workCol.DataType == typeof(string)) workCol.MaxLength = fields[ii].FieldLength;
+                        workCol.AllowDBNull = true;
+                        workCol.DefaultValue = DBNull.Value;
+                    }
+
+                    for (int ii = 0; ii < dbf.RecordCount; ii++)
+                    {
+                        var rtt = dbf.NextRecord();
+
+                        if (rtt != null)
+                        {
+                            for (int i = 0; i < rtt.Count(); i++)
+                            {
+                                if (rtt[i] == null)
+                                {
+                                    rtt[i] = null;
+                                }
+                                else
+                                if (rtt[i].ToString() == "")
+                                {
+                                    rtt[i] = null;
+                                }
+                            }
+                            dt.LoadDataRow(rtt, true);
+
+                        }
+
+                    }
+
+                }
+
+                string sqltable = OF.SafeFileName.Replace(".dbf", "");
+                MyReader.LoadFromTable<DataTable>(ConnectionString1, dt, sqltable);
+                                    
+                 
+                MessageBox.Show("Данные загружены.");
+            }
         }
     }
     public class Class_params : IComparable<Class_params>

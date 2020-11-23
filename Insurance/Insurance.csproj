@@ -237,6 +237,7 @@
       <DependentUpon>Auth.xaml</DependentUpon>
     </Compile>
     <Compile Include="Classes\POISKVLADIK.cs" />
+    <Compile Include="CRC32.cs" />
     <Compile Include="Developer.xaml.cs">
       <DependentUpon>Developer.xaml</DependentUpon>
     </Compile>
