@@ -26,7 +26,7 @@ namespace Insurance_SPR
         {
             public static string load_pers_grid =$@"SELECT  pp.SROKDOVERENOSTI,pp.ID,pp.ACTIVE,op.przcod,pe.UNLOAD,ENP ,FAM , IM  , OT ,W ,DR ,MO,oks.CAPTION as C_OKSM,r.NameWithID ,
 pp.COMMENT,pe.DVIZIT, pp.DATEVIDACHI, pp.PRIZNAKVIDACHI, SS  ,VPOLIS,SPOLIS ,NPOLIS,DBEG ,DEND ,DSTOP ,BLANK ,DRECEIVED,f.NameWithId as MO_NameWithId,op.filename,pp.phone,p.AGENT, pp.CYCLE, 
-st.namewithkod as STOP_REASON, pe.id as EVENT_ID, dbr.namewithid as NameWithID_RD,smr.namewithid as NameWithID_RSMO
+st.namewithkod as STOP_REASON, pe.id as EVENT_ID, dbr.namewithid as NameWithID_RD,smr.namewithid as NameWithID_RSMO, pp.TFOMS_ACTIVE
               FROM [dbo].[POL_PERSONS] pp left join 
             pol_events pe on pp.event_guid=pe.idguid
          	LEFT JOIN POL_PRZ_AGENTS p

@@ -412,11 +412,11 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
             SqlCommand cmd0 = new SqlCommand($@" IF exists (select * from sys.table_types where name='ForUpdate')  
                                                  DROP TYPE dbo.ForUpdate   
                                                  CREATE TYPE ForUpdate AS TABLE ({sqltype0})
-                                                 IF exists (select * from sys.tables where name='{sqltable}') 
-                                                 DROP table dbo.{sqltable}  
-                                                 CREATE TABLE dbo.{sqltable} ({sqltype})", con);
+                                                 IF exists (select * from sys.tables where name='{sqltable.Replace(".DBF", "").Replace(".dbf", "")}') 
+                                                 DROP table dbo.{sqltable.Replace(".DBF","").Replace(".dbf","")}  
+                                                 CREATE TABLE dbo.{sqltable.Replace(".DBF", "").Replace(".dbf", "")} ({sqltype})", con);
 
-            SqlCommand cmd = new SqlCommand($@"insert into dbo.{sqltable}({sqlcolumns0})
+            SqlCommand cmd = new SqlCommand($@"insert into dbo.{sqltable.Replace(".DBF", "").Replace(".dbf", "")}({sqlcolumns0})
                                                 select {sqlcolumns0} from @dt", con);
 
             var t = new SqlParameter("@dt", SqlDbType.Structured);
@@ -895,10 +895,11 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
                 }));
 
             InitializeComponent();
-
+            
             if(Vars.SMO.StartsWith("83"))
             {
                 Unload_saleh_bline_btn.Visibility = Visibility.Visible;
+                Vigr_ZSP.IsEnabled = true;
             }
             DispatcherTimer timer = new DispatcherTimer();  // если надо, то в скобках указываем приоритет, например DispatcherPriority.Render
             //timer.Interval = TimeSpan.FromSeconds(15);
@@ -973,7 +974,7 @@ CREATE TYPE ForUpdate AS TABLE ({sqltype})", con);
             G_layuot.restore_Layout(Properties.Settings.Default.DocExchangeConnectionString, pers_grid, pers_grid_2);
             //LoadingDecorator1.IsSplashScreenShown = false;
             WindowState = WindowState.Maximized;
-            Vars.MainTitle = "Insurance(полисная часть) v1.071";
+            Vars.MainTitle = "Insurance(полисная часть) v1.072";
             Title = Vars.MainTitle;
             prz.SelectedIndex = -1;
             //if (SPR.Premmissions == "User")
@@ -3266,9 +3267,10 @@ DEALLOCATE MY_CURSOR
 
         }
 
-
+        public int out_salehard;
         private void dalee_Click_1(object sender, RoutedEventArgs e)
         {
+            out_salehard = 0;
             if (kem_vid.Text.Length > 100)
             {
                 string m = "Длинна \"Кем выдан документ превышает\" 100 символов!";
@@ -3372,8 +3374,8 @@ DEALLOCATE MY_CURSOR
                 me10.ShowDialog();
                 if (Vars.mes_res == 1)
                 {
-
-                    var town = fias.reg_town.Text;
+                    var rn = fias.reg_rn.Text.Split('-')[0].Trim();
+                    var town = fias.reg_town.Text.Split('-')[0].Trim();
                     var street = fias.reg_ul.Text.Split('-')[0].Trim();
                     var naspunkt = fias.reg_np.Text.Split('-')[0].Trim();
                     var dom = fias.reg_dom.Text.Trim().Replace("д.", "");
@@ -3384,23 +3386,23 @@ DEALLOCATE MY_CURSOR
                     {
                         if (interval.Days / 365.25 < 18)
                         {
-                            streetMO = SPR.MyReader.SELECTVAIN($@"SELECT TOP(1) STREET FROM [DocExchange].[dbo].[moaddr] where STREET like '%{street}%' and dom =  '{dom}' and old in(0,2)", Properties.Settings.Default.DocExchangeConnectionString);
-                            if (street.Contains(streetMO.Split(' ')[0]))
-                            {
-                                MO = SPR.MyReader.SELECTVAIN($@"SELECT TOP(1) MCOD FROM [DocExchange].[dbo].[moaddr] where STREET like '%{street}%' and dom =  '{dom}' and old in(0,2)", Properties.Settings.Default.DocExchangeConnectionString);
+                            //streetMO = SPR.MyReader.SELECTVAIN($@"SELECT TOP(1) STREET FROM [moaddr] where STREET like '%{street}%' and dom =  '{dom}' and old in(0,2)", Properties.Settings.Default.DocExchangeConnectionString);
+                            //if (street.Contains(streetMO.Split(' ')[0]))
+                            //{
+                                MO = SPR.MyReader.SELECTVAIN($@"SELECT TOP(1) mcod FROM [moaddr] where [NAME] like '%Смоленск%' and STREET like '%Попова%' and dom = (case when dom =  '' then '' else '{dom}' end) and old in(0,2)", Properties.Settings.Default.DocExchangeConnectionString);
                                 mo_cmb.EditValue = MO;
                                 date_mo.EditValue = DateTime.Now;
-                            }
+                            //}
                         }
                         else
                         {
-                            streetMO = SPR.MyReader.SELECTVAIN($@"SELECT TOP(1) STREET FROM [DocExchange].[dbo].[moaddr] where STREET like '%{street}%' and dom =  '{dom}' and old in(0,1)", Properties.Settings.Default.DocExchangeConnectionString);
-                            if (street.Contains(streetMO.Split(' ')[0]))
-                            {
-                                MO = SPR.MyReader.SELECTVAIN($@"SELECT TOP(1) MCOD FROM [DocExchange].[dbo].[moaddr] where STREET like '%{street}%' and dom =  '{dom}' and old in(0,1)", Properties.Settings.Default.DocExchangeConnectionString);
+                            //streetMO = SPR.MyReader.SELECTVAIN($@"SELECT TOP(1) STREET FROM [moaddr] where STREET like '%{street}%' and dom =  '{dom}' and old in(0,1)", Properties.Settings.Default.DocExchangeConnectionString);
+                            //if (street.Contains(streetMO.Split(' ')[0]))
+                            //{
+                                MO = SPR.MyReader.SELECTVAIN($@"SELECT TOP(1) mcod FROM [moaddr] where [NAME] like '%Смоленск%' and STREET like '%Попова%' and dom = (case when dom =  '' then '' else '{dom}' end) and old in(0,1)", Properties.Settings.Default.DocExchangeConnectionString);
                                 mo_cmb.EditValue = MO;
                                 date_mo.EditValue = DateTime.Now;
-                            }
+                            //}
                         }
 
                         
@@ -3408,18 +3410,19 @@ DEALLOCATE MY_CURSOR
                     else if(town.Contains("Десногорск"))
                     {
                         mo_cmb.EditValue = "670012";
+                        date_mo.EditValue = DateTime.Now;
                     }
                     else if (town.Contains("Вязьма"))
                     {
                         if (interval.Days / 365.25 < 18)
                         {
-                            streetMO = SPR.MyReader.SELECTVAIN($@"SELECT TOP(1) STREET FROM [DocExchange].[dbo].[moaddr] where STREET like '%{street}%'", Properties.Settings.Default.DocExchangeConnectionString);
-                            if (street.Contains(streetMO.Split(' ')[0]))
-                            {
-                                MO = SPR.MyReader.SELECTVAIN($@"SELECT TOP(1) MCOD FROM [DocExchange].[dbo].[moaddr] where STREET like '%{street}%'", Properties.Settings.Default.DocExchangeConnectionString);
+                            //streetMO = SPR.MyReader.SELECTVAIN($@"SELECT TOP(1) STREET FROM [moaddr] where STREET like '%{street}%'", Properties.Settings.Default.DocExchangeConnectionString);
+                            //if (street.Contains(streetMO.Split(' ')[0]))
+                            //{
+                                MO = SPR.MyReader.SELECTVAIN($@"SELECT TOP(1) MCOD FROM [moaddr] where [NAME] like '%Вязьма%' and STREET like '%{street}%'", Properties.Settings.Default.DocExchangeConnectionString);
                                 mo_cmb.EditValue = MO;
                                 date_mo.EditValue = DateTime.Now;
-                            }
+                            //}
                         }
                         else
                         {
@@ -3430,10 +3433,18 @@ DEALLOCATE MY_CURSOR
                     }
                     else
                     {
-                        var Derevnya = SPR.MyReader.SELECTVAIN($@"SELECT TOP(1) NAME  FROM [DocExchange].[dbo].[moaddr] where [NAME] like '%{naspunkt}%'", Properties.Settings.Default.DocExchangeConnectionString);
-                        if (naspunkt.Contains(Derevnya.Split(' ')[0]))
+                        //var Derevnya = SPR.MyReader.SELECTVAIN($@"SELECT TOP(1) NAME  FROM [moaddr] where [NAME] like '%{naspunkt}%'", Properties.Settings.Default.DocExchangeConnectionString);
+                        //if (naspunkt.Contains(Derevnya.Split(' ')[0]==""?"00000": Derevnya.Split(' ')[0]))
+                        //{
+                        MO = SPR.MyReader.SELECTVAIN($@"SELECT TOP(1) MCOD FROM [moaddr] where [NAME] like '%{naspunkt}%'", Properties.Settings.Default.DocExchangeConnectionString);
+                        if(MO!="")
+                        { 
+                            mo_cmb.EditValue = MO;
+                            date_mo.EditValue = DateTime.Now;
+                        }
+                        else
                         {
-                            MO = SPR.MyReader.SELECTVAIN($@"SELECT TOP(1) MCOD FROM [DocExchange].[dbo].[moaddr] where [NAME] like '%{naspunkt}%'", Properties.Settings.Default.DocExchangeConnectionString);
+                            MO = SPR.MyReader.SELECTVAIN($@"SELECT TOP(1) MCOD FROM [moaddr] where [NAME] like '%{rn}%'", Properties.Settings.Default.DocExchangeConnectionString);
                             mo_cmb.EditValue = MO;
                             date_mo.EditValue = DateTime.Now;
                         }
@@ -3458,6 +3469,19 @@ DEALLOCATE MY_CURSOR
             Events Create = new Events();
             Create.DVIZIT = DateTime.Now;
             prev_doc_stringSql(); //Предидущий документ
+            if(Vars.SMO.StartsWith("83"))
+            {
+                string m1 = "Отправить файл в ТФОМС?";
+                string t1 = "Внимание!";
+                int b1 = 2;
+                Message me1 = new Message(m1, t1, b1);
+                me1.ShowDialog();
+
+                if (Vars.mes_res == 1)
+                {
+                    out_salehard = 1;
+                }
+            }
             //----------------------------------------------------------------------------------------
             // При нажатии кнопки "Далее" если в предидущем окне была нажата кнопка "Новый клиент".
             
@@ -3498,6 +3522,7 @@ DEALLOCATE MY_CURSOR
                         {
 
                             InsMethods.Save_bt1_b0_s0_p2_sp1(this);
+                            
                             return;
 
                         }
@@ -4100,6 +4125,8 @@ DEALLOCATE MY_CURSOR
 
 
             //}
+
+
         }
 
         public ObservableCollection<string> list0 = new ObservableCollection<string>();
@@ -4344,6 +4371,7 @@ on t0.event_guid = t3.event_guid", con);
                         object dvisit_ = reader1["dvizit"];
                         object srok_doverenosti_ = reader1["SROKDOVERENOSTI"];
                         object prev_persguid_ = reader1["prev_persguid"];
+                        object COMMENT = reader1["COMMENT"];
                         object DOP_COMMENT = reader1["DOP_COMMENT"];
 
                         prev_persguid = prev_persguid_.ToString() == "" ? Guid.Empty : (Guid)prev_persguid_;
@@ -4374,7 +4402,7 @@ on t0.event_guid = t3.event_guid", con);
                         enp.Text = enp_.ToString();
                         Dop_comments.Text = DOP_COMMENT.ToString();
                         srok_doverenosti.EditValue = srok_doverenosti_;
-
+                        comments.Text = COMMENT.ToString();
                         if (datevidachi_.ToString() == "")
                         {
 
@@ -4564,6 +4592,8 @@ on t0.event_guid = t3.event_guid", con);
                     reader.Close();
 
                     con.Close();
+
+                    //MessageBox.Show(date_vid.EditValue.ToString());
 
                     SqlCommand comm16 = new SqlCommand(@"select * from pol_documents_old where 
                 event_guid=(select event_guid from pol_persons where id=@id)", con);
@@ -5156,7 +5186,7 @@ where pr.event_guid=(select event_guid from pol_persons where id=@id) and pr.add
 
                             if (dreceived == DBNull.Value)
                             {
-                                date_vid.EditValue = null;
+                                date_vidachi.EditValue = null;
                             }
                             else
                             {
@@ -5768,7 +5798,16 @@ where e.person_guid='{rper}' and main=1", con);
                     }
                     else if (ssn > 200 && ssn <= 300)
                     {
-                        psn = ssn - 101 - 101;
+                        psn = ssn - 101;
+                        if(psn==100 || psn==101)
+                        {
+                            psn = 0;
+                        }
+                        else if(psn>101)
+                        {
+                            psn = psn - 101;
+                        }
+
                         if (psn != kontr)
                         {
                             snils.Background = new SolidColorBrush(Colors.Red);
@@ -7274,6 +7313,8 @@ on t0.idguid = t3.person_guid", con);
                        object dvisit_ = reader1["dvizit"];
                        object srok_doverenosti_ = reader1["SROKDOVERENOSTI"];
                        object prev_persguid_ = reader1["prev_persguid"];
+                       object COMMENT = reader1["COMMENT"];
+                       object DOP_COMMENT = reader1["DOP_COMMENT"];
 
                        prev_persguid = prev_persguid_.ToString() == "" ? Guid.Empty : (Guid)prev_persguid_;
 
@@ -7289,6 +7330,8 @@ on t0.idguid = t3.person_guid", con);
 
 
                        string dost_1 = dost_.ToString();
+                       comments.Text = COMMENT.ToString();
+                       Dop_comments.Text = DOP_COMMENT.ToString();
                        fam.Text = fam_.ToString();
                        im.Text = im_.ToString();
                        ot.Text = ot_.ToString();
@@ -10419,6 +10462,38 @@ join pol_polises pp on p.event_guid=pp.event_guid
                 }
 
                 return hash;
+            }
+        }
+
+        private void Tfoms_deactive_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            string sg_rows_zl = " ";
+            int[] rt = pers_grid.GetSelectedRowHandles();
+            for (int i = 0; i < rt.Count(); i++)
+            {
+                var ddd_zl = pers_grid.GetCellValue(rt[i], "ID");
+                var sgr_zl = sg_rows_zl.Insert(sg_rows_zl.Length, ddd_zl.ToString()) + ",";
+                sg_rows_zl = sgr_zl;
+            }
+            sg_rows_zl = sg_rows_zl.Substring(0, sg_rows_zl.Length - 1);
+            string m1 = "Вы действительно хотите изменить признак наличия в базе ТФОМС выбранным ЗЛ?";
+            string t1 = "Внимание!";
+            int b1 = 2;
+            Message me1 = new Message(m1, t1, b1);
+            me1.ShowDialog();
+
+            if (Vars.mes_res == 1)
+            {
+                var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
+                SqlConnection con = new SqlConnection(connectionString);
+                SqlCommand comm = new SqlCommand($@"update pol_persons set TFOMS_ACTIVE=(case when TFOMS_ACTIVE=1 then 0 else 1 end) where id in({sg_rows_zl})", con);
+                con.Open();
+                comm.ExecuteNonQuery();
+                con.Close();
+            }
+            else
+            {
+                return;
             }
         }
     }

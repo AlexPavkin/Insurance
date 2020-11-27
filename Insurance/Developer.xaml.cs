@@ -1387,7 +1387,7 @@ SPOSOB_P3 as sposob,RESULT_P3 as result,PRIMECH as prim, l.kod as KOD_POL, l.kod
                 using (Stream fos = File.Open(OF.FileName, FileMode.OpenOrCreate, FileAccess.ReadWrite))
                 {
                     var dbf = new DotNetDBF.DBFReader(fos);
-                    dbf.CharEncoding = Encoding.GetEncoding(866);
+                    dbf.CharEncoding = Encoding.GetEncoding(1251);
                     var cnt = dbf.RecordCount;
                     var fields = dbf.Fields;
                     for (int ii = 0; ii < fields.Count(); ii++)

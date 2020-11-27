@@ -464,6 +464,8 @@
                                     <dxb:BarItemSeparator/>
                                     <dxb:BarButtonItem Name="Del_stopreason" Content ="Удалить причину снятия с учета" ItemClick="Del_stopreason_ItemClick"  />
                                     <dxb:BarItemSeparator/>
+                                    <dxb:BarButtonItem Name="Tfoms_deactive" Content ="Снять/проставить &quot;Есть в базе ТФОМС&quot;" ItemClick="Tfoms_deactive_ItemClick" IsEnabled="True" />
+                                    <dxb:BarItemSeparator/>
                                     <dxb:BarButtonItem Name="Vigr_ZSP" Content ="Выгрузить ЗСП" ItemClick="Vigr_ZSP_OnItemClick"/>
                                 </dxg:TableView.RowCellMenuCustomizations>     
 

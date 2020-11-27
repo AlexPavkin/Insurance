@@ -5,8 +5,9 @@ using System.Text;
 using System.Windows;
 using System.Data.SqlClient;
 using Insurance_SPR;
-
-
+using System.IO;
+using System.Xml.Linq;
+using Ionic.Zip;
 
 namespace Insurance
 {
@@ -329,6 +330,7 @@ namespace Insurance
                 perguid = (Guid)comm.ExecuteScalar();
                 tr.Commit();
                 con.Close();
+                guid_out_salehard = perguid;
             }
             catch (Exception e)
             {                
@@ -479,6 +481,10 @@ dstart=@date_mo where idguid='{perguid}'", con);
 
             }
             Item_Saved();
+            if (PD.out_salehard == 1)
+            {
+                Vigruzka_SALEHARD();
+            }
             PersData_Default(PD);
 
         }
@@ -803,6 +809,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
                 perguid = (Guid)comm.ExecuteScalar();
                 tr.Commit();
                 con.Close();
+                guid_out_salehard = perguid;
             }
             catch (Exception e)
             {                
@@ -954,6 +961,10 @@ dstart=@date_mo where idguid='{perguid}'", con);
 
             }
             Item_Saved();
+            if (PD.out_salehard == 1)
+            {
+                Vigruzka_SALEHARD();
+            }
             PersData_Default(PD);
         }
 
@@ -1233,6 +1244,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
                 perguid = (Guid)comm.ExecuteScalar();
                 tr.Commit();
                 con.Close();
+                guid_out_salehard = perguid;
             }
             catch (Exception e)
             {                
@@ -1383,6 +1395,10 @@ dstart=@date_mo where idguid='{perguid}'", con);
 
             }
             Item_Saved();
+            if (PD.out_salehard == 1)
+            {
+                Vigruzka_SALEHARD();
+            }
             PersData_Default(PD);
         }
 
@@ -1590,6 +1606,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
                 perguid = (Guid)comm.ExecuteScalar();
                 tr.Commit();
                 con.Close();
+                guid_out_salehard = perguid;
             }
             catch (Exception e)
             {                
@@ -1740,6 +1757,10 @@ dstart=@date_mo where idguid='{perguid}'", con);
 
             }
             Item_Saved();
+            if (PD.out_salehard == 1)
+            {
+                Vigruzka_SALEHARD();
+            }
             PersData_Default(PD);
         }
 
@@ -1949,6 +1970,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
                 perguid = (Guid)comm.ExecuteScalar();
                 tr.Commit();
                 con.Close();
+                guid_out_salehard = perguid;
             }
             catch (Exception e)
             {                
@@ -2099,6 +2121,10 @@ dstart=@date_mo where idguid='{perguid}'", con);
 
             }
             Item_Saved();
+            if (PD.out_salehard == 1)
+            {
+                Vigruzka_SALEHARD();
+            }
             PersData_Default(PD);
         }
 
@@ -2305,6 +2331,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
                 perguid = (Guid)comm.ExecuteScalar();
                 tr.Commit();
                 con.Close();
+                guid_out_salehard = perguid;
             }
             catch (Exception e)
             {                
@@ -2455,6 +2482,10 @@ dstart=@date_mo where idguid='{perguid}'", con);
 
             }
             Item_Saved();
+            if (PD.out_salehard == 1)
+            {
+                Vigruzka_SALEHARD();
+            }
             PersData_Default(PD);
         }
 
@@ -2700,6 +2731,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
                 perguid = (Guid)comm.ExecuteScalar();
                 tr.Commit();
                 con.Close();
+                guid_out_salehard = perguid;
             }
             catch (Exception e)
             {                
@@ -2849,6 +2881,10 @@ dstart=@date_mo where idguid='{perguid}'", con);
 
             }
             Item_Saved();
+            if (PD.out_salehard == 1)
+            {
+                Vigruzka_SALEHARD();
+            }
             PersData_Default(PD);
         }
 
@@ -3109,6 +3145,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
                 perguid = (Guid)comm.ExecuteScalar();
                 tr.Commit();
                 con.Close();
+                guid_out_salehard = perguid;
             }
             catch (Exception e)
             {                
@@ -3259,6 +3296,10 @@ dstart=@date_mo where idguid='{perguid}'", con);
 
             }
             Item_Saved();
+            if (PD.out_salehard == 1)
+            {
+                Vigruzka_SALEHARD();
+            }
             PersData_Default(PD);
         }
 
@@ -3521,6 +3562,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
                 perguid = (Guid)comm.ExecuteScalar();
                 tr.Commit();
                 con.Close();
+                guid_out_salehard = perguid;
             }
             catch (Exception e)
             {                
@@ -3671,6 +3713,10 @@ dstart=@date_mo where idguid='{perguid}'", con);
 
             }
             Item_Saved();
+            if (PD.out_salehard == 1)
+            {
+                Vigruzka_SALEHARD();
+            }
             PersData_Default(PD);
         }
 
@@ -4007,6 +4053,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
                 perguid = (Guid)comm.ExecuteScalar();
                 tr.Commit();
                 con.Close();
+                guid_out_salehard = perguid;
             }
             catch (Exception e)
             {
@@ -4157,6 +4204,10 @@ dstart=@date_mo where idguid='{perguid}'", con);
 
             }
             Item_Saved();
+            if (PD.out_salehard == 1)
+            {
+                Vigruzka_SALEHARD();
+            }
             PersData_Default(PD);
         }
 
@@ -4380,6 +4431,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
                 perguid = (Guid)comm.ExecuteScalar();
                 tr.Commit();
                 con.Close();
+                guid_out_salehard = perguid;
             }
             catch (Exception e)
             {
@@ -4530,6 +4582,10 @@ dstart=@date_mo where idguid='{perguid}'", con);
 
             }
             Item_Saved();
+            if (PD.out_salehard == 1)
+            {
+                Vigruzka_SALEHARD();
+            }
             PersData_Default(PD);
         }
 
@@ -4829,6 +4885,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
                 perguid = (Guid)comm.ExecuteScalar();
                 tr.Commit();
                 con.Close();
+                guid_out_salehard = perguid;
             }
             catch (Exception e)
             {
@@ -4979,6 +5036,10 @@ dstart=@date_mo where idguid='{perguid}'", con);
 
             }
             Item_Saved();
+            if (PD.out_salehard == 1)
+            {
+                Vigruzka_SALEHARD();
+            }
             PersData_Default(PD);
         }
 
@@ -5061,13 +5122,13 @@ dstart=@date_mo where idguid='{perguid}'", con);
             comm2.Parameters.AddWithValue("@DATEVIDACHI", PD.date_vidachi.DateTime);
 
             comm2.Parameters.AddWithValue("@dvizit", PD.d_obr.EditValue ?? DBNull.Value);
-            if (PD.mo_cmb.SelectedIndex != -1)
+            if (PD.mo_cmb.EditValue != null)
             {
                 comm2.Parameters.AddWithValue("@mo", PD.mo_cmb.EditValue.ToString());
             }
             else
             {
-                comm2.Parameters.AddWithValue("@mo", "");
+                comm2.Parameters.AddWithValue("@mo", DBNull.Value);
             }
             //if (Convert.ToDateTime(date_mo.EditValue) == DateTime.MinValue || date_mo.EditValue == null)
             //{
@@ -5357,6 +5418,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
                 perguid = (Guid)comm2.ExecuteScalar();
                 tr.Commit();
                 con2.Close();
+                guid_out_salehard = perguid;
             }
             catch (Exception e)
             {
@@ -5509,6 +5571,10 @@ NAME_VP='{PD.kem_vid1.Text}', NAME_VP_CODE='{PD.kod_podr1.Text}' where idguid='{
             }
 
             Item_Saved();
+            if (PD.out_salehard == 1)
+            {
+                Vigruzka_SALEHARD();
+            }
             PersData_Default(PD);
         }
 
@@ -5929,6 +5995,10 @@ NAME_VP='{PD.kem_vid1.Text}', NAME_VP_CODE='{PD.kod_podr1.Text}', active=0,main=
             }
 
             Item_Saved();
+            if (PD.out_salehard == 1)
+            {
+                Vigruzka_SALEHARD();
+            }
             PersData_Default(PD);
         }
 
@@ -6241,6 +6311,7 @@ NAME_VP='{PD.kem_vid1.Text}', NAME_VP_CODE='{PD.kod_podr1.Text}', active=0,main=
                 perguid = (Guid)comm.ExecuteScalar();
                 tr.Commit();
                 con.Close();
+                guid_out_salehard = perguid;
             }
             catch (Exception e)
             {
@@ -6391,6 +6462,10 @@ dstart=@date_mo where idguid='{perguid}'", con);
 
             }
             Item_Saved();
+            if (PD.out_salehard == 1)
+            {
+                Vigruzka_SALEHARD();
+            }
             PersData_Default(PD);
         }
 
@@ -6707,6 +6782,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
                 perguid = (Guid)comm.ExecuteScalar();
                 tr.Commit();
                 con.Close();
+                guid_out_salehard = perguid;
             }
             catch (Exception e)
             {
@@ -6857,6 +6933,10 @@ dstart=@date_mo where idguid='{perguid}'", con);
 
             }
             Item_Saved();
+            if (PD.out_salehard == 1)
+            {
+                Vigruzka_SALEHARD();
+            }
             PersData_Default(PD);
         }
 
@@ -7132,6 +7212,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
                 perguid = (Guid)comm.ExecuteScalar();
                 tr.Commit();
                 con.Close();
+                guid_out_salehard = perguid;
             }
             catch (Exception e)
             {
@@ -7282,6 +7363,10 @@ dstart=@date_mo where idguid='{perguid}'", con);
 
             }
             Item_Saved();
+            if (PD.out_salehard == 1)
+            {
+                Vigruzka_SALEHARD();
+            }
             PersData_Default(PD);
         }
 
@@ -7485,6 +7570,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
                 perguid = (Guid)comm.ExecuteScalar();
                 tr.Commit();
                 con.Close();
+                guid_out_salehard = perguid;
             }
             catch (Exception e)
             {
@@ -7635,6 +7721,10 @@ dstart=@date_mo where idguid='{perguid}'", con);
 
             }
             Item_Saved();
+            if (PD.out_salehard == 1)
+            {
+                Vigruzka_SALEHARD();
+            }
             PersData_Default(PD);
         }
 
@@ -7838,6 +7928,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
                 perguid = (Guid)comm.ExecuteScalar();
                 tr.Commit();
                 con.Close();
+                guid_out_salehard = perguid;
             }
             catch (Exception e)
             {
@@ -7988,6 +8079,10 @@ dstart=@date_mo where idguid='{perguid}'", con);
 
             }
             Item_Saved();
+            if (PD.out_salehard == 1)
+            {
+                Vigruzka_SALEHARD();
+            }
             PersData_Default(PD);
         }
 
@@ -8206,6 +8301,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
                 perguid = (Guid)comm.ExecuteScalar();
                 tr.Commit();
                 con.Close();
+                guid_out_salehard = perguid;
             }
             catch (Exception e)
             {
@@ -8356,6 +8452,10 @@ dstart=@date_mo where idguid='{perguid}'", con);
 
             }
             Item_Saved();
+            if (PD.out_salehard == 1)
+            {
+                Vigruzka_SALEHARD();
+            }
             PersData_Default(PD);
         }
 
@@ -8636,6 +8736,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
                 perguid = (Guid)comm.ExecuteScalar();
                 tr.Commit();
                 con.Close();
+                guid_out_salehard = perguid;
             }
             catch (Exception e)
             {
@@ -8786,6 +8887,10 @@ dstart=@date_mo where idguid='{perguid}'", con);
 
             }
             Item_Saved();
+            if (PD.out_salehard == 1)
+            {
+                Vigruzka_SALEHARD();
+            }
             PersData_Default(PD);
         }
 
@@ -9064,6 +9169,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
                 perguid = (Guid)comm.ExecuteScalar();
                 tr.Commit();
                 con.Close();
+                guid_out_salehard = perguid;
             }
             catch (Exception e)
             {
@@ -9214,6 +9320,10 @@ dstart=@date_mo where idguid='{perguid}'", con);
 
             }
             Item_Saved();
+            if (PD.out_salehard == 1)
+            {
+                Vigruzka_SALEHARD();
+            }
             PersData_Default(PD);
         }
 
@@ -9490,6 +9600,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
                 perguid = (Guid)comm.ExecuteScalar();
                 tr.Commit();
                 con.Close();
+                guid_out_salehard = perguid;
             }
             catch (Exception e)
             {
@@ -9641,6 +9752,10 @@ dstart=@date_mo where idguid='{perguid}'", con);
 
             }
             Item_Saved();
+            if (PD.out_salehard == 1)
+            {
+                Vigruzka_SALEHARD();
+            }
             PersData_Default(PD);
         }
 
@@ -9986,6 +10101,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
                 perguid = (Guid)comm.ExecuteScalar();
                 tr.Commit();
                 con.Close();
+                guid_out_salehard = perguid;
             }
             catch (Exception e)
             {
@@ -10136,6 +10252,10 @@ dstart=@date_mo where idguid='{perguid}'", con);
 
             }
             Item_Saved();
+            if (PD.out_salehard == 1)
+            {
+                Vigruzka_SALEHARD();
+            }
             PersData_Default(PD);
         }
 
@@ -10375,6 +10495,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
                 perguid = (Guid)comm.ExecuteScalar();
                 tr.Commit();
                 con.Close();
+                guid_out_salehard = perguid;
             }
             catch (Exception e)
             {
@@ -10525,6 +10646,10 @@ dstart=@date_mo where idguid='{perguid}'", con);
 
             }
             Item_Saved();
+            if (PD.out_salehard == 1)
+            {
+                Vigruzka_SALEHARD();
+            }
             PersData_Default(PD);
         }
 
@@ -10835,6 +10960,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
                 perguid = (Guid)comm.ExecuteScalar();
                 tr.Commit();
                 con.Close();
+                guid_out_salehard = perguid;
             }
             catch (Exception e)
             {
@@ -10985,6 +11111,10 @@ dstart=@date_mo where idguid='{perguid}'", con);
 
             }
             Item_Saved();
+            if (PD.out_salehard == 1)
+            {
+                Vigruzka_SALEHARD();
+            }
             PersData_Default(PD);
         }
 
@@ -11381,6 +11511,7 @@ dstart=@date_mo where idguid='{perguid}'", con);
                 perguid = (Guid)comm2.ExecuteScalar();
                 tr.Commit();
                 con2.Close();
+                guid_out_salehard = perguid;
             }
             catch (Exception e)
             {
@@ -11553,7 +11684,11 @@ NAME_VP='{PD.kem_vid1.Text}', NAME_VP_CODE='{PD.kod_podr1.Text}' where idguid='{
             {
 
             }
-                Item_Saved();
+            Item_Saved();
+            if (PD.out_salehard == 1)
+            {
+                Vigruzka_SALEHARD();
+            }
             PersData_Default(PD);
         }
 
@@ -11957,6 +12092,10 @@ NAME_VP='{PD.kem_vid1.Text}', NAME_VP_CODE='{PD.kod_podr1.Text}' where idguid='{
             comm3.ExecuteNonQuery();
             con3.Close();
             Item_Saved();
+            if (PD.out_salehard == 1)
+            {
+                Vigruzka_SALEHARD();
+            }
             //this.Close();
             //PD.pers_grid_1_Loaded(this, e);
             PersData_Default(PD);
@@ -12081,6 +12220,132 @@ NAME_VP='{PD.kem_vid1.Text}', NAME_VP_CODE='{PD.kod_podr1.Text}' where idguid='{
             int b = 1;
             Message me = new Message(m, t, b);
             me.ShowDialog();
+        }
+
+        
+        public static Guid? guid_out_salehard;
+        public static void Vigruzka_SALEHARD()
+        {
+            
+            var id = SPR.MyReader.SELECTVAIN($@"select id from POL_PERSONS where IDGUID = '{guid_out_salehard}'",
+                Properties.Settings.Default.DocExchangeConnectionString);
+
+            string fname1 = "";
+            var connectionString = Properties.Settings.Default.DocExchangeConnectionString;
+            SqlConnection con = new SqlConnection(connectionString);
+            SqlCommand comm4 = new SqlCommand($@"select top (1) smo_code from pol_prz", con);
+            con.Open();
+            comm4.CommandTimeout = 0;
+            string smocod = (string)comm4.ExecuteScalar();
+            con.Close();
+            SqlCommand comm2 = new SqlCommand($@"declare @num nvarchar(5);
+set @num=(select
+(case
+when (select count(*) from POL_FILES where 
+FNAME_MM=datepart(mm,GETDATE()) 
+and FNAME_GG=right(datepart(yy,GETDATE()),2) and id=(select max(id) from POL_FILES where FNAME_MM=datepart(mm,GETDATE()) 
+and FNAME_GG=right(datepart(yy,GETDATE()),2)))=0 then 0 
+else (select FNAME_Z+1 from POL_FILES where 
+FNAME_MM=datepart(mm,GETDATE()) 
+and FNAME_GG=right(datepart(yy,GETDATE()),2) and id=(select max(id) from POL_FILES where FNAME_MM=datepart(mm,GETDATE()) 
+and FNAME_GG=right(datepart(yy,GETDATE()),2))) end));
+set @num =(case 
+when len(@num)=1 and @num=0 then @num+'01'
+when len(@num)=1 and @num!=0 then '00'+@num
+when len(@num)=2 then '0'+@num else @num end)
+select 'i'+(select top(1) SMO_CODE from pol_prz)+'_'+'{Vars.PunctRz}'+'_'+
+(case when len(convert(nvarchar,datepart(mm,GETDATE())))=1 then '0'+convert(nvarchar,datepart(mm,GETDATE()))
+else convert(nvarchar,datepart(mm,GETDATE())) end)+
+convert(nvarchar,right(datepart(yy,GETDATE()),2))+@num+'.xml'", con);
+            con.Open();
+            comm2.CommandTimeout = 0;
+            string fname = (string)comm2.ExecuteScalar();
+            con.Close();
+            SqlCommand comm5 = new SqlCommand($@"declare @num nvarchar(5);
+set @num=(select
+(case
+when (select count(*) from POL_FILES where 
+FNAME_MM=datepart(mm,GETDATE()) 
+and FNAME_GG=right(datepart(yy,GETDATE()),2) and id=(select max(id) from POL_FILES where FNAME_MM=datepart(mm,GETDATE()) 
+and FNAME_GG=right(datepart(yy,GETDATE()),2)))=0 then 0 
+else (select FNAME_Z+1 from POL_FILES where 
+FNAME_MM=datepart(mm,GETDATE()) 
+and FNAME_GG=right(datepart(yy,GETDATE()),2) and id=(select max(id) from POL_FILES where FNAME_MM=datepart(mm,GETDATE()) 
+and FNAME_GG=right(datepart(yy,GETDATE()),2))) end));
+set @num =(case 
+when len(@num)=1 and @num=0 then @num+'01'
+when len(@num)=1 and @num!=0 then '00'+@num
+when len(@num)=2 then '0'+@num else @num end)
+select @num", con);
+            con.Open();
+            comm5.CommandTimeout = 0;
+            string num = (string)comm5.ExecuteScalar();
+            con.Close();
+
+
+            string Path = $@"C:\Отправка ТФОМС";
+            string fname3;
+
+            fname3 = "i" + smocod + "_" + Vars.PunctRz + "_" +
+                     DateTime.Today.ToString("MM") + DateTime.Today.ToString("yy") +
+                     fname + ".xml";
+            
+
+            SqlCommand comm = new SqlCommand(
+                $@"exec [Unload_ToFoms] @num = '{num}', @FName = '{fname}', @col = 1, @prz = '{Vars.PunctRz}', @ids = '{id}' ", con);
+
+            con.Open();
+            comm.CommandTimeout = 0;
+            fname1 = (string)comm.ExecuteScalar();
+            con.Close();
+
+
+            SqlCommand comm1 = new SqlCommand($@"Select FXML from pol_files where filename='{fname1}'",
+                con);
+            con.Open();
+            comm1.CommandTimeout = 0;
+            string fxml = (string)comm1.ExecuteScalar();
+            con.Close();
+
+            File.WriteAllText(Path,
+                "<?xml version=" + (char)34 + "1.0" + (char)34 + " encoding=" + (char)34 +
+                "windows-1251" + (char)34 + "?>" + fxml, Encoding.GetEncoding("windows-1251"));
+            XDocument xDoc = XDocument.Load(Path);
+            xDoc.Save(Path);
+            string fnamezip = Path.Replace(".xml", "");
+            using (ZipFile zip = new ZipFile())
+            {
+                zip.AddFile(Path, "");
+
+                zip.Save(fnamezip + ".zip");
+
+            }
+
+
+
+            FileInfo file_zip = new FileInfo(fnamezip + ".zip");
+            long size = file_zip.Length;
+            byte[] array;
+            using (FileStream fs = new FileStream(fnamezip + ".zip", FileMode.Open))
+            {
+                // преобразуем строку в байты
+                array = new byte[fs.Length];
+                // считываем данные
+                fs.Read(array, 0, array.Length);
+                // декодируем байты в строку
+                //string textFromFile = System.Text.Encoding.Default.GetString(array);
+
+            }
+
+            SqlCommand comm3 =
+                new SqlCommand(
+                    $@"UPDATE pol_files set fzip=convert(varbinary(max),'{array}'),fsize={size} where filename='{fname1}'",
+                    con);
+            con.Open();
+            comm3.CommandTimeout = 0;
+            comm3.ExecuteScalar();
+            con.Close();
+
         }
     }
 }

@@ -87,6 +87,8 @@ namespace Insurance_SPR
         //public string INFORM { get; set; } //Пункт выдачи
         [System.ComponentModel.DisplayName("Обработка закончена")]
         public bool CYCLE { get; set; } //Пункт выдачи
+        [System.ComponentModel.DisplayName("Есть в базе ТФОМС")]
+        public bool TFOMS_ACTIVE { get; set; } //Пункт выдачи
         public Int32 EVENT_ID { get; set; }
 
 
